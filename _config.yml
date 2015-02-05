@@ -1,5 +1,4 @@
 source: web
-includes: ./../_includes
 
 defaults:
   -
