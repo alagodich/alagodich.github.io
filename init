@@ -1,11 +1,11 @@
 # copy css assets
-cp -a bower_components/bootstrap/dist/css/bootstrap.min.css css/
+cp -a bower_components/bootstrap/dist/css/bootstrap.min.css web/css/
 
 # copy js assets
-cp -a bower_components/jquery/dist/jquery.min.js js/
-cp -a bower_components/jquery/dist/jquery.min.map js/
-cp -a bower_components/bootstrap/dist/js/bootstrap.min.js js/
+cp -a bower_components/jquery/dist/jquery.min.js web/js/
+cp -a bower_components/jquery/dist/jquery.min.map web/js/
+cp -a bower_components/bootstrap/dist/js/bootstrap.min.js web/js/
 
 #publish dart apps
-rm -rf dart/publish/*
-cp -a dart/build/web/* dart/publish/
+rm -rf web/dart/*
+cp -a dart/build/web/* web/dart/
