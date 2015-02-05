@@ -1,1 +1,18 @@
 source: web
+includes: ./../_includes
+
+defaults:
+  -
+    scope:
+      path: "" # an empty string here means all files in the project
+    values:
+      layout: "default"
+      author: "alagodich"
+      defaultjs: "defaultjs.html"
+      defaultcss: "defaultcss.html"
+#  -
+#    scope:
+#      path: "projects"
+#      type: "pages"
+#    values:
+#      layout: "project" # overrides previous default layout
