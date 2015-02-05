@@ -6,6 +6,8 @@
     "**/*.txt"
   ],
   "dependencies": {
-    "bootstrap": "*"
+    "bootstrap": "*",
+    "polymer": "Polymer/polymer",
+    "polymer-core-ajax": "Polymer/core-ajax"
   }
 }
