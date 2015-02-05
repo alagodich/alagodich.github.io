@@ -1,0 +1,7 @@
+# copy css assets
+cp -a bower_components/bootstrap/dist/css/bootstrap.min.css css/
+
+# copy js assets
+cp -a bower_components/jquery/dist/jquery.min.js js/
+cp -a bower_components/jquery/dist/jquery.min.map js/
+cp -a bower_components/bootstrap/dist/js/bootstrap.min.js js/

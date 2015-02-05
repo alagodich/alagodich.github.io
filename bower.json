@@ -1,0 +1,11 @@
+{
+  "name": "alagodich.github.io",
+  "version": "1.0.0",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "bootstrap": "*"
+  }
+}
