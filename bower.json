@@ -10,6 +10,7 @@
     "polymer-core-ajax": "Polymer/core-ajax",
     "polymer-font-roboto": "Polymer/font-roboto",
     "polymer-core-elements": "Polymer/core-elements",
-    "polymer-paper-elements": "Polymer/paper-elements"
+    "polymer-paper-elements": "Polymer/paper-elements",
+    "polymer-flatiron-director": "Polymer/flatiron-director"
   }
 }
