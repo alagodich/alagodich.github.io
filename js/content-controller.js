@@ -8,8 +8,8 @@
 
     template.pages = [
         {name: 'Home', hash: 'home', url: '/home.html'},
-        {name: 'Dart sample1', hash: 'dart-sample', url: '/dart-sample.html'},
-        {name: 'Polymer sample', hash: 'polymer-sample', url: '/polymer-sample.html'}
+        {name: 'Pirate badges', hash: 'dart-sample', url: 'dart/build/web/piratebadge/index.html'},
+        //{name: 'Polymer sample', hash: 'polymer-sample', url: '/polymer-sample.html'}
     ];
 
 
@@ -69,15 +69,19 @@
     };
 
     template.onResponse = function(e, detail, sender) {
-        var article = detail.response.querySelector('#article-content');
-        //article.querySelector('.byline').remove();
+        var article = detail.response.querySelector('#articleContent');
+        var html;
+        if (article) {
+            //article.querySelector('.byline').remove();
+            // Fix up image paths to not be local
+            [].forEach.call(article.querySelectorAll('img'), function(img) {
+                img.setAttribute('src', img.src);
+            });
 
-        // Fix up image paths to not be local
-        [].forEach.call(article.querySelectorAll('img'), function(img) {
-            img.setAttribute('src', img.src);
-        });
-
-        var html = article.innerHTML;
+            html = article.innerHTML;
+        } else {
+            html = "Content not found";
+        }
 
         // Primitive caching by URL
         cache[contentController.url] = html;

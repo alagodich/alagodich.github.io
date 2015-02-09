@@ -1,5 +1,19 @@
-<div id="article-content">
+<div id="articleContent">
+
+    <link rel="import" href="bower_components/paper-tabs/paper-tab.html">
     <link rel="import" href="elements/post-list.html">
+
+    <style>
+        #tabs {
+            width: 100%;
+            margin: 0;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            text-transform: uppercase;
+        }
+    </style>
     <core-toolbar>
         <paper-tabs id="tabs" selected="all" self-end>
             <paper-tab name="all">All</paper-tab>
