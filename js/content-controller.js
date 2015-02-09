@@ -69,9 +69,7 @@
     };
 
     template.onResponse = function(e, detail, sender) {
-        console.log('test');
         var article = detail.response.querySelector('#article-content');
-        console.log(detail.response);
         //article.querySelector('.byline').remove();
 
         // Fix up image paths to not be local
@@ -79,12 +77,11 @@
             img.setAttribute('src', img.src);
         });
 
-        var html = article.innerHTMl;
+        var html = article.innerHTML;
 
         // Primitive caching by URL
         cache[contentController.url] = html;
-
-        this.injectBoundHTML(html, pages.selectedItem.firstElementChild);
+        this.injectBoundHTML(cache[contentController.url], pages.selectedItem.firstElementChild);
     };
 
 })();
