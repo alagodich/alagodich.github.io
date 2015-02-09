@@ -1,6 +1,75 @@
----
-title: Hello world!
----
-<div class="page-header">
-    <h1>{{ page.title }}</h1>
-</div>
+<!doctype html>
+<html>
+
+<head>
+    <title>alagodich.github.io</title>
+
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
+
+    <link rel="import" href="elements.html">
+
+    <link rel="stylesheet" href="css/styles.css" type="text/css">
+</head>
+
+<body unresolved fullbleed>
+    <template is="auto-binding">
+
+        <!-- Route controller. -->
+        <flatiron-director route="{{route}}" autoHash></flatiron-director>
+
+        <!-- Keyboard nav controller. -->
+        <core-a11y-keys
+                id="keys"
+                target="{{parentElement}}"
+                keys="up down left right space space+shift"
+                on-key-pressed="{{keyHandler}}"></core-a11y-keys>
+
+        <!-- Dynamic content controller -->
+        <core-ajax
+                id="contentController"
+                auto
+                url="{{selectedPage.page.url}}"
+                handleAs="document"
+                on-core-response="{{onResponse}}"></core-ajax>
+
+        <core-scaffold id="scaffold">
+
+            <nav>
+                <core-toolbar><span>Single Page</span></core-toolbar>
+                <core-menu
+                        id="menu"
+                        valueattr="hash"
+                        selected="{{route}}"
+                        selectedModel="{{selectedPage}}"
+                        on-core-select="{{menuItemSelected}}"
+                        on-click="{{ajaxLoad}}">
+                    <template repeat="{{page in pages}}">
+                        <paper-item hash="{{page.hash}}" noinnk>
+                            <core-icon icon="label{{route != page.hash ? '-outline' : ''}}"></core-icon>
+                            <a href="{{page.url}}">{{page.name}}</a>
+                        </paper-item>
+                    </template>
+                </core-menu>
+            </nav>
+
+            <core-toolbar tool flex>
+                <div flex>{{selectedPage.page.name}}</div>
+            </core-toolbar>
+
+            <div layout horizontal center-center fit>
+                <core-animated-pages id="pages" valueattr="hash" selected="{{route}}" transitions="slide-from-right">
+                    <template repeat="{{page in pages}}">
+                        <section hash="{{page.hash}}" layout vertical center-center>
+                            <div>Loading...</div>
+                        </section>
+                    </template>
+                </core-animated-pages>
+            </div>
+
+        </core-scaffold>
+    </template>
+</body>
+<script src="js/content-controller.js"></script>
+</html>

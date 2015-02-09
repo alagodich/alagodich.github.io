@@ -1,3 +1,0 @@
-#publish dart apps
-rm -rf dart/*
-cp -a dart-app/build/web/* dart/
