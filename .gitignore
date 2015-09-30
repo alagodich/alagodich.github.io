@@ -1,8 +1,4 @@
 /_site
 .jekyll-metadata
-/bower_components/*
-!/bower_components/semantic/dist/*
-!/bower_components/semantic/dist/semantic.min.js
-!/bower_components/jquery/dist/jquery.min.js
-
-!*/bower_components/
+/bower_components/
+/node_modules/
