@@ -1,0 +1,17 @@
+{
+  "name": "alagodich.github.io",
+  "version": "0.0.0",
+  "homepage": "https://github.com/alagodich/alagodich.github.io",
+  "authors": [
+    "Anatoly Lagodich <signinuplad@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "semantic": "semantic-ui#~2.1.4"
+  }
+}

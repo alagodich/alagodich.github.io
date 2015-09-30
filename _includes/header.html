@@ -1,0 +1,16 @@
+<div class="ui secondary vertical text menu">
+    <div class="item">
+        <div class="header">Pages</div>
+        <div class="menu">
+            <a href="/" class="item">Main</a>
+        </div>
+    </div>
+    <div class="item">
+        <div class="header">Posts</div>
+        <div class="menu">
+            {% for post in site.posts %}
+            <a href="{{ post.url }}" class="item">{{post.title}}</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
