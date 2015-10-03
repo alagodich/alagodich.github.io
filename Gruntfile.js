@@ -4,7 +4,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         copy: {
             main: {
-                src: ['jquery/dist/jquery.min.js', 'semantic/dist/semantic.min.*'],
+                src: ['jquery/dist/jquery.min.*', 'semantic/dist/semantic.min.*'],
                 dest: 'assets/',
                 expand: true,
                 flatten: true,

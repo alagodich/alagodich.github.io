@@ -26,7 +26,11 @@
             </div>
         </div>
         <!-- JavaScript -->
-        {{ page.pagejs }}
         {% include {{page.defaultjs}} %}
+        <script>
+            $(function() {
+                {{ page.onready }}
+            });
+        </script>
     </body>
 </html>
