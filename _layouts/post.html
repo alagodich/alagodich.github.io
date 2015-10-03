@@ -4,7 +4,23 @@ layout: master
 <div class="ui basic segment">
     <h2 class="ui header">
         {{ page.title }}
-        <div class="sub header">{{ page.date }}</div>
+        <div class="sub header">{{ page.date | date_to_long_string }}</div>
     </h2>
     {{ content }}
+</div>
+<!-- Pagination -->
+<div class="pagination">
+    <span>←</span>
+    {% if page.next %}
+        <a href="{{ page.next.url }}">сюда</a>
+    {% else %}
+        сюда
+    {% endif %}
+
+    {% if page.previous %}
+        <a href="{{ page.previous.url }}">туда</a>
+    {% else %}
+        туда
+    {% endif %}
+    <span>→</span>
 </div>

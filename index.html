@@ -5,10 +5,10 @@ title: Блог
 
 <!-- Posts -->
 <div class="segment">
-    <h4 class="ui header">
+    <h3 class="ui header">
         <a href="{{ post.url }}" class="content">{{ post.title }}</a>
-        <div class="sub header">{{ post.date }}</div>
-    </h4>
+        <div class="sub header">{{ post.date | date_to_long_string }}</div>
+    </h3>
     <div class="content">{{ post.content }}</div>
     <div class="ui divider"></div>
 </div>
