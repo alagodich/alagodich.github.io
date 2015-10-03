@@ -8,3 +8,9 @@ defaults:
             defaultjs: "defaultjs.html"
             defaultcss: "defaultcss.html"
             googletag: "googletag.html"
+    -
+        scope:
+            path: ""
+            type: "posts"
+        values:
+            layout: "post"
