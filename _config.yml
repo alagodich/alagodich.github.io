@@ -7,3 +7,4 @@ defaults:
             layout: "default"
             defaultjs: "defaultjs.html"
             defaultcss: "defaultcss.html"
+            googletag: "googletag.html"
