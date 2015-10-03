@@ -15,11 +15,12 @@
     </head>
     <body>
         {% include {{page.googletag}} %}
-        <div class="ui grid">
+        <div class="ui stackable mobile reversed grid">
             <div class="three wide column">
                 <!-- Fixed navbar -->
                 {% include navigation.html %}
             </div>
+            <div class="ui divider mobile only row"></div>
             <!-- Page content -->
             <div class="twelve wide column">
                 {{ content }}
