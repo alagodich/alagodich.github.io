@@ -1,15 +1,9 @@
 <div class="ui secondary vertical text menu">
     <div class="item">
-        <div class="header">Pages</div>
-        <div class="menu">
-            <a href="/" class="item">Main</a>
-        </div>
-    </div>
-    <div class="item">
-        <div class="header">Posts</div>
+        <div class="header"><a href="/">Блог</a></div>
         <div class="menu">
             {% for post in site.posts %}
-            <a href="{{ post.url }}" class="item">{{post.title}}</a>
+                <div class="item"><a href="{{ post.url }}">{{post.title}}</a></div>
             {% endfor %}
         </div>
     </div>

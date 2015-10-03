@@ -1,4 +1,47 @@
 ---
-title: Main page
+title: Блог
 ---
-<p>This is a simple blog on github pages using jekyll</p>
+{% for post in paginator.posts %}
+
+<!-- Posts -->
+<div class="segment">
+    <h4 class="ui header">
+        <a href="{{ post.url }}" class="content">{{ post.title }}</a>
+        <div class="sub header">{{ post.date }}</div>
+    </h4>
+    <div class="content">{{ post.content }}</div>
+    <div class="ui divider"></div>
+</div>
+
+{% endfor %}
+
+<!-- Pagination -->
+<div class="pagination">
+    <span>←</span>
+    {% if paginator.previous_page %}
+        <a href="{{ paginator.previous_page_path }}">сюда</a>
+    {% else %}
+        сюда
+    {% endif %}
+
+    {% if paginator.next_page %}
+        <a href="{{ paginator.next_page_path }}">туда</a>
+    {% else %}
+        туда
+    {% endif %}
+    <span>→</span>
+</div>
+
+{% if paginator.total_pages > 1 %}
+<div class="pagination">
+    {% for page in (1..paginator.total_pages) %}
+        {% if page == paginator.page %}
+            <span>{{ page }}</span>
+        {% elsif page == 1 %}
+            <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">{{ page }}</a>
+        {% else %}
+            <a href="{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}">{{ page }}</a>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}

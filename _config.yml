@@ -1,3 +1,4 @@
+paginate: 5
 defaults:
     -
         scope:
