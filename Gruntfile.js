@@ -9,6 +9,12 @@ module.exports = function(grunt) {
                 expand: true,
                 flatten: true,
                 cwd: 'bower_components'
+            },
+            fonts: {
+                src: 'default/**',
+                dest: 'assets/themes',
+                expand: true,
+                cwd: 'bower_components/semantic/dist/themes'
             }
         }
     });

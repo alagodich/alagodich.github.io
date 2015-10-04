@@ -14,5 +14,12 @@
                 <a class="item" href="{{ post.url }}">{{post.title}}</a>
             {% endif %}
         {% endfor %}
+            <div class="item">
+            {% if page.url == "/about.html" %}
+                О блоге
+            {% else %}
+                <a href="/about.html">О блоге</a>
+            {% endif %}
+        </div>
     </div>
 </div>
