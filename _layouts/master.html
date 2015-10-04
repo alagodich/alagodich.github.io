@@ -28,10 +28,12 @@
         </div>
         <!-- JavaScript -->
         {% include {{page.defaultjs}} %}
-        <script>
-            $(function() {
-                {{ page.onready }}
-            });
-        </script>
+        {% if page.onready %}
+            <script>
+                $(function() {
+                    {{ page.onready }}
+                });
+            </script>
+        {% endif %}
     </body>
 </html>
