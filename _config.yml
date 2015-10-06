@@ -1,3 +1,4 @@
+exclude: ["bower_components", "node_modules", "bower.json", "Gemfile*", "Gruntfile.js", "package.json", "app", "temp"]
 paginate: 5
 defaults:
     -
