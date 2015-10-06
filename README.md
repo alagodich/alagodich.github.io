@@ -6,6 +6,8 @@ Hosted on [github-pages](https://pages.github.com/)
 
 Css framework [Semantic UI]()
 
+Some components created with [React](https://facebook.github.io/react/)
+
 ### TODOs
 * Добавить карусель для картинок
 * Поменять навигацию
