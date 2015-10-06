@@ -4,7 +4,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         copy: {
             bower: {
-                src: ['jquery/dist/jquery.min.*', 'semantic/dist/semantic.min.*'],
+                src: ['jquery/dist/jquery.min.map', 'semantic/dist/semantic.min.css'],
                 dest: 'assets/',
                 expand: true,
                 flatten: true,
@@ -15,14 +15,21 @@ module.exports = function(grunt) {
                 dest: 'assets/themes',
                 expand: true,
                 cwd: 'bower_components/semantic/dist/themes'
-            },
-            npm: {
-                src: ['react/dist/react.*'],
-                dest: 'assets/',
-                expand: true,
-                flatten: true,
-                cwd: 'node_modules'
             }
+        },
+        concat: {
+            options: {
+                separator: "\n;",
+                stripBanners: true
+            },
+            dist: {
+                src: [
+                    'bower_components/jquery/dist/jquery.min.js',
+                    'bower_components/semantic/dist/semantic.min.js',
+                    'node_modules/react/dist/react.min.js',
+                ],
+                dest: 'assets/vendor.min.js',
+            },
         },
         babel: {
             options: {
@@ -34,9 +41,16 @@ module.exports = function(grunt) {
                     "expand": true,
                     "cwd": "app/",
                     "src": ["*.js"],
-                    "dest": "temp/build",
+                    "dest": "app/build",
                     "ext": ".js"
                 }]
+            }
+        },
+        browserify: {
+            dist: {
+                files: {
+                    'js/app.js': ['app/build/app.js']
+                }
             }
         },
         uglify: {
@@ -45,30 +59,32 @@ module.exports = function(grunt) {
                 dest: 'js/app.min.js'
             }
         },
+        exec: {
+            // Touch file to make jekyll rebuild the site
+            touch: {
+                stdout: true,
+                command: 'touch -am _data/params.json'
+            }
+        },
         watch: {
             less: {
                 files: ['app/*.js'],
-                tasks: ['compile'],
+                tasks: ['compile', 'exec:touch'],
                 options: {
                     spawn: false
-                }
-            }
-        },
-        browserify: {
-            dist: {
-                files: {
-                    'js/app.js': ['temp/build/app.js']
                 }
             }
         },
     });
 
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-babel');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-exec');
     grunt.loadNpmTasks('grunt-browserify');
 
-    grunt.registerTask('default', ['copy']);
+    grunt.registerTask('default', ['copy', 'concat']);
     grunt.registerTask('compile', ['babel', 'browserify', 'uglify']);
 };

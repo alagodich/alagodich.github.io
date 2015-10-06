@@ -1,12 +1,22 @@
 'use strict';
 
+var Youtube = require('./Youtube');
 var Image = require('./Image');
 
-// Render all images
-$('.react-image').each(function() {
-    var url = $(this).attr('data-url');
-    if (typeof url === 'undefined') {
+// Render youtube frames
+$('.post__video').each(function() {
+    var id = $(this).attr('data-id');
+    if (typeof id === 'undefined') {
         return;
     }
-    React.render(<Image url={url}></Image>, this);
+    React.render(<Youtube id={id}></Youtube>, this);
+});
+
+// Render images
+$('.post__image').each(function() {
+    var id = $(this).attr('data-id');
+    if (typeof id === 'undefined') {
+        return;
+    }
+    React.render(<Image id={id}></Image>, this);
 });

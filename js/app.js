@@ -5,11 +5,8 @@ var Image = React.createClass({
     displayName: "Image",
 
     render: function render() {
-        return React.createElement(
-            "div",
-            { className: "react-image" },
-            React.createElement("div", { className: "ui embed", "data-url": this.props.url })
-        );
+        var src = 'https://lh3.googleusercontent.com/' + this.props.id;
+        return React.createElement("img", { className: "ui image", src: src });
     }
 });
 
@@ -18,14 +15,44 @@ module.exports = Image;
 },{}],2:[function(require,module,exports){
 'use strict';
 
-var Image = require('./Image');
+var Youtube = React.createClass({
+    displayName: 'Youtube',
 
-$('.react-image').each(function () {
-    var url = $(this).attr('data-url');
-    if (typeof url === 'undefined') {
-        return;
+    componentDidMount: function componentDidMount() {
+        $(this.refs.youtubeContainer.getDOMNode()).embed({
+            id: this.props.id,
+            source: 'youtube',
+            placeholder: '',
+            autoplay: false
+        });
+    },
+    render: function render() {
+        return React.createElement('div', { ref: 'youtubeContainer', className: 'ui embed' });
     }
-    React.render(React.createElement(Image, { url: url }), this);
 });
 
-},{"./Image":1}]},{},[2]);
+module.exports = Youtube;
+
+},{}],3:[function(require,module,exports){
+'use strict';
+
+var Youtube = require('./Youtube');
+var Image = require('./Image');
+
+$('.post__video').each(function () {
+    var id = $(this).attr('data-id');
+    if (typeof id === 'undefined') {
+        return;
+    }
+    React.render(React.createElement(Youtube, { id: id }), this);
+});
+
+$('.post__image').each(function () {
+    var id = $(this).attr('data-id');
+    if (typeof id === 'undefined') {
+        return;
+    }
+    React.render(React.createElement(Image, { id: id }), this);
+});
+
+},{"./Image":1,"./Youtube":2}]},{},[3]);
