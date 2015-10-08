@@ -16,7 +16,7 @@ title: Блог
 {% endfor %}
 
 <!-- Pagination -->
-<div class="pagination">
+<div class="pagination--big">
     <span>←</span>
     {% if paginator.previous_page %}
         <a href="{{ paginator.previous_page_path }}">сюда</a>
@@ -33,7 +33,7 @@ title: Блог
 </div>
 
 {% if paginator.total_pages > 1 %}
-<div class="pagination">
+<div class="pagination--big">
     {% for page in (1..paginator.total_pages) %}
         {% if page == paginator.page %}
             <span>{{ page }}</span>

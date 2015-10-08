@@ -26,10 +26,10 @@ module.exports = function(grunt) {
                 src: [
                     'bower_components/jquery/dist/jquery.min.js',
                     'bower_components/semantic/dist/semantic.min.js',
-                    'node_modules/react/dist/react.min.js',
+                    'node_modules/react/dist/react.min.js'
                 ],
-                dest: 'assets/vendor.min.js',
-            },
+                dest: 'assets/vendor.min.js'
+            }
         },
         babel: {
             options: {
@@ -49,14 +49,14 @@ module.exports = function(grunt) {
         browserify: {
             dist: {
                 files: {
-                    'js/app.js': ['app/build/app.js']
+                    'assets/app.js': ['app/build/app.js']
                 }
             }
         },
         uglify: {
             build: {
-                src: 'js/app.js',
-                dest: 'js/app.min.js'
+                src: 'assets/app.js',
+                dest: 'assets/app.min.js'
             }
         },
         exec: {
@@ -67,14 +67,24 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            less: {
-                files: ['app/*.js'],
+            assets: {
+                files: ['app/*.js', 'less/*.less'],
                 tasks: ['compile', 'exec:touch'],
                 options: {
                     spawn: false
                 }
             }
         },
+        less: {
+            main: {
+                options: {
+                    compress: true
+                },
+                files: {
+                    "assets/style.css": "less/style.less"
+                }
+            }
+        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-copy');
@@ -84,7 +94,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-exec');
     grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
     grunt.registerTask('default', ['copy', 'concat']);
-    grunt.registerTask('compile', ['babel', 'browserify', 'uglify']);
+    grunt.registerTask('compile', ['babel', 'browserify', 'uglify', 'less']);
 };

@@ -2,9 +2,9 @@
     <div class="ui list">
         <div class="item">
             {% if page.url == "/index.html" %}
-                <span class="header">Главная</span>
+                <span class="item header">Главная</span>
             {% else %}
-                <a href="/" class="header">Главная</a>
+                <a href="/" class="item header">Главная</a>
             {% endif %}
         </div>
         {% for post in site.posts %}
@@ -14,11 +14,11 @@
                 <a class="item" href="{{ post.url }}">{{post.title}}</a>
             {% endif %}
         {% endfor %}
-            <div class="item">
+        <div class="item">
             {% if page.url == "/about.html" %}
-                О блоге
+                <span class="header"><i class="pin icon"></i>О блоге</span>
             {% else %}
-                <a href="/about.html">О блоге</a>
+                <a class="header" href="/about.html"><i class="pin icon"></i>О блоге</a>
             {% endif %}
         </div>
     </div>
