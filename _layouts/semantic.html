@@ -13,65 +13,18 @@
     <!-- CSS -->
     {% include {{page.defaultcss}} %}
     {{ page.pagecss }}
-
-    <style type="text/css">
-        body {
-            background-color: #FFFFFF;
-        }
-
-        .ui.menu .item img.logo {
-            margin-right: 1.5em;
-        }
-
-        .main.container {
-            margin-top: 7em;
-        }
-
-        .wireframe {
-            margin-top: 2em;
-        }
-    </style>
-
 </head>
 <body>
 
 {% include {{page.googletag}} %}
-<div class="ui inverted menu">
-    <div class="ui container">
-        <div href="#" class="header item">
-            <img class="logo" src="assets/images/logo.png">
-            Project Name
-        </div>
-        <a href="#" class="item">Home</a>
-        <a href="#" class="ui simple dropdown item">
-            Dropdown <i class="dropdown icon"></i>
-
-            <div class="menu">
-                <div class="item">Link Item</div>
-                <div class="item">Link Item</div>
-                <div class="divider"></div>
-                <div class="header">Header Item</div>
-                <div class="item">
-                    <i class="dropdown icon"></i>
-                    Sub Menu
-                    <div class="menu">
-                        <div class="item">Link Item</div>
-                        <div class="item">Link Item</div>
-                    </div>
-                </div>
-                <div class="item">Link Item</div>
-            </div>
-        </a>
-    </div>
+<div class="ui container">
+    {% include navigation.html %}
 </div>
 
-<div class="ui main text container">
+<div class="ui main container">
     {{ content }}
 </div>
 
-<div class="ui inverted vertical footer segment">
-    Footer
-</div>
 <!-- JavaScript -->
 {% include {{page.defaultjs}} %}
 {% if page.onready %}

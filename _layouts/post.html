@@ -1,5 +1,5 @@
 ---
-layout: master
+layout: semantic
 ---
 <div class="ui basic segment">
     <h2 class="ui header">
@@ -7,20 +7,23 @@ layout: master
         <div class="sub header">{{ page.date | date_to_long_string }}</div>
     </h2>
     {{ content }}
-</div>
-<!-- Pagination -->
-<div class="pagination--big">
-    <span>←</span>
-    {% if page.next %}
-        <a href="{{ page.next.url }}">сюда</a>
-    {% else %}
-        сюда
-    {% endif %}
 
-    {% if page.previous %}
+    <div class="ui divider"></div>
+    <!-- Pagination -->
+    <div class="pagination--big">
+        <span>←</span>
+        {% if page.next %}
+        <a href="{{ page.next.url }}">сюда</a>
+        {% else %}
+        сюда
+        {% endif %}
+
+        {% if page.previous %}
         <a href="{{ page.previous.url }}">туда</a>
-    {% else %}
+        {% else %}
         туда
-    {% endif %}
-    <span>→</span>
+        {% endif %}
+        <span>→</span>
+    </div>
+    <a href="/posts.html">К списку постов</a>
 </div>

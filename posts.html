@@ -1,0 +1,12 @@
+---
+title: Список постов
+---
+<div class="ui list">
+    {% for post in site.posts %}
+    {% if post.url == page.url %}
+    <span class="active item">{{ post.title }}</span>
+    {% else %}
+    <a class="item" href="{{ post.url }}">{{post.title}}</a>
+    {% endif %}
+    {% endfor %}
+</div>
