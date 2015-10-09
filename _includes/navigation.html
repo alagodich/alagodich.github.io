@@ -2,9 +2,9 @@
     <div class="ui list">
         <div class="item">
             {% if page.url == "/index.html" %}
-                <span class="item header">Главная</span>
+                <span class="header">Главная</span>
             {% else %}
-                <a href="/" class="item header">Главная</a>
+                <a href="/" class="header">Главная</a>
             {% endif %}
         </div>
         {% for post in site.posts %}
