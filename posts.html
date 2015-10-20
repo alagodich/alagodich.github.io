@@ -1,12 +1,13 @@
 ---
 title: Список постов
 ---
-<div class="ui list">
+<div class="ui feed">
     {% for post in site.posts %}
-    {% if post.url == page.url %}
-    <span class="active item">{{ post.title }}</span>
-    {% else %}
-    <a class="item" href="{{ post.url }}">{{post.title}}</a>
-    {% endif %}
+        <div class="event">
+            <div class="content">
+                <a href="{{ post.url }}">{{post.title}}</a>
+                <span class="date">{{ post.date | date_to_long_string}}</span>
+            </div>
+        </div>
     {% endfor %}
 </div>

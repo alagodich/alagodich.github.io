@@ -3,49 +3,22 @@ title: About this blog
 ---
 <div class="ui stackable grid">
     <div class="five wide column">
-        <div class="ui card">
-            <div class="image">
-                <img src="/images/avatar.jpeg" class="ui image">
-            </div>
-            <div class="content">
-                <div class="header">
-                    Анатолий Лагодич
-                </div>
-                <div class="description">
-                    <div class="ui list">
-                        <div class="item">
-                            <i class="users icon"></i>
-                            <div class="content">
-                                Northern Light
-                            </div>
-                        </div>
-                        <div class="item">
-                            <i class="marker icon"></i>
-                            <div class="content">
-                                Saint-Petersburg, Barbados
-                            </div>
-                        </div>
-                        <div class="item">
-                            <i class="google plus icon"></i>
-                            <div class="content">
-                                <a href="https://plus.google.com/+AnatolyLagodich">Google+</a>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <i class="facebook icon"></i>
-                            <div class="content">
-                                <a href="https://www.facebook.com/anatoly.lagodich">Facebook</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="blog__profile"
+             data-name="Анатолий Лагодич"
+             data-avatar="/images/avatar.jpeg"
+             data-description='[
+                {"icon": "users", "content": "Northern Light"},
+                {"icon": "marker", "content": "Saint-Petersburg, Barbados"},
+                {"icon": "google plus", "content": {"href": "https://plus.google.com/+AnatolyLagodich", "text": "Google+"}},
+                {"icon": "facebook", "content": {"href": "https://www.facebook.com/anatoly.lagodich", "text": "Facebook"}}
+            ]'>
         </div>
     </div>
     <div class="eleven wide column">
         <div class="ui large list">
             <div class="item">
                 <i class="github icon"></i>
+
                 <div class="content">
                     <div class="header">
                         Блог написан на <a href="https://jekyllrb.com/" target="_blank">jekyll</a>
@@ -62,6 +35,7 @@ title: About this blog
             </div>
             <div class="item">
                 <i class="html5 icon"></i>
+
                 <div class="content">
                     <div class="header">
                         Css framework <a href="http://semantic-ui.com/" target="_blank">Semantic UI</a>
@@ -70,14 +44,16 @@ title: About this blog
             </div>
             <div class="item">
                 <i class="facebook icon"></i>
+
                 <div class="content">
                     <div class="header">
-                        JS framework <a href="https://facebook.github.io/react/" target="_blank">React</a>
+                        JS framework <a href="https://facebook.github.io/react" target="_blank">React</a>
                     </div>
                 </div>
             </div>
             <div class="item">
                 <i class="fork icon"></i>
+
                 <div class="content">
                     <div class="header">
                         Исходники <a href="https://github.com/alagodich/alagodich.github.io" target="_blank">тут</a>
@@ -86,6 +62,7 @@ title: About this blog
             </div>
             <div class="item">
                 <i class="photo icon"></i>
+
                 <div class="content">
                     <div class="header">
                         Фото хостятся на google photos, видео на youtube
@@ -93,27 +70,11 @@ title: About this blog
                 </div>
             </div>
         </div>
-
-        <div class="ui list">
-            <div class="item header">TODOs</div>
-            <div class="item">
-                <i class="settings icon"></i>
-                <div class="content">
-                    Добавить карусель для картинок
-                </div>
-            </div>
-            <div class="item">
-                <i class="settings icon"></i>
-                <div class="content">
-                    Поменять навигацию
-                </div>
-            </div>
-            <div class="item">
-                <i class="settings icon"></i>
-                <div class="content">
-                    Добавить тултип с картой для картинок
-                </div>
-            </div>
-        </div>
+        <TODOs class="blog__todos" data-items='[
+            "Добавить карусель для картинок",
+            "Поменять навигацию",
+            "Добавить тултип с картой для картинок",
+            "Обернуть сложные элементы в react компоненты"
+        ]'></TODOs>
     </div>
 </div>

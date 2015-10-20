@@ -15,6 +15,110 @@ module.exports = Image;
 },{}],2:[function(require,module,exports){
 'use strict';
 
+var Profile = React.createClass({
+    displayName: 'Profile',
+
+    render: function render() {
+        var items = [];
+        this.props.description.forEach(function (params) {
+            var iconClass = params.icon + ' icon',
+                content;
+            if (typeof params.content.href !== 'undefined') {
+                content = React.createElement(
+                    'a',
+                    { href: params.content.href, target: '_blank' },
+                    params.content.text
+                );
+            } else {
+                content = params.content;
+            }
+            items.push(React.createElement(
+                'div',
+                { className: 'item' },
+                React.createElement('i', { className: iconClass }),
+                React.createElement(
+                    'div',
+                    { className: 'content' },
+                    content
+                )
+            ));
+        });
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                'div',
+                { className: 'ui card' },
+                React.createElement(
+                    'div',
+                    { className: 'ui image' },
+                    React.createElement('img', { src: this.props.avatar, className: 'ui image' })
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'content' },
+                    React.createElement(
+                        'div',
+                        { className: 'header' },
+                        this.props.name
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'description' },
+                        React.createElement(
+                            'div',
+                            { className: 'ui list' },
+                            items
+                        )
+                    )
+                )
+            )
+        );
+    }
+});
+
+module.exports = Profile;
+
+},{}],3:[function(require,module,exports){
+"use strict";
+
+var TODOs = React.createClass({
+    displayName: "TODOs",
+
+    render: function render() {
+        var header = 'TODOs',
+            items = [];
+
+        this.props.items.forEach(function (item) {
+            items.push(React.createElement(
+                "div",
+                { className: "item" },
+                React.createElement("i", { className: "settings icon" }),
+                React.createElement(
+                    "div",
+                    { className: "content" },
+                    item
+                )
+            ));
+        });
+        return React.createElement(
+            "div",
+            { className: "ui list" },
+            React.createElement(
+                "div",
+                { className: "item header" },
+                header
+            ),
+            items
+        );
+    }
+});
+
+module.exports = TODOs;
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
 var Youtube = React.createClass({
     displayName: 'Youtube',
 
@@ -33,14 +137,16 @@ var Youtube = React.createClass({
 
 module.exports = Youtube;
 
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
-var Youtube = require('./Youtube');
-var Image = require('./Image');
+var Youtube = require('./Youtube'),
+    Image = require('./Image'),
+    Profile = require('./Profile'),
+    TODOs = require('./TODOs');
 
 $('.post__video').each(function () {
-    var id = $(this).attr('data-id');
+    var id = $(this).data('id');
     if (typeof id === 'undefined') {
         return;
     }
@@ -48,11 +154,24 @@ $('.post__video').each(function () {
 });
 
 $('.post__image').each(function () {
-    var id = $(this).attr('data-id');
+    var id = $(this).data('id');
     if (typeof id === 'undefined') {
         return;
     }
     React.render(React.createElement(Image, { id: id }), this);
 });
 
-},{"./Image":1,"./Youtube":2}]},{},[3]);
+$('.blog__profile').each(function () {
+    var self = $(this);
+    var name = self.data('name');
+    var avatar = self.data('avatar');
+    var description = self.data('description');
+    React.render(React.createElement(Profile, { name: name, avatar: avatar, description: description }), this);
+});
+
+$('TODOs').each(function () {
+    var items = $(this).data('items');
+    React.render(React.createElement(TODOs, { items: items }), this);
+});
+
+},{"./Image":1,"./Profile":2,"./TODOs":3,"./Youtube":4}]},{},[5]);
