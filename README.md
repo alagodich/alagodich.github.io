@@ -18,5 +18,5 @@ Some components created with [React](https://facebook.github.io/react/)
 * `npm install`
 * `bower install`
 * `grunt`
-* to run locally `bundle exec jekyll serve`
+* to run locally `bundle exec jekyll serve --draft`
 * to watch and compile /app/ files `grunt watch`
