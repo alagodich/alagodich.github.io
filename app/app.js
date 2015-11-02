@@ -37,3 +37,7 @@ $('TODOs').each(function () {
     var items = $(this).data('items');
     React.render(<TODOs items={items}></TODOs>, this);
 });
+
+$('.popup').popup({
+    transition: 'vertical flip'
+});

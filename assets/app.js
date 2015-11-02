@@ -174,4 +174,8 @@ $('TODOs').each(function () {
     React.render(React.createElement(TODOs, { items: items }), this);
 });
 
+$('.popup').popup({
+    transition: 'vertical flip'
+});
+
 },{"./Image":1,"./Profile":2,"./TODOs":3,"./Youtube":4}]},{},[5]);
