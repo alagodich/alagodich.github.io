@@ -16,24 +16,29 @@
 </head>
 <body>
 
-{% include {{page.googletag}} %}
-<div class="ui container">
-    {% include navigation.html %}
-</div>
+    {% include {{page.googletag}} %}
+    <div class="ui container">
+        {% include navigation.html %}
+    </div>
 
-<div class="ui main container">
-    {{ content }}
-</div>
+    <div class="ui main container">
+        {{ content }}
+    </div>
 
-<!-- JavaScript -->
-{% include {{page.defaultjs}} %}
-{% if page.onready %}
-<script>
-    $(function() {
-        {{ page.onready }}
-    });
-</script>
-{% endif %}
+    <!-- JavaScript -->
+    {% include {{page.defaultjs}} %}
+    {% if page.onready %}
+    <script>
+        $(function() {
+            {{ page.onready }}
+        });
+    </script>
+    {% endif %}
+
+    {% if page.js %}
+        <!-- Page specific JavaScript -->
+        {% include {{page.js}} %}
+    {% endif %}
 </body>
 
 </html>
