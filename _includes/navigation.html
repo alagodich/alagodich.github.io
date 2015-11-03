@@ -1,23 +1,9 @@
-<div class="ui text menu">
-    <div class="item">
-        {% if page.url == "/index.html" %}
-        <span>Лента</span>
-        {% else %}
-        <a href="/">Лента</a>
-        {% endif %}
-    </div>
-    <div class="item">
-        {% if page.url == "/posts.html" %}
-        <span class="header">Список постов</span>
-        {% else %}
-        <a href="/posts.html" class="header">Список постов</a>
-        {% endif %}
-    </div>
-    <div class="item">
-        {% if page.url == "/about.html" %}
-        <span class="header">О блоге</span>
-        {% else %}
-        <a class="header" href="/about.html">О блоге</a>
-        {% endif %}
-    </div>
-</div>
+<div class="menu--react"
+    data-items='[
+        {"url": "/index.html", "title": "Лента"},
+        {"url": "/posts.html", "title": "Список постов"},
+        {"url": "/about.html", "title": "О Блоге"},
+        {"url": "/map.html", "title": "Карта"}
+    ]'
+    data-current="{{ page.url }}"
+    ></div>

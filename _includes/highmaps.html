@@ -15,10 +15,12 @@
                 title: {
                     text: 'Здесь был я'
                 },
+                subtitle: {
+                    text: 'Страны и города которые я посетил'
+                },
                 legend: {
                     enabled: false
                 },
-                // TODO Enable it later
                 mapNavigation: {
                     enabled: true,
                     buttonOptions: {
@@ -36,7 +38,7 @@
                 }, {
                     type: 'mapbubble',
                     mapData: mapData,
-                    name: 'Проживание',
+                    name: 'Не отпуск',
                     joinBy: ['iso-a2', 'code'],
                     data: living,
                     minSize: 20,

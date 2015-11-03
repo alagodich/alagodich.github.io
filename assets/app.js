@@ -13,6 +13,60 @@ var Image = React.createClass({
 module.exports = Image;
 
 },{}],2:[function(require,module,exports){
+"use strict";
+
+var MenuItem = require('./MenuItem'),
+    Menu = React.createClass({
+    displayName: "Menu",
+
+    render: function render() {
+        var items = [],
+            current = this.props.current;
+        this.props.items.forEach(function (item) {
+            items.push(React.createElement(MenuItem, { title: item.title, url: item.url, current: current }));
+        });
+        return React.createElement(
+            "div",
+            { className: "ui text menu" },
+            items
+        );
+    }
+});
+
+module.exports = Menu;
+
+},{"./MenuItem":3}],3:[function(require,module,exports){
+"use strict";
+
+var MenuItem = React.createClass({
+    displayName: "MenuItem",
+
+    render: function render() {
+        var item;
+        if (this.props.current === this.props.url) {
+            item = React.createElement(
+                "span",
+                { className: "header" },
+                this.props.title
+            );
+        } else {
+            item = React.createElement(
+                "a",
+                { className: "header", href: this.props.url },
+                this.props.title
+            );
+        }
+        return React.createElement(
+            "div",
+            { className: "item" },
+            item
+        );
+    }
+});
+
+module.exports = MenuItem;
+
+},{}],4:[function(require,module,exports){
 'use strict';
 
 var Profile = React.createClass({
@@ -79,7 +133,7 @@ var Profile = React.createClass({
 
 module.exports = Profile;
 
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 var TODOs = React.createClass({
@@ -116,7 +170,7 @@ var TODOs = React.createClass({
 
 module.exports = TODOs;
 
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var Youtube = React.createClass({
@@ -137,13 +191,14 @@ var Youtube = React.createClass({
 
 module.exports = Youtube;
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var Youtube = require('./Youtube'),
     Image = require('./Image'),
     Profile = require('./Profile'),
-    TODOs = require('./TODOs');
+    TODOs = require('./TODOs'),
+    Menu = require('./Menu');
 
 $('.post__video').each(function () {
     var id = $(this).data('id');
@@ -162,15 +217,22 @@ $('.post__image').each(function () {
 });
 
 $('.blog__profile').each(function () {
-    var self = $(this);
-    var name = self.data('name');
-    var avatar = self.data('avatar');
-    var description = self.data('description');
+    var self = $(this),
+        name = self.data('name'),
+        avatar = self.data('avatar'),
+        description = self.data('description');
+
     React.render(React.createElement(Profile, { name: name, avatar: avatar, description: description }), this);
+});
+
+$('.menu--react').each(function () {
+    var self = $(this);
+    React.render(React.createElement(Menu, { current: self.data('current'), items: self.data('items') }), this);
 });
 
 $('TODOs').each(function () {
     var items = $(this).data('items');
+
     React.render(React.createElement(TODOs, { items: items }), this);
 });
 
@@ -178,4 +240,4 @@ $('.popup').popup({
     transition: 'vertical flip'
 });
 
-},{"./Image":1,"./Profile":2,"./TODOs":3,"./Youtube":4}]},{},[5]);
+},{"./Image":1,"./Menu":2,"./Profile":4,"./TODOs":5,"./Youtube":6}]},{},[7]);

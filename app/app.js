@@ -3,7 +3,8 @@
 var Youtube = require('./Youtube'),
     Image = require('./Image'),
     Profile = require('./Profile'),
-    TODOs = require('./TODOs');
+    TODOs = require('./TODOs'),
+    Menu = require('./Menu');
 
 // Render youtube frames
 $('.post__video').each(function () {
@@ -25,19 +26,28 @@ $('.post__image').each(function () {
 
 // Render profile
 $('.blog__profile').each(function () {
-    var self = $(this);
-    var name = self.data('name');
-    var avatar = self.data('avatar');
-    var description = self.data('description');
+    var self = $(this),
+        name = self.data('name'),
+        avatar = self.data('avatar'),
+        description = self.data('description');
+
     React.render(<Profile name={name} avatar={avatar} description={description}></Profile>, this);
+});
+
+// Render menu
+$('.menu--react').each(function () {
+    var self = $(this);
+    React.render(<Menu current={self.data('current')} items={self.data('items')}></Menu>, this);
 });
 
 // Render todos
 $('TODOs').each(function () {
     var items = $(this).data('items');
+
     React.render(<TODOs items={items}></TODOs>, this);
 });
 
+// Init semantic popup
 $('.popup').popup({
     transition: 'vertical flip'
 });
