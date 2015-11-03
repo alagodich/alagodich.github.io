@@ -4,28 +4,28 @@ var ReactMap = React.createClass({
     },
     getDefaultSettings() {
         return {
-                chart: {
-                    borderWidth: 1
-                },
-                title: {
-                    text: 'Здесь был я'
-                },
-                subtitle: {
-                    text: 'Страны и города которые я посетил'
-                },
-                legend: {
-                    enabled: false
-                },
-                mapNavigation: {
-                    enabled: true,
-                    buttonOptions: {
-                        verticalAlign: 'bottom'
-                    }
-                },
-                credits: {
-                    enabled: false
+            chart: {
+                borderWidth: 1
+            },
+            title: {
+                text: 'Здесь был я'
+            },
+            subtitle: {
+                text: 'Страны и города которые я посетил'
+            },
+            legend: {
+                enabled: false
+            },
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'bottom'
                 }
+            },
+            credits: {
+                enabled: false
             }
+        }
     },
     renderMap(data) {
         var living = data.living,
