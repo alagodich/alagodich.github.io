@@ -134,6 +134,93 @@ var Profile = React.createClass({
 module.exports = Profile;
 
 },{}],5:[function(require,module,exports){
+'use strict';
+
+var ReactMap = React.createClass({
+    displayName: 'ReactMap',
+
+    getContainer: function getContainer() {
+        return this.refs.mapContainer.getDOMNode();
+    },
+    getDefaultSettings: function getDefaultSettings() {
+        return {
+            chart: {
+                borderWidth: 1
+            },
+            title: {
+                text: 'Здесь был я'
+            },
+            subtitle: {
+                text: 'Страны и города которые я посетил'
+            },
+            legend: {
+                enabled: false
+            },
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'bottom'
+                }
+            },
+            credits: {
+                enabled: false
+            }
+        };
+    },
+    renderMap: function renderMap(data) {
+        var living = data.living,
+            vacation = data.vacation,
+            mapData = Highcharts.geojson(Highcharts.maps['custom/world']),
+            settings = this.getDefaultSettings(),
+            container = this.getContainer();
+
+        settings.series = [{
+            name: 'Countries',
+            mapData: mapData,
+            color: ['#E0E0E0'],
+            enableMouseTracking: false
+        }, {
+            type: 'mapbubble',
+            mapData: mapData,
+            name: 'Не отпуск',
+            joinBy: ['iso-a2', 'code'],
+            data: living,
+            minSize: 20,
+            maxSize: '12%',
+            tooltip: {
+                pointFormat: '{point.city}'
+            }
+        }, {
+            type: 'mapbubble',
+            color: '#00CCCC',
+            mapData: mapData,
+            name: 'Отпуск',
+            joinBy: ['iso-a2', 'code'],
+            data: vacation,
+            minSize: 10,
+            maxSize: '12%',
+            tooltip: {
+                pointFormat: '{point.city}'
+            }
+        }];
+
+        $(container).highcharts('Map', settings);
+    },
+    componentDidMount: function componentDidMount() {
+        var renderMap = this.renderMap;
+
+        $.getJSON('assets/map/places.json', function (data) {
+            renderMap(data);
+        });
+    },
+    render: function render() {
+        return React.createElement('div', { ref: 'mapContainer', className: 'map' });
+    }
+});
+
+module.exports = ReactMap;
+
+},{}],6:[function(require,module,exports){
 "use strict";
 
 var TODOs = React.createClass({
@@ -170,7 +257,7 @@ var TODOs = React.createClass({
 
 module.exports = TODOs;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var Youtube = React.createClass({
@@ -191,14 +278,15 @@ var Youtube = React.createClass({
 
 module.exports = Youtube;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var Youtube = require('./Youtube'),
     Image = require('./Image'),
     Profile = require('./Profile'),
     TODOs = require('./TODOs'),
-    Menu = require('./Menu');
+    Menu = require('./Menu'),
+    ReactMap = require('./ReactMap');
 
 $('.post__video').each(function () {
     var id = $(this).data('id');
@@ -221,7 +309,6 @@ $('.blog__profile').each(function () {
         name = self.data('name'),
         avatar = self.data('avatar'),
         description = self.data('description');
-
     React.render(React.createElement(Profile, { name: name, avatar: avatar, description: description }), this);
 });
 
@@ -232,12 +319,13 @@ $('.menu--react').each(function () {
 
 $('TODOs').each(function () {
     var items = $(this).data('items');
-
     React.render(React.createElement(TODOs, { items: items }), this);
 });
+
+React.render(React.createElement(ReactMap, null), document.getElementById('mapContainer'));
 
 $('.popup').popup({
     transition: 'vertical flip'
 });
 
-},{"./Image":1,"./Menu":2,"./Profile":4,"./TODOs":5,"./Youtube":6}]},{},[7]);
+},{"./Image":1,"./Menu":2,"./Profile":4,"./ReactMap":5,"./TODOs":6,"./Youtube":7}]},{},[8]);

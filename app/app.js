@@ -4,7 +4,8 @@ var Youtube = require('./Youtube'),
     Image = require('./Image'),
     Profile = require('./Profile'),
     TODOs = require('./TODOs'),
-    Menu = require('./Menu');
+    Menu = require('./Menu'),
+    ReactMap = require('./ReactMap');
 
 // Render youtube frames
 $('.post__video').each(function () {
@@ -30,7 +31,6 @@ $('.blog__profile').each(function () {
         name = self.data('name'),
         avatar = self.data('avatar'),
         description = self.data('description');
-
     React.render(<Profile name={name} avatar={avatar} description={description}></Profile>, this);
 });
 
@@ -43,9 +43,11 @@ $('.menu--react').each(function () {
 // Render todos
 $('TODOs').each(function () {
     var items = $(this).data('items');
-
     React.render(<TODOs items={items}></TODOs>, this);
 });
+
+// Render map
+React.render(<ReactMap></ReactMap>, document.getElementById('mapContainer'));
 
 // Init semantic popup
 $('.popup').popup({
