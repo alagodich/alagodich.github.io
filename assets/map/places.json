@@ -1,0 +1,61 @@
+{
+    "living": [
+        {
+            "city": "Ufa, Saint-Petersburg, Moscow",
+            "code": "RU",
+            "z": 100
+        },
+        {
+            "city": "Barbados",
+            "code": "BB",
+            "z": 50
+        }
+    ],
+    "vacation": [
+        {
+            "city": "London",
+            "code": "GB",
+            "z": 50
+        },
+        {
+            "city": "Paris",
+            "code": "FR",
+            "z": 50
+        },
+        {
+            "city": "Stockholm, Herrang",
+            "code": "SE",
+            "z": 60
+        },
+        {
+            "city": "Rio de Janeiro, Foz de Iguacu",
+            "code": "BR",
+            "z": 60
+        },
+        {
+            "city": "New York, Boston, Miami",
+            "code": "US",
+            "z": 70
+        },
+        {
+            "city": "Vilnus",
+            "code": "LT",
+            "z": 50
+        },
+        {
+            "city": "Barcelona",
+            "code": "ES",
+            "z": 50
+        },
+        {
+            "city": "Helsinki",
+            "code": "FI",
+            "z": 50
+        },
+        {
+            "city": "Kologne",
+            "code": "DE",
+            "z": 50
+        }
+    ]
+}
