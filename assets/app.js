@@ -164,12 +164,21 @@ var ReactMap = React.createClass({
             },
             credits: {
                 enabled: false
+            },
+
+            colorAxis: {
+                min: 1,
+                type: 'logarithmic',
+                minColor: '#EEEEFF',
+                maxColor: '#000022',
+                stops: [[0, '#EFEFFF'], [50, '#4444FF'], [100, '#000022']]
             }
         };
     },
     renderMap: function renderMap(data) {
         var living = data.living,
             vacation = data.vacation,
+            all = living.concat(vacation),
             mapData = Highcharts.geojson(Highcharts.maps['custom/world']),
             settings = this.getDefaultSettings(),
             container = this.getContainer();
@@ -180,27 +189,19 @@ var ReactMap = React.createClass({
             color: ['#E0E0E0'],
             enableMouseTracking: false
         }, {
-            type: 'mapbubble',
             mapData: mapData,
             name: 'Не отпуск',
             joinBy: ['iso-a2', 'code'],
-            data: living,
+            data: all,
             minSize: 20,
             maxSize: '12%',
             tooltip: {
                 pointFormat: '{point.city}'
-            }
-        }, {
-            type: 'mapbubble',
-            color: '#00CCCC',
-            mapData: mapData,
-            name: 'Отпуск',
-            joinBy: ['iso-a2', 'code'],
-            data: vacation,
-            minSize: 10,
-            maxSize: '12%',
-            tooltip: {
-                pointFormat: '{point.city}'
+            },
+            dataLabels: {
+                enabled: true,
+
+                format: '{point.code}'
             }
         }];
 
