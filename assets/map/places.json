@@ -1,61 +1,170 @@
-{
-    "living": [
-        {
-            "city": "Ufa, Saint-Petersburg, Moscow",
-            "code": "RU",
-            "z": 1000000
-        },
-        {
-            "city": "Barbados",
-            "code": "BB",
-            "z": 50
-        }
-    ],
-    "vacation": [
-        {
-            "city": "London",
-            "code": "GB",
-            "z": 50
-        },
-        {
-            "city": "Paris",
-            "code": "FR",
-            "z": 50
-        },
-        {
-            "city": "Stockholm, Herrang",
-            "code": "SE",
-            "z": 60
-        },
-        {
-            "city": "Rio de Janeiro, Foz de Iguacu",
-            "code": "BR",
-            "z": 60
-        },
-        {
-            "city": "New York, Boston, Miami",
-            "code": "US",
-            "z": 70
-        },
-        {
-            "city": "Vilnus",
-            "code": "LT",
-            "z": 50
-        },
-        {
-            "city": "Barcelona",
-            "code": "ES",
-            "z": 50
-        },
-        {
-            "city": "Helsinki",
-            "code": "FI",
-            "z": 50
-        },
-        {
-            "city": "Kologne",
-            "code": "DE",
-            "z": 50
-        }
-    ]
-}
+[
+    {
+        "country": "Россия",
+        "code": "RU",
+        "z": 1000000,
+        "color": "#328be1",
+        "drilldown": "ru",
+        "cities": [
+            {
+                "city": "Башкирия",
+                "hasc": "RU.BK",
+                "value": 1
+            },
+            {
+                "city": "Москва",
+                "hasc": "RU.MS",
+                "value": 50
+            },
+            {
+                "city": "Санкт-Петербург",
+                "hasc": "RU.LN",
+                "value": 100
+            }
+        ]
+    },
+    {
+        "country": "Барбадос",
+        "code": "BB",
+        "z": 50,
+        "cities": [
+            {
+                "city": "Bridgetown",
+                "hasc": "BB",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "country": "Великобритания",
+        "code": "GB",
+        "z": 50,
+        "cities": [
+            {
+                "city": "London",
+                "hasc": "London",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "country": "Франция",
+        "code": "FR",
+        "z": 50,
+        "cities": [
+            {
+                "city": "Paris",
+                "hasc": "Paris",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "country": "Швеция",
+        "code": "SE",
+        "z": 60,
+        "cities": [
+            {
+                "city": "Stockholm",
+                "hasc": "Stockholm",
+                "value": 1
+            },
+            {
+                "city": "Herrang",
+                "hasc": "Herrang",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "country": "Бразилия",
+        "code": "BR",
+        "z": 60,
+        "color": "#328be1",
+        "drilldown": "br",
+        "cities": [
+            {
+                "city": "Rio de Janeiro",
+                "hasc": "BR.RJ",
+                "value": 1
+            },
+            {
+                "city": "Foz de Iguacu",
+                "hasc": "BR.PR",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "country": "Америка",
+        "code": "US",
+        "z": 70,
+        "color": "#328be1",
+        "drilldown": "us",
+        "cities": [
+            {
+                "city": "New York",
+                "hasc": "US.NY",
+                "value": 1
+            },
+            {
+                "city": "Boston",
+                "hasc": "US.MA",
+                "value": 1
+            },
+            {
+                "city": "Miami",
+                "hasc": "US.FL",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "country": "Литва",
+        "code": "LT",
+        "z": 50,
+        "cities": [
+            {
+                "city": "Vilnius",
+                "hasc": "Vilniusn",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "country": "Испания",
+        "code": "ES",
+        "z": 50,
+        "cities": [
+            {
+                "city": "Barcelona",
+                "hasc": "Barcelona",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "country": "Финляндия",
+        "code": "FI",
+        "z": 50,
+        "cities": [
+            {
+                "city": "Helsinki",
+                "hasc": "Helsinki",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "country": "Германия",
+        "code": "DE",
+        "z": 50,
+        "cities": [
+            {
+                "city": "Cologne",
+                "hasc": "Cologne",
+                "value": 1
+            }
+        ]
+    }
+]

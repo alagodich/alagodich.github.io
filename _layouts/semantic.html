@@ -11,7 +11,7 @@
     <!-- Site Properities -->
     <title>alagodich.github.io</title>
     <!-- CSS -->
-    {% include {{page.defaultcss}} %}
+    {% include {{ page.defaultcss }} %}
     {{ page.pagecss }}
 </head>
 <body>
@@ -26,18 +26,21 @@
     </div>
 
     <!-- JavaScript -->
-    {% include {{page.defaultjs}} %}
-    {% if page.onready %}
-    <script>
-        $(function() {
-            {{ page.onready }}
-        });
-    </script>
+
+    <!-- Default js modules -->
+    {% include {{ page.defaultmodules }} %}
+
+    {% if page.modules %}
+    <!-- Page js modules -->
+        {%include {{ page.modules }} %}
     {% endif %}
 
+    <!-- Default app -->
+    {% include {{ page.app }} %}
+
     {% if page.js %}
-        <!-- Page specific JavaScript -->
-        {% include {{page.js}} %}
+    <!-- Page js -->
+        {% include {{ page.js }} %}
     {% endif %}
 </body>
 

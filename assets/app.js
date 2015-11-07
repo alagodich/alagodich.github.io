@@ -145,65 +145,107 @@ var ReactMap = React.createClass({
     getDefaultSettings: function getDefaultSettings() {
         return {
             chart: {
-                borderWidth: 1
+                borderWidth: 1,
+                events: {
+                    drillup: function drillup() {
+                        this.setTitle(null, { text: '' });
+                    }
+                }
             },
             title: {
-                text: 'Здесь был я'
-            },
-            subtitle: {
                 text: 'Страны и города которые я посетил'
             },
+
             legend: {
                 enabled: false
             },
             mapNavigation: {
                 enabled: true,
+
                 buttonOptions: {
                     verticalAlign: 'bottom'
                 }
             },
             credits: {
                 enabled: false
-            },
-
-            colorAxis: {
-                min: 1,
-                type: 'logarithmic',
-                minColor: '#EEEEFF',
-                maxColor: '#000022',
-                stops: [[0, '#EFEFFF'], [50, '#4444FF'], [100, '#000022']]
             }
         };
     },
-    renderMap: function renderMap(data) {
-        var living = data.living,
-            vacation = data.vacation,
-            all = living.concat(vacation),
-            mapData = Highcharts.geojson(Highcharts.maps['custom/world']),
+    renderMap: function renderMap(countries) {
+        var worldData = Highcharts.maps['custom/world'],
             settings = this.getDefaultSettings(),
-            container = this.getContainer();
+            container = this.getContainer(),
+            cities = [];
+
+        countries.forEach(function (country) {
+            cities[country.code] = country.cities;
+        });
 
         settings.series = [{
             name: 'Countries',
-            mapData: mapData,
+            mapData: worldData,
             color: ['#E0E0E0'],
             enableMouseTracking: false
         }, {
-            mapData: mapData,
-            name: 'Не отпуск',
+            type: 'mapbubble',
+            mapData: worldData,
+            name: 'Страны',
             joinBy: ['iso-a2', 'code'],
-            data: all,
+            data: countries,
             minSize: 20,
             maxSize: '12%',
             tooltip: {
-                pointFormat: '{point.city}'
-            },
-            dataLabels: {
-                enabled: true,
-
-                format: '{point.code}'
+                pointFormat: '{point.country}'
             }
         }];
+        settings.drilldown = {
+            activeDataLabelStyle: {
+                color: '#FFFFFF',
+                textDecoration: 'none',
+                textShadow: '0 0 3px #000000'
+            },
+            drillUpButton: {
+                relativeTo: 'spacingBox',
+                position: {
+                    x: 0,
+                    y: 60
+                }
+            }
+        };
+
+        settings.chart.events.drilldown = function (e) {
+
+            if (!e.seriesOptions) {
+                var chart = this,
+                    countryKey = e.point.drilldown,
+                    countryName = e.point.country,
+                    mapKey = 'countries/' + countryKey + '/' + countryKey + '-all',
+                    fail = setTimeout(function () {
+                    if (!Highcharts.maps[mapKey]) {
+                        chart.showLoading('<i class="icon-frown"></i> Failed loading ' + e.point.name);
+
+                        fail = setTimeout(function () {
+                            chart.hideLoading();
+                        }, 1000);
+                    }
+                }, 3000);
+
+                var mapData = Highcharts.geojson(Highcharts.maps[mapKey]);
+
+                clearTimeout(fail);
+                chart.addSeriesAsDrilldown(e.point, {
+                    name: e.point.name,
+                    mapData: mapData,
+                    data: cities[e.point.code],
+                    joinBy: 'hasc',
+                    tooltip: {
+                        pointFormat: '{point.city}'
+                    }
+                });
+            }
+
+            this.setTitle(null, { text: countryName });
+        };
 
         $(container).highcharts('Map', settings);
     },
