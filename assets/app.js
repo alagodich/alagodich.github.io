@@ -365,7 +365,10 @@ $('TODOs').each(function () {
     React.render(React.createElement(TODOs, { items: items }), this);
 });
 
-React.render(React.createElement(ReactMap, null), document.getElementById('mapContainer'));
+var mapContainer = document.getElementById('mapContainer');
+if (mapContainer) {
+    React.render(React.createElement(ReactMap, null), mapContainer);
+}
 
 $('.popup').popup({
     transition: 'vertical flip'

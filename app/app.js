@@ -47,7 +47,10 @@ $('TODOs').each(function () {
 });
 
 // Render map
-React.render(<ReactMap></ReactMap>, document.getElementById('mapContainer'));
+var mapContainer = document.getElementById('mapContainer');
+if (mapContainer) {
+    React.render(<ReactMap></ReactMap>, mapContainer);
+}
 
 // Init semantic popup
 $('.popup').popup({
