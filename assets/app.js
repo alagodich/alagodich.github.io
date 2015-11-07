@@ -153,7 +153,7 @@ var ReactMap = React.createClass({
                 }
             },
             title: {
-                text: 'Страны и города которые я посетил'
+                text: 'Страны и города, которые я посетил.'
             },
 
             legend: {
