@@ -137,7 +137,7 @@ var ReactMap = React.createClass({
     componentDidMount() {
         var renderMap = this.renderMap;
 
-        $.getJSON('assets/map/places.json', function (data) {
+        $.getJSON('assets/places.json', function (data) {
             renderMap(data);
         });
     },

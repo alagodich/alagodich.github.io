@@ -29,6 +29,17 @@ module.exports = function(grunt) {
                     'node_modules/react/dist/react.min.js'
                 ],
                 dest: 'assets/vendor.min.js'
+            },
+            highmaps: {
+                src: [
+                    'app/highmaps/highmaps.js',
+                    'app/highmaps/drilldown.js',
+                    'app/highmaps/world.js',
+                    'app/highmaps/ru-all.js',
+                    'app/highmaps/br-all.js',
+                    'app/highmaps/us-all.js'
+                ],
+                dest: 'assets/highmaps.js'
             }
         },
         babel: {
@@ -40,7 +51,7 @@ module.exports = function(grunt) {
                 files: [{
                     "expand": true,
                     "cwd": "app/",
-                    "src": ["*.js"],
+                    "src": ["**/*.js"],
                     "dest": "app/build",
                     "ext": ".js"
                 }]
@@ -68,7 +79,7 @@ module.exports = function(grunt) {
         },
         watch: {
             assets: {
-                files: ['app/*.js', 'less/*.less'],
+                files: ['app/**/*.js', 'less/*.less', '!app/build/**'],
                 tasks: ['compile', 'exec:touch'],
                 options: {
                     spawn: false
@@ -96,6 +107,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-less');
 
-    grunt.registerTask('default', ['copy', 'concat']);
+    grunt.registerTask('build-vendor', ['copy', 'concat']);
     grunt.registerTask('compile', ['babel', 'browserify', 'uglify', 'less']);
 };

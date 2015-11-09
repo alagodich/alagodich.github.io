@@ -1,4 +1,59 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+var Youtube = require('./components/Youtube'),
+    Image = require('./components/Image'),
+    Profile = require('./components/Profile'),
+    TODOs = require('./components/TODOs'),
+    Menu = require('./components/Menu'),
+    ReactMap = require('./components/ReactMap');
+
+$('.post__video').each(function () {
+    var id = $(this).data('id');
+    if (typeof id === 'undefined') {
+        return;
+    }
+    React.render(React.createElement(Youtube, { id: id }), this);
+});
+
+$('.post__image').each(function () {
+    var id = $(this).data('id');
+    console.log('tes1t');
+
+    if (typeof id === 'undefined') {
+        return;
+    }
+    React.render(React.createElement(Image, { id: id }), this);
+});
+
+$('.blog__profile').each(function () {
+    var self = $(this),
+        name = self.data('name'),
+        avatar = self.data('avatar'),
+        description = self.data('description');
+    React.render(React.createElement(Profile, { name: name, avatar: avatar, description: description }), this);
+});
+
+$('.menu--react').each(function () {
+    var self = $(this);
+    React.render(React.createElement(Menu, { current: self.data('current'), items: self.data('items') }), this);
+});
+
+$('TODOs').each(function () {
+    var items = $(this).data('items');
+    React.render(React.createElement(TODOs, { items: items }), this);
+});
+
+var mapContainer = document.getElementById('mapContainer');
+if (mapContainer) {
+    React.render(React.createElement(ReactMap, null), mapContainer);
+}
+
+$('.popup').popup({
+    transition: 'vertical flip'
+});
+
+},{"./components/Image":2,"./components/Menu":3,"./components/Profile":5,"./components/ReactMap":6,"./components/TODOs":7,"./components/Youtube":8}],2:[function(require,module,exports){
 "use strict";
 
 var Image = React.createClass({
@@ -12,7 +67,7 @@ var Image = React.createClass({
 
 module.exports = Image;
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 
 var MenuItem = require('./MenuItem'),
@@ -35,7 +90,7 @@ var MenuItem = require('./MenuItem'),
 
 module.exports = Menu;
 
-},{"./MenuItem":3}],3:[function(require,module,exports){
+},{"./MenuItem":4}],4:[function(require,module,exports){
 "use strict";
 
 var MenuItem = React.createClass({
@@ -66,7 +121,7 @@ var MenuItem = React.createClass({
 
 module.exports = MenuItem;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var Profile = React.createClass({
@@ -133,7 +188,7 @@ var Profile = React.createClass({
 
 module.exports = Profile;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var ReactMap = React.createClass({
@@ -252,7 +307,7 @@ var ReactMap = React.createClass({
     componentDidMount: function componentDidMount() {
         var renderMap = this.renderMap;
 
-        $.getJSON('assets/map/places.json', function (data) {
+        $.getJSON('assets/places.json', function (data) {
             renderMap(data);
         });
     },
@@ -263,7 +318,7 @@ var ReactMap = React.createClass({
 
 module.exports = ReactMap;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 var TODOs = React.createClass({
@@ -300,7 +355,7 @@ var TODOs = React.createClass({
 
 module.exports = TODOs;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var Youtube = React.createClass({
@@ -321,57 +376,4 @@ var Youtube = React.createClass({
 
 module.exports = Youtube;
 
-},{}],8:[function(require,module,exports){
-'use strict';
-
-var Youtube = require('./Youtube'),
-    Image = require('./Image'),
-    Profile = require('./Profile'),
-    TODOs = require('./TODOs'),
-    Menu = require('./Menu'),
-    ReactMap = require('./ReactMap');
-
-$('.post__video').each(function () {
-    var id = $(this).data('id');
-    if (typeof id === 'undefined') {
-        return;
-    }
-    React.render(React.createElement(Youtube, { id: id }), this);
-});
-
-$('.post__image').each(function () {
-    var id = $(this).data('id');
-    if (typeof id === 'undefined') {
-        return;
-    }
-    React.render(React.createElement(Image, { id: id }), this);
-});
-
-$('.blog__profile').each(function () {
-    var self = $(this),
-        name = self.data('name'),
-        avatar = self.data('avatar'),
-        description = self.data('description');
-    React.render(React.createElement(Profile, { name: name, avatar: avatar, description: description }), this);
-});
-
-$('.menu--react').each(function () {
-    var self = $(this);
-    React.render(React.createElement(Menu, { current: self.data('current'), items: self.data('items') }), this);
-});
-
-$('TODOs').each(function () {
-    var items = $(this).data('items');
-    React.render(React.createElement(TODOs, { items: items }), this);
-});
-
-var mapContainer = document.getElementById('mapContainer');
-if (mapContainer) {
-    React.render(React.createElement(ReactMap, null), mapContainer);
-}
-
-$('.popup').popup({
-    transition: 'vertical flip'
-});
-
-},{"./Image":1,"./Menu":2,"./Profile":4,"./ReactMap":5,"./TODOs":6,"./Youtube":7}]},{},[8]);
+},{}]},{},[1]);

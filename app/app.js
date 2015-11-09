@@ -1,11 +1,11 @@
 'use strict';
 
-var Youtube = require('./Youtube'),
-    Image = require('./Image'),
-    Profile = require('./Profile'),
-    TODOs = require('./TODOs'),
-    Menu = require('./Menu'),
-    ReactMap = require('./ReactMap');
+var Youtube = require('./components/Youtube'),
+    Image = require('./components/Image'),
+    Profile = require('./components/Profile'),
+    TODOs = require('./components/TODOs'),
+    Menu = require('./components/Menu'),
+    ReactMap = require('./components/ReactMap');
 
 // Render youtube frames
 $('.post__video').each(function () {
@@ -19,6 +19,8 @@ $('.post__video').each(function () {
 // Render images
 $('.post__image').each(function () {
     var id = $(this).data('id');
+    console.log('tes1t');
+
     if (typeof id === 'undefined') {
         return;
     }
