@@ -51,7 +51,7 @@ module.exports = function(grunt) {
                 files: [{
                     "expand": true,
                     "cwd": "app/",
-                    "src": ["**/*.js"],
+                    "src": ["components/*.js", "app.js"],
                     "dest": "app/build",
                     "ext": ".js"
                 }]
@@ -107,6 +107,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-less');
 
-    grunt.registerTask('build-vendor', ['copy', 'concat']);
+    grunt.registerTask('default', ['copy', 'concat']);
     grunt.registerTask('compile', ['babel', 'browserify', 'uglify', 'less']);
 };

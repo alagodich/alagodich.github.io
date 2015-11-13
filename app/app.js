@@ -5,7 +5,8 @@ var Youtube = require('./components/Youtube'),
     Profile = require('./components/Profile'),
     TODOs = require('./components/TODOs'),
     Menu = require('./components/Menu'),
-    ReactMap = require('./components/ReactMap');
+    ReactMap = require('./components/ReactMap'),
+    Metronome = require('./components/Metronome');
 
 // Render youtube frames
 $('.post__video').each(function () {
@@ -52,6 +53,12 @@ $('TODOs').each(function () {
 var mapContainer = document.getElementById('mapContainer');
 if (mapContainer) {
     React.render(<ReactMap></ReactMap>, mapContainer);
+}
+
+// Render metronome
+var metronomeContainer = document.getElementById('metronomeContainer');
+if (metronomeContainer) {
+    React.render(<Metronome></Metronome>, metronomeContainer);
 }
 
 // Init semantic popup
