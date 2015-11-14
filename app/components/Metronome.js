@@ -1,4 +1,6 @@
 var Metronome = React.createClass({
+    minTempo: 30,
+    maxTempo: 250,
     audioContext: null,
     timeWorker: null,
     lookAhead: 25.0,
@@ -95,12 +97,17 @@ var Metronome = React.createClass({
 
         // We only need to draw if the note has moved.
         if (this.last16thNoteDrawn != currentNote) {
+            //console.log('width: ' + this.canvas.width);
+
             var x = Math.floor(this.canvas.width / 18);
+            //console.log('x: ' + x);
             this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
             for (var i = 0; i < 16; i++) {
-                this.canvasContext.fillStyle = ( currentNote == i ) ?
-                    ((currentNote % 4 === 0) ? "red" : "blue") : "black";
-                this.canvasContext.fillRect(x * (i + 1), x, x / 2, x / 2);
+                this.canvasContext.fillStyle =
+                    (currentNote == i)
+                        ? ((currentNote % 4 === 0) ? "#DB2828" : "#2185D0")
+                        : "#eee";
+                this.canvasContext.fillRect((x * (i + 1)) + 7, 30, x - 1, x * 3);
             }
             this.last16thNoteDrawn = currentNote;
         }
@@ -213,15 +220,16 @@ var Metronome = React.createClass({
                                 <input
                                     id="tempo"
                                     type="range"
-                                    min="30"
-                                    max="160"
+                                    min={this.minTempo}
+                                    max={this.maxTempo}
                                     value={this.state.tempo}
                                     onChange={this.changeTempo}
+                                    className="metronome__slider"
                                 />
                             </div>
                             <div className="ui divider"></div>
                             <div className="ui fluid selection dropdown">
-                                <input type="hidden" name="gender"/>
+                                <input type="hidden" name="resolution"/>
                                 <i className="dropdown icon"></i>
                                 <div className="default text">Gender</div>
                                 <div className="menu">
