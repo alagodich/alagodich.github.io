@@ -13,7 +13,7 @@ Some components created with [React](https://facebook.github.io/react/)
 * Поменять навигацию
 * Добавить тултип с картой для картинок
 * Добавить js и dart приложения в новый раздел на сайт
-* Метроном
+* Метроном (добавить выбора размера)
 
 ### Install
 * make sure you have [ruby, jekyll and bundler installed](https://help.github.com/articles/using-jekyll-with-pages/)
