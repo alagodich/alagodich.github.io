@@ -284,7 +284,13 @@ var Metronome = React.createClass({
     componentDidMount: function componentDidMount() {
         var _this = this;
 
+        var changeResolution = this.changeResolution;
         this.init();
+        $('.ui.radio.checkbox').checkbox({
+            onChange: function onChange() {
+                changeResolution(this.value);
+            }
+        }).first().checkbox('check');
 
         $('.ui.dropdown').dropdown({
             onChange: function onChange(value) {
@@ -313,7 +319,7 @@ var Metronome = React.createClass({
                 ),
                 React.createElement(
                     'div',
-                    { className: 'extra content' },
+                    { className: 'extra content ui form' },
                     React.createElement(
                         'div',
                         { id: 'controls' },
@@ -340,31 +346,59 @@ var Metronome = React.createClass({
                         React.createElement('div', { className: 'ui divider' }),
                         React.createElement(
                             'div',
-                            { className: 'ui fluid selection dropdown' },
-                            React.createElement('input', { type: 'hidden', name: 'resolution' }),
-                            React.createElement('i', { className: 'dropdown icon' }),
+                            { className: 'inline fields' },
                             React.createElement(
                                 'div',
-                                { className: 'default text' },
-                                'Gender'
+                                { className: 'field' },
+                                React.createElement(
+                                    'div',
+                                    { className: 'ui radio checkbox' },
+                                    React.createElement('input', { type: 'radio',
+                                        name: 'resolution',
+                                        value: '4',
+                                        tabindex: '0',
+                                        className: 'hidden' }),
+                                    React.createElement(
+                                        'label',
+                                        null,
+                                        'Quarter'
+                                    )
+                                )
                             ),
                             React.createElement(
                                 'div',
-                                { className: 'menu' },
+                                { className: 'field' },
                                 React.createElement(
                                     'div',
-                                    { className: 'item', 'data-value': '4' },
-                                    'Quarter'
-                                ),
+                                    { className: 'ui radio checkbox' },
+                                    React.createElement('input', { type: 'radio',
+                                        name: 'resolution',
+                                        value: '8',
+                                        tabindex: '0',
+                                        className: 'hidden' }),
+                                    React.createElement(
+                                        'label',
+                                        null,
+                                        '8th'
+                                    )
+                                )
+                            ),
+                            React.createElement(
+                                'div',
+                                { className: 'field' },
                                 React.createElement(
                                     'div',
-                                    { className: 'item', 'data-value': '8' },
-                                    '8th'
-                                ),
-                                React.createElement(
-                                    'div',
-                                    { className: 'item', 'data-value': '16' },
-                                    '16th'
+                                    { className: 'ui radio checkbox' },
+                                    React.createElement('input', { type: 'radio',
+                                        name: 'resolution',
+                                        value: '16',
+                                        tabindex: '0',
+                                        className: 'hidden' }),
+                                    React.createElement(
+                                        'label',
+                                        null,
+                                        '16th'
+                                    )
                                 )
                             )
                         )

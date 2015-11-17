@@ -186,14 +186,14 @@ var Metronome = React.createClass({
     },
 
     componentDidMount() {
-        //var changeResolution = this.changeResolution;
+        var changeResolution = this.changeResolution;
         this.init();
-        //$('.ui.radio.checkbox')
-        //    .checkbox({
-        //        onChange: () => {
-        //            changeResolution($(this).val());
-        //        }
-        //    });
+        $('.ui.radio.checkbox')
+            .checkbox({
+                onChange() {
+                    changeResolution(this.value);
+                }
+            }).first().checkbox('check');
 
         $('.ui.dropdown')
             .dropdown({
@@ -213,7 +213,7 @@ var Metronome = React.createClass({
                     <div className="content" ref="card">
                         <canvas ref="canvas">Canvas not supported!</canvas>
                     </div>
-                    <div className="extra content">
+                    <div className="extra content ui form">
                         <div id="controls">
                             <div id="tempoBox">
                                 Tempo: <span id="showTempo">{this.state.tempo}</span><br/>
@@ -228,14 +228,36 @@ var Metronome = React.createClass({
                                 />
                             </div>
                             <div className="ui divider"></div>
-                            <div className="ui fluid selection dropdown">
-                                <input type="hidden" name="resolution"/>
-                                <i className="dropdown icon"></i>
-                                <div className="default text">Gender</div>
-                                <div className="menu">
-                                    <div className="item" data-value="4">Quarter</div>
-                                    <div className="item" data-value="8">8th</div>
-                                    <div className="item" data-value="16">16th</div>
+                            <div className="inline fields">
+                                <div className="field">
+                                    <div className="ui radio checkbox">
+                                        <input type="radio"
+                                               name="resolution"
+                                               value="4"
+                                               tabindex="0"
+                                               className="hidden"/>
+                                        <label>Quarter</label>
+                                    </div>
+                                </div>
+                                <div className="field">
+                                    <div className="ui radio checkbox">
+                                        <input type="radio"
+                                               name="resolution"
+                                               value="8"
+                                               tabindex="0"
+                                               className="hidden"/>
+                                        <label>8th</label>
+                                    </div>
+                                </div>
+                                <div className="field">
+                                    <div className="ui radio checkbox">
+                                        <input type="radio"
+                                               name="resolution"
+                                               value="16"
+                                               tabindex="0"
+                                               className="hidden"/>
+                                        <label>16th</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
