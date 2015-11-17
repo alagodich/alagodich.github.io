@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/alagodich/alagodich.github.io#readme",
   "dependencies": {
-    "react": "^0.13.3"
+    "react": "^0.14.2"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

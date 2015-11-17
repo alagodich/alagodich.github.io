@@ -12,6 +12,6 @@
     "bower_components"
   ],
   "dependencies": {
-    "semantic": "semantic-ui#~2.1.4"
+    "semantic": "semantic-ui#~2.1.6"
   }
 }
