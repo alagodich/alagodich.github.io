@@ -150,22 +150,27 @@ var Metronome = React.createClass({
 
     canvas: null,
     canvasContext: null,
-    canvasWidth: 200,
+    canvasWidth: 300,
     canvasHeight: 100,
     canvasStrokeStyle: '#fff',
     canvasLineWidth: 2,
+    quarterNoteColor: '#DB2828',
+    eighthNoteColor: '#2185D0',
+    sixteenthNoteColor: '#eee',
 
     getInitialState: function getInitialState() {
         return {
-            tempo: 120.0,
+            tempo: 110.0,
 
             noteResolution: 4,
-            isPlaying: false
+            isPlaying: false,
+            signature: '4/4'
         };
     },
 
     init: function init() {
-        var scheduler = this.scheduler;
+        var scheduler = this.scheduler,
+            AudioContext = window.AudioContext || window.webkitAudioContext || false;
 
         this.canvas = this.refs.canvas.getDOMNode();
         this.canvasContext = this.canvas.getContext('2d');
@@ -175,7 +180,12 @@ var Metronome = React.createClass({
         window.onresize = this.resetCanvas;
         this.resetCanvas();
 
-        this.audioContext = new AudioContext();
+        if (AudioContext) {
+            this.audioContext = new AudioContext();
+        } else {
+            alert("Sorry, but the Web Audio API is not supported by your browser. " + "Please, consider upgrading to the latest version or downloading Google Chrome or Mozilla Firefox");
+            return;
+        }
 
         this.timerWorker = new Worker("assets/metronome/metronomeworker.js");
         this.timerWorker.onmessage = function (e) {
@@ -193,7 +203,7 @@ var Metronome = React.createClass({
     play: function play() {
         this.setState({ isPlaying: !this.state.isPlaying }, function () {
             if (this.state.isPlaying) {
-                this.current16thNote = 0;
+                this.current16thNote = -1;
                 this.nextNoteTime = this.audioContext.currentTime;
                 this.timerWorker.postMessage("start");
             } else {
@@ -202,23 +212,29 @@ var Metronome = React.createClass({
         });
     },
 
+    startOver: function startOver() {
+        if (this.state.isPlaying) {
+            this.play();
+            this.play();
+        }
+    },
+
     draw: function draw() {
-        var currentNote = this.last16thNoteDrawn;
-        var currentTime = this.audioContext.currentTime;
+        var currentNote = this.last16thNoteDrawn,
+            currentTime = this.audioContext.currentTime,
+            segments = this.state.signature === '4/4' ? 16 : 9,
+            quarter = this.state.signature === '4/4' ? 4 : 3,
+            x = Math.floor(this.canvas.width / (segments + 2));
 
         while (this.notesInQueue.length && this.notesInQueue[0].time < currentTime) {
             currentNote = this.notesInQueue[0].note;
-
             this.notesInQueue.splice(0, 1);
         }
 
         if (this.last16thNoteDrawn != currentNote) {
-
-            var x = Math.floor(this.canvas.width / 18);
-
             this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            for (var i = 0; i < 16; i++) {
-                this.canvasContext.fillStyle = currentNote == i ? currentNote % 4 === 0 ? "#DB2828" : "#2185D0" : "#eee";
+            for (var i = 0; i < segments; i++) {
+                this.canvasContext.fillStyle = currentNote == i ? currentNote % quarter === 0 ? this.quarterNoteColor : this.eighthNoteColor : this.sixteenthNoteColor;
                 this.canvasContext.fillRect(x * (i + 1) + 7, 30, x - 1, x * 3);
             }
             this.last16thNoteDrawn = currentNote;
@@ -240,30 +256,49 @@ var Metronome = React.createClass({
     },
 
     nextNote: function nextNote() {
-        var secondsPerBeat = 60.0 / this.state.tempo;
-        this.nextNoteTime += 0.25 * secondsPerBeat;
+        var secondsPerBeat = 60.0 / this.state.tempo,
+            lastNote = this.state.signature === '4/4' ? 16 : 9,
+            multiplier = this.state.signature === '4/4' ? 0.25 : 0.33;
+
+        this.nextNoteTime += secondsPerBeat * multiplier;
 
         this.current16thNote++;
-        if (this.current16thNote == 16) {
+        if (this.current16thNote == lastNote) {
             this.current16thNote = 0;
         }
     },
 
     scheduleNote: function scheduleNote(beatNumber, time) {
+        var osc = this.audioContext.createOscillator(),
+            quarter = this.state.signature === '4/4' ? 4 : 3;
+
         this.notesInQueue.push({ note: beatNumber, time: time });
 
-        if (this.state.noteResolution == 8 && beatNumber % 2) {
-            return;
-        }
-        if (this.state.noteResolution == 4 && beatNumber % 4) {
-            return;
+        if (this.state.noteResolution == 16 && this.state.signature === '3/4') {
+            if ([1, 4, 7, 10].indexOf(beatNumber) > -1) {
+                return;
+            }
         }
 
-        var osc = this.audioContext.createOscillator();
+        if (this.state.noteResolution == 8) {
+            if (this.state.signature === '4/4' && beatNumber % 2) {
+                return;
+            }
+            if (this.state.signature === '3/4') {}
+        }
+        if (this.state.noteResolution == 4) {
+            if (this.state.signature === '4/4' && beatNumber % 4) {
+                return;
+            }
+            if (this.state.signature === '3/4' && beatNumber % 3) {
+                return;
+            }
+        }
+
         osc.connect(this.audioContext.destination);
-        if (beatNumber % 16 === 0) {
+        if (beatNumber === 0) {
             osc.frequency.value = 880.0;
-        } else if (beatNumber % 4 === 0) {
+        } else if (beatNumber % quarter === 0) {
             osc.frequency.value = 440.0;
         } else {
             osc.frequency.value = 220.0;
@@ -275,33 +310,39 @@ var Metronome = React.createClass({
 
     changeTempo: function changeTempo(event) {
         this.setState({ tempo: event.target.value });
+        this.startOver();
     },
 
     changeResolution: function changeResolution(value) {
         this.setState({ noteResolution: value });
+        this.startOver();
+    },
+
+    changeSignature: function changeSignature(value) {
+        this.setState({ signature: value });
+        this.startOver();
     },
 
     componentDidMount: function componentDidMount() {
-        var _this = this;
-
-        var changeResolution = this.changeResolution;
+        var changeResolution = this.changeResolution,
+            changeSignature = this.changeSignature;
         this.init();
-        $('.ui.radio.checkbox').checkbox({
+        $('.ui.resolution.radio.checkbox').checkbox({
             onChange: function onChange() {
                 changeResolution(this.value);
             }
         }).first().checkbox('check');
-
-        $('.ui.dropdown').dropdown({
-            onChange: function onChange(value) {
-                _this.changeResolution(value);
+        $('.ui.signature.radio.checkbox').checkbox({
+            onChange: function onChange() {
+                changeSignature(this.value);
             }
-        }).dropdown('set selected', this.state.noteResolution);
+        }).first().checkbox('check');
     },
 
     render: function render() {
-        var playButtonText = this.state.isPlaying ? 'stop' : 'play';
-        var playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'blue play icon';
+        var playButtonText = this.state.isPlaying ? 'stop' : 'play',
+            playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'blue play icon',
+            sixteenthResolutionText = this.state.signature === '4/4' ? '16th' : 'Shuffle';
         return React.createElement(
             'div',
             { className: 'metronome' },
@@ -313,7 +354,7 @@ var Metronome = React.createClass({
                     { className: 'content', ref: 'card' },
                     React.createElement(
                         'canvas',
-                        { ref: 'canvas' },
+                        { ref: 'canvas', className: 'canvas' },
                         'Canvas not supported!'
                     )
                 ),
@@ -352,7 +393,7 @@ var Metronome = React.createClass({
                                 { className: 'field' },
                                 React.createElement(
                                     'div',
-                                    { className: 'ui radio checkbox' },
+                                    { className: 'ui resolution radio checkbox' },
                                     React.createElement('input', { type: 'radio',
                                         name: 'resolution',
                                         value: '4',
@@ -370,7 +411,7 @@ var Metronome = React.createClass({
                                 { className: 'field' },
                                 React.createElement(
                                     'div',
-                                    { className: 'ui radio checkbox' },
+                                    { className: 'ui resolution radio checkbox' },
                                     React.createElement('input', { type: 'radio',
                                         name: 'resolution',
                                         value: '8',
@@ -388,7 +429,7 @@ var Metronome = React.createClass({
                                 { className: 'field' },
                                 React.createElement(
                                     'div',
-                                    { className: 'ui radio checkbox' },
+                                    { className: 'ui resolution radio checkbox' },
                                     React.createElement('input', { type: 'radio',
                                         name: 'resolution',
                                         value: '16',
@@ -397,7 +438,48 @@ var Metronome = React.createClass({
                                     React.createElement(
                                         'label',
                                         null,
-                                        '16th'
+                                        sixteenthResolutionText
+                                    )
+                                )
+                            )
+                        ),
+                        React.createElement('div', { className: 'ui divider' }),
+                        React.createElement(
+                            'div',
+                            { className: 'inline fields' },
+                            React.createElement(
+                                'div',
+                                { className: 'field' },
+                                React.createElement(
+                                    'div',
+                                    { className: 'ui signature radio checkbox' },
+                                    React.createElement('input', { type: 'radio',
+                                        name: 'signature',
+                                        value: '4/4',
+                                        tabindex: '0',
+                                        className: 'hidden' }),
+                                    React.createElement(
+                                        'label',
+                                        null,
+                                        '4/4'
+                                    )
+                                )
+                            ),
+                            React.createElement(
+                                'div',
+                                { className: 'field' },
+                                React.createElement(
+                                    'div',
+                                    { className: 'ui signature radio checkbox' },
+                                    React.createElement('input', { type: 'radio',
+                                        name: 'signature',
+                                        value: '3/4',
+                                        tabindex: '0',
+                                        className: 'hidden' }),
+                                    React.createElement(
+                                        'label',
+                                        null,
+                                        '3/4'
                                     )
                                 )
                             )
