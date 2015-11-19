@@ -20,7 +20,6 @@ $('.post__video').each(function () {
 // Render images
 $('.post__image').each(function () {
     var id = $(this).data('id');
-    console.log('tes1t');
 
     if (typeof id === 'undefined') {
         return;

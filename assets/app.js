@@ -19,7 +19,6 @@ $('.post__video').each(function () {
 
 $('.post__image').each(function () {
     var id = $(this).data('id');
-    console.log('tes1t');
 
     if (typeof id === 'undefined') {
         return;
@@ -163,7 +162,7 @@ var Metronome = React.createClass({
 
     getInitialState: function getInitialState() {
         return {
-            tempo: 100.0,
+            tempo: 110.0,
             noteResolution: '4',
             isPlaying: false,
             signature: '4/4'
@@ -202,13 +201,12 @@ var Metronome = React.createClass({
 
     initParams: function initParams() {
         if (this.state.signature === '4/4') {
-            this.quartersQuantity = this.state.noteResolution === '12' ? 3 : 4;
             this.sixteenthQuantity = this.state.noteResolution === '12' ? 12 : 16;
         }
         if (this.state.signature === '3/4') {
-            this.quartersQuantity = this.state.noteResolution === '12' ? 3 : 4;
             this.sixteenthQuantity = this.state.noteResolution === '12' ? 9 : 12;
         }
+        this.quartersQuantity = this.state.noteResolution === '12' ? 3 : 4;
         this.nextNoteMultiplier = this.state.noteResolution === '12' ? 0.33 : 0.25;
     },
 

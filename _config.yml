@@ -10,6 +10,8 @@ defaults:
             defaultmodules: "defaultmodules.html"
             app: "app.html"
             googletag: "googletag.html"
+            description: "My personal blog"
+            keywords: "travel, programming, music"
     -
         scope:
             path: ""
