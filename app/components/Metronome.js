@@ -89,13 +89,12 @@ var Metronome = React.createClass({
 
     initParams() {
         if (this.state.signature === '4/4') {
-            this.quartersQuantity = this.state.noteResolution === '12' ? 3 : 4;
             this.sixteenthQuantity = this.state.noteResolution === '12' ? 12 : 16;
         }
         if (this.state.signature === '3/4') {
-            this.quartersQuantity = this.state.noteResolution === '12' ? 3 : 4;
             this.sixteenthQuantity = this.state.noteResolution === '12' ? 9 : 12;
         }
+        this.quartersQuantity = this.state.noteResolution === '12' ? 3 : 4;
         this.nextNoteMultiplier = this.state.noteResolution === '12' ? 0.33 : 0.25;
     },
 
