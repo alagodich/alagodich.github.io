@@ -20,6 +20,9 @@ var Metronome = React.createClass({
      */
     last16thNoteDrawn: -1,
     notesInQueue: [],
+    quartersQuantity: null,
+    sixteenthQuantity: null,
+    nextNoteMultiplier: null,
     /**
      * Canvas settings
      */
@@ -27,21 +30,16 @@ var Metronome = React.createClass({
     canvasContext: null,
     canvasWidth: 300,
     canvasHeight: 100,
-    canvasStrokeStyle: '#fff',
+    canvasStrokeStyle: '#FFF',
     canvasLineWidth: 2,
     quarterNoteColor: '#DB2828',
     eighthNoteColor: '#2185D0',
-    sixteenthNoteColor: '#eee',
+    sixteenthNoteColor: '#EEE',
 
     getInitialState() {
         return {
-            tempo: 110.0,
-            /**
-             * 0 == 16th,
-             * 1 == 8th,
-             * 2 == quarter note
-             */
-            noteResolution: 4,
+            tempo: 100.0,
+            noteResolution: '4',
             isPlaying: false,
             signature: '4/4'
         };
@@ -78,11 +76,9 @@ var Metronome = React.createClass({
 
         // Init Worker
         this.timerWorker = new Worker("assets/metronome/metronomeworker.js");
-        this.timerWorker.onmessage = function (e) {
-            if (e.data == "tick") {
+        this.timerWorker.onmessage = function (message) {
+            if (message.data == "tick") {
                 scheduler();
-            } else {
-                console.log("message: " + e.data);
             }
         };
         this.timerWorker.postMessage({"interval": this.lookahead});
@@ -91,12 +87,25 @@ var Metronome = React.createClass({
         requestAnimationFrame(this.draw);
     },
 
+    initParams() {
+        if (this.state.signature === '4/4') {
+            this.quartersQuantity = this.state.noteResolution === '12' ? 3 : 4;
+            this.sixteenthQuantity = this.state.noteResolution === '12' ? 12 : 16;
+        }
+        if (this.state.signature === '3/4') {
+            this.quartersQuantity = this.state.noteResolution === '12' ? 3 : 4;
+            this.sixteenthQuantity = this.state.noteResolution === '12' ? 9 : 12;
+        }
+        this.nextNoteMultiplier = this.state.noteResolution === '12' ? 0.33 : 0.25;
+    },
+
     /**
      * Toggle worker by sending start or stop
      */
     play() {
         this.setState({isPlaying: !this.state.isPlaying}, function () {
             if (this.state.isPlaying) {
+                this.initParams();
                 this.current16thNote = -1;
                 this.nextNoteTime = this.audioContext.currentTime;
                 this.timerWorker.postMessage("start");
@@ -108,15 +117,15 @@ var Metronome = React.createClass({
 
     /**
      * Restart metronome if it was playing
+     * @note No need to change state of the object invoking play()
      */
     startOver() {
         if (this.state.isPlaying) {
-            this.play();
-            this.play();
-            //this.timerWorker.postMessage("stop");
-            //this.current16thNote = -1;
-            //this.nextNoteTime = this.audioContext.currentTime;
-            //this.timerWorker.postMessage("start");
+            this.timerWorker.postMessage("stop");
+            this.initParams();
+            this.current16thNote = -1;
+            this.nextNoteTime = this.audioContext.currentTime;
+            this.timerWorker.postMessage("start");
         }
     },
 
@@ -126,9 +135,7 @@ var Metronome = React.createClass({
     draw() {
         var currentNote = this.last16thNoteDrawn,
             currentTime = this.audioContext.currentTime,
-            segments = this.state.signature === '4/4' ? 16 : 9,
-            quarter = this.state.signature === '4/4' ? 4 : 3,
-            x = Math.floor(this.canvas.width / (segments + 2));
+            x = Math.floor(this.canvas.width / (this.sixteenthQuantity + 2));
 
         while (this.notesInQueue.length && this.notesInQueue[0].time < currentTime) {
             currentNote = this.notesInQueue[0].note;
@@ -138,17 +145,16 @@ var Metronome = React.createClass({
         // We only need to draw if the note has moved.
         if (this.last16thNoteDrawn != currentNote) {
             this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            for (var i = 0; i < segments; i++) {
+            for (var i = 0; i < this.sixteenthQuantity; i++) {
                 this.canvasContext.fillStyle =
                     (currentNote == i)
-                        ? ((currentNote % quarter === 0) ? this.quarterNoteColor : this.eighthNoteColor)
+                        ? ((currentNote % this.quartersQuantity === 0) ? this.quarterNoteColor : this.eighthNoteColor)
                         : this.sixteenthNoteColor;
                 this.canvasContext.fillRect((x * (i + 1)) + 7, 30, x - 1, x * 3);
             }
             this.last16thNoteDrawn = currentNote;
         }
 
-        // Set up to draw again
         requestAnimationFrame(this.draw);
     },
 
@@ -175,16 +181,12 @@ var Metronome = React.createClass({
      * Advance current note and time by a 16th note
      */
     nextNote() {
-        var secondsPerBeat = 60.0 / this.state.tempo,
-            lastNote = this.state.signature === '4/4' ? 16 : 9,
-            // Multiplier of the 16th note
-            multiplier = this.state.signature === '4/4' ? 0.25 : 0.33;
-
-        this.nextNoteTime += secondsPerBeat * multiplier;
+        var secondsPerBeat = 60.0 / this.state.tempo;
+        this.nextNoteTime += secondsPerBeat * this.nextNoteMultiplier;
 
         // Advance the beat number, wrap to zero
         this.current16thNote++;
-        if (this.current16thNote == lastNote) {
+        if (this.current16thNote == this.sixteenthQuantity) {
             this.current16thNote = 0;
         }
     },
@@ -196,45 +198,19 @@ var Metronome = React.createClass({
      */
     scheduleNote(beatNumber, time) {
         // create an oscillator
-        var osc = this.audioContext.createOscillator(),
-            quarter = this.state.signature === '4/4' ? 4 : 3;
-
+        var osc = this.audioContext.createOscillator();
         // push the note on the queue, even if we're not playing.
         this.notesInQueue.push({note: beatNumber, time: time});
 
-        if (this.state.noteResolution == 16 && this.state.signature === '3/4') {
-            if ([1, 4, 7, 10].indexOf(beatNumber) > -1) {
-                // Skip second beat
-                return;
-            }
-        }
-
-        if (this.state.noteResolution == 8) {
-            if ((this.state.signature === '4/4') && (beatNumber % 2)) {
-                // Don't play 16ths in 4/4
-                return;
-            }
-            if ((this.state.signature === '3/4')) {
-                // Play all
-                //return;
-            }
-        }
-        if (this.state.noteResolution == 4) {
-            if ((this.state.signature === '4/4') && (beatNumber % 4)) {
-                // Don't play 8th
-                return;
-            }
-            if ((this.state.signature === '3/4') && (beatNumber % 3)) {
-                // Don't play 8th
-                return;
-            }
+        if (!this.noteShouldBePlayed(beatNumber)) {
+            return;
         }
 
         osc.connect(this.audioContext.destination);
         if (beatNumber === 0) {
             // beat 0 == low pitch
             osc.frequency.value = 880.0;
-        } else if (beatNumber % quarter === 0) {
+        } else if (beatNumber % this.quartersQuantity === 0) {
             // quarter notes = medium pitch
             osc.frequency.value = 440.0;
         } else {
@@ -244,6 +220,35 @@ var Metronome = React.createClass({
 
         osc.start(time);
         osc.stop(time + this.noteLength);
+    },
+
+    /**
+     * @param beatNumber
+     * @returns {boolean}
+     */
+    noteShouldBePlayed(beatNumber) {
+        // Play only quarter notes
+        if (this.state.noteResolution === '4') {
+            if (beatNumber % 4) {
+                return false;
+            }
+        }
+
+        // Skip the second beat
+        if (this.state.noteResolution === '12') {
+            if ([1, 4, 7, 10].indexOf(beatNumber) > -1) {
+                // Skip the second beat
+                return false;
+            }
+        }
+
+        // Play eighths
+        if (this.state.noteResolution === '8') {
+            if (beatNumber % 2) {
+                return false;
+            }
+        }
+        return true;
     },
 
     changeTempo(event) {
@@ -257,7 +262,7 @@ var Metronome = React.createClass({
     },
 
     changeSignature(value) {
-        this.setState({signature: value})
+        this.setState({signature: value});
         this.startOver();
     },
 
@@ -281,8 +286,7 @@ var Metronome = React.createClass({
 
     render() {
         var playButtonText = this.state.isPlaying ? 'stop' : 'play',
-            playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'blue play icon',
-            sixteenthResolutionText = this.state.signature === '4/4' ? '16th' : 'Shuffle';
+            playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'blue play icon';
         return (
             <div className="metronome">
                 <div className="ui centered card">
@@ -331,10 +335,10 @@ var Metronome = React.createClass({
                                     <div className="ui resolution radio checkbox">
                                         <input type="radio"
                                                name="resolution"
-                                               value="16"
+                                               value="12"
                                                tabindex="0"
                                                className="hidden"/>
-                                        <label>{sixteenthResolutionText}</label>
+                                        <label>Shuffle</label>
                                     </div>
                                 </div>
                             </div>
