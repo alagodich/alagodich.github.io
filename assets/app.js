@@ -160,6 +160,8 @@ var Metronome = React.createClass({
     eighthNoteColor: '#2185D0',
     sixteenthNoteColor: '#EEE',
 
+    unlocked: false,
+
     getInitialState: function getInitialState() {
         return {
             tempo: 110.0,
@@ -208,6 +210,37 @@ var Metronome = React.createClass({
         }
         this.quartersQuantity = this.state.noteResolution === '12' ? 3 : 4;
         this.nextNoteMultiplier = this.state.noteResolution === '12' ? 0.33 : 0.25;
+    },
+
+    unlock: function unlock() {
+        if (!this.iOS() || this.unlocked) {
+            return;
+        }
+
+        var buffer = this.audioContext.createBuffer(1, 1, 22050),
+            source = this.audioContext.createBufferSource();
+
+        source.buffer = buffer;
+        source.connect(this.audioContext.destination);
+        source.noteOn(0);
+
+        setTimeout(function () {
+            if (source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE) {
+                this.unlocked = true;
+            }
+        }, 0);
+    },
+
+    iOS: function iOS() {
+        var iDevices = ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'];
+
+        while (iDevices.length) {
+            if (navigator.platform === iDevices.pop()) {
+                return true;
+            }
+        }
+
+        return false;
     },
 
     play: function play() {
@@ -278,6 +311,8 @@ var Metronome = React.createClass({
     },
 
     scheduleNote: function scheduleNote(beatNumber, time) {
+        this.unlock();
+
         var osc = this.audioContext.createOscillator();
 
         this.notesInQueue.push({ note: beatNumber, time: time });

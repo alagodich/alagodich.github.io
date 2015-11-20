@@ -35,6 +35,10 @@ var Metronome = React.createClass({
     quarterNoteColor: '#DB2828',
     eighthNoteColor: '#2185D0',
     sixteenthNoteColor: '#EEE',
+    /**
+     * Unlocked AudioContext on iOS devices
+     */
+    unlocked: false,
 
     getInitialState() {
         return {
@@ -96,6 +100,52 @@ var Metronome = React.createClass({
         }
         this.quartersQuantity = this.state.noteResolution === '12' ? 3 : 4;
         this.nextNoteMultiplier = this.state.noteResolution === '12' ? 0.33 : 0.25;
+    },
+
+    /**
+     * Unlock AudioContext on iOS devices
+     * @see https://developer.apple.com/library/safari/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html
+     */
+    unlock() {
+        if (!this.iOS() || this.unlocked) {
+            return;
+        }
+        // create empty buffer and play it
+        var buffer = this.audioContext.createBuffer(1, 1, 22050),
+            source = this.audioContext.createBufferSource();
+
+        source.buffer = buffer;
+        source.connect(this.audioContext.destination);
+        source.noteOn(0);
+        // by checking the play state after some time, we know if we're really unlocked
+        setTimeout(function () {
+            if ((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
+                this.unlocked = true;
+            }
+        }, 0);
+    },
+
+    /**
+     * Check for a known iOS device
+     * @returns {boolean}
+     */
+    iOS() {
+        var iDevices = [
+            'iPad Simulator',
+            'iPhone Simulator',
+            'iPod Simulator',
+            'iPad',
+            'iPhone',
+            'iPod'
+        ];
+
+        while (iDevices.length) {
+            if (navigator.platform === iDevices.pop()) {
+                return true;
+            }
+        }
+
+        return false;
     },
 
     /**
@@ -196,6 +246,7 @@ var Metronome = React.createClass({
      * @param time
      */
     scheduleNote(beatNumber, time) {
+        this.unlock();
         // create an oscillator
         var osc = this.audioContext.createOscillator();
         // push the note on the queue, even if we're not playing.
