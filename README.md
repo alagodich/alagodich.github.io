@@ -14,6 +14,7 @@ Some components created with [React](https://facebook.github.io/react/)
 * Добавить тултип с картой для картинок
 * Добавить js и dart приложения в новый раздел на сайт
 * Метроном (добавить выбора размера, подключеть firebase)
+* Use http://www.browsersync.io/
 
 ### Install
 * make sure you have [ruby, jekyll and bundler installed](https://help.github.com/articles/using-jekyll-with-pages/)
