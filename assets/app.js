@@ -164,7 +164,7 @@ var Metronome = React.createClass({
 
     getInitialState: function getInitialState() {
         return {
-            tempo: 110.0,
+            tempo: 101.0,
             noteResolution: '4',
             isPlaying: false,
             signature: '4/4',
