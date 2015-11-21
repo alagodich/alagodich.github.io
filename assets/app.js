@@ -167,7 +167,8 @@ var Metronome = React.createClass({
             tempo: 110.0,
             noteResolution: '4',
             isPlaying: false,
-            signature: '4/4'
+            signature: '4/4',
+            stressFirstBeat: true
         };
     },
 
@@ -323,7 +324,7 @@ var Metronome = React.createClass({
 
         osc.connect(this.audioContext.destination);
         if (beatNumber === 0) {
-            osc.frequency.value = 880.0;
+            osc.frequency.value = this.state.stressFirstBeat ? 880.0 : 440.0;
         } else if (beatNumber % this.quartersQuantity === 0) {
             osc.frequency.value = 440.0;
         } else {
@@ -370,9 +371,15 @@ var Metronome = React.createClass({
         this.startOver();
     },
 
+    toggleStressFirstBeat: function toggleStressFirstBeat() {
+        this.setState({ stressFirstBeat: !this.state.stressFirstBeat });
+        this.startOver();
+    },
+
     componentDidMount: function componentDidMount() {
         var changeResolution = this.changeResolution,
-            changeSignature = this.changeSignature;
+            changeSignature = this.changeSignature,
+            toggleStressFirstBeat = this.toggleStressFirstBeat;
         this.init();
         $('.ui.resolution.radio.checkbox').checkbox({
             onChange: function onChange() {
@@ -384,6 +391,12 @@ var Metronome = React.createClass({
                 changeSignature(this.value);
             }
         }).first().checkbox('check');
+        $('.ui.stress.toggle.checkbox').checkbox({
+            fireOnInit: true,
+            onChange: function onChange() {
+                toggleStressFirstBeat();
+            }
+        });
     },
 
     render: function render() {
@@ -528,6 +541,17 @@ var Metronome = React.createClass({
                                         '3/4'
                                     )
                                 )
+                            )
+                        ),
+                        React.createElement('div', { className: 'ui divider' }),
+                        React.createElement(
+                            'div',
+                            { className: 'ui stress toggle checked checkbox' },
+                            React.createElement('input', { type: 'checkbox', tabindex: '0', 'class': 'hidden', name: 'stress', value: '1' }),
+                            React.createElement(
+                                'label',
+                                null,
+                                'Stress the first beat'
                             )
                         )
                     )
