@@ -106,6 +106,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-exec');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-browser-sync');
 
     grunt.registerTask('default', ['copy', 'concat']);
     grunt.registerTask('compile', ['babel', 'browserify', 'uglify', 'less']);
