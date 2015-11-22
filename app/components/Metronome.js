@@ -1,6 +1,8 @@
 var Metronome = React.createClass({
     minTempo: 30,
-    maxTempo: 250,
+    maxTempo: 200,
+    minVolume: 0,
+    maxVolume: 100,
     audioContext: null,
     timeWorker: null,
     lookAhead: 25.0,
@@ -46,7 +48,9 @@ var Metronome = React.createClass({
             noteResolution: '4',
             isPlaying: false,
             signature: '4/4',
-            stressFirstBeat: true
+            stressFirstBeat: false,
+            volume: 0.5,
+            useOscillator: true
         };
     },
 
@@ -202,29 +206,69 @@ var Metronome = React.createClass({
      * @param time
      */
     scheduleNote(beatNumber, time) {
-        // create an oscillator
-        var oscillator = this.audioContext.createOscillator();
+        var source;
+
         // push the note on the queue, even if we're not playing.
         this.notesInQueue.push({note: beatNumber, time: time});
-
         if (!this.noteShouldBePlayed(beatNumber)) {
             return;
         }
-        oscillator.connect(this.audioContext.destination);
 
-        if (beatNumber === 0) {
-            // beat 0 == low pitch
-            oscillator.frequency.value = this.state.stressFirstBeat ? 880.0 : 440.0;
-        } else if (beatNumber % this.quartersQuantity === 0) {
-            // quarter notes = medium pitch
-            oscillator.frequency.value = 440.0;
+        // create an oscillator
+        source = this.getAudioSource(beatNumber);
+
+        source.start(time);
+        source.stop(time + this.noteLength);
+    },
+
+    getAudioSource(beatNumber) {
+        var source,
+            gainNode = this.audioContext.createGain();
+
+        if (this.state.useOscillator) {
+            source = this.audioContext.createOscillator();
+            if (beatNumber === 0) {
+                // beat 0 == low pitch
+                source.frequency.value = this.state.stressFirstBeat ? 880.0 : 440.0;
+            } else if (beatNumber % this.quartersQuantity === 0) {
+                // quarter notes = medium pitch
+                source.frequency.value = 440.0;
+            } else {
+                // other 16th notes = high pitch
+                source.frequency.value = 220.0;
+            }
         } else {
-            // other 16th notes = high pitch
-            oscillator.frequency.value = 220.0;
+            // GET assets/metronome/beat.mp3
+            source = this.getBeatData(source);
         }
 
-        oscillator.start(time);
-        oscillator.stop(time + this.noteLength);
+        source.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        gainNode.gain.value = this.state.volume;
+        return source;
+    },
+
+    /**
+     * Load mp3 beat data to the audio context buffer
+     * @param source
+     * @returns {*}
+     */
+    getBeatData(source) {
+        var request = new XMLHttpRequest(),
+            audioContext = this.audioContext;
+        source = this.audioContext.createBufferSource();
+        request.open('get', 'assets/metronome/beat.mp3', true);
+        request.responseType = 'arraybuffer';
+        request.onload = function() {
+            var audioData = request.response;
+            audioContext.decodeAudioData(audioData, function (buffer) {
+                source.buffer = buffer;
+            }, function (error) {
+                console.log('Error with decoding audio data. ' + error.err);
+            });
+        };
+        request.send();
+        return source;
     },
 
     /**
@@ -236,12 +280,12 @@ var Metronome = React.createClass({
             return;
         }
 
-        // create empty buffer and play it
+        // Create an empty buffer and play it
         var source = this.audioContext.createBufferSource();
         source.buffer = this.audioContext.createBuffer(1, 1, 22050);
         source.connect(this.audioContext.destination);
         source.noteOn(0);
-        // by checking the play state after some time, we know if we're really unlocked
+        // By checking the play state after some time, we know if we're really unlocked
         setTimeout(function () {
             if ((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
                 this.unlocked = true;
@@ -302,29 +346,32 @@ var Metronome = React.createClass({
     },
 
     changeTempo(event) {
-        this.setState({tempo: event.target.value});
-        this.startOver();
+        this.setState({tempo: event.target.value}, this.startOver);
     },
 
     changeResolution(value) {
-        this.setState({noteResolution: value});
-        this.startOver();
+        this.setState({noteResolution: value}, this.startOver);
     },
 
     changeSignature(value) {
-        this.setState({signature: value});
-        this.startOver();
+        this.setState({signature: value}, this.startOver);
+    },
+
+    changeVolume(event) {
+        this.setState({volume: event.target.value / 100});
     },
 
     toggleStressFirstBeat() {
-        this.setState({stressFirstBeat: !this.state.stressFirstBeat});
-        this.startOver();
+        this.setState({stressFirstBeat: !this.state.stressFirstBeat}, this.startOver);
+    },
+
+    toggleUseOscillator() {
+        this.setState({useOscillator: !this.state.useOscillator}, this.startOver);
     },
 
     componentDidMount() {
         var changeResolution = this.changeResolution,
-            changeSignature = this.changeSignature,
-            toggleStressFirstBeat = this.toggleStressFirstBeat;
+            changeSignature = this.changeSignature;
         this.init();
         $('.ui.resolution.radio.checkbox')
             .checkbox({
@@ -338,18 +385,12 @@ var Metronome = React.createClass({
                     changeSignature(this.value);
                 }
             }).first().checkbox('check');
-        $('.ui.stress.toggle.checkbox')
-            .checkbox({
-                fireOnInit: true,
-                onChange() {
-                    toggleStressFirstBeat();
-                }
-            });
     },
 
     render() {
         var playButtonText = this.state.isPlaying ? 'stop' : 'play',
-            playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'blue play icon';
+            playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'blue play icon',
+            volume = parseInt(this.state.volume * 100);
         return (
             <div className="metronome">
                 <div className="ui centered card">
@@ -358,8 +399,8 @@ var Metronome = React.createClass({
                     </div>
                     <div className="extra content ui form">
                         <div id="controls">
-                            <div id="tempoBox">
-                                Tempo: <span id="showTempo">{this.state.tempo}</span><br/>
+                            <div id="tempo">
+                                Tempo: <span>{this.state.tempo}</span><br/>
                                 <input
                                     id="tempo"
                                     type="range"
@@ -369,6 +410,31 @@ var Metronome = React.createClass({
                                     onChange={this.changeTempo}
                                     className="metronome__slider"
                                 />
+                            </div>
+                            <div id="volume">
+                                Volume: <span>{volume}%</span><br/>
+                                <input
+                                    id="volume"
+                                    type="range"
+                                    min={this.minVolume}
+                                    max={this.maxVolume}
+                                    value={volume}
+                                    onChange={this.changeVolume}
+                                    className="metronome__slider"
+                                />
+                            </div>
+
+                            <div className="ui divider"></div>
+
+                            <div className="ui oscillator toggle checked checkbox">
+                                <input
+                                    type="checkbox"
+                                    tabindex="0"
+                                    class="hidden"
+                                    name="oscillator"
+                                    checked={this.state.useOscillator}
+                                    onChange={this.toggleUseOscillator}/>
+                                <label>Use generated sound</label>
                             </div>
 
                             <div className="ui divider"></div>
@@ -431,12 +497,23 @@ var Metronome = React.createClass({
                                 </div>
                             </div>
 
-                            <div className="ui divider"></div>
+                            <div style={{display: this.state.useOscillator ? 'block' : 'none'}}>
 
-                            <div className="ui stress toggle checked checkbox">
-                                <input type="checkbox" tabindex="0" class="hidden" name="stress" value="1"/>
-                                <label>Stress the first beat</label>
+                                <div className="ui divider"></div>
+
+                                <div className="ui stress toggle checked checkbox">
+                                    <input
+                                        type="checkbox"
+                                        tabindex="0"
+                                        class="hidden"
+                                        name="stress"
+                                        checked={this.state.stressFirstBeat}
+                                        onChange={this.toggleStressFirstBeat}/>
+                                    <label>Stress the first beat</label>
+                                </div>
                             </div>
+
+                            <div className="ui divider"></div>
 
                         </div>
                     </div>

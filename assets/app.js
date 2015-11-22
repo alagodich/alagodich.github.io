@@ -133,7 +133,9 @@ var Metronome = React.createClass({
     displayName: 'Metronome',
 
     minTempo: 30,
-    maxTempo: 250,
+    maxTempo: 200,
+    minVolume: 0,
+    maxVolume: 100,
     audioContext: null,
     timeWorker: null,
     lookAhead: 25.0,
@@ -168,7 +170,9 @@ var Metronome = React.createClass({
             noteResolution: '4',
             isPlaying: false,
             signature: '4/4',
-            stressFirstBeat: true
+            stressFirstBeat: false,
+            volume: 0.5,
+            useOscillator: true
         };
     },
 
@@ -282,25 +286,58 @@ var Metronome = React.createClass({
     },
 
     scheduleNote: function scheduleNote(beatNumber, time) {
-        var oscillator = this.audioContext.createOscillator();
+        var source;
 
         this.notesInQueue.push({ note: beatNumber, time: time });
-
         if (!this.noteShouldBePlayed(beatNumber)) {
             return;
         }
-        oscillator.connect(this.audioContext.destination);
 
-        if (beatNumber === 0) {
-            oscillator.frequency.value = this.state.stressFirstBeat ? 880.0 : 440.0;
-        } else if (beatNumber % this.quartersQuantity === 0) {
-            oscillator.frequency.value = 440.0;
+        source = this.getAudioSource(beatNumber);
+
+        source.start(time);
+        source.stop(time + this.noteLength);
+    },
+
+    getAudioSource: function getAudioSource(beatNumber) {
+        var source,
+            gainNode = this.audioContext.createGain();
+
+        if (this.state.useOscillator) {
+            source = this.audioContext.createOscillator();
+            if (beatNumber === 0) {
+                source.frequency.value = this.state.stressFirstBeat ? 880.0 : 440.0;
+            } else if (beatNumber % this.quartersQuantity === 0) {
+                source.frequency.value = 440.0;
+            } else {
+                source.frequency.value = 220.0;
+            }
         } else {
-            oscillator.frequency.value = 220.0;
+            source = this.getBeatData(source);
         }
 
-        oscillator.start(time);
-        oscillator.stop(time + this.noteLength);
+        source.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        gainNode.gain.value = this.state.volume;
+        return source;
+    },
+
+    getBeatData: function getBeatData(source) {
+        var request = new XMLHttpRequest(),
+            audioContext = this.audioContext;
+        source = this.audioContext.createBufferSource();
+        request.open('get', 'assets/metronome/beat.mp3', true);
+        request.responseType = 'arraybuffer';
+        request.onload = function () {
+            var audioData = request.response;
+            audioContext.decodeAudioData(audioData, function (buffer) {
+                source.buffer = buffer;
+            }, function (error) {
+                console.log('Error with decoding audio data. ' + error.err);
+            });
+        };
+        request.send();
+        return source;
     },
 
     unlock: function unlock() {
@@ -354,29 +391,32 @@ var Metronome = React.createClass({
     },
 
     changeTempo: function changeTempo(event) {
-        this.setState({ tempo: event.target.value });
-        this.startOver();
+        this.setState({ tempo: event.target.value }, this.startOver);
     },
 
     changeResolution: function changeResolution(value) {
-        this.setState({ noteResolution: value });
-        this.startOver();
+        this.setState({ noteResolution: value }, this.startOver);
     },
 
     changeSignature: function changeSignature(value) {
-        this.setState({ signature: value });
-        this.startOver();
+        this.setState({ signature: value }, this.startOver);
+    },
+
+    changeVolume: function changeVolume(event) {
+        this.setState({ volume: event.target.value / 100 });
     },
 
     toggleStressFirstBeat: function toggleStressFirstBeat() {
-        this.setState({ stressFirstBeat: !this.state.stressFirstBeat });
-        this.startOver();
+        this.setState({ stressFirstBeat: !this.state.stressFirstBeat }, this.startOver);
+    },
+
+    toggleUseOscillator: function toggleUseOscillator() {
+        this.setState({ useOscillator: !this.state.useOscillator }, this.startOver);
     },
 
     componentDidMount: function componentDidMount() {
         var changeResolution = this.changeResolution,
-            changeSignature = this.changeSignature,
-            toggleStressFirstBeat = this.toggleStressFirstBeat;
+            changeSignature = this.changeSignature;
         this.init();
         $('.ui.resolution.radio.checkbox').checkbox({
             onChange: function onChange() {
@@ -388,17 +428,12 @@ var Metronome = React.createClass({
                 changeSignature(this.value);
             }
         }).first().checkbox('check');
-        $('.ui.stress.toggle.checkbox').checkbox({
-            fireOnInit: true,
-            onChange: function onChange() {
-                toggleStressFirstBeat();
-            }
-        });
     },
 
     render: function render() {
         var playButtonText = this.state.isPlaying ? 'stop' : 'play',
-            playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'blue play icon';
+            playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'blue play icon',
+            volume = parseInt(this.state.volume * 100);
         return React.createElement(
             'div',
             { className: 'metronome' },
@@ -422,11 +457,11 @@ var Metronome = React.createClass({
                         { id: 'controls' },
                         React.createElement(
                             'div',
-                            { id: 'tempoBox' },
+                            { id: 'tempo' },
                             'Tempo: ',
                             React.createElement(
                                 'span',
-                                { id: 'showTempo' },
+                                null,
                                 this.state.tempo
                             ),
                             React.createElement('br', null),
@@ -439,6 +474,44 @@ var Metronome = React.createClass({
                                 onChange: this.changeTempo,
                                 className: 'metronome__slider'
                             })
+                        ),
+                        React.createElement(
+                            'div',
+                            { id: 'volume' },
+                            'Volume: ',
+                            React.createElement(
+                                'span',
+                                null,
+                                volume,
+                                '%'
+                            ),
+                            React.createElement('br', null),
+                            React.createElement('input', {
+                                id: 'volume',
+                                type: 'range',
+                                min: this.minVolume,
+                                max: this.maxVolume,
+                                value: volume,
+                                onChange: this.changeVolume,
+                                className: 'metronome__slider'
+                            })
+                        ),
+                        React.createElement('div', { className: 'ui divider' }),
+                        React.createElement(
+                            'div',
+                            { className: 'ui oscillator toggle checked checkbox' },
+                            React.createElement('input', {
+                                type: 'checkbox',
+                                tabindex: '0',
+                                'class': 'hidden',
+                                name: 'oscillator',
+                                checked: this.state.useOscillator,
+                                onChange: this.toggleUseOscillator }),
+                            React.createElement(
+                                'label',
+                                null,
+                                'Use generated sound'
+                            )
                         ),
                         React.createElement('div', { className: 'ui divider' }),
                         React.createElement(
@@ -540,17 +613,28 @@ var Metronome = React.createClass({
                                 )
                             )
                         ),
-                        React.createElement('div', { className: 'ui divider' }),
                         React.createElement(
                             'div',
-                            { className: 'ui stress toggle checked checkbox' },
-                            React.createElement('input', { type: 'checkbox', tabindex: '0', 'class': 'hidden', name: 'stress', value: '1' }),
+                            { style: { display: this.state.useOscillator ? 'block' : 'none' } },
+                            React.createElement('div', { className: 'ui divider' }),
                             React.createElement(
-                                'label',
-                                null,
-                                'Stress the first beat'
+                                'div',
+                                { className: 'ui stress toggle checked checkbox' },
+                                React.createElement('input', {
+                                    type: 'checkbox',
+                                    tabindex: '0',
+                                    'class': 'hidden',
+                                    name: 'stress',
+                                    checked: this.state.stressFirstBeat,
+                                    onChange: this.toggleStressFirstBeat }),
+                                React.createElement(
+                                    'label',
+                                    null,
+                                    'Stress the first beat'
+                                )
                             )
-                        )
+                        ),
+                        React.createElement('div', { className: 'ui divider' })
                     )
                 ),
                 React.createElement(
