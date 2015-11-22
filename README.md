@@ -23,3 +23,4 @@ Some components created with [React](https://facebook.github.io/react/)
 * `grunt`
 * to run locally `bundle exec jekyll serve --draft`
 * to watch and compile /app/ files `grunt watch`
+* to start browser sync `grunt browserSync` (it will proxy localhost:4000 so 'bundle serve' and 'grunt watch' are required for this to work 

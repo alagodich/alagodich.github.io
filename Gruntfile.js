@@ -95,6 +95,16 @@ module.exports = function(grunt) {
                     "assets/style.css": "less/style.less"
                 }
             }
+        },
+        browserSync: {
+            dev: {
+                bsFiles: {
+                    src: ['_site/**']
+                },
+                options: {
+                    proxy: 'localhost:4000'
+                }
+            }
         }
     });
 
