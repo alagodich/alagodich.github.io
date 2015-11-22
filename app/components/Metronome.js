@@ -436,7 +436,7 @@ var Metronome = React.createClass({
                                         name="oscillator"
                                         checked={this.state.useOscillator}
                                         onChange={this.toggleUseOscillator}/>
-                                    <label>Use generated sound</label>
+                                    <label>Generate sound</label>
                                 </div>
                             </div>
 
