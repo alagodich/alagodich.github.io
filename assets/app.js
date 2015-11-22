@@ -513,7 +513,7 @@ var Metronome = React.createClass({
                                 React.createElement(
                                     'label',
                                     null,
-                                    'Use generated sound'
+                                    'Generate sound'
                                 )
                             )
                         ),
