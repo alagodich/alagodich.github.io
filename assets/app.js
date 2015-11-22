@@ -163,6 +163,7 @@ var Metronome = React.createClass({
     sixteenthNoteColor: '#EEE',
 
     unlocked: false,
+    decodedBeatSound: null,
 
     getInitialState: function getInitialState() {
         return {
@@ -170,9 +171,9 @@ var Metronome = React.createClass({
             noteResolution: '4',
             isPlaying: false,
             signature: '4/4',
-            stressFirstBeat: false,
+            accentFirstBeat: false,
             volume: 0.5,
-            useOscillator: true
+            useOscillator: false
         };
     },
 
@@ -195,6 +196,12 @@ var Metronome = React.createClass({
             return;
         }
 
+        this.loadBeatData().then((function (buffer) {
+            this.decodedBeatSound = buffer;
+        }).bind(this), function (error) {
+            console.log('Cannot load beat sound.', error);
+        });
+
         this.timerWorker = new Worker("assets/metronome/metronomeworker.js");
         this.timerWorker.onmessage = function (message) {
             if (message.data == "tick") {
@@ -215,6 +222,24 @@ var Metronome = React.createClass({
         }
         this.quartersQuantity = this.state.noteResolution === '12' ? 3 : 4;
         this.nextNoteMultiplier = this.state.noteResolution === '12' ? 0.33 : 0.25;
+    },
+
+    loadBeatData: function loadBeatData() {
+        return new Promise((function (resolve, reject) {
+            var request = new XMLHttpRequest();
+            request.open('get', 'assets/metronome/beat.mp3', true);
+            request.responseType = 'arraybuffer';
+            request.onload = (function () {
+                var audioData = request.response;
+                this.audioContext.decodeAudioData(audioData, function (buffer) {
+                    resolve(buffer);
+                }, function (error) {
+                    console.log('Error with decoding audio data. ' + error.err);
+                    reject(error.err);
+                });
+            }).bind(this);
+            request.send();
+        }).bind(this));
     },
 
     play: function play() {
@@ -306,37 +331,20 @@ var Metronome = React.createClass({
         if (this.state.useOscillator) {
             source = this.audioContext.createOscillator();
             if (beatNumber === 0) {
-                source.frequency.value = this.state.stressFirstBeat ? 880.0 : 440.0;
+                source.frequency.value = this.state.accentFirstBeat ? 880.0 : 440.0;
             } else if (beatNumber % this.quartersQuantity === 0) {
                 source.frequency.value = 440.0;
             } else {
                 source.frequency.value = 220.0;
             }
         } else {
-            source = this.getBeatData(source);
+            source = this.audioContext.createBufferSource();
+            source.buffer = this.decodedBeatSound;
         }
 
         source.connect(gainNode);
         gainNode.connect(this.audioContext.destination);
         gainNode.gain.value = this.state.volume;
-        return source;
-    },
-
-    getBeatData: function getBeatData(source) {
-        var request = new XMLHttpRequest(),
-            audioContext = this.audioContext;
-        source = this.audioContext.createBufferSource();
-        request.open('get', 'assets/metronome/beat.mp3', true);
-        request.responseType = 'arraybuffer';
-        request.onload = function () {
-            var audioData = request.response;
-            audioContext.decodeAudioData(audioData, function (buffer) {
-                source.buffer = buffer;
-            }, function (error) {
-                console.log('Error with decoding audio data. ' + error.err);
-            });
-        };
-        request.send();
         return source;
     },
 
@@ -406,8 +414,8 @@ var Metronome = React.createClass({
         this.setState({ volume: event.target.value / 100 });
     },
 
-    toggleStressFirstBeat: function toggleStressFirstBeat() {
-        this.setState({ stressFirstBeat: !this.state.stressFirstBeat }, this.startOver);
+    toggleAccentFirstBeat: function toggleAccentFirstBeat() {
+        this.setState({ accentFirstBeat: !this.state.accentFirstBeat }, this.startOver);
     },
 
     toggleUseOscillator: function toggleUseOscillator() {
@@ -513,7 +521,7 @@ var Metronome = React.createClass({
                                 React.createElement(
                                     'label',
                                     null,
-                                    'Generate sound'
+                                    'Digital sound'
                                 )
                             )
                         ),
@@ -623,18 +631,18 @@ var Metronome = React.createClass({
                             React.createElement('div', { className: 'ui divider' }),
                             React.createElement(
                                 'div',
-                                { className: 'ui stress toggle checked checkbox' },
+                                { className: 'ui accent toggle checked checkbox' },
                                 React.createElement('input', {
                                     type: 'checkbox',
                                     tabindex: '0',
                                     'class': 'hidden',
-                                    name: 'stress',
-                                    checked: this.state.stressFirstBeat,
-                                    onChange: this.toggleStressFirstBeat }),
+                                    name: 'accent',
+                                    checked: this.state.accentFirstBeat,
+                                    onChange: this.toggleAccentFirstBeat }),
                                 React.createElement(
                                     'label',
                                     null,
-                                    'Stress the first beat'
+                                    'Accent the first beat'
                                 )
                             )
                         ),
