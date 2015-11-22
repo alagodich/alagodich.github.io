@@ -173,7 +173,7 @@ var Metronome = React.createClass({
             signature: '4/4',
             accentFirstBeat: false,
             volume: 0.5,
-            useOscillator: false
+            useOscillator: true
         };
     },
 
