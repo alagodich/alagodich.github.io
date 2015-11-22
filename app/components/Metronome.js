@@ -424,17 +424,20 @@ var Metronome = React.createClass({
                                 />
                             </div>
 
-                            <div className="ui divider"></div>
+                            <div style={{display: this.iOS() ? 'none' : 'block'}}>
 
-                            <div className="ui oscillator toggle checked checkbox">
-                                <input
-                                    type="checkbox"
-                                    tabindex="0"
-                                    class="hidden"
-                                    name="oscillator"
-                                    checked={this.state.useOscillator}
-                                    onChange={this.toggleUseOscillator}/>
-                                <label>Use generated sound</label>
+                                <div className="ui divider"></div>
+
+                                <div className="ui oscillator toggle checked checkbox">
+                                    <input
+                                        type="checkbox"
+                                        tabindex="0"
+                                        class="hidden"
+                                        name="oscillator"
+                                        checked={this.state.useOscillator}
+                                        onChange={this.toggleUseOscillator}/>
+                                    <label>Use generated sound</label>
+                                </div>
                             </div>
 
                             <div className="ui divider"></div>

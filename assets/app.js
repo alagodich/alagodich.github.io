@@ -496,21 +496,25 @@ var Metronome = React.createClass({
                                 className: 'metronome__slider'
                             })
                         ),
-                        React.createElement('div', { className: 'ui divider' }),
                         React.createElement(
                             'div',
-                            { className: 'ui oscillator toggle checked checkbox' },
-                            React.createElement('input', {
-                                type: 'checkbox',
-                                tabindex: '0',
-                                'class': 'hidden',
-                                name: 'oscillator',
-                                checked: this.state.useOscillator,
-                                onChange: this.toggleUseOscillator }),
+                            { style: { display: this.iOS() ? 'none' : 'block' } },
+                            React.createElement('div', { className: 'ui divider' }),
                             React.createElement(
-                                'label',
-                                null,
-                                'Use generated sound'
+                                'div',
+                                { className: 'ui oscillator toggle checked checkbox' },
+                                React.createElement('input', {
+                                    type: 'checkbox',
+                                    tabindex: '0',
+                                    'class': 'hidden',
+                                    name: 'oscillator',
+                                    checked: this.state.useOscillator,
+                                    onChange: this.toggleUseOscillator }),
+                                React.createElement(
+                                    'label',
+                                    null,
+                                    'Use generated sound'
+                                )
                             )
                         ),
                         React.createElement('div', { className: 'ui divider' }),
