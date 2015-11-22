@@ -104,55 +104,10 @@ var Metronome = React.createClass({
     },
 
     /**
-     * Unlock AudioContext on iOS devices
-     * @see https://developer.apple.com/library/safari/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html
-     */
-    unlock() {
-        if (!this.iOS() || this.unlocked) {
-            return;
-        }
-        // create empty buffer and play it
-        var buffer = this.audioContext.createBuffer(1, 1, 22050),
-            source = this.audioContext.createBufferSource();
-
-        source.buffer = buffer;
-        source.connect(this.audioContext.destination);
-        source.noteOn(0);
-        // by checking the play state after some time, we know if we're really unlocked
-        setTimeout(function () {
-            if ((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
-                this.unlocked = true;
-            }
-        }, 0);
-    },
-
-    /**
-     * Check for a known iOS device
-     * @returns {boolean}
-     */
-    iOS() {
-        var iDevices = [
-            'iPad Simulator',
-            'iPhone Simulator',
-            'iPod Simulator',
-            'iPad',
-            'iPhone',
-            'iPod'
-        ];
-
-        while (iDevices.length) {
-            if (navigator.platform === iDevices.pop()) {
-                return true;
-            }
-        }
-
-        return false;
-    },
-
-    /**
      * Toggle worker by sending start or stop
      */
     play() {
+        this.unlock();
         this.setState({isPlaying: !this.state.isPlaying}, function () {
             if (this.state.isPlaying) {
                 this.initParams();
@@ -247,30 +202,74 @@ var Metronome = React.createClass({
      * @param time
      */
     scheduleNote(beatNumber, time) {
-        this.unlock();
         // create an oscillator
-        var osc = this.audioContext.createOscillator();
+        var oscillator = this.audioContext.createOscillator();
         // push the note on the queue, even if we're not playing.
         this.notesInQueue.push({note: beatNumber, time: time});
 
         if (!this.noteShouldBePlayed(beatNumber)) {
             return;
         }
+        oscillator.connect(this.audioContext.destination);
 
-        osc.connect(this.audioContext.destination);
         if (beatNumber === 0) {
             // beat 0 == low pitch
-            osc.frequency.value = this.state.stressFirstBeat ? 880.0 : 440.0;
+            oscillator.frequency.value = this.state.stressFirstBeat ? 880.0 : 440.0;
         } else if (beatNumber % this.quartersQuantity === 0) {
             // quarter notes = medium pitch
-            osc.frequency.value = 440.0;
+            oscillator.frequency.value = 440.0;
         } else {
             // other 16th notes = high pitch
-            osc.frequency.value = 220.0;
+            oscillator.frequency.value = 220.0;
         }
 
-        osc.start(time);
-        osc.stop(time + this.noteLength);
+        oscillator.start(time);
+        oscillator.stop(time + this.noteLength);
+    },
+
+    /**
+     * Unlock AudioContext on iOS devices
+     * @see https://developer.apple.com/library/safari/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html
+     */
+    unlock() {
+        if (!this.iOS() || this.unlocked) {
+            return;
+        }
+
+        // create empty buffer and play it
+        var source = this.audioContext.createBufferSource();
+        source.buffer = this.audioContext.createBuffer(1, 1, 22050);
+        source.connect(this.audioContext.destination);
+        source.noteOn(0);
+        // by checking the play state after some time, we know if we're really unlocked
+        setTimeout(function () {
+            if ((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
+                this.unlocked = true;
+            }
+        }, 0);
+    },
+
+    /**
+     * Check for a known iOS device
+     * @returns {boolean}
+     */
+    iOS() {
+        var iDevices = [
+            'iPad Simulator',
+            'iPhone Simulator',
+            'iPod Simulator',
+            'iPad',
+            'iPhone',
+            'iPod'
+        ];
+
+        while (iDevices.length) {
+            if (navigator.platform === iDevices.pop()) {
+                return true;
+            }
+        }
+
+        return false;
     },
 
     /**

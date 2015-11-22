@@ -213,38 +213,8 @@ var Metronome = React.createClass({
         this.nextNoteMultiplier = this.state.noteResolution === '12' ? 0.33 : 0.25;
     },
 
-    unlock: function unlock() {
-        if (!this.iOS() || this.unlocked) {
-            return;
-        }
-
-        var buffer = this.audioContext.createBuffer(1, 1, 22050),
-            source = this.audioContext.createBufferSource();
-
-        source.buffer = buffer;
-        source.connect(this.audioContext.destination);
-        source.noteOn(0);
-
-        setTimeout(function () {
-            if (source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE) {
-                this.unlocked = true;
-            }
-        }, 0);
-    },
-
-    iOS: function iOS() {
-        var iDevices = ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'];
-
-        while (iDevices.length) {
-            if (navigator.platform === iDevices.pop()) {
-                return true;
-            }
-        }
-
-        return false;
-    },
-
     play: function play() {
+        this.unlock();
         this.setState({ isPlaying: !this.state.isPlaying }, function () {
             if (this.state.isPlaying) {
                 this.initParams();
@@ -312,27 +282,54 @@ var Metronome = React.createClass({
     },
 
     scheduleNote: function scheduleNote(beatNumber, time) {
-        this.unlock();
-
-        var osc = this.audioContext.createOscillator();
+        var oscillator = this.audioContext.createOscillator();
 
         this.notesInQueue.push({ note: beatNumber, time: time });
 
         if (!this.noteShouldBePlayed(beatNumber)) {
             return;
         }
+        oscillator.connect(this.audioContext.destination);
 
-        osc.connect(this.audioContext.destination);
         if (beatNumber === 0) {
-            osc.frequency.value = this.state.stressFirstBeat ? 880.0 : 440.0;
+            oscillator.frequency.value = this.state.stressFirstBeat ? 880.0 : 440.0;
         } else if (beatNumber % this.quartersQuantity === 0) {
-            osc.frequency.value = 440.0;
+            oscillator.frequency.value = 440.0;
         } else {
-            osc.frequency.value = 220.0;
+            oscillator.frequency.value = 220.0;
         }
 
-        osc.start(time);
-        osc.stop(time + this.noteLength);
+        oscillator.start(time);
+        oscillator.stop(time + this.noteLength);
+    },
+
+    unlock: function unlock() {
+        if (!this.iOS() || this.unlocked) {
+            return;
+        }
+
+        var source = this.audioContext.createBufferSource();
+        source.buffer = this.audioContext.createBuffer(1, 1, 22050);
+        source.connect(this.audioContext.destination);
+        source.noteOn(0);
+
+        setTimeout(function () {
+            if (source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE) {
+                this.unlocked = true;
+            }
+        }, 0);
+    },
+
+    iOS: function iOS() {
+        var iDevices = ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'];
+
+        while (iDevices.length) {
+            if (navigator.platform === iDevices.pop()) {
+                return true;
+            }
+        }
+
+        return false;
     },
 
     noteShouldBePlayed: function noteShouldBePlayed(beatNumber) {
