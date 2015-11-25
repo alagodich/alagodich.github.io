@@ -15,6 +15,7 @@ Some components created with [React](https://facebook.github.io/react/)
 * Добавить js и dart приложения в новый раздел на сайт
 * Метроном (добавить выбора размера, подключеть firebase)
 * Use Flow http://flowtype.org/
+* Toggle metronome by 'space' press
 
 ### Install
 * make sure you have [ruby, jekyll and bundler installed](https://help.github.com/articles/using-jekyll-with-pages/)
