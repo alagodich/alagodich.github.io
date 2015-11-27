@@ -15,6 +15,7 @@ Some components created with [React](https://facebook.github.io/react/)
 * Метроном (добавить выбора размера, подключеть firebase)
 * Use Flow http://flowtype.org/
 * Toggle metronome by 'space' press
+* Add annotations to metronome app (desktop only)
 
 ### Install
 * make sure you have [ruby, jekyll and bundler installed](https://help.github.com/articles/using-jekyll-with-pages/)
