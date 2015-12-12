@@ -6,6 +6,7 @@ var Youtube = require('./components/Youtube'),
     TODOs = require('./components/TODOs'),
     Menu = require('./components/Menu'),
     ReactMap = require('./components/ReactMap'),
+    Carousel = require('./components/Carousel'),
     Metronome = require('./components/Metronome');
 
 // Render youtube frames
@@ -63,4 +64,10 @@ if (metronomeContainer) {
 // Init semantic popup
 $('.popup').popup({
     transition: 'vertical flip'
+});
+
+// Render menu
+$('.post__carousel').each(function () {
+    var self = $(this);
+    React.render(<Carousel items={self.data('items')}></Carousel>, this);
 });

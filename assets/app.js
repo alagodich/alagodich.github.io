@@ -7,6 +7,7 @@ var Youtube = require('./components/Youtube'),
     TODOs = require('./components/TODOs'),
     Menu = require('./components/Menu'),
     ReactMap = require('./components/ReactMap'),
+    Carousel = require('./components/Carousel'),
     Metronome = require('./components/Metronome');
 
 $('.post__video').each(function () {
@@ -58,7 +59,54 @@ $('.popup').popup({
     transition: 'vertical flip'
 });
 
-},{"./components/Image":2,"./components/Menu":3,"./components/Metronome":5,"./components/Profile":6,"./components/ReactMap":7,"./components/TODOs":8,"./components/Youtube":9}],2:[function(require,module,exports){
+$('.post__carousel').each(function () {
+    var self = $(this);
+    React.render(React.createElement(Carousel, { items: self.data('items') }), this);
+});
+
+},{"./components/Carousel":2,"./components/Image":3,"./components/Menu":4,"./components/Metronome":6,"./components/Profile":7,"./components/ReactMap":8,"./components/TODOs":9,"./components/Youtube":10}],2:[function(require,module,exports){
+"use strict";
+
+var Carousel = React.createClass({
+    displayName: "Carousel",
+
+    componentDidMount: function componentDidMount() {
+        $(this.refs.container.getDOMNode()).owlCarousel({
+            loop: true,
+            items: 1,
+            margin: 10,
+            nav: false,
+            dots: true,
+
+            lazyLoad: true,
+            autoHeight: true,
+            dotsEach: 1
+        });
+    },
+    render: function render() {
+        var items = [];
+        this.props.items.forEach(function (item) {
+            items.push(React.createElement("img", {
+                className: "owl-lazy ui rounded image",
+                "data-src": 'https://lh3.googleusercontent.com/' + item,
+                alt: ""
+            }));
+        });
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(
+                "div",
+                { className: "owl-carousel", ref: "container" },
+                items
+            )
+        );
+    }
+});
+
+module.exports = Carousel;
+
+},{}],3:[function(require,module,exports){
 "use strict";
 
 var Image = React.createClass({
@@ -72,7 +120,7 @@ var Image = React.createClass({
 
 module.exports = Image;
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 
 var MenuItem = require('./MenuItem'),
@@ -95,7 +143,7 @@ var MenuItem = require('./MenuItem'),
 
 module.exports = Menu;
 
-},{"./MenuItem":4}],4:[function(require,module,exports){
+},{"./MenuItem":5}],5:[function(require,module,exports){
 "use strict";
 
 var MenuItem = React.createClass({
@@ -126,7 +174,7 @@ var MenuItem = React.createClass({
 
 module.exports = MenuItem;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var Metronome = React.createClass({
@@ -662,7 +710,7 @@ var Metronome = React.createClass({
 
 module.exports = Metronome;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var Profile = React.createClass({
@@ -729,7 +777,7 @@ var Profile = React.createClass({
 
 module.exports = Profile;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var ReactMap = React.createClass({
@@ -859,7 +907,7 @@ var ReactMap = React.createClass({
 
 module.exports = ReactMap;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 
 var TODOs = React.createClass({
@@ -896,7 +944,7 @@ var TODOs = React.createClass({
 
 module.exports = TODOs;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 var Youtube = React.createClass({

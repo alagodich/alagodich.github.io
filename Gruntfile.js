@@ -4,7 +4,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         copy: {
             bower: {
-                src: ['jquery/dist/jquery.min.map', 'semantic/dist/semantic.min.css'],
+                src: ['jquery/dist/jquery.min.map'],
                 dest: 'assets/',
                 expand: true,
                 flatten: true,
@@ -26,9 +26,19 @@ module.exports = function(grunt) {
                 src: [
                     'bower_components/jquery/dist/jquery.min.js',
                     'bower_components/semantic/dist/semantic.min.js',
-                    'node_modules/react/dist/react.min.js'
+                    'node_modules/react/dist/react.min.js',
+                    'bower_components/owl.carousel/dist/owl.carousel.min.js'
                 ],
                 dest: 'assets/vendor.min.js'
+            },
+            styles: {
+                src: [
+                    'bower_components/semantic/dist/semantic.min.css',
+                    'bower_components/owl.carousel/dist/assets/owl.carousel.min.css',
+                    'bower_components/owl.carousel/dist/assets/owl.theme.default.min.css',
+                    'bower_components/animate.css/animate.min.css'
+                ],
+                dest: 'assets/vendor.min.css'
             },
             highmaps: {
                 src: [
