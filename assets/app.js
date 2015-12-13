@@ -65,39 +65,46 @@ $('.post__carousel').each(function () {
 });
 
 },{"./components/Carousel":2,"./components/Image":3,"./components/Menu":4,"./components/Metronome":6,"./components/Profile":7,"./components/ReactMap":8,"./components/TODOs":9,"./components/Youtube":10}],2:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var Carousel = React.createClass({
-    displayName: "Carousel",
+    displayName: 'Carousel',
 
     componentDidMount: function componentDidMount() {
         $(this.refs.container.getDOMNode()).owlCarousel({
             loop: true,
             items: 1,
-            margin: 10,
+            margin: 0,
             nav: false,
-            dots: true,
-
+            dots: false,
             lazyLoad: true,
-            autoHeight: true,
-            dotsEach: 1
+            autoHeight: true
         });
+    },
+    renderItem: function renderItem(item) {
+        if (typeof item === 'object') {
+            return '';
+        }
+        if (typeof item === 'string') {
+            return React.createElement('img', {
+                className: 'owl-lazy ui image',
+                'data-src': 'https://lh3.googleusercontent.com/' + item,
+                alt: ''
+            });
+        }
+        return '';
     },
     render: function render() {
         var items = [];
-        this.props.items.forEach(function (item) {
-            items.push(React.createElement("img", {
-                className: "owl-lazy ui image",
-                "data-src": 'https://lh3.googleusercontent.com/' + item,
-                alt: ""
-            }));
-        });
+        this.props.items.forEach((function (item) {
+            items.push(this.renderItem(item));
+        }).bind(this));
         return React.createElement(
-            "div",
-            { className: "ui piled segment" },
+            'div',
+            { className: 'ui piled segment' },
             React.createElement(
-                "div",
-                { className: "owl-carousel", ref: "container" },
+                'div',
+                { className: 'owl-carousel', ref: 'container' },
                 items
             )
         );

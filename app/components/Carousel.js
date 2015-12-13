@@ -3,24 +3,33 @@ var Carousel = React.createClass({
         $(this.refs.container.getDOMNode()).owlCarousel({
             loop: true,
             items: 1,
-            margin: 10,
+            margin: 0,
             nav: false,
-            dots: true,
-            //stagePadding: 50,
-            lazyLoad:true,
-            autoHeight: true,
-            dotsEach: 1
+            dots: false,
+            lazyLoad: true,
+            autoHeight: true
         });
+    },
+    renderItem(item) {
+        if (typeof item === 'object') {
+            // Render different kinds of items
+            return '';
+        }
+        if (typeof item === 'string') {
+            // Google photos id
+            return <img
+                className="owl-lazy ui image"
+                data-src={'https://lh3.googleusercontent.com/' + item}
+                alt=""
+            />;
+        }
+        return '';
     },
     render() {
         var items = [];
         this.props.items.forEach(function (item) {
-            items.push(<img
-                className="owl-lazy ui image"
-                data-src={'https://lh3.googleusercontent.com/' + item}
-                alt=""
-            />);
-        });
+            items.push(this.renderItem(item));
+        }.bind(this));
         return (
             <div className="ui piled segment">
                 <div className="owl-carousel" ref="container">
