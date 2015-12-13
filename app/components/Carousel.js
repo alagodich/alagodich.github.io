@@ -16,13 +16,13 @@ var Carousel = React.createClass({
         var items = [];
         this.props.items.forEach(function (item) {
             items.push(<img
-                className="owl-lazy ui rounded image"
+                className="owl-lazy ui image"
                 data-src={'https://lh3.googleusercontent.com/' + item}
                 alt=""
             />);
         });
         return (
-            <div>
+            <div className="ui piled segment">
                 <div className="owl-carousel" ref="container">
                     {items}
                 </div>
