@@ -31,7 +31,7 @@ var Carousel = React.createClass({
             items.push(this.renderItem(item));
         }.bind(this));
         return (
-            <div className="ui piled segment">
+            <div className="ui blue piled segment">
                 <div className="owl-carousel" ref="container">
                     {items}
                 </div>

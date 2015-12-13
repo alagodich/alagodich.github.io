@@ -101,7 +101,7 @@ var Carousel = React.createClass({
         }).bind(this));
         return React.createElement(
             'div',
-            { className: 'ui piled segment' },
+            { className: 'ui blue piled segment' },
             React.createElement(
                 'div',
                 { className: 'owl-carousel', ref: 'container' },
@@ -121,7 +121,8 @@ var Image = React.createClass({
 
     render: function render() {
         var src = 'https://lh3.googleusercontent.com/' + this.props.id;
-        return React.createElement("img", { className: "ui image", src: src });
+
+        return React.createElement("img", { className: "ui centered image", src: src });
     }
 });
 
