@@ -42,6 +42,7 @@ var Metronome = React.createClass({
      */
     unlocked: false,
     decodedBeatSound: null,
+    playButton: null,
 
     getInitialState() {
         return {
@@ -65,6 +66,9 @@ var Metronome = React.createClass({
             AudioContext = window.AudioContext // Default
                 || window.webkitAudioContext // Safari and old versions of Chrome
                 || false;
+
+        // Init play button
+        this.playButton = $(this.refs.playButton.getDOMNode());
 
         // Init canvas
         this.canvas = this.refs.canvas.getDOMNode();
@@ -153,6 +157,7 @@ var Metronome = React.createClass({
                 this.timerWorker.postMessage("stop");
             }
         });
+        this.playButton.focus();
     },
 
     /**
@@ -167,6 +172,7 @@ var Metronome = React.createClass({
             this.nextNoteTime = this.audioContext.currentTime;
             this.timerWorker.postMessage("start");
         }
+        this.playButton.focus();
     },
 
     /**
@@ -391,6 +397,7 @@ var Metronome = React.createClass({
                     changeSignature(this.value);
                 }
             }).first().checkbox('check');
+        this.playButton.focus();
     },
 
     render() {
@@ -526,10 +533,10 @@ var Metronome = React.createClass({
 
                         </div>
                     </div>
-                    <div className="ui bottom attached button" onClick={this.play}>
+                    <button className="ui bottom attached button" onClick={this.play} ref="playButton">
                         <i className={playButtonIcon}></i>
                         {playButtonText}
-                    </div>
+                    </button>
                 </div>
 
             </div>
