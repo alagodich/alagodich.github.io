@@ -18,6 +18,10 @@ a {
     // Image element
     &__image {
         margin-bottom: 1em;
+        img {
+            // Prevent portrait images being way too big
+            max-height: 1000px;
+        }
     }
     // Video element
     &__video {
@@ -38,10 +42,18 @@ a {
     }
 }
 
-.metronome__slider {
-    width: 100%;
+.metronome {
+    &__slider {
+        width: 100%;
+    }
 }
 
-.post__carousel {
-    margin-bottom: 1em;
+.post {
+    &__carousel {
+        margin-bottom: 1em;
+    }
+    img {
+        // Prevent portrait images being way too big
+        max-height: 1000px;
+    }
 }
