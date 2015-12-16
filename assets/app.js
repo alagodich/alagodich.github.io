@@ -731,7 +731,8 @@ var Profile = React.createClass({
     displayName: 'Profile',
 
     render: function render() {
-        var items = [];
+        var items = [],
+            images = [];
         this.props.description.forEach(function (params) {
             var iconClass = params.icon + ' icon',
                 content;
@@ -755,6 +756,10 @@ var Profile = React.createClass({
                 )
             ));
         });
+        this.props.avatar.forEach(function (imageUrl) {
+            var className = images.length > 0 ? 'hidden content' : 'visible content';
+            images.push(React.createElement('img', { src: imageUrl, className: className }));
+        });
         return React.createElement(
             'div',
             null,
@@ -763,8 +768,8 @@ var Profile = React.createClass({
                 { className: 'ui card' },
                 React.createElement(
                     'div',
-                    { className: 'ui image' },
-                    React.createElement('img', { src: this.props.avatar, className: 'ui image' })
+                    { className: 'ui slide masked reveal image' },
+                    images
                 ),
                 React.createElement(
                     'div',

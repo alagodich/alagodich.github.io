@@ -1,6 +1,7 @@
 var Profile = React.createClass({
     render() {
-        var items = [];
+        var items = [],
+            images = [];
         this.props.description.forEach(function(params) {
             var iconClass= params.icon + ' icon',
                 content;
@@ -19,11 +20,15 @@ var Profile = React.createClass({
                 </div>
             );
         });
+        this.props.avatar.forEach(function (imageUrl) {
+            var className = images.length > 0 ? 'hidden content' : 'visible content';
+            images.push(<img src={imageUrl} className={className}/>);
+        });
         return (
             <div>
                 <div className="ui card">
-                    <div className="ui image">
-                        <img src={this.props.avatar} className="ui image"/>
+                    <div className="ui slide masked reveal image">
+                        {images}
                     </div>
                     <div className="content">
                         <div className="header">
