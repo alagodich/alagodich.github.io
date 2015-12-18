@@ -78,6 +78,7 @@ var Carousel = React.createClass({
             nav: false,
             dots: false,
             lazyLoad: true,
+            center: true,
             autoHeight: true
         });
     },
