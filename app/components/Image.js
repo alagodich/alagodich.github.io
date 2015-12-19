@@ -9,7 +9,7 @@ var Image = React.createClass({
         //    return (<img className="ui centered image" src={src} style={{height: 700, width: 'auto'}}/>);
         //}
 
-        return (<img className="ui centered image" src={src}/>);
+        return (<img className="ui image" src={src}/>);
     }
 });
 

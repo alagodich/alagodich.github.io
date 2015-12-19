@@ -123,7 +123,7 @@ var Image = React.createClass({
     render: function render() {
         var src = 'https://lh3.googleusercontent.com/' + this.props.id;
 
-        return React.createElement("img", { className: "ui centered image", src: src });
+        return React.createElement("img", { className: "ui image", src: src });
     }
 });
 
