@@ -7,9 +7,7 @@ var MenuItem = React.createClass({
             item = <a className="header" href={this.props.url}>{this.props.title}</a>
         }
         return (
-            <div className="item">
-                {item}
-            </div>
+            <div className="item">{item}</div>
         );
     }
 });

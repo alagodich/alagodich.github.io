@@ -1,4 +1,4 @@
-var Image = React.createClass({
+var Photo = React.createClass({
     render() {
         var src = 'https://lh3.googleusercontent.com/' + this.props.id;
             //regexp = /=w([\d]+)-h([\d]+)/g,
@@ -9,8 +9,8 @@ var Image = React.createClass({
         //    return (<img className="ui centered image" src={src} style={{height: 700, width: 'auto'}}/>);
         //}
 
-        return (<img className="ui image" src={src}/>);
+        return (<img className="ui image" src={src} style={{'max-height': 1000, 'margin-bottom': '1em'}}/>);
     }
 });
 
-module.exports = Image;
+module.exports = Photo;

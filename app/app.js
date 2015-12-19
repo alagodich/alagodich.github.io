@@ -1,16 +1,16 @@
 'use strict';
 
 var Youtube = require('./components/Youtube'),
-    Image = require('./components/Image'),
+    Photo = require('./components/Photo'),
     Profile = require('./components/Profile'),
-    TODOs = require('./components/TODOs'),
+    //TODOs = require('./components/TODOs'),
     Menu = require('./components/Menu'),
     ReactMap = require('./components/ReactMap'),
     Carousel = require('./components/Carousel'),
     Metronome = require('./components/Metronome');
 
 // Render youtube frames
-$('.post__video').each(function () {
+$('youtube').each(function () {
     var id = $(this).data('id');
     if (typeof id === 'undefined') {
         return;
@@ -19,17 +19,23 @@ $('.post__video').each(function () {
 });
 
 // Render images
-$('.post__image').each(function () {
+$('google-photo').each(function () {
     var id = $(this).data('id');
 
     if (typeof id === 'undefined') {
         return;
     }
-    React.render(<Image id={id}></Image>, this);
+    React.render(<Photo id={id}></Photo>, this);
+});
+
+// Render google photo carousel
+$('carousel').each(function () {
+    var self = $(this);
+    React.render(<Carousel items={self.data('items')}></Carousel>, this);
 });
 
 // Render profile
-$('.blog__profile').each(function () {
+$('profile').each(function () {
     var self = $(this),
         name = self.data('name'),
         avatar = self.data('avatar'),
@@ -38,16 +44,16 @@ $('.blog__profile').each(function () {
 });
 
 // Render menu
-$('.menu--react').each(function () {
+$('react-menu').each(function () {
     var self = $(this);
     React.render(<Menu current={self.data('current')} items={self.data('items')}></Menu>, this);
 });
 
 // Render todos
-$('TODOs').each(function () {
-    var items = $(this).data('items');
-    React.render(<TODOs items={items}></TODOs>, this);
-});
+//$('TODOs').each(function () {
+//    var items = $(this).data('items');
+//    React.render(<TODOs items={items}></TODOs>, this);
+//});
 
 // Render map
 var mapContainer = document.getElementById('mapContainer');
@@ -64,10 +70,4 @@ if (metronomeContainer) {
 // Init semantic popup
 $('.popup').popup({
     transition: 'vertical flip'
-});
-
-// Render menu
-$('.post__carousel').each(function () {
-    var self = $(this);
-    React.render(<Carousel items={self.data('items')}></Carousel>, this);
 });

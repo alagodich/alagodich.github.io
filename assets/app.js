@@ -2,15 +2,14 @@
 'use strict';
 
 var Youtube = require('./components/Youtube'),
-    Image = require('./components/Image'),
+    Photo = require('./components/Photo'),
     Profile = require('./components/Profile'),
-    TODOs = require('./components/TODOs'),
     Menu = require('./components/Menu'),
     ReactMap = require('./components/ReactMap'),
     Carousel = require('./components/Carousel'),
     Metronome = require('./components/Metronome');
 
-$('.post__video').each(function () {
+$('youtube').each(function () {
     var id = $(this).data('id');
     if (typeof id === 'undefined') {
         return;
@@ -18,16 +17,21 @@ $('.post__video').each(function () {
     React.render(React.createElement(Youtube, { id: id }), this);
 });
 
-$('.post__image').each(function () {
+$('google-photo').each(function () {
     var id = $(this).data('id');
 
     if (typeof id === 'undefined') {
         return;
     }
-    React.render(React.createElement(Image, { id: id }), this);
+    React.render(React.createElement(Photo, { id: id }), this);
 });
 
-$('.blog__profile').each(function () {
+$('carousel').each(function () {
+    var self = $(this);
+    React.render(React.createElement(Carousel, { items: self.data('items') }), this);
+});
+
+$('profile').each(function () {
     var self = $(this),
         name = self.data('name'),
         avatar = self.data('avatar'),
@@ -35,14 +39,9 @@ $('.blog__profile').each(function () {
     React.render(React.createElement(Profile, { name: name, avatar: avatar, description: description }), this);
 });
 
-$('.menu--react').each(function () {
+$('react-menu').each(function () {
     var self = $(this);
     React.render(React.createElement(Menu, { current: self.data('current'), items: self.data('items') }), this);
-});
-
-$('TODOs').each(function () {
-    var items = $(this).data('items');
-    React.render(React.createElement(TODOs, { items: items }), this);
 });
 
 var mapContainer = document.getElementById('mapContainer');
@@ -59,12 +58,7 @@ $('.popup').popup({
     transition: 'vertical flip'
 });
 
-$('.post__carousel').each(function () {
-    var self = $(this);
-    React.render(React.createElement(Carousel, { items: self.data('items') }), this);
-});
-
-},{"./components/Carousel":2,"./components/Image":3,"./components/Menu":4,"./components/Metronome":6,"./components/Profile":7,"./components/ReactMap":8,"./components/TODOs":9,"./components/Youtube":10}],2:[function(require,module,exports){
+},{"./components/Carousel":2,"./components/Menu":3,"./components/Metronome":5,"./components/Photo":6,"./components/Profile":7,"./components/ReactMap":8,"./components/Youtube":9}],2:[function(require,module,exports){
 'use strict';
 
 var Carousel = React.createClass({
@@ -102,7 +96,7 @@ var Carousel = React.createClass({
         }).bind(this));
         return React.createElement(
             'div',
-            { className: 'ui blue piled segment' },
+            { className: 'ui blue piled segment', style: { 'margin-bottom': '1em' } },
             React.createElement(
                 'div',
                 { className: 'owl-carousel', ref: 'container' },
@@ -115,21 +109,6 @@ var Carousel = React.createClass({
 module.exports = Carousel;
 
 },{}],3:[function(require,module,exports){
-"use strict";
-
-var Image = React.createClass({
-    displayName: "Image",
-
-    render: function render() {
-        var src = 'https://lh3.googleusercontent.com/' + this.props.id;
-
-        return React.createElement("img", { className: "ui image", src: src });
-    }
-});
-
-module.exports = Image;
-
-},{}],4:[function(require,module,exports){
 "use strict";
 
 var MenuItem = require('./MenuItem'),
@@ -152,7 +131,7 @@ var MenuItem = require('./MenuItem'),
 
 module.exports = Menu;
 
-},{"./MenuItem":5}],5:[function(require,module,exports){
+},{"./MenuItem":4}],4:[function(require,module,exports){
 "use strict";
 
 var MenuItem = React.createClass({
@@ -183,7 +162,7 @@ var MenuItem = React.createClass({
 
 module.exports = MenuItem;
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var Metronome = React.createClass({
@@ -725,6 +704,21 @@ var Metronome = React.createClass({
 
 module.exports = Metronome;
 
+},{}],6:[function(require,module,exports){
+'use strict';
+
+var Photo = React.createClass({
+    displayName: 'Photo',
+
+    render: function render() {
+        var src = 'https://lh3.googleusercontent.com/' + this.props.id;
+
+        return React.createElement('img', { className: 'ui image', src: src, style: { 'max-height': 1000, 'margin-bottom': '1em' } });
+    }
+});
+
+module.exports = Photo;
+
 },{}],7:[function(require,module,exports){
 'use strict';
 
@@ -928,43 +922,6 @@ var ReactMap = React.createClass({
 module.exports = ReactMap;
 
 },{}],9:[function(require,module,exports){
-"use strict";
-
-var TODOs = React.createClass({
-    displayName: "TODOs",
-
-    render: function render() {
-        var header = 'TODOs',
-            items = [];
-
-        this.props.items.forEach(function (item) {
-            items.push(React.createElement(
-                "div",
-                { className: "item" },
-                React.createElement("i", { className: "settings icon" }),
-                React.createElement(
-                    "div",
-                    { className: "content" },
-                    item
-                )
-            ));
-        });
-        return React.createElement(
-            "div",
-            { className: "ui list" },
-            React.createElement(
-                "div",
-                { className: "item header" },
-                header
-            ),
-            items
-        );
-    }
-});
-
-module.exports = TODOs;
-
-},{}],10:[function(require,module,exports){
 'use strict';
 
 var Youtube = React.createClass({
@@ -979,7 +936,7 @@ var Youtube = React.createClass({
         });
     },
     render: function render() {
-        return React.createElement('div', { ref: 'youtubeContainer', className: 'ui embed' });
+        return React.createElement('div', { ref: 'youtubeContainer', className: 'ui embed', style: { 'margin-bottom': '1em' } });
     }
 });
 

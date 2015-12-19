@@ -8,7 +8,7 @@ var Youtube = React.createClass({
         });
     },
     render() {
-        return (<div ref="youtubeContainer" className="ui embed"></div>);
+        return (<div ref="youtubeContainer" className="ui embed" style={{'margin-bottom': '1em'}}></div>);
     }
 });
 
