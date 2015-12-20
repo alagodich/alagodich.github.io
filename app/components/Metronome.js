@@ -526,7 +526,7 @@ var Metronome = React.createClass({
                     <div className="ui popup">
                         Unfortunately Internet explorer {IEVersion} <a
                         href="https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/currentTime"
-                        target="_blank">doesn't support</a> currentTime property of audio context,
+                        target="_blank">does not support</a> currentTime property of audio context,
                         and it is required to calculate actual time properly, without delays.
                     </div>
                 </div>
