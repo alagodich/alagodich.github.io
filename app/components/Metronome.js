@@ -27,7 +27,7 @@ var Metronome = React.createClass({
     nextNoteMultiplier: null,
 
     svg: null,
-    svgWidth: null, // Depends on card width
+    svgWidth: null, // Depends on container width
     svgHeight: 50,
     svgPadding: 4,
     pointer: null,
@@ -47,9 +47,15 @@ var Metronome = React.createClass({
     decodedBeatSound: null,
     playButton: null,
 
+    browserCompatible: true,
+
+    /**
+     * Default params
+     * @returns Object
+     */
     getInitialState() {
         return {
-            tempo: 50,
+            tempo: 101.0,
             noteResolution: '4',
             isPlaying: false,
             signature: '4/4',
@@ -71,6 +77,7 @@ var Metronome = React.createClass({
 
         // Init play button
         this.playButton = $(this.refs.playButton.getDOMNode());
+        this.playButton.focus();
 
         this.initSvg();
 
@@ -99,11 +106,11 @@ var Metronome = React.createClass({
             }
         }.bind(this);
         this.timerWorker.postMessage({"interval": this.lookAhead});
-
-        // Start the drawing loop.
-        //requestAnimationFrame(this.redraw);
     },
 
+    /**
+     * Create svg with default ruler and pointer
+     */
     initSvg() {
         var svgNode = this.refs.svg.getDOMNode(),
             cardWidth = $(this.refs.card.getDOMNode()).width();
@@ -113,9 +120,13 @@ var Metronome = React.createClass({
         this.svg = Snap(svgNode);
         this.svgWidth = this.svg.node.width.baseVal.value - this.svgPadding * 2;
 
+        this.drawRuler();
         this.drawPointer();
     },
 
+    /**
+     * Draw ruler depending on metronome params
+     */
     drawRuler() {
         var ruler = this.svg.select('#ruler');
         // Remove existing ruler, before drawing a new one
@@ -176,8 +187,10 @@ var Metronome = React.createClass({
         }, animationSpeed);
     },
 
+    /**
+     * Init params from controls
+     */
     initParams() {
-        console.log('init params');
         if (this.state.signature === '4/4') {
             this.sixteenthQuantity = this.state.noteResolution === '12' ? 12 : 16;
         }
@@ -288,6 +301,11 @@ var Metronome = React.createClass({
         source.stop(time + this.noteLength);
     },
 
+    /**
+     * Get audio source either oscillator generated or preloaded mp3
+     * @param beatNumber
+     * @returns {*}
+     */
     getAudioSource(beatNumber) {
         var source,
             gainNode = this.audioContext.createGain();
@@ -366,21 +384,23 @@ var Metronome = React.createClass({
      */
     detectIE() {
         var userAgent = window.navigator.userAgent,
-            msie = userAgent.indexOf('MSIE ');
+            msie = userAgent.indexOf('MSIE '),
+            trident,
+            edge;
 
         if (msie > 0) {
             // IE 10 or older => return version number
             return parseInt(userAgent.substring(msie + 5, userAgent.indexOf('.', msie)), 10);
         }
 
-        var trident = userAgent.indexOf('Trident/');
+        trident = userAgent.indexOf('Trident/');
         if (trident > 0) {
             // IE 11 => return version number
             var rv = userAgent.indexOf('rv:');
             return parseInt(userAgent.substring(rv + 3, userAgent.indexOf('.', rv)), 10);
         }
 
-        var edge = userAgent.indexOf('Edge/');
+        edge = userAgent.indexOf('Edge/');
         if (edge > 0) {
             // Edge (IE 12+) => return version number
             return parseInt(userAgent.substring(edge + 5, userAgent.indexOf('.', edge)), 10);
@@ -450,8 +470,8 @@ var Metronome = React.createClass({
     /**
      * Display not supporting IE message
      */
-    displayNotSupportedInfo() {
-        $(this.refs.notSupported.getDOMNode()).popup({
+    popups() {
+        $('.blue.question.icon').popup({
             transition: 'vertical flip',
             inline: true,
             hoverable: true,
@@ -464,34 +484,36 @@ var Metronome = React.createClass({
 
     /**
      * Init metronome after the component is mounted
-     * check default controls
+     * Init checkboxes
      */
     componentDidMount() {
-        var changeResolution = this.changeResolution,
-            changeSignature = this.changeSignature;
+        var self = this;
         if (this.detectIE()) {
-            this.displayNotSupportedInfo();
+            this.popups();
             return;
         }
         this.init();
         $('.ui.resolution.radio.checkbox')
             .checkbox({
-                onChange() {
-                    changeResolution(this.value);
+                onChange: function () {
+                    self.changeResolution(this.value);
                 }
-            }).first().checkbox('check');
+            });
         $('.ui.signature.radio.checkbox')
             .checkbox({
                 onChange() {
-                    changeSignature(this.value);
+                    self.changeSignature(this.value);
                 }
-            }).first().checkbox('check');
-        this.playButton.focus();
+            });
+    },
+
+    componentDidUpdate() {
+
     },
 
     render() {
         var playButtonText = this.state.isPlaying ? 'stop' : 'play',
-            playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'blue play icon',
+            playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'white play icon',
             volume = parseInt(this.state.volume * 100),
             IEVersion;
 
@@ -514,9 +536,11 @@ var Metronome = React.createClass({
             <div className="metronome">
                 <div className="ui centered card">
                     <div className="content" ref="card">
-                        <div className="right floated meta">
-                            <i ref="notSupported" className="mini blue question icon" style={{display: 'none'}}/>
-                        </div>
+                        <a href="https://github.com/alagodich/alagodich.github.io/blob/master/app/components/Metronome.js"
+                           target="_blank"
+                           className="ui right corner blue label">
+                            <i ref="notSupported" className="white github icon" style={{'text-decoration': 'none', cursor: 'pointer'}}/>
+                        </a>
                         <svg ref="svg"/>
                     </div>
                     <div className="extra content ui form">
@@ -571,7 +595,9 @@ var Metronome = React.createClass({
                                                name="resolution"
                                                value="4"
                                                tabindex="0"
-                                               className="hidden"/>
+                                               className="hidden"
+                                               checked={this.state.noteResolution === '4'}
+                                        />
                                         <label>Quarter</label>
                                     </div>
                                 </div>
@@ -581,7 +607,9 @@ var Metronome = React.createClass({
                                                name="resolution"
                                                value="8"
                                                tabindex="0"
-                                               className="hidden"/>
+                                               className="hidden"
+                                               checked={this.state.noteResolution === '8'}
+                                        />
                                         <label>8th</label>
                                     </div>
                                 </div>
@@ -591,7 +619,9 @@ var Metronome = React.createClass({
                                                name="resolution"
                                                value="12"
                                                tabindex="0"
-                                               className="hidden"/>
+                                               className="hidden"
+                                               checked={this.state.noteResolution === '12'}
+                                        />
                                         <label>Shuffle</label>
                                     </div>
                                 </div>
@@ -606,7 +636,9 @@ var Metronome = React.createClass({
                                                name="signature"
                                                value="4/4"
                                                tabindex="0"
-                                               className="hidden"/>
+                                               className="hidden"
+                                               checked={this.state.signature === '4/4'}
+                                        />
                                         <label>4/4</label>
                                     </div>
                                 </div>
@@ -616,7 +648,9 @@ var Metronome = React.createClass({
                                                name="signature"
                                                value="3/4"
                                                tabindex="0"
-                                               className="hidden"/>
+                                               className="hidden"
+                                               checked={this.state.signature === '3/4'}
+                                        />
                                         <label>3/4</label>
                                     </div>
                                 </div>
@@ -639,7 +673,7 @@ var Metronome = React.createClass({
                             </div>
                         </div>
                     </div>
-                    <button className="ui bottom attached button" onClick={this.play} ref="playButton">
+                    <button className="ui bottom primary attached button" onClick={this.play} ref="playButton">
                         <i className={playButtonIcon}/>
                         {playButtonText}
                     </button>

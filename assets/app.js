@@ -208,9 +208,11 @@ var Metronome = React.createClass({
     decodedBeatSound: null,
     playButton: null,
 
+    browserCompatible: true,
+
     getInitialState: function getInitialState() {
         return {
-            tempo: 50,
+            tempo: 101.0,
             noteResolution: '4',
             isPlaying: false,
             signature: '4/4',
@@ -224,6 +226,7 @@ var Metronome = React.createClass({
         var AudioContext = window.AudioContext || window.webkitAudioContext || false;
 
         this.playButton = $(this.refs.playButton.getDOMNode());
+        this.playButton.focus();
 
         this.initSvg();
 
@@ -258,6 +261,7 @@ var Metronome = React.createClass({
         this.svg = Snap(svgNode);
         this.svgWidth = this.svg.node.width.baseVal.value - this.svgPadding * 2;
 
+        this.drawRuler();
         this.drawPointer();
     },
 
@@ -308,7 +312,6 @@ var Metronome = React.createClass({
     },
 
     initParams: function initParams() {
-        console.log('init params');
         if (this.state.signature === '4/4') {
             this.sixteenthQuantity = this.state.noteResolution === '12' ? 12 : 16;
         }
@@ -449,19 +452,21 @@ var Metronome = React.createClass({
 
     detectIE: function detectIE() {
         var userAgent = window.navigator.userAgent,
-            msie = userAgent.indexOf('MSIE ');
+            msie = userAgent.indexOf('MSIE '),
+            trident,
+            edge;
 
         if (msie > 0) {
             return parseInt(userAgent.substring(msie + 5, userAgent.indexOf('.', msie)), 10);
         }
 
-        var trident = userAgent.indexOf('Trident/');
+        trident = userAgent.indexOf('Trident/');
         if (trident > 0) {
             var rv = userAgent.indexOf('rv:');
             return parseInt(userAgent.substring(rv + 3, userAgent.indexOf('.', rv)), 10);
         }
 
-        var edge = userAgent.indexOf('Edge/');
+        edge = userAgent.indexOf('Edge/');
         if (edge > 0) {
             return parseInt(userAgent.substring(edge + 5, userAgent.indexOf('.', edge)), 10);
         }
@@ -520,8 +525,8 @@ var Metronome = React.createClass({
         this.setState({ useOscillator: !this.state.useOscillator }, this.startOver);
     },
 
-    displayNotSupportedInfo: function displayNotSupportedInfo() {
-        $(this.refs.notSupported.getDOMNode()).popup({
+    popups: function popups() {
+        $('.blue.question.icon').popup({
             transition: 'vertical flip',
             inline: true,
             hoverable: true,
@@ -533,29 +538,29 @@ var Metronome = React.createClass({
     },
 
     componentDidMount: function componentDidMount() {
-        var changeResolution = this.changeResolution,
-            changeSignature = this.changeSignature;
+        var self = this;
         if (this.detectIE()) {
-            this.displayNotSupportedInfo();
+            this.popups();
             return;
         }
         this.init();
         $('.ui.resolution.radio.checkbox').checkbox({
             onChange: function onChange() {
-                changeResolution(this.value);
+                self.changeResolution(this.value);
             }
-        }).first().checkbox('check');
+        });
         $('.ui.signature.radio.checkbox').checkbox({
             onChange: function onChange() {
-                changeSignature(this.value);
+                self.changeSignature(this.value);
             }
-        }).first().checkbox('check');
-        this.playButton.focus();
+        });
     },
+
+    componentDidUpdate: function componentDidUpdate() {},
 
     render: function render() {
         var playButtonText = this.state.isPlaying ? 'stop' : 'play',
-            playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'blue play icon',
+            playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'white play icon',
             volume = parseInt(this.state.volume * 100),
             IEVersion;
 
@@ -597,9 +602,11 @@ var Metronome = React.createClass({
                     'div',
                     { className: 'content', ref: 'card' },
                     React.createElement(
-                        'div',
-                        { className: 'right floated meta' },
-                        React.createElement('i', { ref: 'notSupported', className: 'mini blue question icon', style: { display: 'none' } })
+                        'a',
+                        { href: 'https://github.com/alagodich/alagodich.github.io/blob/master/app/components/Metronome.js',
+                            target: '_blank',
+                            className: 'ui right corner blue label' },
+                        React.createElement('i', { ref: 'notSupported', className: 'white github icon', style: { 'text-decoration': 'none', cursor: 'pointer' } })
                     ),
                     React.createElement('svg', { ref: 'svg' })
                 ),
@@ -685,7 +692,9 @@ var Metronome = React.createClass({
                                         name: 'resolution',
                                         value: '4',
                                         tabindex: '0',
-                                        className: 'hidden' }),
+                                        className: 'hidden',
+                                        checked: this.state.noteResolution === '4'
+                                    }),
                                     React.createElement(
                                         'label',
                                         null,
@@ -703,7 +712,9 @@ var Metronome = React.createClass({
                                         name: 'resolution',
                                         value: '8',
                                         tabindex: '0',
-                                        className: 'hidden' }),
+                                        className: 'hidden',
+                                        checked: this.state.noteResolution === '8'
+                                    }),
                                     React.createElement(
                                         'label',
                                         null,
@@ -721,7 +732,9 @@ var Metronome = React.createClass({
                                         name: 'resolution',
                                         value: '12',
                                         tabindex: '0',
-                                        className: 'hidden' }),
+                                        className: 'hidden',
+                                        checked: this.state.noteResolution === '12'
+                                    }),
                                     React.createElement(
                                         'label',
                                         null,
@@ -744,7 +757,9 @@ var Metronome = React.createClass({
                                         name: 'signature',
                                         value: '4/4',
                                         tabindex: '0',
-                                        className: 'hidden' }),
+                                        className: 'hidden',
+                                        checked: this.state.signature === '4/4'
+                                    }),
                                     React.createElement(
                                         'label',
                                         null,
@@ -762,7 +777,9 @@ var Metronome = React.createClass({
                                         name: 'signature',
                                         value: '3/4',
                                         tabindex: '0',
-                                        className: 'hidden' }),
+                                        className: 'hidden',
+                                        checked: this.state.signature === '3/4'
+                                    }),
                                     React.createElement(
                                         'label',
                                         null,
@@ -796,7 +813,7 @@ var Metronome = React.createClass({
                 ),
                 React.createElement(
                     'button',
-                    { className: 'ui bottom attached button', onClick: this.play, ref: 'playButton' },
+                    { className: 'ui bottom primary attached button', onClick: this.play, ref: 'playButton' },
                     React.createElement('i', { className: playButtonIcon }),
                     playButtonText
                 )
