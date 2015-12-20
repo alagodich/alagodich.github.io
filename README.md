@@ -25,3 +25,16 @@ Some components created with [React](https://facebook.github.io/react/)
 * to run locally `bundle exec jekyll serve --draft`
 * to watch and compile /app/ files `grunt watch`
 * to start browser sync `grunt browserSync` (it will proxy localhost:4000 so 'bundle serve' and 'grunt watch' are required for this to work 
+
+
+## Experiments with ember
+### Workflow
+* Work in `app/experiments` using ember-cli
+* Execute watch task `ember server`
+* App will be accessible on http://localhost:4200/  
+* Livereload server on http://localhost:49152
+* Don't run any other watch tasks simultaneously
+### Deployment
+* Stop ember-cli server
+* execute `grunt deploy-ember`
+

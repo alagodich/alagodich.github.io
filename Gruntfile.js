@@ -2,6 +2,9 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        clean: {
+            ember: ['experiments']
+        },
         copy: {
             bower: {
                 src: ['jquery/dist/jquery.min.map', 'Snap.svg/dist/snap.svg-min.js'],
@@ -15,6 +18,12 @@ module.exports = function(grunt) {
                 dest: 'assets/themes',
                 expand: true,
                 cwd: 'bower_components/semantic/dist/themes'
+            },
+            ember: {
+                src: '**',
+                dest: 'experiments/',
+                expand: true,
+                cwd: 'app/experiments/dist'
             }
         },
         concat: {
@@ -85,6 +94,11 @@ module.exports = function(grunt) {
             touch: {
                 stdout: true,
                 command: 'touch -am _data/params.json'
+            },
+            ember: {
+                stdout: true,
+                command: 'ember build --environment=production',
+                cwd: 'app/experiments'
             }
         },
         watch: {
@@ -127,7 +141,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-browser-sync');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
-    grunt.registerTask('default', ['copy', 'concat']);
+    grunt.registerTask('default', ['copy:bower', 'copy:fonts', 'concat']);
     grunt.registerTask('compile', ['babel', 'browserify', 'uglify', 'less']);
+    grunt.registerTask('deploy-ember', ['exec:ember', 'clean:ember', 'copy:ember']);
 };
