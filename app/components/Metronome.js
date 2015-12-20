@@ -17,10 +17,7 @@ var Metronome = React.createClass({
      */
     nextNoteTime: 0.0,
     noteLength: 0.05,
-    /**
-     * The last "box" we drew on the screen
-     */
-    last16thNoteDrawn: -1,
+
     notesInQueue: [],
     quartersQuantity: null,
     sixteenthQuantity: null,

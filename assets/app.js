@@ -183,7 +183,6 @@ var Metronome = React.createClass({
     nextNoteTime: 0.0,
     noteLength: 0.05,
 
-    last16thNoteDrawn: -1,
     notesInQueue: [],
     quartersQuantity: null,
     sixteenthQuantity: null,
