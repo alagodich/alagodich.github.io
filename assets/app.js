@@ -64,6 +64,7 @@ $('.popup').popup({
 var Carousel = React.createClass({
     displayName: 'Carousel',
 
+    googlePhotoUrl: 'https://lh3.googleusercontent.com/',
     componentDidMount: function componentDidMount() {
         $(this.refs.container.getDOMNode()).owlCarousel({
             loop: true,
@@ -83,7 +84,7 @@ var Carousel = React.createClass({
         if (typeof item === 'string') {
             return React.createElement('img', {
                 className: 'owl-lazy ui image',
-                'data-src': 'https://lh3.googleusercontent.com/' + item,
+                'data-src': this.googlePhotoUrl + item,
                 alt: ''
             });
         }
@@ -188,15 +189,20 @@ var Metronome = React.createClass({
     sixteenthQuantity: null,
     nextNoteMultiplier: null,
 
-    canvas: null,
-    canvasContext: null,
-    canvasWidth: 300,
-    canvasHeight: 100,
-    canvasStrokeStyle: '#FFF',
-    canvasLineWidth: 2,
-    quarterNoteColor: '#DB2828',
-    eighthNoteColor: '#2185D0',
-    sixteenthNoteColor: '#EEE',
+    svg: null,
+    svgWidth: null,
+    svgHeight: 50,
+    svgPadding: 4,
+    pointer: null,
+    rulerLineWidth: 1,
+    quarterSerifHeight: 14,
+    eightSerifHeight: 7,
+    spacing: null,
+
+    rulerColor: '#979797',
+    stressedNoteColor: '#DB2828',
+    noteColor: '#2185D0',
+    emptyNoteColor: '#EEE',
 
     unlocked: false,
     decodedBeatSound: null,
@@ -204,7 +210,7 @@ var Metronome = React.createClass({
 
     getInitialState: function getInitialState() {
         return {
-            tempo: 101.0,
+            tempo: 50,
             noteResolution: '4',
             isPlaying: false,
             signature: '4/4',
@@ -215,18 +221,11 @@ var Metronome = React.createClass({
     },
 
     init: function init() {
-        var scheduler = this.scheduler,
-            AudioContext = window.AudioContext || window.webkitAudioContext || false;
+        var AudioContext = window.AudioContext || window.webkitAudioContext || false;
 
         this.playButton = $(this.refs.playButton.getDOMNode());
 
-        this.canvas = this.refs.canvas.getDOMNode();
-        this.canvasContext = this.canvas.getContext('2d');
-        this.canvasContext.strokeStyle = this.canvasStrokeStyle;
-        this.canvasContext.lineWidth = this.canvasLineWidth;
-        window.onorientationchange = this.resetCanvas;
-        window.onresize = this.resetCanvas;
-        this.resetCanvas();
+        this.initSvg();
 
         if (AudioContext) {
             this.audioContext = new AudioContext();
@@ -242,17 +241,74 @@ var Metronome = React.createClass({
         });
 
         this.timerWorker = new Worker("assets/metronome/metronomeworker.js");
-        this.timerWorker.onmessage = function (message) {
+        this.timerWorker.onmessage = (function (message) {
             if (message.data == "tick") {
-                scheduler();
+                this.scheduler();
             }
-        };
-        this.timerWorker.postMessage({ "interval": this.lookahead });
+        }).bind(this);
+        this.timerWorker.postMessage({ "interval": this.lookAhead });
+    },
 
-        requestAnimationFrame(this.draw);
+    initSvg: function initSvg() {
+        var svgNode = this.refs.svg.getDOMNode(),
+            cardWidth = $(this.refs.card.getDOMNode()).width();
+
+        $(svgNode).width(cardWidth).height(50);
+        $(this.refs.card.getDOMNode()).width();
+        this.svg = Snap(svgNode);
+        this.svgWidth = this.svg.node.width.baseVal.value - this.svgPadding * 2;
+
+        this.drawPointer();
+    },
+
+    drawRuler: function drawRuler() {
+        var ruler = this.svg.select('#ruler');
+
+        if (ruler) {
+            ruler.remove();
+        }
+        this.initParams();
+        this.spacing = (this.svgWidth - this.sixteenthQuantity * this.rulerLineWidth) / this.sixteenthQuantity;
+
+        ruler = this.svg.group(this.svg.line(this.svgPadding / 2, this.svgHeight, this.svgWidth + this.svgPadding, this.svgHeight));
+        for (var i = 0; i <= this.sixteenthQuantity; i++) {
+            var x = this.spacing * i + i * this.rulerLineWidth + this.svgPadding,
+                y = i % this.quartersQuantity === 0 ? this.quarterSerifHeight : this.eightSerifHeight;
+
+            ruler.add(this.svg.line(x, this.svgHeight, x, this.svgHeight - y));
+        }
+        ruler.attr({
+            stroke: this.rulerColor,
+            strokeWidth: this.rulerLineWidth,
+            id: 'ruler'
+        });
+    },
+
+    drawPointer: function drawPointer() {
+        this.pointer = this.svg.polygon([this.svgPadding, this.svgHeight - this.quarterSerifHeight, this.svgPadding + 3, this.svgHeight - 38, this.svgPadding - 3, this.svgHeight - 38, this.svgPadding, this.svgHeight - this.quarterSerifHeight]).attr({
+            fill: '#FFF'
+        });
+    },
+
+    movePointer: function movePointer() {
+        var animationSpeed = 1 / this.state.tempo * 1500,
+            x = this.spacing * this.current16thNote + this.current16thNote,
+            color;
+
+        if (this.state.accentFirstBeat && this.current16thNote === 0) {
+            color = this.stressedNoteColor;
+        } else {
+            color = this.current16thNote % this.quartersQuantity === 0 ? this.noteColor : this.emptyNoteColor;
+        }
+
+        this.pointer.animate({
+            transform: 't' + x + ',0',
+            fill: color
+        }, animationSpeed);
     },
 
     initParams: function initParams() {
+        console.log('init params');
         if (this.state.signature === '4/4') {
             this.sixteenthQuantity = this.state.noteResolution === '12' ? 12 : 16;
         }
@@ -307,33 +363,6 @@ var Metronome = React.createClass({
         this.playButton.focus();
     },
 
-    draw: function draw() {
-        var currentNote = this.last16thNoteDrawn,
-            currentTime = this.audioContext.currentTime,
-            x = Math.floor(this.canvas.width / (this.sixteenthQuantity + 2));
-
-        while (this.notesInQueue.length && this.notesInQueue[0].time < currentTime) {
-            currentNote = this.notesInQueue[0].note;
-            this.notesInQueue.splice(0, 1);
-        }
-
-        if (this.last16thNoteDrawn != currentNote) {
-            this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            for (var i = 0; i < this.sixteenthQuantity; i++) {
-                this.canvasContext.fillStyle = currentNote == i ? currentNote % this.quartersQuantity === 0 ? this.quarterNoteColor : this.eighthNoteColor : this.sixteenthNoteColor;
-                this.canvasContext.fillRect(x * (i + 1) + 7, 30, x - 1, x * 3);
-            }
-            this.last16thNoteDrawn = currentNote;
-        }
-
-        requestAnimationFrame(this.draw);
-    },
-
-    resetCanvas: function resetCanvas() {
-        this.canvas.width = $(this.refs.card.getDOMNode()).width();
-        this.canvas.height = this.canvasHeight;
-    },
-
     scheduler: function scheduler() {
         while (this.nextNoteTime < this.audioContext.currentTime + this.scheduleAheadTime) {
             this.scheduleNote(this.current16thNote, this.nextNoteTime);
@@ -355,12 +384,12 @@ var Metronome = React.createClass({
         var source;
 
         this.notesInQueue.push({ note: beatNumber, time: time });
+        this.movePointer();
         if (!this.noteShouldBePlayed(beatNumber)) {
             return;
         }
 
         source = this.getAudioSource(beatNumber);
-
         source.start(time);
         source.stop(time + this.noteLength);
     },
@@ -418,6 +447,28 @@ var Metronome = React.createClass({
         return false;
     },
 
+    detectIE: function detectIE() {
+        var userAgent = window.navigator.userAgent,
+            msie = userAgent.indexOf('MSIE ');
+
+        if (msie > 0) {
+            return parseInt(userAgent.substring(msie + 5, userAgent.indexOf('.', msie)), 10);
+        }
+
+        var trident = userAgent.indexOf('Trident/');
+        if (trident > 0) {
+            var rv = userAgent.indexOf('rv:');
+            return parseInt(userAgent.substring(rv + 3, userAgent.indexOf('.', rv)), 10);
+        }
+
+        var edge = userAgent.indexOf('Edge/');
+        if (edge > 0) {
+            return parseInt(userAgent.substring(edge + 5, userAgent.indexOf('.', edge)), 10);
+        }
+
+        return false;
+    },
+
     noteShouldBePlayed: function noteShouldBePlayed(beatNumber) {
         if (this.state.noteResolution === '4') {
             if (beatNumber % 4) {
@@ -444,11 +495,17 @@ var Metronome = React.createClass({
     },
 
     changeResolution: function changeResolution(value) {
-        this.setState({ noteResolution: value }, this.startOver);
+        this.setState({ noteResolution: value }, function () {
+            this.drawRuler();
+            this.startOver();
+        });
     },
 
     changeSignature: function changeSignature(value) {
-        this.setState({ signature: value }, this.startOver);
+        this.setState({ signature: value }, function () {
+            this.drawRuler();
+            this.startOver();
+        });
     },
 
     changeVolume: function changeVolume(event) {
@@ -463,9 +520,25 @@ var Metronome = React.createClass({
         this.setState({ useOscillator: !this.state.useOscillator }, this.startOver);
     },
 
+    displayNotSupportedInfo: function displayNotSupportedInfo() {
+        $(this.refs.notSupported.getDOMNode()).popup({
+            transition: 'vertical flip',
+            inline: true,
+            hoverable: true,
+            delay: {
+                show: 300,
+                hide: 800
+            }
+        });
+    },
+
     componentDidMount: function componentDidMount() {
         var changeResolution = this.changeResolution,
             changeSignature = this.changeSignature;
+        if (this.detectIE()) {
+            this.displayNotSupportedInfo();
+            return;
+        }
         this.init();
         $('.ui.resolution.radio.checkbox').checkbox({
             onChange: function onChange() {
@@ -483,7 +556,37 @@ var Metronome = React.createClass({
     render: function render() {
         var playButtonText = this.state.isPlaying ? 'stop' : 'play',
             playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'blue play icon',
-            volume = parseInt(this.state.volume * 100);
+            volume = parseInt(this.state.volume * 100),
+            IEVersion;
+
+        if (IEVersion = this.detectIE()) {
+            return React.createElement(
+                'div',
+                { className: 'ui negative message' },
+                React.createElement(
+                    'div',
+                    { className: 'header' },
+                    'Sorry internet explorer is not supported.'
+                ),
+                'Please install another browser (chrome, firefox, safari, opera etc).',
+                React.createElement('i', { ref: 'notSupported', className: 'blue question icon' }),
+                React.createElement(
+                    'div',
+                    { className: 'ui popup' },
+                    'Unfortunately Internet explorer ',
+                    IEVersion,
+                    ' ',
+                    React.createElement(
+                        'a',
+                        {
+                            href: 'https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/currentTime',
+                            target: '_blank' },
+                        'doesn\'t support'
+                    ),
+                    ' currentTime property of audio context, and it is required to calculate actual time properly, without delays.'
+                )
+            );
+        }
         return React.createElement(
             'div',
             { className: 'metronome' },
@@ -494,10 +597,11 @@ var Metronome = React.createClass({
                     'div',
                     { className: 'content', ref: 'card' },
                     React.createElement(
-                        'canvas',
-                        { ref: 'canvas', className: 'canvas' },
-                        'Canvas not supported!'
-                    )
+                        'div',
+                        { className: 'right floated meta' },
+                        React.createElement('i', { ref: 'notSupported', className: 'mini blue question icon', style: { display: 'none' } })
+                    ),
+                    React.createElement('svg', { ref: 'svg' })
                 ),
                 React.createElement(
                     'div',
@@ -687,8 +791,7 @@ var Metronome = React.createClass({
                                     'Accent the first beat'
                                 )
                             )
-                        ),
-                        React.createElement('div', { className: 'ui divider' })
+                        )
                     )
                 ),
                 React.createElement(
@@ -710,8 +813,9 @@ module.exports = Metronome;
 var Photo = React.createClass({
     displayName: 'Photo',
 
+    googlePhotoUrl: 'https://lh3.googleusercontent.com/',
     render: function render() {
-        var src = 'https://lh3.googleusercontent.com/' + this.props.id;
+        var src = this.googlePhotoUrl + this.props.id;
 
         return React.createElement('img', { className: 'ui image', src: src, style: { 'max-height': 1000, 'margin-bottom': '1em' } });
     }

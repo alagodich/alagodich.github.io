@@ -10,14 +10,14 @@
     "type": "git",
     "url": "git+https://github.com/alagodich/alagodich.github.io.git"
   },
-  "author": "",
+  "author": "alagodich",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/alagodich/alagodich.github.io/issues"
   },
   "homepage": "https://github.com/alagodich/alagodich.github.io#readme",
   "dependencies": {
-    "react": "^0.14.2"
+    "react": "^0.14.3"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

@@ -1,4 +1,5 @@
 var Carousel = React.createClass({
+    googlePhotoUrl: 'https://lh3.googleusercontent.com/',
     componentDidMount() {
         $(this.refs.container.getDOMNode()).owlCarousel({
             loop: true,
@@ -20,7 +21,7 @@ var Carousel = React.createClass({
             // Google photos id
             return <img
                 className="owl-lazy ui image"
-                data-src={'https://lh3.googleusercontent.com/' + item}
+                data-src={this.googlePhotoUrl + item}
                 alt=""
             />;
         }

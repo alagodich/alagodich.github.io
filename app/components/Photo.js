@@ -1,6 +1,7 @@
 var Photo = React.createClass({
+    googlePhotoUrl: 'https://lh3.googleusercontent.com/',
     render() {
-        var src = 'https://lh3.googleusercontent.com/' + this.props.id;
+        var src = this.googlePhotoUrl + this.props.id;
             //regexp = /=w([\d]+)-h([\d]+)/g,
             //matches = regexp.exec(this.props.id);
 

@@ -25,18 +25,21 @@ var Metronome = React.createClass({
     quartersQuantity: null,
     sixteenthQuantity: null,
     nextNoteMultiplier: null,
-    /**
-     * Canvas settings
-     */
-    canvas: null,
-    canvasContext: null,
-    canvasWidth: 300,
-    canvasHeight: 100,
-    canvasStrokeStyle: '#FFF',
-    canvasLineWidth: 2,
-    quarterNoteColor: '#DB2828',
-    eighthNoteColor: '#2185D0',
-    sixteenthNoteColor: '#EEE',
+
+    svg: null,
+    svgWidth: null, // Depends on card width
+    svgHeight: 50,
+    svgPadding: 4,
+    pointer: null,
+    rulerLineWidth: 1,
+    quarterSerifHeight: 14,
+    eightSerifHeight: 7,
+    spacing: null,
+
+    rulerColor: '#979797',
+    stressedNoteColor: '#DB2828',
+    noteColor: '#2185D0',
+    emptyNoteColor: '#EEE',
     /**
      * Unlocked AudioContext on iOS devices
      */
@@ -46,7 +49,7 @@ var Metronome = React.createClass({
 
     getInitialState() {
         return {
-            tempo: 101.0,
+            tempo: 50,
             noteResolution: '4',
             isPlaying: false,
             signature: '4/4',
@@ -57,27 +60,19 @@ var Metronome = React.createClass({
     },
 
     /**
-     * Init canvas, audio context and worker
+     * Init svg, audio context and worker
      * Pre-load beat sound
      * Start drawer loop
      */
     init() {
-        var scheduler = this.scheduler,
-            AudioContext = window.AudioContext // Default
-                || window.webkitAudioContext // Safari and old versions of Chrome
-                || false;
+        var AudioContext = window.AudioContext // Default
+            || window.webkitAudioContext // Safari and old versions of Chrome
+            || false;
 
         // Init play button
         this.playButton = $(this.refs.playButton.getDOMNode());
 
-        // Init canvas
-        this.canvas = this.refs.canvas.getDOMNode();
-        this.canvasContext = this.canvas.getContext('2d');
-        this.canvasContext.strokeStyle = this.canvasStrokeStyle;
-        this.canvasContext.lineWidth = this.canvasLineWidth;
-        window.onorientationchange = this.resetCanvas;
-        window.onresize = this.resetCanvas;
-        this.resetCanvas();
+        this.initSvg();
 
         // Init audio context
         if (AudioContext) {
@@ -90,9 +85,9 @@ var Metronome = React.createClass({
         }
 
         // Pre-load beat sound
-        this.loadBeatData().then(function(buffer) {
+        this.loadBeatData().then(function (buffer) {
             this.decodedBeatSound = buffer;
-        }.bind(this), function(error) {
+        }.bind(this), function (error) {
             console.log('Cannot load beat sound.', error);
         });
 
@@ -100,16 +95,89 @@ var Metronome = React.createClass({
         this.timerWorker = new Worker("assets/metronome/metronomeworker.js");
         this.timerWorker.onmessage = function (message) {
             if (message.data == "tick") {
-                scheduler();
+                this.scheduler();
             }
-        };
-        this.timerWorker.postMessage({"interval": this.lookahead});
+        }.bind(this);
+        this.timerWorker.postMessage({"interval": this.lookAhead});
 
         // Start the drawing loop.
-        requestAnimationFrame(this.draw);
+        //requestAnimationFrame(this.redraw);
+    },
+
+    initSvg() {
+        var svgNode = this.refs.svg.getDOMNode(),
+            cardWidth = $(this.refs.card.getDOMNode()).width();
+
+        $(svgNode).width(cardWidth).height(50);
+        $(this.refs.card.getDOMNode()).width();
+        this.svg = Snap(svgNode);
+        this.svgWidth = this.svg.node.width.baseVal.value - this.svgPadding * 2;
+
+        this.drawPointer();
+    },
+
+    drawRuler() {
+        var ruler = this.svg.select('#ruler');
+        // Remove existing ruler, before drawing a new one
+        if (ruler) {
+            ruler.remove();
+        }
+        this.initParams();
+        this.spacing = ((this.svgWidth - (this.sixteenthQuantity * this.rulerLineWidth)) / this.sixteenthQuantity);
+        // Draw ruler base line
+        ruler = this.svg.group(
+            this.svg.line(this.svgPadding / 2, this.svgHeight, this.svgWidth + (this.svgPadding), this.svgHeight)
+        );
+        for (var i = 0; i <= this.sixteenthQuantity; i++) {
+            var x = (this.spacing * i) + (i * this.rulerLineWidth) + (this.svgPadding),
+                y = (i % this.quartersQuantity === 0) ? this.quarterSerifHeight : this.eightSerifHeight;
+
+            ruler.add(this.svg.line(x, this.svgHeight, x, this.svgHeight - y));
+        }
+        ruler.attr({
+            stroke: this.rulerColor,
+            strokeWidth: this.rulerLineWidth,
+            id: 'ruler'
+        });
+    },
+
+    /**
+     * Draw transparent pointer
+     */
+    drawPointer() {
+        this.pointer = this.svg.polygon([
+            this.svgPadding, this.svgHeight - this.quarterSerifHeight,
+            this.svgPadding + 3, this.svgHeight - 38,
+            this.svgPadding - 3, this.svgHeight - 38,
+            this.svgPadding, this.svgHeight - this.quarterSerifHeight
+        ]).attr({
+            fill: '#FFF'
+        });
+    },
+
+    /**
+     * Move pointer to the current beat serif and apply color
+     */
+    movePointer() {
+        var animationSpeed = (1 / this.state.tempo) * 1500,
+            x = (this.spacing * this.current16thNote) + (this.current16thNote),
+            //serif = this.svg.select('line:nth-child(' + (this.current16thNote + 2) + ')'),
+            color;
+
+        if (this.state.accentFirstBeat && this.current16thNote === 0) {
+            color = this.stressedNoteColor;
+        } else {
+            color = (this.current16thNote % this.quartersQuantity === 0) ? this.noteColor : this.emptyNoteColor;
+        }
+
+        this.pointer.animate({
+            transform: 't' + x + ',0',
+            fill: color
+        }, animationSpeed);
     },
 
     initParams() {
+        console.log('init params');
         if (this.state.signature === '4/4') {
             this.sixteenthQuantity = this.state.noteResolution === '12' ? 12 : 16;
         }
@@ -122,7 +190,7 @@ var Metronome = React.createClass({
 
     /**
      * Load mp3 beat data and decode it
-     * @returns {*}
+     * @returns Promise
      */
     loadBeatData() {
         return new Promise(function (resolve, reject) {
@@ -176,43 +244,6 @@ var Metronome = React.createClass({
     },
 
     /**
-     * Draw canvas on note change
-     */
-    draw() {
-        var currentNote = this.last16thNoteDrawn,
-            currentTime = this.audioContext.currentTime,
-            x = Math.floor(this.canvas.width / (this.sixteenthQuantity + 2));
-
-        while (this.notesInQueue.length && this.notesInQueue[0].time < currentTime) {
-            currentNote = this.notesInQueue[0].note;
-            this.notesInQueue.splice(0, 1);
-        }
-
-        // We only need to draw if the note has moved.
-        if (this.last16thNoteDrawn != currentNote) {
-            this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            for (var i = 0; i < this.sixteenthQuantity; i++) {
-                this.canvasContext.fillStyle =
-                    (currentNote == i)
-                        ? ((currentNote % this.quartersQuantity === 0) ? this.quarterNoteColor : this.eighthNoteColor)
-                        : this.sixteenthNoteColor;
-                this.canvasContext.fillRect((x * (i + 1)) + 7, 30, x - 1, x * 3);
-            }
-            this.last16thNoteDrawn = currentNote;
-        }
-
-        requestAnimationFrame(this.draw);
-    },
-
-    /**
-     * resize and clear canvas
-     */
-    resetCanvas() {
-        this.canvas.width = $(this.refs.card.getDOMNode()).width();
-        this.canvas.height = this.canvasHeight;
-    },
-
-    /**
      * While there are notes that will need to play before the next interval,
      * schedule them and advance the pointer.
      */
@@ -245,15 +276,14 @@ var Metronome = React.createClass({
     scheduleNote(beatNumber, time) {
         var source;
 
-        // push the note on the queue, even if we're not playing.
         this.notesInQueue.push({note: beatNumber, time: time});
+        this.movePointer();
         if (!this.noteShouldBePlayed(beatNumber)) {
             return;
         }
 
         // create an oscillator
         source = this.getAudioSource(beatNumber);
-
         source.start(time);
         source.stop(time + this.noteLength);
     },
@@ -331,6 +361,36 @@ var Metronome = React.createClass({
     },
 
     /**
+     * Detect IE
+     * returns version of IE or false, if browser is not Internet Explorer
+     */
+    detectIE() {
+        var userAgent = window.navigator.userAgent,
+            msie = userAgent.indexOf('MSIE ');
+
+        if (msie > 0) {
+            // IE 10 or older => return version number
+            return parseInt(userAgent.substring(msie + 5, userAgent.indexOf('.', msie)), 10);
+        }
+
+        var trident = userAgent.indexOf('Trident/');
+        if (trident > 0) {
+            // IE 11 => return version number
+            var rv = userAgent.indexOf('rv:');
+            return parseInt(userAgent.substring(rv + 3, userAgent.indexOf('.', rv)), 10);
+        }
+
+        var edge = userAgent.indexOf('Edge/');
+        if (edge > 0) {
+            // Edge (IE 12+) => return version number
+            return parseInt(userAgent.substring(edge + 5, userAgent.indexOf('.', edge)), 10);
+        }
+
+        // other browser
+        return false;
+    },
+
+    /**
      * @param beatNumber
      * @returns {boolean}
      */
@@ -362,11 +422,17 @@ var Metronome = React.createClass({
     },
 
     changeResolution(value) {
-        this.setState({noteResolution: value}, this.startOver);
+        this.setState({noteResolution: value}, function () {
+            this.drawRuler();
+            this.startOver();
+        });
     },
 
     changeSignature(value) {
-        this.setState({signature: value}, this.startOver);
+        this.setState({signature: value}, function () {
+            this.drawRuler();
+            this.startOver();
+        });
     },
 
     changeVolume(event) {
@@ -381,9 +447,32 @@ var Metronome = React.createClass({
         this.setState({useOscillator: !this.state.useOscillator}, this.startOver);
     },
 
+    /**
+     * Display not supporting IE message
+     */
+    displayNotSupportedInfo() {
+        $(this.refs.notSupported.getDOMNode()).popup({
+            transition: 'vertical flip',
+            inline: true,
+            hoverable: true,
+            delay: {
+                show: 300,
+                hide: 800
+            }
+        });
+    },
+
+    /**
+     * Init metronome after the component is mounted
+     * check default controls
+     */
     componentDidMount() {
         var changeResolution = this.changeResolution,
             changeSignature = this.changeSignature;
+        if (this.detectIE()) {
+            this.displayNotSupportedInfo();
+            return;
+        }
         this.init();
         $('.ui.resolution.radio.checkbox')
             .checkbox({
@@ -403,12 +492,32 @@ var Metronome = React.createClass({
     render() {
         var playButtonText = this.state.isPlaying ? 'stop' : 'play',
             playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'blue play icon',
-            volume = parseInt(this.state.volume * 100);
+            volume = parseInt(this.state.volume * 100),
+            IEVersion;
+
+        if (IEVersion = this.detectIE()) {
+            return (
+                <div className="ui negative message">
+                    <div className="header">Sorry internet explorer is not supported.</div>
+                    Please install another browser (chrome, firefox, safari, opera etc).
+                    <i ref="notSupported" className="blue question icon"/>
+                    <div className="ui popup">
+                        Unfortunately Internet explorer {IEVersion} <a
+                        href="https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/currentTime"
+                        target="_blank">doesn't support</a> currentTime property of audio context,
+                        and it is required to calculate actual time properly, without delays.
+                    </div>
+                </div>
+            );
+        }
         return (
             <div className="metronome">
                 <div className="ui centered card">
                     <div className="content" ref="card">
-                        <canvas ref="canvas" className="canvas">Canvas not supported!</canvas>
+                        <div className="right floated meta">
+                            <i ref="notSupported" className="mini blue question icon" style={{display: 'none'}}/>
+                        </div>
+                        <svg ref="svg"/>
                     </div>
                     <div className="extra content ui form">
                         <div id="controls">
@@ -528,13 +637,10 @@ var Metronome = React.createClass({
                                     <label>Accent the first beat</label>
                                 </div>
                             </div>
-
-                            <div className="ui divider"></div>
-
                         </div>
                     </div>
                     <button className="ui bottom attached button" onClick={this.play} ref="playButton">
-                        <i className={playButtonIcon}></i>
+                        <i className={playButtonIcon}/>
                         {playButtonText}
                     </button>
                 </div>

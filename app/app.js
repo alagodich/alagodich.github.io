@@ -15,7 +15,7 @@ $('youtube').each(function () {
     if (typeof id === 'undefined') {
         return;
     }
-    React.render(<Youtube id={id}></Youtube>, this);
+    React.render(<Youtube id={id}/>, this);
 });
 
 // Render images
@@ -25,13 +25,13 @@ $('google-photo').each(function () {
     if (typeof id === 'undefined') {
         return;
     }
-    React.render(<Photo id={id}></Photo>, this);
+    React.render(<Photo id={id}/>, this);
 });
 
 // Render google photo carousel
 $('carousel').each(function () {
     var self = $(this);
-    React.render(<Carousel items={self.data('items')}></Carousel>, this);
+    React.render(<Carousel items={self.data('items')}/>, this);
 });
 
 // Render profile
@@ -40,13 +40,13 @@ $('profile').each(function () {
         name = self.data('name'),
         avatar = self.data('avatar'),
         description = self.data('description');
-    React.render(<Profile name={name} avatar={avatar} description={description}></Profile>, this);
+    React.render(<Profile name={name} avatar={avatar} description={description}/>, this);
 });
 
 // Render menu
 $('react-menu').each(function () {
     var self = $(this);
-    React.render(<Menu current={self.data('current')} items={self.data('items')}></Menu>, this);
+    React.render(<Menu current={self.data('current')} items={self.data('items')}/>, this);
 });
 
 // Render todos
@@ -58,13 +58,13 @@ $('react-menu').each(function () {
 // Render map
 var mapContainer = document.getElementById('mapContainer');
 if (mapContainer) {
-    React.render(<ReactMap></ReactMap>, mapContainer);
+    React.render(<ReactMap/>, mapContainer);
 }
 
 // Render metronome
 var metronomeContainer = document.getElementById('metronomeContainer');
 if (metronomeContainer) {
-    React.render(<Metronome></Metronome>, metronomeContainer);
+    React.render(<Metronome/>, metronomeContainer);
 }
 
 // Init semantic popup

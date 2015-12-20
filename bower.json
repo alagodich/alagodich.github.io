@@ -12,8 +12,9 @@
     "bower_components"
   ],
   "dependencies": {
-    "semantic": "semantic-ui#~2.1.6",
+    "semantic": "semantic-ui#~2.1.7",
     "owl.carousel": "OwlCarousel2#~2.0.0-beta.3",
-    "animate.css": "~3.4.0"
+    "animate.css": "~3.4.0",
+    "Snap.svg": "snap.svg#~0.4.1"
   }
 }

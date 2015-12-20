@@ -4,7 +4,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         copy: {
             bower: {
-                src: ['jquery/dist/jquery.min.map'],
+                src: ['jquery/dist/jquery.min.map', 'Snap.svg/dist/snap.svg-min.js'],
                 dest: 'assets/',
                 expand: true,
                 flatten: true,
