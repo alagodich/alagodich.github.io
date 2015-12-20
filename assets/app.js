@@ -586,7 +586,7 @@ var Metronome = React.createClass({
                         {
                             href: 'https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/currentTime',
                             target: '_blank' },
-                        'doesn\'t support'
+                        'does not support'
                     ),
                     ' currentTime property of audio context, and it is required to calculate actual time properly, without delays.'
                 )
