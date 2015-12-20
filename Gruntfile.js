@@ -71,7 +71,7 @@ module.exports = function(grunt) {
                     "expand": true,
                     "cwd": "app/",
                     "src": ["components/*.js", "app.js"],
-                    "dest": "app/build",
+                    "dest": "app/tmp",
                     "ext": ".js"
                 }]
             }
@@ -79,7 +79,7 @@ module.exports = function(grunt) {
         browserify: {
             dist: {
                 files: {
-                    'assets/app.js': ['app/build/app.js']
+                    'assets/app.js': ['app/tmp/app.js']
                 }
             }
         },
@@ -103,7 +103,7 @@ module.exports = function(grunt) {
         },
         watch: {
             assets: {
-                files: ['app/**/*.js', 'less/*.less', '!app/build/**'],
+                files: ['app/**/*.js', 'less/*.less', '!app/tmp/**', '!app/experiments/**'],
                 tasks: ['compile', 'exec:touch'],
                 options: {
                     spawn: false
