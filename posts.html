@@ -6,7 +6,25 @@ title: Список постов
         <div class="event">
             <div class="content">
                 <a href="{{ post.url }}">{{post.title}}</a>
-                <span class="date">{{ post.date | date_to_long_string}}</span>
+                <span class="date">
+                    {% assign m = post.date | date: "%-m" %}
+                    {{ post.date | date: "%-d" }}
+                    {% case m %}
+                        {% when '1' %}Января
+                        {% when '2' %}Февраля
+                        {% when '3' %}Марта
+                        {% when '4' %}Апреля
+                        {% when '5' %}Мая
+                        {% when '6' %}Июня
+                        {% when '7' %}Июля
+                        {% when '8' %}Августа
+                        {% when '9' %}Сентября
+                        {% when '10' %}Октября
+                        {% when '11' %}Ноября
+                        {% when '12' %}Декабря
+                    {% endcase %}
+                    {{ post.date | date: "%Y" }}
+                </span>
             </div>
         </div>
     {% endfor %}
