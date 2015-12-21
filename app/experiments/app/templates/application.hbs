@@ -1,3 +1,12 @@
-<h2 id="title">Welcome to Ember</h2>
-
-{{outlet}}
+<div class="ui secondary pointing menu">
+    {{link-to 'Index' 'index' class="ui item"}}
+    {{link-to 'Chat' 'chat' class="ui item"}}
+    {{link-to 'Arcanoid' 'arcanoid' class="ui item"}}
+    {{link-to 'SVG' 'svg' class="ui item"}}
+    <div class="right menu">
+        {{link-to 'About' 'about' class="ui item"}}
+    </div>
+</div>
+<div class="ui basic segment">
+    {{outlet}}
+</div>
