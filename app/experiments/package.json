@@ -36,6 +36,10 @@
         "ember-data": "^2.2.1",
         "ember-disable-proxy-controllers": "^1.0.1",
         "ember-export-application-global": "^1.0.4",
+        "ember-local-storage": "0.1.1",
         "ember-resolver": "^2.0.3"
+    },
+    "dependencies": {
+        "ember-local-storage": "^0.1.1"
     }
 }

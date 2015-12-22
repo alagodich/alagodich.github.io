@@ -9,7 +9,7 @@ module.exports = function (defaults) {
 
     app.import('bower_components/semantic/dist/semantic.min.css');
     app.import('bower_components/semantic/dist/semantic.min.js');
-    app.import('bower_components/CometServerApi.js');
+    app.import('vendor/CometServerApi.js');
     // Use `app.import` to add additional libraries to the generated
     // output files.
     //

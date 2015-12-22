@@ -5,9 +5,6 @@ export default Ember.Component.extend({
     channelName: 'web_channel',
     notificationChannelName: 'notification_channel',
 
-    // Doesn't work for now, TODO implement actions: https://guides.emberjs.com/v2.2.0/components/triggering-changes-with-actions/
-    messages: [{name: 'tester', text: 'first message test'}],
-
     /**
      * Init chat room
      */
@@ -31,19 +28,11 @@ export default Ember.Component.extend({
      */
     subscribe() {
         CometServer().subscription(this.channelName, (message) => {
-            this.messages.push({
-                name: message.data.name,
-                text: message.data.text
-            });
-            //this.$('#messages').append("<p><b>" + this.htmlEncode(message.data.name) + ": </b>" + this.htmlEncode(message.data.text) + "</p>");
+            this.pushMessage(message.data.name, message.data.text);
         });
 
         comet_server_signal().connect(this.notificationChannelName, (message) => {
-            this.messages.push({
-                name: message.name,
-                text: message.text
-            });
-            //this.$('#messages').append("<p><b>" + this.htmlEncode(message.name) + ": </b>" + this.htmlEncode(message.text) + "</p>");
+            this.pushMessage(message.name, message.text);
         });
 
         // Подписываемся на канал в который и будут отправляется уведомления о доставке отправленных сообщений.
@@ -60,6 +49,19 @@ export default Ember.Component.extend({
         //});
     },
 
+    pushMessage(name, text) {
+        /**
+         * TODO this is a bad practice, bubble up the action and put it into controller, don't access store here
+         * @see https://guides.emberjs.com/v2.2.0/components/triggering-changes-with-actions/
+         * @see http://stackoverflow.com/questions/18612030/access-store-from-component
+         */
+        this.get('targetObject.store').createRecord('message', {
+            name: name,
+            text: text,
+            date: new Date()
+        });
+    },
+
     attachEvents() {
         // Send message
         this.$('#send').on('click', () => {
@@ -70,12 +72,12 @@ export default Ember.Component.extend({
         });
 
         // Refresh history
-        this.$('#refresh').on('click', () => {
-            CometServer().get_pipe_log(this.channelName, function (history) {
-                console.log(history);
-            });
-            console.log('refresh');
-        });
+        //this.$('#refresh').on('click', () => {
+        //    CometServer().get_pipe_log(this.channelName, function (history) {
+        //        console.log(history);
+        //    });
+        //    console.log('refresh');
+        //});
     },
 
     /**
@@ -95,7 +97,6 @@ export default Ember.Component.extend({
      * @returns {*|jQuery}
      */
     htmlEncode(value){
-
         return $('<div/>').text(value).html();
     },
 
