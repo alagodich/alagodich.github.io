@@ -1,22 +1,15 @@
-{{yield}}
-<div class="ui small feed">
-    <h4 class="ui header">Main channel</h4>
+{{chat-user user=user}}
+<div class="ui comments">
+    <h3 class="ui dividing header">Main channel</h3>
     {{#each messages as |message|}}
-        {{chat-message name=message.name text=message.text}}
+        {{chat-message user=message.user body=message.body date=message.date avatar=message.avatarUrl}}
     {{/each}}
-</div>
-<div class="ui segment form">
-
-    <div id="messages"></div>
-
-    <input type="text" id="name" placeholder="Name:">
-
-    <div id="answer" style="float:right;"></div>
-
-    <textarea id="text" placeholder="message..."></textarea>
-
-    <div>
-        <input type="button" id="send" class="ui primary button" value="Send">
-        <div id="answer_error" style="float:right;"></div>
-    </div>
+    {{#if user.authenticated}}
+        <form class="ui reply form">
+            <div class="field">
+                {{textarea value=body placeholder="Type here"}}
+            </div>
+            <input type="button" id="send" class="ui primary button" value="Send" {{action 'send' }}>
+        </form>
+    {{/if}}
 </div>

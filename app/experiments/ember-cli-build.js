@@ -4,12 +4,14 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function (defaults) {
     var app = new EmberApp(defaults, {
+        fingerprint: {
+            exclude: ['images/']
+        }
         // Add options here
     });
 
     app.import('bower_components/semantic/dist/semantic.min.css');
     app.import('bower_components/semantic/dist/semantic.min.js');
-    app.import('vendor/CometServerApi.js');
     // Use `app.import` to add additional libraries to the generated
     // output files.
     //

@@ -1,0 +1,22 @@
+{{#if user.authenticated}}
+    <div class="ui feed">
+        <div class="event">
+            <div class="label">
+                <img src={{user.avatarUrl}}>
+            </div>
+            <div class="content">
+                {{user.name}}
+            </div>
+            <div class="meta">
+                <button class="ui small red basic button" {{action 'logout'}}>Logout</button>
+            </div>
+        </div>
+    </div>
+{{else}}
+    {{#unless user.name}}
+        <div class="ui small action input">
+            {{input value=userName placeholder="Introduce yourself"}}
+            <button class="ui green button" {{action 'authenticate'}}>Ok</button>
+        </div>
+    {{/unless}}
+{{/if}}

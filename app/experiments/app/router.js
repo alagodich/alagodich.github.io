@@ -7,8 +7,6 @@ const Router = Ember.Router.extend({
 
 Router.map(function () {
     this.route('chat');
-    this.route('arcanoid');
-    this.route('svg');
     this.route('about');
 });
 

@@ -4,6 +4,7 @@ module.exports = function (environment) {
     var ENV = {
         modulePrefix: 'experiments',
         environment: environment,
+        firebase: 'https://alagodich-ember.firebaseio.com/',
         baseURL: '/experiments/',
         locationType: 'hash',
         EmberENV: {
@@ -18,10 +19,10 @@ module.exports = function (environment) {
             // when it is created
         },
         contentSecurityPolicy: {
-            // Allow inline styles and loaded CSS from http://fonts.googleapis.com
             'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
             'font-src': "'self' data: https://fonts.gstatic.com",
-            'connect-src': "'self' wss://app.comet-server.ru/ws/sesion=null&myid=null&devid=659&v=2.32&api=js"
+            'connect-src': "'self' https://auth.firebase.com wss://*.firebaseio.com",
+            'script-src': "'self' 'unsafe-eval' localhost:49152 0.0.0.0:49152 https://alagodich-chat.firebaseio.com"
         }
     };
 

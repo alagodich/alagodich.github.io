@@ -1,11 +1,14 @@
-{{yield}}
-<div class="event">
+<div class="comment">
+    <a class="avatar">
+        <img src={{avatar}}>
+    </a>
     <div class="content">
-        <div class="summary">
-            <a class="user">{{name}}</a>
+        <a class="author">{{user}}</a>
+        <div class="metadata">
+            <span class="date">{{date}}</span>
         </div>
-        <div class="extra text">
-            {{text}}
+        <div class="text">
+            {{body}}
         </div>
     </div>
 </div>

@@ -37,7 +37,8 @@
         "ember-disable-proxy-controllers": "^1.0.1",
         "ember-export-application-global": "^1.0.4",
         "ember-local-storage": "0.1.1",
-        "ember-resolver": "^2.0.3"
+        "ember-resolver": "^2.0.3",
+        "emberfire": "git://github.com/firebase/emberfire.git#cdd46bae9beacf7c0bff54d9990d1bf295f89333"
     },
     "dependencies": {
         "ember-local-storage": "^0.1.1"
