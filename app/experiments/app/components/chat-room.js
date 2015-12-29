@@ -2,6 +2,7 @@ import Ember from 'ember';
 import User from 'experiments/models/chat-user';
 
 export default Ember.Component.extend({
+    messageSizeLimit: 500,
     user: null,
     willRender() {
         this.set('user', User.create());
@@ -15,7 +16,7 @@ export default Ember.Component.extend({
         send() {
             var message = this.get('targetObject.store').createRecord('chat-message', {
                 user: this.get('user.name'),
-                body: this.get('body'),
+                body: this.get('body').substring(0, this.messageSizeLimit),
                 avatar: this.get('user.avatar'),
                 date: new Date()
             });

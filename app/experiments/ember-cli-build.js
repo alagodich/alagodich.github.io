@@ -1,6 +1,8 @@
 /* jshint node:true */
 /* global require, module */
-var EmberApp = require('ember-cli/lib/broccoli/ember-app');
+var EmberApp = require('ember-cli/lib/broccoli/ember-app'),
+    semanticFonts = ['icons.eot', 'icons.otf', 'icons.svg', 'icons.ttf', 'icons.woff', 'icons.woff2'],
+    semanticImages = ['flags.png'];
 
 module.exports = function (defaults) {
     var app = new EmberApp(defaults, {
@@ -12,6 +14,16 @@ module.exports = function (defaults) {
 
     app.import('bower_components/semantic/dist/semantic.min.css');
     app.import('bower_components/semantic/dist/semantic.min.js');
+    semanticFonts.forEach((font) => {
+        app.import('bower_components/semantic/dist/themes/default/assets/fonts/' + font, {
+            destDir: 'assets/themes/default/assets/fonts'
+        });
+    });
+    semanticImages.forEach((image) => {
+        app.import('bower_components/semantic/dist/themes/default/assets/images/' + image, {
+            destDir: 'assets/themes/default/assets/images'
+        });
+    });
     // Use `app.import` to add additional libraries to the generated
     // output files.
     //

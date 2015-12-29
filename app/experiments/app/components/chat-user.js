@@ -1,7 +1,17 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+    notRobot: false,
+    willRender() {
+        // If user already authenticated, no need to verify
+        if (this.get('user.authenticated')) {
+            this.set('notRobot', true);
+        }
+    },
     actions: {
+        verify() {
+            this.set('notRobot', true);
+        },
         /**
          * Set user name and pick random avatar
          */
@@ -9,7 +19,7 @@ export default Ember.Component.extend({
             var userName = this.get('userName');
             if (userName) {
                 var avatarList = this.get('user.avatarList'),
-                    randomAvatar = avatarList.pop(Math.floor((Math.random() * avatarList.length) + 1));
+                    randomAvatar = avatarList[Math.floor((Math.random() * avatarList.length) + 1)];
 
                 this.set('user.name', this.get('userName'));
                 this.set('user.avatar', randomAvatar);

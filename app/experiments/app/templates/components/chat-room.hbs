@@ -7,7 +7,7 @@
     {{#if user.authenticated}}
         <form class="ui reply form">
             <div class="field">
-                {{textarea value=body placeholder="Type here"}}
+                {{textarea value=body placeholder="Type here" maxlength='500'}}
             </div>
             <input type="button" id="send" class="ui primary button" value="Send" {{action 'send' }}>
         </form>

@@ -1,3 +1,4 @@
+{{google-recaptcha onVerify=(action 'verify') isVisible=(if notRobot false true)}}
 {{#if user.authenticated}}
     <div class="ui feed">
         <div class="event">
@@ -13,10 +14,12 @@
         </div>
     </div>
 {{else}}
-    {{#unless user.name}}
-        <div class="ui small action input">
-            {{input value=userName placeholder="Introduce yourself"}}
-            <button class="ui green button" {{action 'authenticate'}}>Ok</button>
-        </div>
-    {{/unless}}
+    {{#if notRobot}}
+        <form class="ui form">
+            <div class="ui small action input">
+                {{input value=userName placeholder="Introduce yourself"}}
+                <button class="ui {{if userName.length 'green' 'disabled' }} button" {{action 'authenticate'}}>Ok</button>
+            </div>
+        </form>
+    {{/if}}
 {{/if}}
