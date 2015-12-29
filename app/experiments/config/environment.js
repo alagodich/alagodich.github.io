@@ -27,10 +27,15 @@ module.exports = function (environment) {
             'connect-src': "'self' https://auth.firebase.com wss://*.firebaseio.com " +
             "https://www.google.com/recaptcha/api/siteverify",
             'script-src': "'self' " +
-            "https://alagodich-chat.firebaseio.com " +
-            "https://apis.google.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ ",
+            "https://*.firebaseio.com " +
+            "https://apis.google.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ " +
+            "https://cdn.polyfill.io",
             'frame-src': "https://www.google.com/recaptcha/",
             'img-src': "'self' https://ssl.gstatic.com/"
+        },
+        intl: {
+            locales: ['en-us'],
+            defaultLocale: 'en-us'
         }
     };
 

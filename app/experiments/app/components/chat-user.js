@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     notRobot: false,
+    openProfile: false,
     willRender() {
         // If user already authenticated, no need to verify
         if (this.get('user.authenticated')) {
@@ -34,6 +35,9 @@ export default Ember.Component.extend({
             this.set('user.name');
             this.set('user.avatar');
             this.set('user.authenticated', false);
+        },
+        openProfile() {
+            this.set('openProfile', true);
         }
     }
 });

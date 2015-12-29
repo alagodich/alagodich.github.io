@@ -1,11 +1,11 @@
 <div class="comment">
     <a class="avatar">
-        <img src={{avatar}}>
+        {{small-avatar avatar=avatar}}
     </a>
     <div class="content">
         <a class="author">{{user}}</a>
         <div class="metadata">
-            <span class="date">{{date}}</span>
+            <span class="date">{{format-date date day="numeric" month="long" year="numeric" hour="numeric" minute="numeric"}}</span>
         </div>
         <div class="text">
             {{body}}

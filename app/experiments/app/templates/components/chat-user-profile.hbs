@@ -1,0 +1,23 @@
+<i class="close icon"></i>
+<div class="header">
+    {{small-avatar avatar=selectedAvatar}}
+    {{user.name}}
+</div>
+<div class="content">
+    <div class="description">
+        <div class="ui header">
+            Choose avatar bellow.
+        </div>
+        <div class="ui mini circular horizontal images">
+            {{#each user.avatarList as |avatar|}}
+                {{small-avatar avatar=avatar onClick=(action 'selectAvatar')}}
+            {{/each}}
+        </div>
+    </div>
+</div>
+<div class="actions">
+    <div class="ui positive right labeled icon button">
+        Yep, that's me
+        <i class="checkmark icon"></i>
+    </div>
+</div>

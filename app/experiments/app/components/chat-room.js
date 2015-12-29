@@ -14,14 +14,21 @@ export default Ember.Component.extend({
          * As they are going to get rid of it
          */
         send() {
-            var message = this.get('targetObject.store').createRecord('chat-message', {
+            var body = this.get('body'),
+                message;
+            if (!body) {
+                this.$('#reply').focus();
+                return;
+            }
+            message = this.get('targetObject.store').createRecord('chat-message', {
                 user: this.get('user.name'),
-                body: this.get('body').substring(0, this.messageSizeLimit),
+                body: body.substring(0, this.messageSizeLimit),
                 avatar: this.get('user.avatar'),
                 date: new Date()
             });
             message.save();
             this.set('body');
+            this.$('#reply').focus();
         }
     }
 });

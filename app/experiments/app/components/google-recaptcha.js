@@ -37,6 +37,7 @@ export default Ember.Component.extend({
         return 100;
     }.property().readOnly(),
 
+    // TODO use didInsertElement instead
     init() {
         this._super();
         Ember.$.getScript(this.apiUrl + "?&render=explicit&hl=" + this.get('lang'), (/*data, textStatus, jqxhr*/) => {

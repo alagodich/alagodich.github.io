@@ -1,9 +1,10 @@
 {{google-recaptcha onVerify=(action 'verify') isVisible=(if notRobot false true)}}
+{{chat-user-profile user=user open=openProfile selectedAvatar=user.avatar}}
 {{#if user.authenticated}}
-    <div class="ui feed">
+    <div class="ui feed" style="margin-top: 0;">
         <div class="event">
             <div class="label">
-                <img src={{user.avatarUrl}}>
+                {{small-avatar avatar=user.avatar onClick=(action 'openProfile')}}
             </div>
             <div class="content">
                 {{user.name}}
@@ -16,9 +17,11 @@
 {{else}}
     {{#if notRobot}}
         <form class="ui form">
-            <div class="ui small action input">
+            <div class="ui action input">
                 {{input value=userName placeholder="Introduce yourself"}}
-                <button class="ui {{if userName.length 'green' 'disabled' }} button" {{action 'authenticate'}}>Ok</button>
+                <button class="ui {{if userName.length 'green' 'disabled' }} icon button" {{action 'authenticate'}}>
+                    <i class="checkmark link icon"></i>
+                </button>
             </div>
         </form>
     {{/if}}

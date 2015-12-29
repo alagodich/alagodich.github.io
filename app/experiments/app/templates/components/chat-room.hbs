@@ -2,14 +2,14 @@
 <div class="ui comments">
     <h3 class="ui dividing header">Main channel</h3>
     {{#each messages as |message|}}
-        {{chat-message user=message.user body=message.body date=message.date avatar=message.avatarUrl}}
+        {{chat-message user=message.user body=message.body date=message.date avatar=message.avatar}}
     {{/each}}
     {{#if user.authenticated}}
         <form class="ui reply form">
             <div class="field">
-                {{input value=body placeholder="Type here" maxlength='500'}}
+                {{input value=body placeholder="Type here" maxlength='500' id="reply"}}
             </div>
-            <input type="submit" id="send" class="ui primary button" value="Send" {{action 'send' }}>
+            <input type="submit" class="ui primary button" value="Send" {{action 'send' }}>
         </form>
     {{/if}}
 </div>
