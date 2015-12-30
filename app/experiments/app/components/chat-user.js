@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     notRobot: false,
     openProfile: false,
+    userNameLimit: 45,
     willRender() {
         // If user already authenticated, no need to verify
         if (this.get('user.authenticated')) {
@@ -18,11 +19,11 @@ export default Ember.Component.extend({
          */
         authenticate() {
             var userName = this.get('userName');
-            if (userName) {
+            if (typeof userName === 'string' && userName.trim().length > 0) {
                 var avatarList = this.get('user.avatarList'),
                     randomAvatar = avatarList[Math.floor((Math.random() * avatarList.length) + 1)];
 
-                this.set('user.name', this.get('userName'));
+                this.set('user.name', userName.trim().substring(0, this.userNameLimit));
                 this.set('user.avatar', randomAvatar);
                 this.set('user.authenticated', true);
                 this.set('userName');

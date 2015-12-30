@@ -7,9 +7,13 @@
     {{#if user.authenticated}}
         <form class="ui reply form">
             <div class="field">
-                {{input value=body placeholder="Type here" maxlength='500' id="reply"}}
+                <div class="ui action input">
+                    {{input value=body maxlength=messageSizeLimit id="reply"}}
+                    <button class="ui {{if body.length 'primary' 'disabled' }} icon button" {{action 'send' }}>
+                        <i class="send icon"></i>
+                    </button>
+                </div>
             </div>
-            <input type="submit" class="ui primary button" value="Send" {{action 'send' }}>
         </form>
     {{/if}}
 </div>

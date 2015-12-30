@@ -16,13 +16,13 @@ export default Ember.Component.extend({
         send() {
             var body = this.get('body'),
                 message;
-            if (!body) {
+            if (typeof body !== 'string' || !body.trim().length) {
                 this.$('#reply').focus();
                 return;
             }
             message = this.get('targetObject.store').createRecord('chat-message', {
                 user: this.get('user.name'),
-                body: body.substring(0, this.messageSizeLimit),
+                body: body.trim().substring(0, this.messageSizeLimit),
                 avatar: this.get('user.avatar'),
                 date: new Date()
             });

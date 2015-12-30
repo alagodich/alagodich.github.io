@@ -3,8 +3,15 @@
 {{#if user.authenticated}}
     <div class="ui feed" style="margin-top: 0;">
         <div class="event">
-            <div class="label">
-                {{small-avatar avatar=user.avatar onClick=(action 'openProfile')}}
+            <div class="label" {{action 'openProfile'}}>
+                <div class="ui mini circular instant move down reveal">
+                    <div class="visible content">
+                        {{small-avatar avatar=user.avatar }}
+                    </div>
+                    <div class="hidden content">
+                        <i class="blue users link icon"></i>
+                    </div>
+                </div>
             </div>
             <div class="content">
                 {{user.name}}
@@ -18,7 +25,7 @@
     {{#if notRobot}}
         <form class="ui form">
             <div class="ui action input">
-                {{input value=userName placeholder="Introduce yourself"}}
+                {{input value=userName placeholder="Introduce yourself" maxlength=userNameLimit}}
                 <button class="ui {{if userName.length 'green' 'disabled' }} icon button" {{action 'authenticate'}}>
                     <i class="checkmark link icon"></i>
                 </button>
