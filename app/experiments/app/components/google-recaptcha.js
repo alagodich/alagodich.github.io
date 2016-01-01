@@ -41,7 +41,9 @@ export default Ember.Component.extend({
     init() {
         this._super();
         Ember.$.getScript(this.apiUrl + "?&render=explicit&hl=" + this.get('lang'), (/*data, textStatus, jqxhr*/) => {
-            this.waitForGrecaptcha();
+            if (this.container.lookupFactory('config:environment').environment !== 'test') {
+                this.waitForGrecaptcha();
+            }
         });
     },
 
@@ -54,7 +56,9 @@ export default Ember.Component.extend({
             this.setupGrecaptcha();
         } else if (this.get('_attempts') < this.get('_maxAttempts')) {
             this.set('_attempts', this.get('_attempts') + 1);
-            Ember.run.later(this, () => {this.waitForGrecaptcha();}, this.get('_interval'));
+            Ember.run.later(this, () => {
+                this.waitForGrecaptcha();
+            }, this.get('_interval'));
         } else {
             Ember.Logger.error("Failed to get grecaptcha script");
         }
@@ -62,6 +66,10 @@ export default Ember.Component.extend({
 
     setupGrecaptcha() {
         var self = this;
+        // Don't render it for tests, i don't know how to automatically test it yet
+        if (!this.$()) {
+            return;
+        }
         grecaptcha.render(this.$().prop('id'), {
             sitekey: this.siteKey(),
             callback: self.verifyCallback(),
