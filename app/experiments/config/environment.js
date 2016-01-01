@@ -50,7 +50,7 @@ module.exports = function (environment) {
 
     if (environment === 'test') {
         ENV.firebase = 'https://alagodich-ember-test.firebaseio.com/';
-        // Testem prefers this...
+        // Testem prefers this
         ENV.baseURL = '/';
         ENV.locationType = 'none';
 

@@ -23,9 +23,9 @@
     </div>
 {{else}}
     {{#if notRobot}}
-        <form class="ui form">
+        <form class="ui user form">
             <div class="ui action input">
-                {{input value=userName placeholder="Introduce yourself" maxlength=userNameLimit}}
+                {{input value=userName placeholder="Introduce yourself" maxlength=userNameLimit }}
                 <button class="ui {{if userName.length 'green' 'disabled' }} icon button" {{action 'authenticate'}}>
                     <i class="checkmark link icon"></i>
                 </button>

@@ -13,7 +13,7 @@ export default Ember.Component.extend({
     },
     willUpdate() {
         if (this.get('open')) {
-            this.modal.modal('show')
+            this.modal.modal('show');
         }
     },
     actions: {

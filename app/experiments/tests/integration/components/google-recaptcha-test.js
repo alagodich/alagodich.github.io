@@ -6,19 +6,10 @@ moduleForComponent('google-recaptcha', 'Integration | Component | google recaptc
 });
 
 test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
-
-  this.render(hbs`{{google-recaptcha}}`);
-
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:" + EOL +
-  this.render(hbs`
-    {{#google-recaptcha}}
-      template block text
-    {{/google-recaptcha}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.expect(0);
+  this.set('isVisible', false);
+  this.on('onVerify', function(val) {
+    console.log('onVerify', val);
+  });
+  this.render(hbs`{{google-recaptcha isVisible=isVisible}}`);
 });

@@ -11,14 +11,5 @@ test('it renders', function(assert) {
 
   this.render(hbs`{{chat-room}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:" + EOL +
-  this.render(hbs`
-    {{#chat-room}}
-      template block text
-    {{/chat-room}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$('.ui.dividing.header').text().trim(), 'Main channel');
 });
