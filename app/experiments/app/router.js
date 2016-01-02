@@ -7,7 +7,11 @@ const Router = Ember.Router.extend({
 
 Router.map(function () {
     this.route('chat');
-    this.route('whiteboard');
+    this.route('whiteboard', () => {
+        this.route('index');
+        this.route('list');
+        this.route('view', {path: '/view/:whiteboard_id'});
+    });
 });
 
 export default Router;

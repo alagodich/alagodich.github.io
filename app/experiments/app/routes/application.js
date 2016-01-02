@@ -17,7 +17,5 @@ export default Ember.Route.extend({
         // this is optional, and likely unnecessary if you define defaultLocale (see below)
         // The primary usecase is if you side load all translations
         this.get('intl').setLocale(['en-ca', 'en-us']);
-
-        this.transitionTo('chat');
     }
 });

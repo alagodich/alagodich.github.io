@@ -22,7 +22,7 @@ export default Ember.Component.extend({
             }
             message = this.get('targetObject.store').createRecord('chat-message', {
                 user: this.get('user.name'),
-                body: body.trim().substring(0, this.messageSizeLimit),
+                body: body.trim().substring(0, this.get('messageSizeLimit')),
                 avatar: this.get('user.avatar'),
                 date: new Date()
             });
