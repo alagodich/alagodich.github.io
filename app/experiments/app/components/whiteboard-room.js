@@ -6,6 +6,9 @@ export default Ember.Component.extend({
     titleLimit: 50,
     savingInProcess: false,
     savingQueue: [],
+    strokeWidth: 2,
+    stroke: 'blue',
+    fill: false,
 
     didInsertElement() {
         this.refreshControls();
@@ -22,6 +25,11 @@ export default Ember.Component.extend({
                 this.set('drawMode', mode);
                 this.refreshControls();
             }
+        },
+
+        setStroke(stroke) {
+            this.set('stroke', stroke);
+            this.refreshControls();
         },
 
         /**
@@ -67,6 +75,7 @@ export default Ember.Component.extend({
         if (saving) {
             Ember.run.next(this, this.processQueue, 1000);
         } else {
+            // TODO check http://emberjs.com/api/data/classes/DS.Store.html#method_scheduleSave
             let queueChunk = queue;
             this.set('savingQueue', []);
             queueChunk.forEach((element) => {
@@ -87,7 +96,10 @@ export default Ember.Component.extend({
     },
 
     refreshControls() {
-        this.$('.ui.button').removeClass('active');
-        this.$('.ui.button[data-id="' + this.get('drawMode') + '"]').addClass('active');
+        this.$('.mode.field .ui.button').removeClass('active');
+        this.$('.mode.field .ui.button[data-id="' + this.get('drawMode') + '"]').addClass('active');
+
+        this.$('.stroke.field .ui.button').addClass('basic');
+        this.$('.stroke.field .ui.button[data-id="' + this.get('stroke') + '"]').removeClass('basic');
     }
 });

@@ -1,44 +1,76 @@
+<style type="text/css">
+    .ui.whiteboard.list .active {
+        text-decoration: underline;
+    }
+</style>
 <div class="ui stackable grid">
     <div class="twelve wide column">
-        {{whiteboard-frame activeWhiteboard=activeWhiteboard mode=drawMode onClear=(action 'handleClear') onNewElement=(action 'queueForSaving') active=active}}
+        {{whiteboard-frame
+        activeWhiteboard=activeWhiteboard
+        mode=drawMode
+        onClear=(action 'handleClear')
+        onNewElement=(action 'queueForSaving')
+        active=active
+        stroke=stroke
+        strokeWidth=strokeWidth
+        fill=fill
+        }}
     </div>
 
     <div class="four wide column">
         <form class="ui whiteboard form">
             <div class="field">
                 <div class="ui action input">
-                    {{input value=activeWhiteboard.title placeholder="Name it" maxlength=titleLimit id='title' focus-out='saveTitle'}}
-                    {{#link-to 'whiteboard' (query-params active='') class='green ui icon button'}}
+                    {{input value=activeWhiteboard.title placeholder='Name it' maxlength=titleLimit id='title' focus-out='saveTitle'}}
+                    {{#link-to 'whiteboard' (query-params active='new') class='green ui icon button'}}
                         <i class="plus icon"></i>
                     {{/link-to}}
                 </div>
             </div>
-            <div class="field">
-                <div class="ui icon buttons">
+            <div class="mode field">
+                <div class="ui small icon buttons">
                     <button class="ui button" data-id="line" {{action 'setDrawMode' 'line'}}>
                         <i class="write icon"></i>
                     </button>
                     <button class="ui button" data-id="erase" {{action 'setDrawMode' 'erase'}}>
                         <i class="erase icon"></i>
                     </button>
-                    <button class="ui red disabled button" data-id="erase" {{action 'clearWhiteboard'}}>
-                        <i class="refresh icon"></i>
-                    </button>
                 </div>
                 {{#if savingInProcess}}
                     <div class="ui active small inline loader"></div>
                 {{/if}}
             </div>
-        </form>
-        <div class="ui list">
-            <h3 class="ui dividing header">Whiteboard list</h3>
-            {{#each whiteboards as |whiteboard|}}
-                <div class="item">
-                    <i class="whiteboard icon"></i>
-                    <div class="content">
-                        {{link-to whiteboard.title 'whiteboard' (query-params active=whiteboard.id)}}
-                    </div>
+            <div class="stroke field">
+                <div class="ui small icon buttons">
+                    <button class="ui mini black basic icon button" data-id="black" {{action 'setStroke' 'black'}}>
+                        <i class="icon paint brush"></i>
+                    </button>
+                    <button class="ui mini red basic icon button" data-id="red" {{action 'setStroke' 'red'}}>
+                        <i class="icon paint brush"></i>
+                    </button>
+                    <button class="ui mini blue basic icon button" data-id="blue" {{action 'setStroke' 'blue'}}>
+                        <i class="icon paint brush"></i>
+                    </button>
+                    <button class="ui mini green basic icon button" data-id="green" {{action 'setStroke' 'green'}}>
+                        <i class="icon paint brush"></i>
+                    </button>
                 </div>
+            </div>
+            {{input type='range' min='1' max='8' value=strokeWidth }}
+            <div class="inline field">
+                <div class="ui slider checkbox">
+                    {{input type='checkbox' checked=fill }}
+                    <label>Fill path</label>
+                </div>
+                <label></label>
+            </div>
+        </form>
+        <div class="ui whiteboard list">
+            <h3 class="ui dividing header">Whiteboard list [{{whiteboards.length}}]</h3>
+            {{#each whiteboards as |whiteboard|}}
+                {{#link-to 'whiteboard' (query-params active=whiteboard.id) class='item'}}
+                    <i class="file image outline icon"></i><div class="content">{{whiteboard.title}}</div>
+                {{/link-to}}
             {{/each}}
         </div>
     </div>
