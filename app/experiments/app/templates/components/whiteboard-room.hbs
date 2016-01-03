@@ -1,7 +1,6 @@
 <div class="ui stackable grid">
     <div class="twelve wide column">
         {{whiteboard-frame activeWhiteboard=activeWhiteboard mode=drawMode onClear=(action 'handleClear') onNewElement=(action 'queueForSaving') active=active}}
-        {{log active}}
     </div>
 
     <div class="four wide column">
