@@ -7,6 +7,7 @@ export default Ember.Component.extend({
     margin: {top: 40, right: 20, bottom: 20, left: 40},
     radius: 2,
     drawing: false,
+    svg: d3.select('svg').style('border', '1px solid #CCC'),
 
     /**
      * We're passing in a function in d3.max to tell it what we're maxing (x value)
@@ -38,15 +39,57 @@ export default Ember.Component.extend({
     didInsertElement() {
         this.set('svg', d3.select('svg').style('border', '1px solid #CCC'));
         this.correctSize();
+        if (this.get('active')) {
+            this.drawSavedElements();
+        }
         jQuery(window).on('resize', Ember.run.bind(this, this.handleResize));
 
-        this.get('onClear')(this.clearFrame);
-
-        //this.drawAxis();
+        this.get('onClear')(Ember.run.bind(this, this.clearFrame));
     },
 
     clearFrame() {
-        d3.selectAll("svg > *").remove();
+        this.get('svg').selectAll('*').remove();
+    },
+
+    activeWhiteboardChanged: Ember.observer('activeWhiteboard', function () {
+        this.clearFrame();
+        if (this.get('active')) {
+            this.drawSavedElements();
+        }
+    }),
+
+    drawSavedElements() {
+        this.get('activeWhiteboard').then((whiteboard) => {
+            whiteboard.get('elements').then((elements) => {
+                var dataSet = [],
+                    paths;
+
+                // Unfortunately we cannot send ember record set to d3 data() method, we have to process it first
+                elements.forEach((element) => {
+                    dataSet.push({
+                        element: element.get('element'),
+                        stroke: element.get('stroke'),
+                        strokeWidth: element.get('strokeWidth'),
+                        fill: element.get('fill'),
+                        d: element.get('d')
+                    });
+                });
+
+                paths = this.get('svg').selectAll('path').data(dataSet);
+
+                paths.enter()
+                    .append('path')
+                    .attr({
+                        element: (element) => element.element,
+                        stroke: (element) => element.stroke,
+                        strokeWidth: (element) => element.strokeWidth,
+                        fill: (element) => element.fill,
+                        d: (element) => element.d
+                    });
+
+                paths.exit().remove();
+            });
+        });
     },
 
     correctSize() {
@@ -57,11 +100,8 @@ export default Ember.Component.extend({
     },
 
     drawAxis() {
-        var xAxis,
-            yAxis;
-        // Add a X and Y Axis (Note: orient means the direction that ticks go, not position)
-        xAxis = d3.svg.axis().scale(this.xScale()).orient('top');
-        yAxis = d3.svg.axis().scale(this.yScale()).orient('left');
+        var xAxis = d3.svg.axis().scale(this.xScale()).orient('top'),
+            yAxis = d3.svg.axis().scale(this.yScale()).orient('left');
 
         this.get('svg').append('g').attr({
             'class': 'axis',
@@ -72,31 +112,11 @@ export default Ember.Component.extend({
             'class': 'axis',
             transform: 'translate(' + [this.get('margin.left'), 0] + ')'
         }).call(yAxis);
-
-        this.refresh();
     },
 
     addPoint(point) {
-        var alreadyExists = this.get('dataSet').find(function (element) {
-            return element.x === point.x && element.y === point.y;
-        });
-        if (alreadyExists) {
-            return;
-        }
-        this.get('dataSet').push(point);
+        this.get('dataSet').push({element: 'point', attr: point});
         this.refresh();
-    },
-
-    refresh() {
-        this.get('svg').selectAll('circle')
-            .data(this.get('dataSet'))
-            .enter()
-            .append('circle')
-            .attr({
-                cx: (d) => this.xScale()(d.x),
-                cy: (d) => this.yScale()(d.y),
-                r: this.get('radius')
-            });
     },
 
     handleResize() {
@@ -116,10 +136,6 @@ export default Ember.Component.extend({
             this.startLine(event.offsetX, event.offsetY);
             return;
         }
-        if (this.get('mode') === 'polyline') {
-            this.startPolyline(event.offsetX, event.offsetY);
-            return;
-        }
         if (this.get('mode') === 'erase') {
             this.startErase(event.offsetX, event.offsetY);
         }
@@ -129,87 +145,62 @@ export default Ember.Component.extend({
         if (!this.get('drawing')) {
             return;
         }
-        if (this.get('mode') === 'polyline') {
-            this.continuePolyline(event.offsetX, event.offsetY);
-            return;
-        }
-        if (this.get('mode') === 'line') {
-            this.continueLine(event.offsetX, event.offsetY);
-            return;
-        }
-        if (this.get('mode') === 'erase') {
-            this.continueErase(event.offsetX, event.offsetY);
-        }
+        this.continueLine(event.offsetX, event.offsetY);
     },
 
     mouseUp() {
-        this.stopAllActions();
+        this.finalizeElement();
     },
 
     mouseLeave() {
-        this.stopAllActions();
+        this.finalizeElement();
     },
 
-    stopAllActions() {
+    finalizeElement() {
         this.set('drawing', false);
-        this.set('polyline');
-        this.set('line');
-        this.set('erase');
+        this.saveDrawingElement();
+        this.set('drawingElement');
     },
 
-    startPolyline(x, y) {
-        this.set('polyline', this.get('svg')
-            .append('polyline')
-            .attr({
-                stroke: 'black',
-                strokeWidth: 1,
-                points: x + ',' + y
-            }));
-    },
-
-    continuePolyline(x, y) {
-        var points = this.get('polyline').attr('points').split(' ');
-        points.push(x + ',' + y);
-        this.get('polyline').attr({
-            points: points.join(' ')
-        });
+    saveDrawingElement() {
+        var element;
+        if (element = this.get('drawingElement')) {
+            this.get('onNewElement')({
+                element: element.node().tagName,
+                stroke: element.attr('stroke'),
+                strokeWidth: element.attr('strokeWidth'),
+                fill: element.attr('fill'),
+                d: element.attr('d')
+            });
+        }
     },
 
     startLine(x, y) {
-        this.set('line', this.get('svg')
+        this.set('drawingElement', this.get('svg')
             .append('path')
             .attr({
                 stroke: 'black',
                 strokeWidth: 1,
-                d: 'M' + x + ',' + y,
+                d: `M${x},${y}`,
                 fill: 'none'
             }));
     },
 
     continueLine(x, y) {
-        var points = this.get('line').attr('d').split(' ');
-        points.push('L' + x + ',' + y);
-        this.get('line').attr({
-            d: points.join(' ')
+        var element = this.get('drawingElement');
+        element.attr({
+            d: `${element.attr('d')}L${x},${y}`
         });
     },
 
     startErase(x, y) {
-        this.set('erase', this.get('svg')
+        this.set('drawingElement', this.get('svg')
             .append('path')
             .attr({
                 stroke: 'white',
                 'stroke-width': 10,
-                d: 'M' + x + ',' + y,
+                d: `M${x},${y}`,
                 fill: 'none'
             }));
-    },
-
-    continueErase(x, y) {
-        var points = this.get('erase').attr('d').split(' ');
-        points.push('L' + x + ',' + y);
-        this.get('erase').attr({
-            d: points.join(' ')
-        });
     }
 });

@@ -3,14 +3,9 @@
 {{#if user.authenticated}}
     <div class="ui feed" style="margin-top: 0;">
         <div class="event">
-            <div class="label" {{action 'openProfile'}}>
-                <div class="ui mini circular instant move down reveal">
-                    <div class="visible content">
-                        {{small-avatar avatar=user.avatar }}
-                    </div>
-                    <div class="hidden content">
-                        <i class="blue users link icon"></i>
-                    </div>
+            <div class="label" {{action 'openProfile'}} style="cursor: pointer;">
+                <div class="content">
+                    {{small-avatar avatar=user.avatar }}
                 </div>
             </div>
             <div class="content">

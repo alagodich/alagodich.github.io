@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     tagName: 'img',
     classNames: ['ui'],
-    classNameBindings: ['size', ':image'],
+    classNameBindings: ['size', 'additionalClass', ':image'],
     attributeBindings: ['src'],
     size: 'mini',
     defaultFormat: '.jpg',

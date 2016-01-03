@@ -1,22 +1,17 @@
-<style type="text/css">
-    .axis path, .axis line {
-        fill: none;
-        stroke: black;
-        shape-rendering: crispEdges; /* Round any decimal pixels so it'll render nicely */
-    }
-</style>
 <div class="ui stackable grid">
     <div class="twelve wide column">
-        {{whiteboard-frame mode=drawMode onClear=(action 'handleClear')}}
+        {{whiteboard-frame activeWhiteboard=activeWhiteboard mode=drawMode onClear=(action 'handleClear') onNewElement=(action 'queueForSaving') active=active}}
+        {{log active}}
     </div>
+
     <div class="four wide column">
         <form class="ui whiteboard form">
             <div class="field">
                 <div class="ui action input">
-                    {{input value=title placeholder="Name it" maxlength=titleLimit id='title'}}
-                    <button class="ui {{if title 'green' 'disabled' }} icon button" {{action 'save'}}>
-                        <i class="paint brush link icon"></i>
-                    </button>
+                    {{input value=activeWhiteboard.title placeholder="Name it" maxlength=titleLimit id='title' focus-out='saveTitle'}}
+                    {{#link-to 'whiteboard' (query-params active='') class='green ui icon button'}}
+                        <i class="plus icon"></i>
+                    {{/link-to}}
                 </div>
             </div>
             <div class="field">
@@ -24,26 +19,25 @@
                     <button class="ui button" data-id="line" {{action 'setDrawMode' 'line'}}>
                         <i class="write icon"></i>
                     </button>
-                    <button class="ui button" data-id="polyline" {{action 'setDrawMode' 'polyline'}}>
-                        <i class="magic icon"></i>
-                    </button>
                     <button class="ui button" data-id="erase" {{action 'setDrawMode' 'erase'}}>
                         <i class="erase icon"></i>
                     </button>
-                    <button class="ui red button" data-id="erase" {{action 'clearWhiteboard'}}>
+                    <button class="ui red disabled button" data-id="erase" {{action 'clearWhiteboard'}}>
                         <i class="refresh icon"></i>
                     </button>
                 </div>
+                {{#if savingInProcess}}
+                    <div class="ui active small inline loader"></div>
+                {{/if}}
             </div>
         </form>
-
         <div class="ui list">
-            <h3 class="ui dividing header">Whiteboards</h3>
+            <h3 class="ui dividing header">Whiteboard list</h3>
             {{#each whiteboards as |whiteboard|}}
                 <div class="item">
                     <i class="whiteboard icon"></i>
                     <div class="content">
-                        {{whiteboard.title}}
+                        {{link-to whiteboard.title 'whiteboard' (query-params active=whiteboard.id)}}
                     </div>
                 </div>
             {{/each}}
