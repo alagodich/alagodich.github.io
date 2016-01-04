@@ -38,6 +38,7 @@ export default Ember.Component.extend({
         d3.select(this.$()[0]).style('border', '1px solid #CCC');
         this.correctSize();
         this.drawSavedElements();
+        //this.drawMessage('Welcome!');
         jQuery(window).on('resize', Ember.run.bind(this, this.handleResize));
         this.get('onClear')(Ember.run.bind(this, this.clearFrame));
         //this.drawAxis();
@@ -146,24 +147,27 @@ export default Ember.Component.extend({
         this.finalizeElement();
     },
 
-    touchStart() {
-        this.starElement();
-    },
-
-    touchMove() {
-        if (!this.get('drawing')) {
-            return;
-        }
-        this.continuePath(event.offsetX, event.offsetY);
-    },
-
-    touchEnd() {
-        this.finalizeElement();
-    },
-
-    touchCancel() {
-        this.finalizeElement();
-    },
+    /**
+     * Disable touch events for now
+     */
+    //touchStart() {
+    //    this.starElement();
+    //},
+    //
+    //touchMove() {
+    //    if (!this.get('drawing')) {
+    //        return;
+    //    }
+    //    this.continuePath(event.offsetX, event.offsetY);
+    //},
+    //
+    //touchEnd() {
+    //    this.finalizeElement();
+    //},
+    //
+    //touchCancel() {
+    //    this.finalizeElement();
+    //},
 
     starElement() {
         var className = 'drawing',
@@ -171,7 +175,7 @@ export default Ember.Component.extend({
             stroke,
             fill;
         if (this.get('mode') === 'line') {
-            stroke = this.get('stroke');
+            stroke = this.get('stroke').toString();
             fill = this.get('fill') === false ? 'none' : this.get('stroke');
         }
         if (this.get('mode') === 'erase') {
@@ -226,5 +230,25 @@ export default Ember.Component.extend({
         element.attr({
             d: `${element.attr('d')}L${parseInt(x)},${parseInt(y)}`
         });
+    },
+
+    drawMessage(message) {
+        let svg = d3.select(this.$()[0]),
+            text,
+            group;
+
+        group = svg.append('g').attr('transform', 'translate(32,50)');
+        text = svg.select('g').selectAll('text').data(message);
+
+        text.attr('style', 'fill: #000;');
+
+        text.enter().append('text')
+            .attr('style', 'fill: #80A6CD;')
+            .attr('x', (message, index) => index * 24)
+            .attr('dy', '.35em');
+
+        text.text((message) => message);
+
+        text.exit().remove();
     }
 });

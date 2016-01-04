@@ -7,7 +7,7 @@ export default Ember.Component.extend({
     savingInProcess: false,
     savingQueue: [],
     strokeWidth: 2,
-    stroke: 'blue',
+    stroke: '#0E6EB8',
     fill: false,
 
     didInsertElement() {
