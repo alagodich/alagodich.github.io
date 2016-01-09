@@ -4,7 +4,13 @@ import d3 from 'd3';
 export default Ember.Component.extend({
     tagName: 'svg',
     classNames: ['whiteboard'],
-    margin: {top: 40, right: 20, bottom: 20, left: 40},
+    margin: {
+        top: 40,
+        right: 20,
+        bottom: 20,
+        left: 40
+    },
+    lineResolution: 4,
     drawing: false,
 
     /**
@@ -38,7 +44,7 @@ export default Ember.Component.extend({
         d3.select(this.$()[0]).style('border', '1px solid #CCC');
         this.correctSize();
         this.drawSavedElements();
-        //this.drawMessage('Welcome!');
+        // this.drawMessage('Welcome!');
         jQuery(window).on('resize', Ember.run.bind(this, this.handleResize));
         this.get('onClear')(Ember.run.bind(this, this.clearFrame));
         //this.drawAxis();
@@ -48,12 +54,12 @@ export default Ember.Component.extend({
         d3.select(this.$()[0]).selectAll('.drawing').remove();
     },
 
-    activeWhiteboardChanged: Ember.observer('activeWhiteboard', function () {
+    activeWhiteboardChanged: Ember.observer('activeWhiteboard', function() {
         this.clearFrame();
         this.drawSavedElements();
     }),
 
-    activeWhiteboardDataSetChanged: Ember.observer('activeWhiteboard.elements', function () {
+    activeWhiteboardDataSetChanged: Ember.observer('activeWhiteboard.elements', function() {
         Ember.run.next(this, this.drawSavedElements);
     }),
 
@@ -114,7 +120,10 @@ export default Ember.Component.extend({
     },
 
     addPoint(point) {
-        this.get('dataSet').push({element: 'point', attr: point});
+        this.get('dataSet').push({
+            element: 'point',
+            attr: point
+        });
         this.refresh();
     },
 
@@ -227,6 +236,11 @@ export default Ember.Component.extend({
             return;
         }
         var element = this.get('drawingElement');
+        let lastCords = element.attr('d').split('L').pop().split(',');
+        // Add point only if it moved more that lineResolution
+        if ((Math.abs(lastCords[0] - x) + Math.abs(lastCords[1] - y)) < this.get('lineResolution')) {
+            return;
+        }
         element.attr({
             d: `${element.attr('d')}L${parseInt(x)},${parseInt(y)}`
         });
@@ -243,8 +257,8 @@ export default Ember.Component.extend({
         text.attr('style', 'fill: #000;');
 
         text.enter().append('text')
-            .attr('style', 'fill: #80A6CD;')
-            .attr('x', (message, index) => index * 24)
+            .attr('style', 'fill: #80A6CD; font-size: 20px;')
+            .attr('x', (message, index) => index * 30)
             .attr('dy', '.35em');
 
         text.text((message) => message);

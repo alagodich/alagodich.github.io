@@ -29,6 +29,7 @@ export default Ember.Component.extend({
 
         setStroke(stroke) {
             this.set('stroke', stroke);
+            this.set('drawMode', 'line');
             this.refreshControls();
         },
 
@@ -76,18 +77,15 @@ export default Ember.Component.extend({
             Ember.run.next(this, this.processQueue, 1000);
         } else {
             // TODO check http://emberjs.com/api/data/classes/DS.Store.html#method_scheduleSave
-            let queueChunk = queue;
-            this.set('savingQueue', []);
-            queueChunk.forEach((element) => {
-                Ember.run.once(this, function () {
-                    this.set('savingInProcess', true);
-                    this.get('activeWhiteboard').then((whiteboard) => {
-                        whiteboard.get('elements').then((elements) => {
-                            elements.pushObject(element);
-                            whiteboard.save().then(() => {
-                                element.save();
-                                this.set('savingInProcess', false);
-                            });
+            var element = this.get('savingQueue').pop();
+            Ember.run.once(this, function() {
+                this.set('savingInProcess', true);
+                this.get('activeWhiteboard').then((whiteboard) => {
+                    whiteboard.get('elements').then((elements) => {
+                        elements.pushObject(element);
+                        whiteboard.save().then(() => {
+                            element.save();
+                            this.set('savingInProcess', false);
                         });
                     });
                 });

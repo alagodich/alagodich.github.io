@@ -28,7 +28,7 @@ module.exports = function(grunt) {
         },
         concat: {
             options: {
-                separator: "\n;",
+                separator: '\\n;',
                 stripBanners: true
             },
             dist: {
@@ -68,11 +68,11 @@ module.exports = function(grunt) {
             },
             dist: {
                 files: [{
-                    "expand": true,
-                    "cwd": "app/",
-                    "src": ["components/*.js", "app.js"],
-                    "dest": "app/tmp",
-                    "ext": ".js"
+                    'expand': true,
+                    'cwd': 'app/',
+                    'src': ['components/*.js', 'app.js'],
+                    'dest': 'app/tmp',
+                    'ext': '.js'
                 }]
             }
         },
@@ -116,7 +116,7 @@ module.exports = function(grunt) {
                     compress: true
                 },
                 files: {
-                    "assets/style.css": "less/style.less"
+                    'assets/style.css': 'less/style.less'
                 }
             }
         },
