@@ -560,7 +560,7 @@ class Metronome extends Component {
         const playButtonText = this.state.isPlaying ? 'stop' : 'play',
             playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'white play icon',
             volume = parseInt(this.state.volume * 100, 10),
-            githubUrl = 'https://github.com/alagodich/alagodich.github.io/blob/master/app/components/Metronome.js';
+            githubUrl = 'https://github.com/alagodich/alagodich.github.io/blob/master/app/components/Metronome.jsx';
 
         if (!this.isChrome()) {
             return (
