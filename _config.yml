@@ -1,4 +1,18 @@
-exclude: ["bower_components", "node_modules", "bower.json", "Gemfile*", "Gruntfile.js", "package.json", "app", "vendor", "README.md"]
+exclude: [
+    "bower_components",
+    "node_modules",
+    "bower.json",
+    "Gemfile*",
+    "Gruntfile.js",
+    "package.json",
+    "app",
+    "script",
+    "app/*",
+    "tmp",
+    "vendor",
+    "README.md"
+]
+gems: ["jekyll-paginate"]
 paginate: 5
 defaults:
     -

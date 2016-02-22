@@ -17,11 +17,9 @@
     <!-- Site Properities -->
     <title>alagodich.github.io</title>
     <!-- CSS -->
-    {% include {{ page.defaultcss }} %}
-    {{ page.pagecss }}
+    <link href="/public/app.css" rel="stylesheet">
 </head>
 <body>
-
     {% include {{page.googletag}} %}
     <div class="ui container">
         {% include navigation.html %}
@@ -30,23 +28,16 @@
     <div class="ui main container">
         {{ content }}
     </div>
-
-    <!-- JavaScript -->
-
-    <!-- Default js modules -->
-    {% include {{ page.defaultmodules }} %}
-
-    {% if page.modules %}
-    <!-- Page js modules -->
-        {%include {{ page.modules }} %}
+    {% if page.include %}
+    <!-- Page includes -->
+        {%include {{ page.include }} %}
     {% endif %}
-
-    <!-- Default app -->
-    {% include {{ page.app }} %}
-
-    {% if page.js %}
-    <!-- Page js -->
-        {% include {{ page.js }} %}
+    <!-- JavaScript -->
+    <script src="/public/vendors.js"></script>
+    <script src="/public/app.js"></script>
+    {% if page.module %}
+    <!-- Page js modules -->
+        <script src="/public/{{ page.module }}"></script>
     {% endif %}
 </body>
 

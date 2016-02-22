@@ -10,12 +10,12 @@ Some components created with [React](https://facebook.github.io/react/)
 
 ### TODOs
 * Добавить карусель для картинок
-* Добавить тултип с картой для картинок
 * Добавить js и dart приложения в новый раздел на сайт
 * Метроном (добавить выбора размера, подключеть firebase)
 * Use Flow http://flowtype.org/
 * Toggle metronome by 'space' press
 * Add annotations to metronome app (desktop only)
+* Use build tools for semantic
 
 ### Install
 * make sure you have [ruby, jekyll and bundler installed](https://help.github.com/articles/using-jekyll-with-pages/)
@@ -37,4 +37,8 @@ Some components created with [React](https://facebook.github.io/react/)
 ### Deployment
 * Stop ember-cli server
 * execute `grunt deploy-ember`
+
+
+https://github.com/Semantic-Org/Semantic-UI/issues/3533
+
 

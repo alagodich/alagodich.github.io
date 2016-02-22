@@ -16,6 +16,7 @@ ratings:
   - "**.css"
   - "**.inc"
   - "**.js"
+  - "**.jsx"
   - "**.module"
 exclude_paths:
 - node_modules/**/*
