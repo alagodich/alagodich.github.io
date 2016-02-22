@@ -7,10 +7,6 @@ import Carousel from './components/Carousel.jsx';
 import Profile from './components/Profile.jsx';
 import TODOs from './components/TODOs.jsx';
 
-// import './style.less';
-// import 'semantic-ui/dist/semantic.css';
-// import 'semantic-ui/dist/semantic.js';
-
 $('youtube').each(function () {
     const id = $(this).data('id');
     if (typeof id === 'undefined') {
