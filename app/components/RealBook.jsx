@@ -37,6 +37,10 @@ const defaultState = {
             file: 'I-Could-Write-A-Book.xml'
         },
         {
+            title: 'My Funny Valentine',
+            file: 'My-Funny-Valentine.xml'
+        },
+        {
             title: 'The Christmas Song',
             file: 'The-Christmas-Song.xml'
         },
