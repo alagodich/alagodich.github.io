@@ -64,27 +64,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-        concurrent: {
-            /**
-             * Work with this task
-             * Lifts up server with livereload and watches for frontend changes to rebuild
-             */
-            dev: {
-                tasks: ['nodemon:dev', 'browserSync', 'watch:frontend'],
-                options: {
-                    logConcurrentOutput: true
-                }
-            },
-            /**
-             * Concurrent production build
-             */
-            build: {
-                tasks: ['build-frontend', 'build-inline'],
-                options: {
-                    logConcurrentOutput: false
-                }
-            }
-        },
         clean: {
             ember: ['experiments']
         },

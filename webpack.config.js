@@ -6,6 +6,7 @@ const path = require('path'),
         entry: {
             app: path.resolve('app/main.jsx'),
             metronome: path.resolve('app/metronome.jsx'),
+            realbook: path.resolve('app/realbook.jsx'),
             vendors: [
                 'jquery',
                 'semantic-ui/dist/semantic.css',
