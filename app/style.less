@@ -35,46 +35,43 @@ a {
 
 .chart {
     .bar {
-        min-height: 55px;
-        margin-bottom: 0.5em;
-
-        .chord--half {
-            margin-right: 3em;
+        .chords {
+            line-height: 3em;
         }
-
-        .chord__alter {
-            font-size: 2em;
-        }
-
-        .chord__step {
-            font-size: 3em;
-        }
-        .chord__kind {
-            font-size: 1.5em;
+        .chord {
+            &__alter {
+                font-size: 1.7em;
+            }
+            &__step {
+                font-size: 3em;
+            }
+            &__kind {
+                font-size: 1.2em;
+            }
         }
     }
 
-    .barline--left--light {
-        border-left: 1px solid;
-    }
-
-    .barline--right--light {
-        border-right: 1px solid;
-    }
-
-    .barline--left--light-light {
-        border-left: 3px double;
-    }
-
-    .barline--right--light-light {
-        border-right: 3px double;
-    }
-
-    .barline--left--heavy-light {
-        border-left: 5px double;
-    }
-
-    .barline--right--light-heavy {
-        border-right: 5px double;
+    .barline {
+        &--left--light {
+            border-left: 1px solid;
+        }
+        &--right--light {
+            border-right: 1px solid;
+        }
+        &--left--light-light {
+            border-left: 3px double;
+        }
+        // &--top--light {
+        //     border-top: 1px dotted;
+        // }
+        &--right--light-light {
+            border-right: 3px double;
+        }
+        &--left--heavy-light {
+            border-left: 5px double;
+        }
+        &--right--light-heavy {
+            border-right: 5px double;
+        }
     }
 }

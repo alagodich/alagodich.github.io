@@ -13,7 +13,7 @@ class ChartPicker extends Component {
 
             return (
                 <div key={index} className="item">
-                    <i className="music icon"></i>
+                    <i className="options icon"></i>
                     <a className="content" onClick={pickThisChart}>
                       {chart.title}
                     </a>

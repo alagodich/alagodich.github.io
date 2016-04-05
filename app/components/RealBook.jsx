@@ -5,6 +5,7 @@ import ChartPicker from './ChartPicker.jsx';
 
 const defaultState = {
         header: 'Real Book',
+        subHeader: null,
         chart: null
     },
     charts = [
@@ -17,12 +18,12 @@ const defaultState = {
             file: 'Blue-Bossa.xml'
         },
         {
-            title: 'Corcovado',
-            file: 'Corcovado.xml'
+            title: 'Chega De Saudade',
+            file: 'Chega-De-Saudade.xml'
         },
         {
-            title: 'Fever',
-            file: 'Fever.xml'
+            title: 'Corcovado',
+            file: 'Corcovado.xml'
         },
         {
             title: 'Fly Me To The Moon',
@@ -35,6 +36,10 @@ const defaultState = {
         {
             title: 'I Could Write A Book',
             file: 'I-Could-Write-A-Book.xml'
+        },
+        {
+            title: 'I Get A Kick Out Of You',
+            file: 'I-Get-A-Kick-Out-Of-You.xml'
         },
         {
             title: 'My Funny Valentine',
@@ -65,7 +70,7 @@ class RealBook extends Component {
     }
 
     // componentWillMount() {
-    //     this.loadChart('The-Girl-From-Ipanema.xml');
+    //     this.loadChart('Corcovado.xml');
     // }
 
     loadChart(file) {
@@ -77,9 +82,12 @@ class RealBook extends Component {
                     return;
                 }
                 const chart = parsed['score-partwise'].part[0],
-                    header = parsed['score-partwise']['movement-title'][0];
+                    header = parsed['score-partwise']['movement-title'][0],
+                    composer = parsed['score-partwise'].identification[0].creator[0]._,
+                    style = parsed['score-partwise'].identification[0].creator[1]._,
+                    subHeader = `${composer}, ${style}`;
 
-                this.setState({chart, header});
+                this.setState({chart, header, subHeader});
             });
         });
     }
@@ -92,7 +100,7 @@ class RealBook extends Component {
     }
 
     handleChartClose() {
-        this.setState({chart: null, header: defaultState.header});
+        this.setState({chart: null, header: defaultState.header, subHeader: defaultState.subHeader});
     }
 
     render() {
@@ -101,11 +109,21 @@ class RealBook extends Component {
             : <ChartPicker charts={charts} onClick={this.handleChartChange} />,
             closeChartButton = this.state.chart
                 ? <a onClick={this.handleChartClose}><i className="angle blue double left icon"></i></a>
-                : '';
+                : '',
+            align = this.state.chart ? 'right' : 'left';
 
         return (
-            <div className="">
-                <div className="header"><h2>{closeChartButton} {this.state.header}</h2></div>
+            <div className="realbook">
+                <div>
+                    <h2 className={`ui dividing ${align} aligned header`}>
+                        <div className="content">
+                            {closeChartButton} {this.state.header}
+                            <div className="sub header">
+                                {this.state.subHeader}
+                            </div>
+                        </div>
+                    </h2>
+                </div>
                 <div className="ui basic segment">{content}</div>
             </div>
         );
