@@ -8,56 +8,7 @@ const defaultState = {
         subHeader: null,
         chart: null
     },
-    charts = [
-        {
-            title: 'Agua De Beber',
-            file: 'Agua-De-Beber.xml'
-        },
-        {
-            title: 'Blue Bossa',
-            file: 'Blue-Bossa.xml'
-        },
-        {
-            title: 'Chega De Saudade',
-            file: 'Chega-De-Saudade.xml'
-        },
-        {
-            title: 'Corcovado',
-            file: 'Corcovado.xml'
-        },
-        {
-            title: 'Fly Me To The Moon',
-            file: 'Fly-Me-To-The-Moon.xml'
-        },
-        {
-            title: 'How High The Moon',
-            file: 'How-High-The-Moon.xml'
-        },
-        {
-            title: 'I Could Write A Book',
-            file: 'I-Could-Write-A-Book.xml'
-        },
-        {
-            title: 'I Get A Kick Out Of You',
-            file: 'I-Get-A-Kick-Out-Of-You.xml'
-        },
-        {
-            title: 'My Funny Valentine',
-            file: 'My-Funny-Valentine.xml'
-        },
-        {
-            title: 'The Christmas Song',
-            file: 'The-Christmas-Song.xml'
-        },
-        {
-            title: 'The Girl From Ipanema',
-            file: 'The-Girl-From-Ipanema.xml'
-        },
-        {
-            title: 'There Will Never Be Another You',
-            file: 'There-Will-Never-Be-Another-You.xml'
-        }
-    ];
+    charts = require('./../../assets/charts/list.js');
 
 class RealBook extends Component {
 
