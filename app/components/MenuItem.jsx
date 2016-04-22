@@ -1,19 +1,19 @@
 import React, {Component, PropTypes} from 'react';
 
 const propTypes = {
-    current: PropTypes.string.isRequired,
+    active: PropTypes.bool.isRequired,
     url: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired
 };
 
 class MenuItem extends Component {
     render() {
-        let item;
-        if (this.props.current === this.props.url) {
-            item = <span className="header">{this.props.title}</span>;
-        } else {
-            item = <a className="header" href={this.props.url}>{this.props.title}</a>;
-        }
+        const external = this.props.external
+                ? <i className="external icon"></i>
+                : null,
+            item = this.props.active
+                ? <span className="header">{this.props.title}{external}</span>
+                : <a className="header" href={this.props.url}>{this.props.title}{external}</a>;
         return (
             <div className="item">{item}</div>
         );

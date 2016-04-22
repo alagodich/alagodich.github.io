@@ -9,9 +9,13 @@ const propTypes = {
 class Menu extends Component {
 
     render() {
-        const items = this.props.items.map((item, index) => (
-            <MenuItem key={index} {...item} current={this.props.current} />
-        ));
+        const items = this.props.items.map((item, index) => {
+            let active = this.props.current === item.url;
+            if (item.url === '/index.html' && this.props.current === '/') {
+                active = true;
+            }
+            return <MenuItem key={index} {...item} active={active} />;
+        });
 
         return (<div className="ui text menu">{items}</div>);
     }
