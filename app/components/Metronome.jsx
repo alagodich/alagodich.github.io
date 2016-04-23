@@ -1,5 +1,6 @@
 'use strict';
 /* eslint complexity: 0 */
+/* eslint react/no-set-state: 0 */
 
 import React, {Component} from 'react';
 
@@ -32,7 +33,7 @@ const minTempo = 30,
         signature: '4/4',
         accentFirstBeat: false,
         volume: 0.5,
-        useOscillator: true
+        useOscillator: false
     };
 
 class Metronome extends Component {
@@ -554,6 +555,13 @@ class Metronome extends Component {
                     self.handleToggleAccentFirstBeat();
                 }
             });
+        // FIXME: disable space handling for checkboxes
+        // $(window).keypress(event => {
+        //     if (event.keyCode === 0 || event.keyCode === 32) {
+        //         event.preventDefault();
+        //         this.handlePlay();
+        //     }
+        // });
     }
 
     render() {
