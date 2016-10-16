@@ -1,9 +1,8 @@
 import React, {PropTypes, Component} from 'react';
 
 const propTypes = {
-        items: PropTypes.array.isRequired
-    },
-    googlePhotoUrl = 'https://lh3.googleusercontent.com/';
+    items: PropTypes.array.isRequired
+};
 
 /**
  * Carousel powered by http://kenwheeler.github.io/slick/
@@ -32,7 +31,7 @@ class Carousel extends Component {
                 <img
                     key={index}
                     className="ui image"
-                    src={googlePhotoUrl + item}
+                    src={`/images/${item}`}
                     alt=""
                 />
             );

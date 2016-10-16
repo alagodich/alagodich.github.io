@@ -21,11 +21,11 @@ $('.component--menu').each(function () {
 });
 
 $('google-photo').each(function () {
-    const id = $(this).data('id');
-    if (typeof id === 'undefined') {
+    const src = $(this).data('src');
+    if (typeof src === 'undefined') {
         return;
     }
-    render(<Photo id={id} />, this);
+    render(<Photo src={src} />, this);
 });
 
 $('carousel').each(function () {
