@@ -49,10 +49,3 @@ $('TODOs').each(function () {
 $('.popup').popup({
     transition: 'vertical flip'
 });
-
-// Paralaxik
-$(window).scroll(() => {
-    const height = $(document).outerHeight() - $(window).outerHeight(),
-        perc = ($(window).scrollTop() / height * 100);
-    $('#parallaxik').css({backgroundPosition: `left ${perc}%`});
-});

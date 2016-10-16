@@ -29,14 +29,15 @@ Some components created with [React](https://facebook.github.io/react/)
 
 ## Experiments with ember
 ### Workflow
-* Work in `app/experiments` using ember-cli
+* Clone https://github.com/alagodich/ember-experiments
+* Work using ember-cli
 * Execute watch task `ember server`
 * App will be accessible on http://localhost:4200/  
 * Livereload server on http://localhost:49152
 * Don't run any other watch tasks simultaneously
 ### Deployment
 * Stop ember-cli server
-* execute `grunt deploy-ember`
+* Copy dist to /experiments/
 
 
 https://github.com/Semantic-Org/Semantic-UI/issues/3533

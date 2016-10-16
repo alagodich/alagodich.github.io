@@ -67,6 +67,9 @@ module.exports = function (grunt) {
                 }
             }
         },
+        clean: {
+            public: ['public']
+        },
         copy: {
             bower: {
                 src: ['Snap.svg/dist/snap.svg-min.js'],
@@ -106,5 +109,5 @@ module.exports = function (grunt) {
 
     grunt.registerTask('dev', ['webpack:dev', 'watch:frontend']);
     grunt.registerTask('default', ['jscs', 'eslint']);
-    grunt.registerTask('build', ['copy:bower', 'webpack:prod']);
+    grunt.registerTask('build', ['clean:public', 'copy:bower', 'webpack:prod']);
 };
