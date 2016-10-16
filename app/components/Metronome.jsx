@@ -1,6 +1,7 @@
 'use strict';
 /* eslint complexity: 0 */
 /* eslint react/no-set-state: 0 */
+/* eslint no-console: 0 */
 
 import React, {Component} from 'react';
 
@@ -36,6 +37,9 @@ const minTempo = 30,
         useOscillator: false
     };
 
+/**
+ * TODO get rid of Snap and render svg with pure js
+ */
 class Metronome extends Component {
 
     constructor() {
@@ -77,6 +81,52 @@ class Metronome extends Component {
         this.handleChangeVolume = this.handleChangeVolume.bind(this);
         this.handleToggleAccentFirstBeat = this.handleToggleAccentFirstBeat.bind(this);
         this.handleToggleUseOscillator = this.handleToggleUseOscillator.bind(this);
+    }
+
+    /**
+     * Init metronome after the component is mounted
+     * Init checkboxes
+     */
+    componentDidMount() {
+        const self = this;
+        if (this.isIE()) {
+            this.popups();
+            return;
+        }
+        this.init();
+        $('.ui.resolution.radio.checkbox')
+            .checkbox({
+                onChange() {
+                    self.handleChangeResolution(this.value);
+                }
+            });
+        $('.ui.signature.radio.checkbox')
+            .checkbox({
+                onChange() {
+                    self.handleChangeSignature(this.value);
+                }
+            });
+
+        $('.ui.oscillator.toggle.checkbox')
+            .checkbox({
+                onChange() {
+                    self.handleToggleUseOscillator();
+                }
+            });
+
+        $('.ui.accent.toggle.checkbox')
+            .checkbox({
+                onChange() {
+                    self.handleToggleAccentFirstBeat();
+                }
+            });
+        // FIXME: disable space handling for checkboxes
+        // $(window).keypress(event => {
+        //     if (event.keyCode === 0 || event.keyCode === 32) {
+        //         event.preventDefault();
+        //         this.handlePlay();
+        //     }
+        // });
     }
 
     /**
@@ -296,7 +346,6 @@ class Metronome extends Component {
      * @param time
      */
     scheduleNote(beatNumber, time) {
-        let source;
         this.notesInQueue.push({note: beatNumber, time});
         this.movePointer();
         if (!this.noteShouldBePlayed(beatNumber)) {
@@ -304,7 +353,7 @@ class Metronome extends Component {
         }
 
         // create an oscillator
-        source = this.getAudioSource(beatNumber);
+        const source = this.getAudioSource(beatNumber);
         source.start(time);
         source.stop(time + noteLength);
     }
@@ -395,22 +444,19 @@ class Metronome extends Component {
         const userAgent = window.navigator.userAgent,
             msie = userAgent.indexOf('MSIE '),
             // IE 11 => return version number
-            rv = userAgent.indexOf('rv:');
-
-        let trident,
-            edge;
+            rv = userAgent.indexOf('rv:'),
+            trident = userAgent.indexOf('Trident/'),
+            edge = userAgent.indexOf('Edge/');
 
         if (msie > 0) {
             // IE 10 or older => return version number
             return parseInt(userAgent.substring(msie + 5, userAgent.indexOf('.', msie)), 10);
         }
 
-        trident = userAgent.indexOf('Trident/');
         if (trident > 0) {
             return parseInt(userAgent.substring(rv + 3, userAgent.indexOf('.', rv)), 10);
         }
 
-        edge = userAgent.indexOf('Edge/');
         if (edge > 0) {
             // Edge (IE 12+) => return version number
             return parseInt(userAgent.substring(edge + 5, userAgent.indexOf('.', edge)), 10);
@@ -518,52 +564,6 @@ class Metronome extends Component {
         });
     }
 
-    /**
-     * Init metronome after the component is mounted
-     * Init checkboxes
-     */
-    componentDidMount() {
-        const self = this;
-        if (this.isIE()) {
-            this.popups();
-            return;
-        }
-        this.init();
-        $('.ui.resolution.radio.checkbox')
-            .checkbox({
-                onChange() {
-                    self.handleChangeResolution(this.value);
-                }
-            });
-        $('.ui.signature.radio.checkbox')
-            .checkbox({
-                onChange() {
-                    self.handleChangeSignature(this.value);
-                }
-            });
-
-        $('.ui.oscillator.toggle.checkbox')
-            .checkbox({
-                onChange() {
-                    self.handleToggleUseOscillator();
-                }
-            });
-
-        $('.ui.accent.toggle.checkbox')
-            .checkbox({
-                onChange() {
-                    self.handleToggleAccentFirstBeat();
-                }
-            });
-        // FIXME: disable space handling for checkboxes
-        // $(window).keypress(event => {
-        //     if (event.keyCode === 0 || event.keyCode === 32) {
-        //         event.preventDefault();
-        //         this.handlePlay();
-        //     }
-        // });
-    }
-
     render() {
         const playButtonText = this.state.isPlaying ? 'stop' : 'play',
             playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'white play icon',
@@ -581,19 +581,19 @@ class Metronome extends Component {
         return (
             <div className="metronome">
                 <div className="ui centered card">
-                    <div className="content" ref={c => this.container = c}>
+                    <div className="content" ref={c => (this.container = c)}>
                         <a
                             href={githubUrl}
                             target="_blank"
                             className="ui right corner blue label"
                         >
                             <i
-                                ref={c => this.notSupportedContainer = c}
+                                ref={c => (this.notSupportedContainer = c)}
                                 className="white github icon"
                                 style={{textDecoration: 'none', cursor: 'pointer'}}
                             />
                         </a>
-                        <svg ref={c => this.svgContainer = c}/>
+                        <svg ref={c => (this.svgContainer = c)}/>
                     </div>
                     <div className="extra content ui form">
                         <div id="controls">
@@ -623,7 +623,7 @@ class Metronome extends Component {
                             </div>
 
                             <div style={{display: this.iOS() ? 'none' : 'block'}}>
-                                <div className="ui divider"></div>
+                                <div className="ui divider"/>
                                 <div className="ui oscillator toggle checkbox">
                                     <input
                                         type="checkbox"
@@ -636,7 +636,7 @@ class Metronome extends Component {
                                 </div>
                             </div>
 
-                            <div className="ui divider"></div>
+                            <div className="ui divider"/>
 
                             <div className="inline fields">
                                 <div className="field">
@@ -677,7 +677,7 @@ class Metronome extends Component {
                                 </div>
                             </div>
 
-                            <div className="ui divider"></div>
+                            <div className="ui divider"/>
 
                             <div className="inline fields">
                                 <div className="field">
@@ -708,7 +708,7 @@ class Metronome extends Component {
 
                             <div style={{display: this.state.useOscillator ? 'block' : 'none'}}>
 
-                                <div className="ui divider"></div>
+                                <div className="ui divider"/>
 
                                 <div className="ui accent toggle checkbox">
                                     <input
@@ -726,7 +726,7 @@ class Metronome extends Component {
                     <button
                         className="ui bottom primary attached button"
                         onClick={this.handlePlay}
-                        ref={c => this.playButton = c}
+                        ref={c => (this.playButton = c)}
                     >
                         <i className={playButtonIcon} />
                         {playButtonText}

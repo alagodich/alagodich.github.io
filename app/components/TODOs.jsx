@@ -9,7 +9,7 @@ class TODOs extends Component {
     render() {
         const items = this.props.items.map((item, index) => (
             <div key={index} className="item">
-                <i className="settings icon"></i>
+                <i className="settings icon"/>
                 <div className="content">
                     {item}
                 </div>

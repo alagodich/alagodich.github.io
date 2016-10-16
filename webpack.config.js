@@ -13,8 +13,9 @@ const path = require('path'),
                 'semantic-ui/dist/semantic.js',
                 './app/style.less',
                 'react',
-                'owl-carousel',
-                'owl-carousel/../assets/owl.carousel.css'
+                'slick-carousel',
+                'slick-carousel/slick/slick.css',
+                'slick-carousel/slick/slick-theme.css'
             ]
         },
         output: {
@@ -27,12 +28,12 @@ const path = require('path'),
                 filename: 'vendors.js',
                 minChunks: Infinity
             }),
-            new ExtractTextPlugin('app.css')
-            // new webpack.ProvidePlugin({
-            //     $: 'jquery',
-            //     jQuery: 'jquery',
-            //     'window.jQuery': 'jquery'
-            // })
+            new ExtractTextPlugin('app.css'),
+            new webpack.ProvidePlugin({
+                $: 'jquery',
+                jQuery: 'jquery',
+                'window.jQuery': 'jquery'
+            })
         ],
         module: {
             loaders: [
@@ -42,18 +43,6 @@ const path = require('path'),
                 {
                     test: /\.jsx$/,
                     loader: 'babel'
-                },
-                {
-                    /**
-                     * Exposing jQuery to the window global
-                     * Better aproach would be to use ProvidePlugin
-                     * But we are using bootstrap-table which cannot use exported variables
-                     *
-                     * If we switch to something else (react-bootstrap-table for example)
-                     * we can use ProvidePlugin instead
-                     */
-                    test: require.resolve('jquery'),
-                    loader: 'expose?$!expose?jQuery'
                 },
                 // {
                 //     /**
@@ -94,7 +83,7 @@ const path = require('path'),
                     loader: 'file-loader'
                 },
                 {
-                    test: /\.(png|jpg)$/,
+                    test: /\.(png|jpg|gif)$/,
                     loader: 'url?limit=25000'
                 }
             ],
@@ -107,7 +96,6 @@ const path = require('path'),
         }
     };
 
-config.addVendor('owl-carousel', path.resolve('bower_components/owl.carousel/dist/owl.carousel.min.js'));
-// config.addVendor('snap-svg', path.resolve('bower_components/Snap.svg/dist/snap.svg-min.js'));
+// config.addVendor('snap-svg', path.resolve('bower_components/Snap.svg/dist/snap.svg.js'));
 
 module.exports = config;

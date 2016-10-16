@@ -6,21 +6,18 @@ const propTypes = {
     googlePhotoUrl = 'https://lh3.googleusercontent.com/';
 
 /**
- * Note that $.fn.owlCarousel is being exposed in the vendor.js, in wepbpack config
- * Along woth owl css
+ * Carousel powered by http://kenwheeler.github.io/slick/
+ * @github https://github.com/kenwheeler/slick/
  */
 class Carousel extends Component {
 
     componentDidMount() {
-        $(this.component).owlCarousel({
-            loop: true,
-            items: 1,
-            margin: 0,
-            nav: false,
-            dots: false,
-            lazyLoad: true,
-            center: true,
-            autoHeight: true
+        $(this.container).slick({
+            adaptiveHeight: true,
+            arrows: false,
+            dots: true,
+            lazyLoad: 'progressive'
+            // mobileFirst: true
         });
     }
 
@@ -34,8 +31,8 @@ class Carousel extends Component {
             return (
                 <img
                     key={index}
-                    className="owl-lazy ui image"
-                    data-src={googlePhotoUrl + item}
+                    className="ui image"
+                    src={googlePhotoUrl + item}
                     alt=""
                 />
             );
@@ -47,7 +44,7 @@ class Carousel extends Component {
         const items = this.props.items.map((item, index) => this.renderItem(item, index));
         return (
             <div className="ui blue segment" style={{marginBottom: '1em'}}>
-                <div className="owl-carousel" ref={c => this.component = c}>
+                <div ref={c => (this.container = c)}>
                     {items}
                 </div>
             </div>

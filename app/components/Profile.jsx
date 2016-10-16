@@ -22,7 +22,7 @@ class Profile extends Component {
 
                 return (
                     <div key={index} className="item">
-                        <i className={iconClass}></i>
+                        <i className={iconClass}/>
                         <div className="content">
                             {content}
                         </div>

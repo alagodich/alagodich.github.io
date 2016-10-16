@@ -29,7 +29,7 @@ class Chart extends Component {
                 }
 
                 if (barline.$.location === 'right' && barline.ending && barline.ending[0].$.type === 'discontinue') {
-                    top = `barline--top--light`;
+                    top = 'barline--top--light';
                 }
             }
             return [left, right, top];

@@ -1,3 +1,6 @@
+/* eslint no-console: 0 */
+/* eslint react/no-set-state: 0 */
+
 import React, {Component} from 'react';
 import {parseString} from 'xml2js';
 import Chart from './Chart.jsx';
@@ -19,10 +22,6 @@ class RealBook extends Component {
         this.handleChartChange = this.handleChartChange.bind(this);
         this.handleChartClose = this.handleChartClose.bind(this);
     }
-
-    // componentWillMount() {
-    //     this.loadChart('Corcovado.xml');
-    // }
 
     loadChart(file) {
         $.get(`/assets/charts/${file}`, response => {
@@ -59,7 +58,9 @@ class RealBook extends Component {
             ? <Chart data={this.state.chart} />
             : <ChartPicker charts={charts} onClick={this.handleChartChange} />,
             closeChartButton = this.state.chart
-                ? <a onClick={this.handleChartClose}><i className="angle blue double left icon"></i></a>
+                ? <a onClick={this.handleChartClose}>
+                    <i className="angle blue double left icon" style={{cursor: 'pointer'}}/>
+                </a>
                 : '',
             align = this.state.chart ? 'right' : 'left';
 

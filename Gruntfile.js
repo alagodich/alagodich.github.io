@@ -1,22 +1,25 @@
+'use strict';
+
 const loader = require('load-grunt-tasks'),
     webpackConfig = require('./webpack.config.js'),
     webpack = require('webpack');
 
 module.exports = function (grunt) {
     loader(grunt);
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         jscs: {
             options: {
                 config: '.jscsrc'
             },
-            src: ['app/**/*', '!app/experiments/**/*']
+            src: ['app/**/*.js*']
         },
         eslint: {
             options: {
-                config: '.eslintrc.json'
+                config: './eslintrc.json'
             },
-            src: ['app/**/*', '!app/experiments/**/*']
+            src: ['app/**/*.js*']
         },
         webpack: {
             options: webpackConfig,
@@ -44,18 +47,18 @@ module.exports = function (grunt) {
                 debug: true
             }
         },
-        jekyll: { // Task
-            options: { // Universal options
+        jekyll: {
+            options: {
                 bundleExec: true
                 // src: '<%= app %>'
             },
-            dist: { // Target
-                options: { // Target options
+            dist: {
+                options: {
                     dest: '<%= dist %>',
                     config: '_config.yml,_config.build.yml'
                 }
             },
-            serve: { // Another target
+            serve: {
                 options: {
                     serve: true,
                     dest: '.jekyll',
@@ -64,9 +67,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-        clean: {
-            ember: ['experiments']
-        },
         copy: {
             bower: {
                 src: ['Snap.svg/dist/snap.svg-min.js'],
@@ -74,12 +74,6 @@ module.exports = function (grunt) {
                 expand: true,
                 flatten: true,
                 cwd: 'bower_components'
-            },
-            ember: {
-                src: '**',
-                dest: 'experiments/',
-                expand: true,
-                cwd: 'app/experiments/dist'
             }
         },
         exec: {
@@ -87,11 +81,6 @@ module.exports = function (grunt) {
             touch: {
                 stdout: true,
                 command: 'touch -am _data/params.json'
-            },
-            ember: {
-                stdout: true,
-                command: 'ember build --environment=production',
-                cwd: 'app/experiments'
             }
         },
         watch: {
@@ -118,7 +107,4 @@ module.exports = function (grunt) {
     grunt.registerTask('dev', ['webpack:dev', 'watch:frontend']);
     grunt.registerTask('default', ['jscs', 'eslint']);
     grunt.registerTask('build', ['copy:bower', 'webpack:prod']);
-//grunt.registerTask('default', ['copy:bower', 'copy:fonts', 'concat']);
-    grunt.registerTask('compile', ['babel', 'browserify', 'uglify', 'less']);
-    grunt.registerTask('deploy-ember', ['exec:ember', 'clean:ember', 'copy:ember']);
 };

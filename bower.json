@@ -12,8 +12,6 @@
     "bower_components"
   ],
   "dependencies": {
-    "owl.carousel": "OwlCarousel2#~2.0.0-beta.3",
-    "animate.css": "~3.4.0",
     "Snap.svg": "snap.svg#~0.4.1"
   }
 }

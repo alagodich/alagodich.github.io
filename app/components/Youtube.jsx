@@ -16,7 +16,7 @@ class Youtube extends Component {
     }
 
     render() {
-        return <div ref={c => this.container = c} className="ui embed" style={{marginBottom: '1em'}} />;
+        return <div ref={c => (this.container = c)} className="ui embed" style={{marginBottom: '1em'}} />;
     }
 
 }
