@@ -10,7 +10,9 @@ exclude: [
     "app/*",
     "tmp",
     "vendor",
-    "README.md"
+    "README.md",
+    "semantic.json",
+    "webpack.config.js"
 ]
 gems: ["jekyll-paginate"]
 paginate: 5
@@ -32,3 +34,8 @@ defaults:
             type: "posts"
         values:
             layout: "post"
+compress_html:
+    clippings: all
+    comments:  ["<!-- ", " -->"]
+    endings:   all
+
