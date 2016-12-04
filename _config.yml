@@ -12,7 +12,8 @@ exclude: [
     "vendor",
     "README.md",
     "semantic.json",
-    "webpack.config.js"
+    "webpack.config.js",
+    "tinify.js"
 ]
 gems: ["jekyll-paginate"]
 paginate: 5
