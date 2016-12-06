@@ -1,3 +1,5 @@
+// https://tinypng.com/
+
 const tinify = require("tinify"),
     path = require('path'),
     fs = require('fs'),
