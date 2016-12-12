@@ -9,13 +9,12 @@ Css framework [Semantic UI]()
 Some components created with [React](https://facebook.github.io/react/)
 
 ### TODOs
-* Добавить карусель для картинок
-* Добавить js и dart приложения в новый раздел на сайт
 * Метроном (добавить выбора размера, подключеть firebase)
 * Use Flow http://flowtype.org/
 * Toggle metronome by 'space' press
 * Add annotations to metronome app (desktop only)
 * Use build tools for semantic
+* Add sitemap https://github.com/jekyll/jekyll-sitemap
 
 ### Install
 * make sure you have [ruby, jekyll and bundler installed](https://help.github.com/articles/using-jekyll-with-pages/)
