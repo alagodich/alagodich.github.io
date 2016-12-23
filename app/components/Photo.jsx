@@ -7,7 +7,7 @@ const propTypes = {
 class Photo extends Component {
     render() {
         const src = `/images/${this.props.src}`;
-        return <img className="ui image" src={src} style={{maxHeight: 1000, marginBottom: '1em'}} />;
+        return <img className="ui image" src={src} style={{maxHeight: 750, marginBottom: '1em'}} />;
     }
 }
 
