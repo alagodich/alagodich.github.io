@@ -3,3 +3,4 @@
 .jekyll
 /bower_components/
 /node_modules/
+/semantic/dist/

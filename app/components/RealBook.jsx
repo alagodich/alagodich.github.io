@@ -58,9 +58,11 @@ class RealBook extends Component {
             ? <Chart data={this.state.chart} />
             : <ChartPicker charts={charts} onClick={this.handleChartChange} />,
             closeChartButton = this.state.chart
-                ? <a onClick={this.handleChartClose}>
-                    <i className="angle blue double left icon" style={{cursor: 'pointer'}}/>
-                </a>
+                ? (
+                    <a onClick={this.handleChartClose}>
+                        <i className="angle blue double left icon" style={{cursor: 'pointer'}}/>
+                    </a>
+                )
                 : '',
             align = this.state.chart ? 'right' : 'left';
 
