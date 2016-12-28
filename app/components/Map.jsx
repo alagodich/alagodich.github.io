@@ -114,8 +114,8 @@ class Map extends Component {
             },
             areasSettings: {
                 autoZoom: false,
-                selectedColor: visitedCountryColor,
-                unlistedAreasColor: notVisitedCountryColor
+                selectedColor: visitedCountryColor
+                // unlistedAreasColor: notVisitedCountryColor
             },
             imagesSettings: {
                 color: cityColor,
