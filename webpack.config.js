@@ -7,6 +7,7 @@ const path = require('path'),
             app: path.resolve('app/main.jsx'),
             metronome: path.resolve('app/metronome.jsx'),
             realbook: path.resolve('app/realbook.jsx'),
+            map: path.resolve('app/map.jsx'),
             vendors: [
                 'jquery',
                 './semantic/dist/semantic.css',
