@@ -15,7 +15,7 @@ exclude: [
     "webpack.config.js",
     "tinify.js"
 ]
-gems: ["jekyll-paginate"]
+gems: ["jekyll-paginate", "jekyll-sitemap"]
 paginate: 5
 defaults:
     -
