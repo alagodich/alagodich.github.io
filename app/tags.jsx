@@ -1,5 +1,5 @@
 function filterTags() {
-    const hash = window.location.hash.split('#')[1],
+    const hash = decodeURI(window.location.hash).split('#')[1],
         selectedTags = hash
             ? hash.split(',').filter(tag => tag !== '')
             : [];

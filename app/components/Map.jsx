@@ -1,4 +1,5 @@
 /* eslint max-len: 0 */
+/* jscs:disable maximumLineLength */
 'use strict';
 
 import React, {Component} from 'react';
