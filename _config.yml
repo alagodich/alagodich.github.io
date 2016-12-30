@@ -13,7 +13,10 @@ exclude: [
     "README.md",
     "semantic.json",
     "webpack.config.js",
-    "tinify.js"
+    "tinify.js",
+    "alagodich.sublime-project",
+    "alagodich.sublime-workspace",
+    '/semantic/'
 ]
 gems: ["jekyll-paginate", "jekyll-sitemap"]
 paginate: 5
@@ -39,4 +42,3 @@ compress_html:
     clippings: all
     comments:  ["<!-- ", " -->"]
     endings:   all
-

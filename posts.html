@@ -1,9 +1,19 @@
 ---
 title: Список постов
 ---
-<div class="ui feed">
+<div class="ui small tag labels">
+{% for tag in site.tags %}
+    <a
+        href="#{{ tag[0] | slugify }}"
+        data-tag="{{ tag[0] }}"
+        class="tag__selector ui label"
+    >{{ tag[0] }}</a>
+{% endfor %}
+</div>
+<div class="ui divider"></div>
+<div class="ui feed site__posts">
     {% for post in site.posts %}
-        <div class="event">
+        <div class="event" data-tags="{{ post.tags | join: ','}}">
             <div class="content">
                 <a href="{{ post.url }}">{{post.title}}</a>
                 <span class="date">

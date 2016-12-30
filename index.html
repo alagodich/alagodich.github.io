@@ -10,6 +10,7 @@ title: Блог
         <div class="sub header">{{ post.date | date_to_long_string }}</div>
     </h3>
     <div class="content">{{ post.content }}</div>
+    {% include tagcloud.html tags=post.tags %}
     <div class="ui divider"></div>
 </div>
 

@@ -7,6 +7,8 @@ import Carousel from './components/Carousel.jsx';
 import Profile from './components/Profile.jsx';
 import TODOs from './components/TODOs.jsx';
 
+import './tags.jsx';
+
 $('youtube').each(function () {
     const id = $(this).data('id');
     if (typeof id === 'undefined') {
