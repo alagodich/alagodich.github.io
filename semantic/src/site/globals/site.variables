@@ -11,3 +11,5 @@
 
 /* The size of page text  */
 @fontSize : 14px;
+
+@fontName: 'Roboto';

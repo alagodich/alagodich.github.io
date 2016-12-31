@@ -581,8 +581,7 @@ class Metronome extends Component {
     }
 
     render() {
-        const playButtonText = this.state.isPlaying ? 'stop' : 'play',
-            playButtonIcon = this.state.isPlaying ? 'red stop icon' : 'white play icon',
+        const playButtonIcon = this.state.isPlaying ? 'white stop icon' : 'white play icon',
             volume = parseInt(this.state.volume * 100, 10),
             githubUrl = 'https://github.com/alagodich/alagodich.github.io/blob/master/app/components/Metronome.jsx';
 
@@ -757,7 +756,6 @@ class Metronome extends Component {
                         ref={c => (this.playButton = c)}
                     >
                         <i className={playButtonIcon} />
-                        {playButtonText}
                     </button>
                 </div>
 
