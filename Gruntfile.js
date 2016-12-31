@@ -73,15 +73,6 @@ module.exports = function (grunt) {
         clean: {
             public: ['public']
         },
-        copy: {
-            bower: {
-                src: ['Snap.svg/dist/snap.svg-min.js'],
-                dest: 'public/',
-                expand: true,
-                flatten: true,
-                cwd: 'bower_components'
-            }
-        },
         exec: {
             // Touch file to make jekyll rebuild the site
             touch: {
@@ -112,5 +103,5 @@ module.exports = function (grunt) {
 
     grunt.registerTask('dev', ['webpack:dev', 'watch:frontend']);
     grunt.registerTask('default', ['jscs', 'eslint']);
-    grunt.registerTask('build', ['clean:public', 'copy:bower', 'webpack:prod']);
+    grunt.registerTask('build', ['clean:public', 'webpack:prod']);
 };
