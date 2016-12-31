@@ -4,6 +4,7 @@
 /* eslint no-console: 0 */
 
 import React, {Component} from 'react';
+import 'script-loader!Bower/Snap.svg/dist/snap.svg.js';
 
 const minTempo = 30,
     maxTempo = 200,
@@ -35,7 +36,8 @@ const minTempo = 30,
         accentFirstBeat: false,
         volume: 0.5,
         useOscillator: false
-    };
+    },
+    spaceKeyCode = 32;
 
 /**
  * TODO get rid of Snap and render svg with pure js
@@ -120,13 +122,15 @@ class Metronome extends Component {
                     self.handleToggleAccentFirstBeat();
                 }
             });
-        // FIXME: disable space handling for checkboxes
-        // $(window).keypress(event => {
-        //     if (event.keyCode === 0 || event.keyCode === 32) {
-        //         event.preventDefault();
-        //         this.handlePlay();
-        //     }
-        // });
+
+        // Toggle metronome with space key
+        $(document).on('keyup', event => {
+            if (event.keyCode === spaceKeyCode) {
+                event.preventDefault();
+                $('.toggle.checkbox input').blur();
+                this.handlePlay();
+            }
+        });
     }
 
     /**
@@ -493,6 +497,19 @@ class Metronome extends Component {
     }
 
     /**
+     * Check if this is a Safari browser
+     * AudioContext.currentTime property is always zero there for some reason
+     * This example not working in the current version
+     * @doc https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/
+     * PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html
+     *
+     * Because currentTime is always zero this.noteShouldBePlayed() never returns true
+     */
+    isSafari() {
+        return navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome');
+    }
+
+    /**
      * @param beatNumber
      * @returns {boolean}
      */
@@ -570,10 +587,22 @@ class Metronome extends Component {
             volume = parseInt(this.state.volume * 100, 10),
             githubUrl = 'https://github.com/alagodich/alagodich.github.io/blob/master/app/components/Metronome.jsx';
 
-        if (!this.isChrome()) {
+        if (this.isSafari()) {
+            const documentationUrl = 'https://developer.apple.com/library/content/documentation/AudioVideo'
+                + '/Conceptual/Using_HTML5_Audio_Video/PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html';
             return (
-                <div className="ui negative message">
-                    <div className="header">{'Sorry at this moment i support only Google Chrome.'}</div>
+                <div className="ui info message">
+                    <div className="header">
+                        {'Sorry at this moment i do not support Safari.'}
+                    </div>
+                    <p>
+                        {'For some reason audioContext.currentTime is always 0 in this browser.'}
+                        {' It suppose to work according to '}
+                        <a href={documentationUrl} target="_blank">
+                            {'the official documentation'}
+                        </a>
+                        {', but it does not.'}
+                    </p>
                 </div>
             );
         }

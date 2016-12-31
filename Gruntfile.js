@@ -25,26 +25,29 @@ module.exports = function (grunt) {
             options: webpackConfig,
             prod: {
                 plugins: webpackConfig.plugins.concat(
-                    // FIXME: doesn't work
+                    new webpack.LoaderOptionsPlugin({
+                        debug: false,
+                        minimize: true
+                    }),
                     new webpack.DefinePlugin({
                         'process.env': {
-                            //This has effect on the react lib size
                             NODE_ENV: JSON.stringify('production')
                         }
                     }),
-                    new webpack.optimize.DedupePlugin(),
                     new webpack.optimize.UglifyJsPlugin({
                         compress: {
                             warnings: false
                         }
-                    }),
-                    //FIXME: It break the app for some reason
-                    new webpack.optimize.OccurenceOrderPlugin()
+                    })
                 )
             },
             dev: {
                 devtool: 'source-map',
-                debug: true
+                plugins: webpackConfig.plugins.concat(
+                    new webpack.LoaderOptionsPlugin({
+                        debug: true
+                    })
+                )
             }
         },
         jekyll: {

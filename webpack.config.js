@@ -2,6 +2,7 @@ const path = require('path'),
     webpack = require('webpack'),
     ExtractTextPlugin = require('extract-text-webpack-plugin'),
     config = {
+        target: 'web',
         cache: true,
         entry: {
             app: path.resolve('app/main.jsx'),
@@ -29,7 +30,9 @@ const path = require('path'),
                 filename: 'vendors.js',
                 minChunks: Infinity
             }),
-            new ExtractTextPlugin('app.css'),
+            new ExtractTextPlugin({
+                filename: 'app.css'
+            }),
             new webpack.ProvidePlugin({
                 $: 'jquery',
                 jQuery: 'jquery',
@@ -37,32 +40,31 @@ const path = require('path'),
             })
         ],
         module: {
-            loaders: [
+            rules: [
                 /**
                  * Load jsx components with babel loader
                  */
                 {
                     test: /\.jsx$/,
-                    loader: 'babel'
+                    loader: 'babel-loader'
                 },
-                // {
-                //     /**
-                //      * Exposing Snap
-                //      */
-                //     test: /Snap\.svg/,
-                //     loader: 'expose?Snap'
-                // },
                 /**
                  * Extract all css to the separate file using ExtractTextPlugin
                  * Do the same for less
                  */
                 {
                     test: /\.css$/,
-                    loader: ExtractTextPlugin.extract('style', 'css')
+                    loader: ExtractTextPlugin.extract({
+                        fallbackLoader: 'style-loader',
+                        loader: 'css-loader'
+                    })
                 },
                 {
                     test: /\.less$/,
-                    loader: ExtractTextPlugin.extract('style', 'css!less')
+                    loader: ExtractTextPlugin.extract({
+                        fallbackLoader: 'style-loader',
+                        loader: 'css-loader!less-loader'
+                    })
                 },
                 /**
                  * The following are for fonts and icons
@@ -85,18 +87,15 @@ const path = require('path'),
                 },
                 {
                     test: /\.(png|jpg|gif)$/,
-                    loader: 'url?limit=25000'
+                    loader: 'url-loader?limit=25000'
                 }
-            ],
-            noParse: []
+            ]
         },
-        resolve: {alias: {}},
-        addVendor(name, path) {
-            this.resolve.alias[name] = path;
-            this.module.noParse.push(new RegExp(path));
+        resolve: {
+            alias: {
+                Bower: path.resolve('bower_components')
+            }
         }
     };
-
-// config.addVendor('snap-svg', path.resolve('bower_components/Snap.svg/dist/snap.svg.js'));
 
 module.exports = config;
