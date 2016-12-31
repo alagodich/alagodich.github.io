@@ -497,16 +497,15 @@ class Metronome extends Component {
     }
 
     /**
-     * Check if this is a Safari browser
-     * AudioContext.currentTime property is always zero there for some reason
-     * This example not working in the current version
+     * Check if browser has AudioContext
+     * AudioContext.currentTime property is always zero in webkitAudioContext in Safari for some reason
      * @doc https://developer.apple.com/library/content/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/
      * PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html
      *
      * Because currentTime is always zero this.noteShouldBePlayed() never returns true
      */
-    isSafari() {
-        return navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome');
+    hasNormalAudioContext() {
+        return window.AudioContext;
     }
 
     /**
@@ -587,21 +586,21 @@ class Metronome extends Component {
             volume = parseInt(this.state.volume * 100, 10),
             githubUrl = 'https://github.com/alagodich/alagodich.github.io/blob/master/app/components/Metronome.jsx';
 
-        if (this.isSafari()) {
+        if (!this.hasNormalAudioContext()) {
             const documentationUrl = 'https://developer.apple.com/library/content/documentation/AudioVideo'
                 + '/Conceptual/Using_HTML5_Audio_Video/PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html';
             return (
                 <div className="ui info message">
                     <div className="header">
-                        {'Sorry at this moment i do not support Safari.'}
+                        {'Sorry at this moment i do not support this browser.'}
                     </div>
                     <p>
-                        {'For some reason audioContext.currentTime is always 0 in this browser.'}
-                        {' It suppose to work according to '}
+                        {'Browser should have valid AudioContext object.'}
+                        {' For example in Safari, it is supposed to work according to '}
                         <a href={documentationUrl} target="_blank">
                             {'the official documentation'}
                         </a>
-                        {', but it does not.'}
+                        {', but it does not. As audioContext.currentTime is always 0 there.'}
                     </p>
                 </div>
             );
