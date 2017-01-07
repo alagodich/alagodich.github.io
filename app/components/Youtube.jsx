@@ -8,13 +8,15 @@ const propTypes = {
 class Youtube extends Component {
 
     render() {
-        return <Embed
-            id={this.props.id}
-            source="youtube"
-            style={{marginBottom: '1em'}}
-            autoplay={false}
-            defaultActive={true}
-        />;
+        return (
+            <Embed
+                id={this.props.id}
+                source="youtube"
+                style={{marginBottom: '1em'}}
+                autoplay={false}
+                defaultActive
+            />
+        );
     }
 
 }

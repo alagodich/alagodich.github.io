@@ -3,7 +3,6 @@ exclude: [
     "node_modules",
     "bower.json",
     "Gemfile*",
-    "Gruntfile.js",
     "package.json",
     "app",
     "script",
@@ -16,7 +15,10 @@ exclude: [
     "tinify.js",
     "alagodich.sublime-project",
     "alagodich.sublime-workspace",
-    '/semantic/'
+    "/semantic/",
+    "irealb_parser.js",
+    "yarn.lock",
+    "webpack.config.*"
 ]
 gems: ["jekyll-paginate", "jekyll-sitemap"]
 paginate: 5
