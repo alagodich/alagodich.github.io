@@ -14,10 +14,10 @@ before_install:
   - yarn global add bower
 
 script:
-  - bundle install
-  - bundle exec jekyll build
-
   - yarn install
   - bower install
   - yarn run semantic-ui
   - grunt build
+
+  - bundle install
+  - bundle exec jekyll build
