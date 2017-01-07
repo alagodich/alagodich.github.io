@@ -7,6 +7,7 @@ rvm:
 before_install:
   - nvm install 6.9.2
   - nvm use 6.9.2
+
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH=$HOME/.yarn/bin:$PATH
   - yarn global add grunt-cli
@@ -19,5 +20,9 @@ script:
   - yarn run semantic-ui
   - grunt build
 
-  - bundle install
   - bundle exec jekyll build
+
+# Currently sing default github pages deployment, so this Travis build is only for testing purposes
+# All assets generated above should be commited to repo
+#deploy:
+#  skip_cleanup: true
