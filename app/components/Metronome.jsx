@@ -439,15 +439,17 @@ class Metronome extends Component {
     }
 
     /**
+     * Try to detect Chrome
+     *
+     * please note, that IE11 now returns undefined again for window.chrome
+     * and new Opera 30 outputs true for window.chrome
+     * and new IE Edge outputs to true now for window.chrome
+     * and if not iOS Chrome check
+     * so use the below updated condition
+     *
      * @return bool
      */
     isChrome() {
-        // please note,
-        // that IE11 now returns undefined again for window.chrome
-        // and new Opera 30 outputs true for window.chrome
-        // and new IE Edge outputs to true now for window.chrome
-        // and if not iOS Chrome check
-        // so use the below updated condition
         const isChromium = window.chrome,
             winNav = window.navigator,
             vendorName = winNav.vendor,
