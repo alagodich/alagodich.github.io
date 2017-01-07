@@ -10,4 +10,5 @@ grunt --version
 
 yarn
 
+yarn run semantic-ui
 grunt build
