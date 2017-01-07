@@ -9,3 +9,5 @@ yarn --version
 grunt --version
 
 yarn
+
+grunt build

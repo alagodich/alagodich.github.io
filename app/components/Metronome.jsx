@@ -37,7 +37,7 @@ const minTempo = 30,
         signature: '4/4',
         accentFirstBeat: false,
         volume: 0.5,
-        useOscillator: false
+        useOscillator: true
     },
     spaceKeyCode = 32,
     githubUrl = 'https://github.com/alagodich/alagodich.github.io/blob/master/app/components/Metronome.jsx';
