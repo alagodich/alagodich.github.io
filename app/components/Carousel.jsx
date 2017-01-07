@@ -1,4 +1,5 @@
 import React, {PropTypes, Component} from 'react';
+import $ from 'jquery';
 
 const propTypes = {
     items: PropTypes.array.isRequired

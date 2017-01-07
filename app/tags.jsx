@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 function filterTags() {
     const hash = decodeURI(window.location.hash).split('#')[1],
         selectedTags = hash

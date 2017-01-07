@@ -11,10 +11,10 @@ const path = require('path'),
             map: path.resolve('app/map.jsx'),
             vendors: [
                 'jquery',
-                './semantic/dist/semantic.css',
-                './semantic/dist/semantic.js',
-                './app/style.less',
                 'react',
+                './semantic/dist/semantic.css',
+                'semantic-ui-react',
+                './app/style.less',
                 'slick-carousel',
                 'slick-carousel/slick/slick.css',
                 'slick-carousel/slick/slick-theme.css'
@@ -32,11 +32,6 @@ const path = require('path'),
             }),
             new ExtractTextPlugin({
                 filename: 'app.css'
-            }),
-            new webpack.ProvidePlugin({
-                $: 'jquery',
-                jQuery: 'jquery',
-                'window.jQuery': 'jquery'
             })
         ],
         module: {

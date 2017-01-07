@@ -5,6 +5,7 @@ import React, {Component} from 'react';
 import {parseString} from 'xml2js';
 import Chart from './Chart.jsx';
 import ChartPicker from './ChartPicker.jsx';
+import $ from 'jquery';
 
 const defaultState = {
         header: 'Real Book',

@@ -1,4 +1,5 @@
 import React, {PropTypes, Component} from 'react';
+import {Embed} from 'semantic-ui-react';
 
 const propTypes = {
     id: PropTypes.string.isRequired
@@ -6,17 +7,14 @@ const propTypes = {
 
 class Youtube extends Component {
 
-    componentDidMount() {
-        $(this.container).embed({
-            id: this.props.id,
-            source: 'youtube',
-            placeholder: '',
-            autoplay: false
-        });
-    }
-
     render() {
-        return <div ref={c => (this.container = c)} className="ui embed" style={{marginBottom: '1em'}} />;
+        return <Embed
+            id={this.props.id}
+            source="youtube"
+            style={{marginBottom: '1em'}}
+            autoplay={false}
+            defaultActive={true}
+        />;
     }
 
 }

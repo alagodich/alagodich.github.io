@@ -51,6 +51,7 @@
     "react-dom": "^15.4.2",
     "script-loader": "0.7.0",
     "semantic-ui": "2.2.7",
+    "semantic-ui-react": "^0.63.5",
     "slick-carousel": "1.6.0",
     "style-loader": "0.13.1",
     "tinify": "^1.4.0",

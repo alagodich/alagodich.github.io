@@ -4,7 +4,9 @@
 /* eslint no-console: 0 */
 
 import React, {Component} from 'react';
+import {Input, Button, Icon, Checkbox, Radio} from 'semantic-ui-react';
 import 'script-loader!Bower/Snap.svg/dist/snap.svg.js';
+import $ from 'jquery';
 
 const minTempo = 30,
     maxTempo = 200,
@@ -30,14 +32,15 @@ const minTempo = 30,
     emptyNoteColor = '#EEE',
     defaultState = {
         tempo: 101.0,
-        noteResolution: '4',
+        noteResolution: 4,
         isPlaying: false,
         signature: '4/4',
         accentFirstBeat: false,
         volume: 0.5,
         useOscillator: false
     },
-    spaceKeyCode = 32;
+    spaceKeyCode = 32,
+    githubUrl = 'https://github.com/alagodich/alagodich.github.io/blob/master/app/components/Metronome.jsx';
 
 /**
  * TODO get rid of Snap and render svg with pure js
@@ -50,7 +53,7 @@ class Metronome extends Component {
         this.state = defaultState;
 
         this.audioContext = null;
-        this.timeWorker = null;
+        this.timerWorker = null;
         this.current16thNote = 0.0;
 
         /**
@@ -74,9 +77,6 @@ class Metronome extends Component {
          */
         this.unlocked = false;
         this.decodedBeatSound = null;
-        this.playButton = null;
-
-        this.browserCompatible = true;
 
         this.handlePlay = this.handlePlay.bind(this);
         this.handleChangeTempo = this.handleChangeTempo.bind(this);
@@ -90,40 +90,8 @@ class Metronome extends Component {
      * Init checkboxes
      */
     componentDidMount() {
-        const self = this;
-        if (this.isIE()) {
-            this.popups();
-            return;
-        }
         this.init();
-        $('.ui.resolution.radio.checkbox')
-            .checkbox({
-                onChange() {
-                    self.handleChangeResolution(this.value);
-                }
-            });
-        $('.ui.signature.radio.checkbox')
-            .checkbox({
-                onChange() {
-                    self.handleChangeSignature(this.value);
-                }
-            });
-
-        $('.ui.oscillator.toggle.checkbox')
-            .checkbox({
-                onChange() {
-                    self.handleToggleUseOscillator();
-                }
-            });
-
-        $('.ui.accent.toggle.checkbox')
-            .checkbox({
-                onChange() {
-                    self.handleToggleAccentFirstBeat();
-                }
-            });
-
-        // Toggle metronome with space key
+        // // Toggle metronome with space key
         $(document).on('keyup', event => {
             if (event.keyCode === spaceKeyCode) {
                 event.preventDefault();
@@ -257,13 +225,13 @@ class Metronome extends Component {
      */
     initParams() {
         if (this.state.signature === '4/4') {
-            this.sixteenthQuantity = this.state.noteResolution === '12' ? 12 : 16;
+            this.sixteenthQuantity = this.state.noteResolution === 12 ? 12 : 16;
         }
         if (this.state.signature === '3/4') {
-            this.sixteenthQuantity = this.state.noteResolution === '12' ? 9 : 12;
+            this.sixteenthQuantity = this.state.noteResolution === 12 ? 9 : 12;
         }
-        this.quartersQuantity = this.state.noteResolution === '12' ? 3 : 4;
-        this.nextNoteMultiplier = this.state.noteResolution === '12' ? 0.33 : 0.25;
+        this.quartersQuantity = this.state.noteResolution === 12 ? 3 : 4;
+        this.nextNoteMultiplier = this.state.noteResolution === 12 ? 0.33 : 0.25;
     }
 
     /**
@@ -410,7 +378,7 @@ class Metronome extends Component {
         source.connect(this.audioContext.destination);
         source.noteOn(0);
         // By checking the play state after some time, we know if we're really unlocked
-        setTimeout(function () {
+        setTimeout(() => {
             if ((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
                 this.unlocked = true;
             }
@@ -514,20 +482,20 @@ class Metronome extends Component {
      */
     noteShouldBePlayed(beatNumber) {
         // Play only quarter notes
-        if (this.state.noteResolution === '4') {
+        if (this.state.noteResolution === 4) {
             if (beatNumber % 4) {
                 return false;
             }
         }
         // Skip the second beat
-        if (this.state.noteResolution === '12') {
+        if (this.state.noteResolution === 12) {
             if ([1, 4, 7, 10].indexOf(beatNumber) > -1) {
                 // Skip the second beat
                 return false;
             }
         }
         // Play eighths
-        if (this.state.noteResolution === '8') {
+        if (this.state.noteResolution === 8) {
             if (beatNumber % 2) {
                 return false;
             }
@@ -540,17 +508,22 @@ class Metronome extends Component {
     }
 
     handleChangeResolution(value) {
-        this.setState({noteResolution: value}, function () {
-            this.drawRuler();
-            this.startOver();
-        });
+        return () => {
+            this.setState({noteResolution: value}, () => {
+                this.drawRuler();
+                this.startOver();
+            });
+        };
     }
 
     handleChangeSignature(value) {
-        this.setState({signature: value}, function () {
-            this.drawRuler();
-            this.startOver();
-        });
+        return () => {
+            this.setState({signature: value}, () => {
+                this.drawRuler();
+                this.startOver();
+            });
+        };
+
     }
 
     handleChangeVolume(event) {
@@ -565,25 +538,8 @@ class Metronome extends Component {
         this.setState({useOscillator: !this.state.useOscillator}, this.startOver);
     }
 
-    /**
-     * Display not supporting IE message
-     */
-    popups() {
-        $('.blue.question.icon').popup({
-            transition: 'vertical flip',
-            inline: true,
-            hoverable: true,
-            delay: {
-                show: 300,
-                hide: 800
-            }
-        });
-    }
-
     render() {
-        const playButtonIcon = this.state.isPlaying ? 'white stop icon' : 'white play icon',
-            volume = parseInt(this.state.volume * 100, 10),
-            githubUrl = 'https://github.com/alagodich/alagodich.github.io/blob/master/app/components/Metronome.jsx';
+        const volume = parseInt(this.state.volume * 100, 10);
 
         if (!this.isChrome() && !this.hasNormalAudioContext()) {
             const documentationUrl = 'https://developer.apple.com/library/content/documentation/AudioVideo'
@@ -614,11 +570,7 @@ class Metronome extends Component {
                             target="_blank"
                             className="ui right corner blue label"
                         >
-                            <i
-                                ref={c => (this.notSupportedContainer = c)}
-                                className="white github icon"
-                                style={{textDecoration: 'none', cursor: 'pointer'}}
-                            />
+                            <Icon name="github" style={{textDecoration: 'none', cursor: 'pointer'}} />
                         </a>
                         <svg ref={c => (this.svgContainer = c)}/>
                     </div>
@@ -626,8 +578,7 @@ class Metronome extends Component {
                         <div id="controls">
                             <div id="tempo">
                                 {'Tempo: '}<span>{this.state.tempo}</span><br/>
-                                <input
-                                    id="tempo"
+                                <Input
                                     type="range"
                                     min={minTempo}
                                     max={maxTempo}
@@ -638,8 +589,7 @@ class Metronome extends Component {
                             </div>
                             <div id="volume">
                                 {'Volume: '}<span>{volume}{'%'}</span><br/>
-                                <input
-                                    id="volume"
+                                <Input
                                     type="range"
                                     min={minVolume}
                                     max={maxVolume}
@@ -651,112 +601,97 @@ class Metronome extends Component {
 
                             <div style={{display: this.iOS() ? 'none' : 'block'}}>
                                 <div className="ui divider"/>
-                                <div className="ui oscillator toggle checkbox">
-                                    <input
-                                        type="checkbox"
-                                        tabIndex="0"
-                                        className="hidden"
-                                        name="oscillator"
-                                        defaultChecked={this.state.useOscillator}
-                                    />
-                                    <label>{'Digital sound'}</label>
-                                </div>
-                            </div>
-
-                            <div className="ui divider"/>
-
-                            <div className="inline fields">
-                                <div className="field">
-                                    <div className="ui resolution radio checkbox">
-                                        <input type="radio"
-                                            name="resolution"
-                                            value="4"
-                                            tabIndex="0"
-                                            className="hidden"
-                                            defaultChecked={this.state.noteResolution === '4'}
-                                        />
-                                        <label>{'Quarter'}</label>
-                                    </div>
-                                </div>
-                                <div className="field">
-                                    <div className="ui resolution radio checkbox">
-                                        <input type="radio"
-                                            name="resolution"
-                                            value="8"
-                                            tabIndex="0"
-                                            className="hidden"
-                                            defaultChecked={this.state.noteResolution === '8'}
-                                        />
-                                        <label>{'8th'}</label>
-                                    </div>
-                                </div>
-                                <div className="field">
-                                    <div className="ui resolution radio checkbox">
-                                        <input type="radio"
-                                            name="resolution"
-                                            value="12"
-                                            tabIndex="0"
-                                            className="hidden"
-                                            defaultChecked={this.state.noteResolution === '12'}
-                                        />
-                                        <label>{'Shuffle'}</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="ui divider"/>
-
-                            <div className="inline fields">
-                                <div className="field">
-                                    <div className="ui signature radio checkbox">
-                                        <input type="radio"
-                                            name="signature"
-                                            value="4/4"
-                                            tabIndex="0"
-                                            className="hidden"
-                                            defaultChecked={this.state.signature === '4/4'}
-                                        />
-                                        <label>{'4/4'}</label>
-                                    </div>
-                                </div>
-                                <div className="field">
-                                    <div className="ui signature radio checkbox">
-                                        <input type="radio"
-                                            name="signature"
-                                            value="3/4"
-                                            tabIndex="0"
-                                            className="hidden"
-                                            defaultChecked={this.state.signature === '3/4'}
-                                        />
-                                        <label>{'3/4'}</label>
-                                    </div>
-                                </div>
+                                <Checkbox
+                                    toggle
+                                    label="Digital sound"
+                                    defaultChecked={this.state.useOscillator}
+                                    onChange={this.handleToggleUseOscillator}
+                                />
                             </div>
 
                             <div style={{display: this.state.useOscillator ? 'block' : 'none'}}>
-
                                 <div className="ui divider"/>
+                                <Checkbox
+                                    toggle
+                                    label="Accent the first beat"
+                                    defaultChecked={this.state.accentFirstBeat}
+                                    onChange={this.handleToggleAccentFirstBeat}
+                                />
+                            </div>
 
-                                <div className="ui accent toggle checkbox">
-                                    <input
-                                        type="checkbox"
+                            <div className="ui divider"/>
+
+                            <div className="inline fields">
+                                <div className="field">
+                                    <Radio
+                                        name="resolution"
+                                        value="4"
                                         tabIndex="0"
                                         className="hidden"
-                                        name="accent"
-                                        defaultChecked={this.state.accentFirstBeat}
+                                        checked={this.state.noteResolution === 4}
+                                        onChange={this.handleChangeResolution(4)}
+                                        label="Quarter"
                                     />
-                                    <label>{'Accent the first beat'}</label>
+                                </div>
+                                <div className="field">
+                                    <Radio
+                                        name="resolution"
+                                        value="8"
+                                        tabIndex="0"
+                                        className="hidden"
+                                        checked={this.state.noteResolution === 8}
+                                        onChange={this.handleChangeResolution(8)}
+                                        label="8th"
+                                    />
+                                </div>
+                                <div className="field">
+                                    <Radio
+                                        name="resolution"
+                                        value="12"
+                                        tabIndex="0"
+                                        className="hidden"
+                                        checked={this.state.noteResolution === 12}
+                                        onChange={this.handleChangeResolution(12)}
+                                        label="Shuffle"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="ui divider"/>
+
+                            <div className="inline fields">
+                                <div className="field">
+                                    <Radio
+                                        name="signature"
+                                        value="4/4"
+                                        tabIndex="0"
+                                        className="hidden"
+                                        checked={this.state.signature === '4/4'}
+                                        onChange={this.handleChangeSignature('4/4')}
+                                        label="4/4"
+                                    />
+                                </div>
+                                <div className="field">
+                                    <Radio
+                                        name="signature"
+                                        value="3/4"
+                                        tabIndex="0"
+                                        className="hidden"
+                                        checked={this.state.signature === '3/4'}
+                                        onChange={this.handleChangeSignature('3/4')}
+                                        label="3/4"
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button
-                        className="ui bottom primary attached button"
+                    <Button
+                        primary
+                        attached="bottom"
                         onClick={this.handlePlay}
-                        ref={c => (this.playButton = c)}
                     >
-                        <i className={playButtonIcon} />
-                    </button>
+                        <Icon name={this.state.isPlaying ? 'stop' : 'play'} />
+                    </Button>
                 </div>
 
             </div>

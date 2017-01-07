@@ -5,9 +5,15 @@ import Youtube from './components/Youtube.jsx';
 import Photo from './components/Photo.jsx';
 import Carousel from './components/Carousel.jsx';
 import Profile from './components/Profile.jsx';
-import TODOs from './components/TODOs.jsx';
+import {Popup} from 'semantic-ui-react';
+import $ from 'jquery';
 
 import './tags.jsx';
+
+$('.component--menu').each(function () {
+    const props = $(this).data();
+    render(<Menu {...props} />, this);
+});
 
 $('youtube').each(function () {
     const id = $(this).data('id');
@@ -17,12 +23,7 @@ $('youtube').each(function () {
     render(<Youtube id={id} />, this);
 });
 
-$('.component--menu').each(function () {
-    const props = $(this).data();
-    render(<Menu {...props} />, this);
-});
-
-$('google-photo').each(function () {
+$('photo').each(function () {
     const src = $(this).data('src');
     if (typeof src === 'undefined') {
         return;
@@ -41,13 +42,9 @@ $('profile').each(function () {
     render(<Profile {...props} />, this);
 });
 
-// Render todos
-$('TODOs').each(function () {
-    const items = $(this).data('items');
-    render(<TODOs items={items} />, this);
-});
-
 // Init semantic popup
-$('.popup').popup({
-    transition: 'vertical flip'
+$('.popup').each(function () {
+    const props = $(this).data();
+
+    render(<Popup  trigger={<span>{this.innerHTML}</span>} content={props.content} />, this);
 });

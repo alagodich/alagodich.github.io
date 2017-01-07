@@ -77,7 +77,7 @@ module.exports = function (grunt) {
             // Touch file to make jekyll rebuild the site
             touch: {
                 stdout: true,
-                command: 'touch -am _data/params.json'
+                command: 'touch -am _layouts/default.html'
             }
         },
         watch: {
