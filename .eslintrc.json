@@ -5,8 +5,8 @@
             "jsx": true
         }
     },
-    "plugins": ["react", "lodash"],
-    "extends": ["plugin:lodash/canonical"],
+    "plugins": ["react"],
+    "extends": ["eslint:recommended"],
     "env": {
         "amd": true,
         "browser": true,
@@ -239,12 +239,6 @@
         "react/require-extension": 0,
         "react/self-closing-comp": 1,
         "react/sort-comp": 1,
-        "react/jsx-wrap-multilines": 1,
-
-        "lodash/prefer-noop": 0,
-        "lodash/prefer-constant": 0,
-        "lodash/prefer-lodash-typecheck": 0,
-        "lodash/prefer-lodash-method": 0,
-        "lodash/path-style": [2, "as-needed"]
+        "react/jsx-wrap-multilines": 1
     }
 }
