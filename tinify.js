@@ -1,6 +1,6 @@
 // https://tinypng.com/
 
-const tinify = require("tinify"),
+const tinify = require('tinify'),
     path = require('path'),
     fs = require('fs'),
     // When creating a new post make sure that script optimizing only new images
