@@ -2,27 +2,23 @@ sudo: false
 language: ruby
 
 rvm:
-  - 2.1
+  - 2.6.3
 
 before_install:
-  - nvm install 6.9.2
-  - nvm use 6.9.2
+  - nvm install 14.15.3
+  - nvm use 14.15.3
 
-  - curl -o- -L https://yarnpkg.com/install.sh | bash
-  - export PATH=$HOME/.yarn/bin:$PATH
-  - yarn global add gulp-cli
-  - yarn global add bower
-  - yarn install
-  - bower install
+  - npm install --global gulp-cli
+  - npm install
 
 script:
-  - yarn run lint
-  - yarn run semantic-ui
-  - yarn run webpack-production
+  - npm run lint
+  - npm run fomantic
+  - npm run build
 
   - bundle exec jekyll build
 
 # Currently sing default github pages deployment, so this Travis build is only for testing purposes
-# All assets generated above should be commited to repo
+# All assets generated above should be committed to repo
 #deploy:
 #  skip_cleanup: true

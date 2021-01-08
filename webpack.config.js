@@ -1,37 +1,32 @@
 const path = require('path'),
-    webpack = require('webpack'),
-    ExtractTextPlugin = require('extract-text-webpack-plugin'),
+    MiniCssExtractPlugin = require('mini-css-extract-plugin'),
     config = {
         target: 'web',
         cache: true,
         entry: {
-            app: path.resolve('app/main.jsx'),
-            metronome: path.resolve('app/metronome.jsx'),
-            realbook: path.resolve('app/realbook.jsx'),
-            map: path.resolve('app/map.jsx'),
-            vendors: [
-                'jquery',
-                'react',
-                './semantic/dist/semantic.css',
-                'semantic-ui-react',
-                './app/style.less',
-                'slick-carousel',
-                'slick-carousel/slick/slick.css',
-                'slick-carousel/slick/slick-theme.css'
-            ]
+            site: path.resolve('client/main.jsx'),
+            metronome: path.resolve('client/metronome.jsx'),
+            // realbook: path.resolve('client/realbook.jsx'),
+            map: path.resolve('client/map.jsx')
+            // vendors: [
+            //     'jquery',
+            //     'react',
+            //     './semantic/dist/semantic.css',
+            //     'semantic-ui-react',
+            //     './client/style.less',
+            //     'slick-carousel',
+            //     'slick-carousel/slick/slick.css',
+            //     'slick-carousel/slick/slick-theme.css'
+            // ]
         },
         output: {
+            publicPath: '',
             path: path.resolve('public'),
             filename: '[name].js'
         },
         plugins: [
-            new webpack.optimize.CommonsChunkPlugin({
-                name: 'vendors',
-                filename: 'vendors.js',
-                minChunks: Infinity
-            }),
-            new ExtractTextPlugin({
-                filename: 'app.css'
+            new MiniCssExtractPlugin({
+                filename: '[name].css'
             })
         ],
         module: {
@@ -40,7 +35,7 @@ const path = require('path'),
                  * Load jsx components with babel loader
                  */
                 {
-                    test: /\.jsx$/,
+                    test: /\.(jsx|js)$/,
                     loader: 'babel-loader'
                 },
                 /**
@@ -48,49 +43,44 @@ const path = require('path'),
                  * Do the same for less
                  */
                 {
-                    test: /\.css$/,
-                    loader: ExtractTextPlugin.extract({
-                        fallbackLoader: 'style-loader',
-                        loader: 'css-loader'
-                    })
+                    test: /\.(css|less)$/i,
+                    use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']
                 },
                 {
-                    test: /\.less$/,
-                    loader: ExtractTextPlugin.extract({
-                        fallbackLoader: 'style-loader',
-                        loader: 'css-loader!less-loader'
-                    })
-                },
-                /**
-                 * The following are for fonts and icons
-                 */
-                {
-                    test: /\.(woff|woff2)$/,
-                    loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+                    test: /\.(woff(2)?|ttf|png|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                    use: [
+                        'file-loader'
+                    ]
                 },
                 {
-                    test: /\.ttf$/,
-                    loader: 'file-loader'
-                },
-                {
-                    test: /\.eot$/,
-                    loader: 'file-loader'
-                },
-                {
-                    test: /\.svg$/,
-                    loader: 'file-loader'
-                },
-                {
-                    test: /\.(png|jpg|gif)$/,
-                    loader: 'url-loader?limit=25000'
+                    test: /\.(png|jpg|gif)$/i,
+                    use: [
+                        {
+                            loader: 'url-loader',
+                            options: {
+                                limit: 8192
+                            }
+                        }
+                    ]
                 }
+                // Get rid of snap, use something else
+                // {
+                //     test: require.resolve('snapsvg/dist/snap.svg.js'),
+                //     loader: 'imports-loader',
+                //     options: {
+                //         wrapper: {
+                //             thisArg: 'window'
+                //         }
+                //     }
+                //     // use: 'imports-loader?this=>window,fix=>module.exports=0'
+                // }
             ]
-        },
-        resolve: {
-            alias: {
-                Bower: path.resolve('bower_components')
-            }
         }
+        // resolve: {
+        //     alias: {
+        //         snapsvg: 'snapsvg/dist/snap.svg.js'
+        //     }
+        // }
     };
 
 module.exports = config;

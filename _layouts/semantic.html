@@ -18,10 +18,12 @@ layout: compress
     <!-- Site Properities -->
     <title>alagodich.github.io</title>
     <!-- CSS -->
-    <link href="/public/app.css" rel="stylesheet">
+    <link href="/public/site.css" rel="stylesheet">
 </head>
 <body>
-    {% include {{page.googletag}} %}
+    {% if jekyll.environment != "development" %}
+        {% include {{page.googletag}} %}
+    {% endif %}
     <div class="ui container">
         {% include navigation.html %}
     </div>
@@ -34,8 +36,7 @@ layout: compress
         {%include {{ page.include }} %}
     {% endif %}
     <!-- JavaScript -->
-    <script src="/public/vendors.js"></script>
-    <script src="/public/app.js"></script>
+    <script src="/public/site.js"></script>
     {% if page.module %}
     <!-- Page js modules -->
         <script src="/public/{{ page.module }}"></script>

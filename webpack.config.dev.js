@@ -1,12 +1,11 @@
-const config = require('./webpack.config'),
-    webpack = require('webpack');
+const config = require('./webpack.config');
 
-config.plugins = config.plugins.concat(
-    new webpack.LoaderOptionsPlugin({
-        debug: true
-    })
-);
+config.optimization = {
+    minimize: false
+};
 
+config.devtool = 'eval-cheap-source-map';
 config.watch = true;
+config.mode = 'development';
 
 module.exports = config;
