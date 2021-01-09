@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "start": "JEKYLL_ENV=development bundle exec jekyll serve --draft",
-    "lint": "eslint --config ./.eslintrc.json --ext .js,.jsx app",
+    "lint": "eslint --config ./.eslintrc.json --ext .js,.jsx client",
     "browser-sync": "browser-sync start --proxy localhost:4000 --files _site/**",
     "build": "rm -rf ./public && webpack --config webpack.config.production.js",
     "build:watch": "webpack --config webpack.config.dev.js",
