@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 const propTypes = {
     name: PropTypes.string.isRequired,
-    avatar: PropTypes.array,
-    description: PropTypes.array
+    avatar: PropTypes.arrayOf(PropTypes.string),
+    description: PropTypes.arrayOf(PropTypes.object)
 };
 
 class Profile extends Component {
@@ -15,7 +15,7 @@ class Profile extends Component {
                 let content;
 
                 if (typeof params.content.href !== 'undefined') {
-                    content = <a href={params.content.href} target="_blank">{params.content.text}</a>;
+                    content = <a href={params.content.href} target="_blank" rel="noreferrer">{params.content.text}</a>;
                 } else {
                     content = params.content;
                 }
@@ -32,7 +32,14 @@ class Profile extends Component {
             images = this.props.avatar.map((imageUrl, index) => {
                 const className = index > 0 ? 'hidden content' : 'visible content';
 
-                return <img key={index} src={imageUrl} className={className}/>;
+                return (
+                    <img
+                        key={index}
+                        src={imageUrl}
+                        className={className}
+                        alt=""
+                    />
+                );
             });
 
         return (

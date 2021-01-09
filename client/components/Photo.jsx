@@ -9,7 +9,14 @@ class Photo extends Component {
     render() {
         const src = `/images/${this.props.src}`;
 
-        return <img alt="" className="ui image" src={src} style={{maxHeight: 750, marginBottom: '1em'}} />;
+        return (
+            <img
+                alt=""
+                className="ui image"
+                src={src}
+                style={{maxHeight: 750, marginBottom: '1em'}}
+            />
+        );
     }
 }
 

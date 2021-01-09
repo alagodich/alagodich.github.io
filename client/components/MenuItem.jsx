@@ -16,9 +16,8 @@ class MenuItem extends Component {
             item = this.props.active
                 ? <span className="header">{this.props.title}{external}</span>
                 : <a className="header" href={this.props.url}>{this.props.title}{external}</a>;
-        return (
-            <div className="item">{item}</div>
-        );
+
+        return <div className="item">{item}</div>;
     }
 }
 

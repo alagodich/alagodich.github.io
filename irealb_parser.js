@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * https://github.com/rubiety/irealb_parser/blob/master/lib/irealb/parser.rb
  */

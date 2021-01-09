@@ -1,13 +1,8 @@
-'use strict';
-/* eslint complexity: 0 */
-/* eslint react/no-set-state: 0 */
 /* eslint no-console: 0 */
 
 import React, {Component} from 'react';
 import {Input, Button, Icon, Checkbox, Radio} from 'semantic-ui-react';
-// TODO https://svgjs.com/docs/3.0/getting-started/
 import {SVG} from '@svgdotjs/svg.js';
-import $ from 'jquery';
 
 const minTempo = 30,
     maxTempo = 200,
@@ -68,7 +63,8 @@ class Metronome extends Component {
         this.nextNoteMultiplier = null;
 
         this.svg = null;
-        this.svgWidth = 254; // Inner width of the semantic ui card box
+        // Inner width of the semantic ui card box
+        this.svgWidth = 254;
 
         this.pointer = null;
 
@@ -80,6 +76,7 @@ class Metronome extends Component {
         this.decodedBeatSound = null;
 
         this.handlePlay = this.handlePlay.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handleChangeTempo = this.handleChangeTempo.bind(this);
         this.handleChangeVolume = this.handleChangeVolume.bind(this);
         this.handleToggleAccentFirstBeat = this.handleToggleAccentFirstBeat.bind(this);
@@ -92,14 +89,19 @@ class Metronome extends Component {
      */
     componentDidMount() {
         this.init();
-        // // Toggle metronome with space key
-        $(document).on('keyup', event => {
-            if (event.keyCode === spaceKeyCode) {
-                event.preventDefault();
-                $('.toggle.checkbox input').blur();
-                this.handlePlay();
-            }
-        });
+        document.addEventListener('keyup', this.handleKeyPress, false);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keyup', this.handleKeyPress, false);
+    }
+
+    handleKeyPress(event) {
+        if (event.keyCode === spaceKeyCode) {
+            event.preventDefault();
+            // $('.toggle.checkbox input').blur();
+            this.handlePlay();
+        }
     }
 
     /**
@@ -108,8 +110,10 @@ class Metronome extends Component {
      * Start drawer loop
      */
     init() {
-        const AudioContext = window.AudioContext // Default
-            || window.webkitAudioContext // Safari and old versions of Chrome
+        // Default
+        const AudioContext = window.AudioContext
+            // Safari and old versions of Chrome
+            || window.webkitAudioContext
             || false;
 
         this.initSvg();
@@ -119,8 +123,8 @@ class Metronome extends Component {
             this.audioContext = new AudioContext();
         } else {
             // Web Audio API is not supported
-            console.log('Sorry, but the Web Audio API is not supported by your browser. ' +
-                'Please, consider upgrading to the latest version or downloading Google Chrome or Mozilla Firefox');
+            console.log('Sorry, but the Web Audio API is not supported by your browser. '
+                + 'Please, consider upgrading to the latest version or downloading Google Chrome or Mozilla Firefox');
             return;
         }
 
@@ -145,46 +149,42 @@ class Metronome extends Component {
      * Create svg with default ruler and pointer
      */
     initSvg() {
-        const svgNode = this.svgContainer,
-            cardWidth = $(this.container).width();
+        const svgNode = this.svgContainer;
+
         if (!svgNode) {
             return;
         }
 
-        $(svgNode).width(cardWidth).height(50);
-        $(this.container).width();
-        // this.svg = new Snap(svgNode);
+        this.svg = SVG().addTo(this.svgContainer);
 
-        // this.drawRuler();
-        // this.drawPointer();
+        this.drawRuler();
+        this.drawPointer();
     }
 
     /**
      * Draw ruler depending on metronome params
      */
     drawRuler() {
-        let ruler = this.svg.select('#ruler');
-        // Remove existing ruler, before drawing a new one
+        let ruler = this.svg.findOne('.svg--ruler');
+
+        // Clear existing ruler, before drawing a new one
         if (ruler) {
-            ruler.remove();
+            ruler.clear();
+        } else {
+            ruler = this.svg.group().addClass('svg--ruler');
         }
         this.initParams();
-        this.spacing = ((this.svgWidth - (this.sixteenthQuantity * rulerLineWidth)) / this.sixteenthQuantity);
+        this.spacing = (this.svgWidth - (this.sixteenthQuantity * rulerLineWidth)) / this.sixteenthQuantity;
         // Draw ruler base line
-        ruler = this.svg.group(
-            this.svg.line(svgPadding / 2, svgHeight, this.svgWidth + (svgPadding), svgHeight)
-        );
+        ruler.line(svgPadding / 2, svgHeight, this.svgWidth + (svgPadding), svgHeight);
+
         for (let i = 0; i <= this.sixteenthQuantity; i++) {
             const x = (this.spacing * i) + (i * rulerLineWidth) + (svgPadding),
                 y = (i % this.quartersQuantity === 0) ? quarterSerifHeight : eightSerifHeight;
 
-            ruler.add(this.svg.line(x, svgHeight, x, svgHeight - y));
+            ruler.line(x, svgHeight, x, svgHeight - y);
         }
-        ruler.attr({
-            stroke: rulerColor,
-            strokeWidth: rulerLineWidth,
-            id: 'ruler'
-        });
+        ruler.stroke({width: 1, color: rulerColor});
     }
 
     /**
@@ -192,33 +192,23 @@ class Metronome extends Component {
      */
     drawPointer() {
         this.pointer = this.svg.polygon([
-            svgPadding, svgHeight - quarterSerifHeight,
-            svgPadding + 3, svgHeight - 38,
-            svgPadding - 3, svgHeight - 38,
-            svgPadding, svgHeight - quarterSerifHeight
-        ]).attr({
-            fill: '#FFF'
-        });
+            [svgPadding, svgHeight - quarterSerifHeight].join(','),
+            [svgPadding + 3, svgHeight - 38].join(','),
+            [svgPadding - 3, svgHeight - 38].join(',')
+        ].join(' '))
+            .fill(noteColor);
     }
 
     /**
      * Move pointer to the current beat serif and apply color
      */
     movePointer() {
-        const animationSpeed = (1 / this.state.tempo) * 1500,
-            x = (this.spacing * this.current16thNote) + (this.current16thNote);
-            //serif = this.svg.select('line:nth-child(' + (this.current16thNote + 2) + ')');
-        let color;
+        const x = (this.spacing * this.current16thNote) + (this.current16thNote);
+        const color = this.state.accentFirstBeat && this.current16thNote === 0
+            ? stressedNoteColor
+            : (this.current16thNote % this.quartersQuantity === 0) ? noteColor : emptyNoteColor;
 
-        if (this.state.accentFirstBeat && this.current16thNote === 0) {
-            color = stressedNoteColor;
-        } else {
-            color = (this.current16thNote % this.quartersQuantity === 0) ? noteColor : emptyNoteColor;
-        }
-        this.pointer.animate({
-            transform: `t${x},0`,
-            fill: color
-        }, animationSpeed);
+        this.pointer.move(x, 0).fill(color);
     }
 
     /**
@@ -242,10 +232,12 @@ class Metronome extends Component {
     loadBeatData() {
         return new Promise((resolve, reject) => {
             const request = new XMLHttpRequest();
+
             request.open('get', 'assets/metronome/beat.mp3', true);
             request.responseType = 'arraybuffer';
             request.onload = () => {
                 const audioData = request.response;
+
                 this.audioContext.decodeAudioData(audioData, buffer => {
                     resolve(buffer);
                 }, error => {
@@ -304,6 +296,7 @@ class Metronome extends Component {
      */
     nextNote() {
         const secondsPerBeat = 60.0 / this.state.tempo;
+
         this.nextNoteTime += secondsPerBeat * this.nextNoteMultiplier;
 
         // Advance the beat number, wrap to zero
@@ -327,6 +320,7 @@ class Metronome extends Component {
 
         // create an oscillator
         const source = this.getAudioSource(beatNumber);
+
         source.start(time);
         source.stop(time + noteLength);
     }
@@ -369,12 +363,16 @@ class Metronome extends Component {
      * Using_HTML5_Audio_Video/PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html
      */
     unlock() {
+        // https://developers.google.com/web/updates/2017/09/autoplay-policy-changes#webaudio
+        this.audioContext.resume();
+
         if (!this.iOS() || this.unlocked) {
             return;
         }
 
         // Create an empty buffer and play it
         const source = this.audioContext.createBufferSource();
+
         source.buffer = this.audioContext.createBuffer(1, 1, 22050);
         source.connect(this.audioContext.destination);
         source.noteOn(0);
@@ -454,8 +452,8 @@ class Metronome extends Component {
         const isChromium = window.chrome,
             winNav = window.navigator,
             vendorName = winNav.vendor,
-            isOpera = winNav.userAgent.indexOf('OPR') > -1,
-            isIEedge = winNav.userAgent.indexOf('Edge') > -1,
+            isOpera = winNav.userAgent.includes('OPR'),
+            isIEedge = winNav.userAgent.includes('Edge'),
             isIOSChrome = winNav.userAgent.match('CriOS'),
             isChrome =
                 isChromium !== null
@@ -492,7 +490,7 @@ class Metronome extends Component {
         }
         // Skip the second beat
         if (this.state.noteResolution === 12) {
-            if ([1, 4, 7, 10].indexOf(beatNumber) > -1) {
+            if ([1, 4, 7, 10].includes(beatNumber)) {
                 // Skip the second beat
                 return false;
             }
@@ -547,6 +545,7 @@ class Metronome extends Component {
         if (!this.isChrome() && !this.hasNormalAudioContext()) {
             const documentationUrl = 'https://developer.apple.com/library/content/documentation/AudioVideo'
                 + '/Conceptual/Using_HTML5_Audio_Video/PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html';
+
             return (
                 <div className="ui info message">
                     <div className="header">
@@ -555,7 +554,7 @@ class Metronome extends Component {
                     <p>
                         {'Browser should have valid AudioContext object.'}
                         {' For example in Safari, it is supposed to work according to '}
-                        <a href={documentationUrl} target="_blank">
+                        <a href={documentationUrl} target="_blank" rel="noreferrer">
                             {'the official documentation'}
                         </a>
                         {', but it does not. As audioContext.currentTime is always 0 there.'}
@@ -571,11 +570,12 @@ class Metronome extends Component {
                         <a
                             href={githubUrl}
                             target="_blank"
+                            rel="noreferrer"
                             className="ui right corner blue label"
                         >
                             <Icon name="github" style={{textDecoration: 'none', cursor: 'pointer'}} />
                         </a>
-                        <svg ref={c => (this.svgContainer = c)}/>
+                        <svg style={{width: '100%', height: 50}} ref={c => (this.svgContainer = c)}/>
                     </div>
                     <div className="extra content ui form">
                         <div id="controls">

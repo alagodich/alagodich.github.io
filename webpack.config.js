@@ -6,18 +6,8 @@ const path = require('path'),
         entry: {
             site: path.resolve('client/main.jsx'),
             metronome: path.resolve('client/metronome.jsx'),
-            // realbook: path.resolve('client/realbook.jsx'),
+            realbook: path.resolve('client/realbook.jsx'),
             map: path.resolve('client/map.jsx')
-            // vendors: [
-            //     'jquery',
-            //     'react',
-            //     './semantic/dist/semantic.css',
-            //     'semantic-ui-react',
-            //     './client/style.less',
-            //     'slick-carousel',
-            //     'slick-carousel/slick/slick.css',
-            //     'slick-carousel/slick/slick-theme.css'
-            // ]
         },
         output: {
             publicPath: '',
@@ -63,24 +53,8 @@ const path = require('path'),
                         }
                     ]
                 }
-                // Get rid of snap, use something else
-                // {
-                //     test: require.resolve('snapsvg/dist/snap.svg.js'),
-                //     loader: 'imports-loader',
-                //     options: {
-                //         wrapper: {
-                //             thisArg: 'window'
-                //         }
-                //     }
-                //     // use: 'imports-loader?this=>window,fix=>module.exports=0'
-                // }
             ]
         }
-        // resolve: {
-        //     alias: {
-        //         snapsvg: 'snapsvg/dist/snap.svg.js'
-        //     }
-        // }
     };
 
 module.exports = config;

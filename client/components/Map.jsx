@@ -1,13 +1,10 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import React, {Component} from 'react';
-// import PropTypes from 'prop-types';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4maps from '@amcharts/amcharts4/maps';
 import GeoDataWorldLow from '@amcharts/amcharts4-geodata/worldLow';
 import AnimatedTheme from '@amcharts/amcharts4/themes/animated';
-
-// TODO More examples: https://www.amcharts.com/demos/#maps
 
 am4core.useTheme(AnimatedTheme);
 
@@ -67,7 +64,7 @@ const cities = [{
     title: 'Miami',
     latitude: 25.7617,
     longitude: -80.1918
-},{
+}, {
     title: 'Barbados',
     latitude: 13.1939,
     longitude: -59.5432
@@ -83,6 +80,9 @@ const cities = [{
 
 const colorSet = new am4core.ColorSet();
 
+/**
+ * @site https://www.amcharts.com/demos/#maps
+ */
 class Map extends Component {
 
     componentDidMount() {

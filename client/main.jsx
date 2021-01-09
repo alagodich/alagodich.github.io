@@ -6,48 +6,70 @@ import Photo from './components/Photo.jsx';
 import Carousel from './components/Carousel.jsx';
 import Profile from './components/Profile.jsx';
 import {Popup} from 'semantic-ui-react';
-import $ from 'jquery';
 
 import '../semantic/dist/semantic.css';
 import './style.less';
 
 import './tags.jsx';
 
-$('.component--menu').each(function () {
-    const props = $(this).data();
-    render(<Menu {...props} />, this);
-});
+const menuContainer = document.getElementById('react--component--menu');
 
-$('youtube').each(function () {
-    const id = $(this).data('id');
-    if (typeof id === 'undefined') {
+render(
+    <Menu
+        current={menuContainer.dataset.current}
+        items={JSON.parse(menuContainer.dataset.items)}
+    />,
+    menuContainer
+);
+
+[...document.getElementsByTagName('youtube')].forEach(element => {
+    const id = element.dataset.id;
+
+    if (!id || id === '') {
         return;
     }
-    render(<Youtube id={id} />, this);
+    render(<Youtube id={id} />, element);
 });
 
-$('photo').each(function () {
-    const src = $(this).data('src');
-    if (typeof src === 'undefined') {
+[...document.getElementsByTagName('photo')].forEach(element => {
+    const src = element.dataset.src;
+
+    if (!src || src === '') {
         return;
     }
-    render(<Photo src={src} />, this);
+    render(<Photo src={src} />, element);
 });
 
-$('carousel').each(function () {
-    const items = $(this).data('items');
-    render(<Carousel items={items} />, this);
+[...document.getElementsByTagName('carousel')].forEach(element => {
+    const items = JSON.parse(element.dataset.items);
+
+    if (!items) {
+        return;
+    }
+
+    render(<Carousel items={items} />, element);
 });
 
-$('profile').each(function () {
-    const props = $(this).data();
+[...document.getElementsByTagName('profile')].forEach(element => {
+    const props = {
+        name: element.dataset.name,
+        avatar: JSON.parse(element.dataset.avatar),
+        description: JSON.parse(element.dataset.description)
+    };
 
-    render(<Profile {...props} />, this);
+    if (!props) {
+        return;
+    }
+
+    render(<Profile {...props} />, element);
 });
 
-// Init semantic popup
-$('.popup').each(function () {
-    const props = $(this).data();
+[...document.getElementsByClassName('popup')].forEach(element => {
+    const content = element.dataset.content;
 
-    render(<Popup  trigger={<span>{this.innerHTML}</span>} content={props.content} />, this);
+    if (!content || content === '') {
+        return;
+    }
+
+    render(<Popup trigger={<span>{element.innerHTML}</span>} content={content} />, element);
 });

@@ -12,7 +12,7 @@ require('./semantic/tasks/collections/build')(gulp);
 require('./semantic/tasks/collections/various')(gulp);
 require('./semantic/tasks/collections/install')(gulp);
 
-gulp.task('copy-fomantic-overrides', () =>
+gulp.task('copy-overrides', () =>
     gulp.src(path.resolve('./client/site/**'))
         .pipe(
             gulp.dest(path.resolve('./semantic/src/site/'))
@@ -20,6 +20,6 @@ gulp.task('copy-fomantic-overrides', () =>
 
 gulp.task('build-fomantic', gulp.series(
     'clean',
-    'copy-fomantic-overrides',
+    'copy-overrides',
     gulp.parallel(['build-css', 'build-assets']))
 );
