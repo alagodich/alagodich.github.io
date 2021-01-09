@@ -1,5 +1,6 @@
 exclude: [
     "bower_components",
+    "client",
     "node_modules",
     "bower.json",
     "Gemfile*",
@@ -7,7 +8,6 @@ exclude: [
     "package-lock.json",
     "babel.config.js",
     "gulpfile.js",
-    "app",
     "script",
     "app/*",
     "tmp",

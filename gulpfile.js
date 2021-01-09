@@ -1,4 +1,5 @@
-const gulp = require('gulp');
+const gulp = require('gulp'),
+    path = require('path');
 
 /**
  * Fomantic UI tasks
@@ -11,4 +12,14 @@ require('./semantic/tasks/collections/build')(gulp);
 require('./semantic/tasks/collections/various')(gulp);
 require('./semantic/tasks/collections/install')(gulp);
 
-gulp.task('build-fomantic', gulp.series('clean', gulp.parallel(['build-css', 'build-assets'])));
+gulp.task('copy-fomantic-overrides', () =>
+    gulp.src(path.resolve('./client/site/**'))
+        .pipe(
+            gulp.dest(path.resolve('./semantic/src/site/'))
+        ));
+
+gulp.task('build-fomantic', gulp.series(
+    'clean',
+    'copy-fomantic-overrides',
+    gulp.parallel(['build-css', 'build-assets']))
+);
