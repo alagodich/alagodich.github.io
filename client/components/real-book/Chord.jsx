@@ -10,6 +10,7 @@ class Chord extends Component {
 
     generateKind() {
         const useSymbols = this.props.config.kind[0].$['use-symbols'] === 'yes';
+
         // console.log(this.props.config.kind[0].$['use-symbols']);
         if (useSymbols && this.props.config.kind[0]._ === 'diminished-seventh') {
             return 'o7';
@@ -20,7 +21,7 @@ class Chord extends Component {
         if (this.props.config.kind[0].$['parentheses-degrees'] === 'yes') {
             const degree = this.props.config.degree[0];
 
-            if (['alter', 'add'].indexOf(degree['degree-type'][0]) !== -1) {
+            if (['alter', 'add'].includes(degree['degree-type'][0])) {
                 const value = degree['degree-value'][0];
                 let alter = this.generateAlter(degree['degree-alter'][0]);
 
