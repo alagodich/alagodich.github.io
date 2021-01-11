@@ -1,7 +1,7 @@
 /* eslint max-len: 0 */
 
 import IRealProUrlParser from '../IRealProUrlParser';
-const allJazzSongsUrls = require('../playlists/all-jazz-songs');
+const allJazzSongsUrls = require('../playlists/jazz');
 
 describe('IRealProUrlParser', () => {
 
@@ -44,6 +44,36 @@ describe('IRealProUrlParser', () => {
                     style: 'Up Tempo Swing',
                     key: 'F',
                     chordString: '*A{T44G-7 C7|G-7 C7|G-7 C7|G-7 C7|F6 F7/A|Bb6 C7|N1F6 Bb7|A-7 D7 } |N2F6 |x ]*B[F7 |x |Bb6 |x |G7 |x |C7 |x ]*A[G-7 C7|G-7 C7|G-7 C7|G-7 C7|F6 F7/A|Bb6 C7|UF6 Bb7|A-7 D7 Z'
+                }
+            ]);
+        });
+        it('should handle song with repeats (r), The African Queen', () => {
+            const songWithRepeats = 'irealb://%41%66%72%69%63%61%6E%20%51%75%65%65%6E%2C%20%54%68%65=%53%69%6C%76%65%72%20%48%6F%72%61%63%65==%4C%61%74%69%6E=%43%2D==%31%72%33%34%4C%62%4B%63%75%37%7C%72%51%79%58%34%43%2D%39%20%5A%4C%39%62%44%20%2C%39%2D%43%5A%4C%51%79%7C%58%72%51%79%58%5A%4C%20%78%20%5A%4C%39%62%44%20%78%20%4C%5A%34%54%41%2A%5B%51%79%58%5A%4C%5B%2A%41%43%2D%39%62%44%20%2C%39%2D%43%5A%4C%51%79%58%7C%51%72%79%58%5A%4C%20%78%20%5A%4C%39%62%44%20%39%4C%5A%20%78%20%5D%20%51%79%58%5A%4C%39%62%44%20%5D%5B%2A%42%5A%4C%20%78%20%5A%4C%39%62%44%20%39%2D%43%4C%5A%37%47%20%37%62%41%5A%4C%37%41%20%37%62%42%43%2D%39%2C%20%51%79%58%7C%72%20%78%20%20%5A%20==%30=%30===';
+
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'African Queen, The',
+                    author: 'Silver Horace',
+                    style: 'Latin',
+                    key: 'C-',
+                    chordString: '[*AT44C-9 Db9|x |r|C-9 Db9|x |r|][*AC-9 Db9|x |r|C-9 Db9|x |r|][*BBb7 A7|Ab7 G7|C-9 Db9|x |C-9 Db9|x Z'
+                }
+            ]);
+        });
+        it('should handle All Blues', () => {
+            const songWithRepeats = 'irealb://%41%6C%6C%20%42%6C%75%65%73=%44%61%76%69%73%20%4D%69%6C%65%73==%57%61%6C%74%7A=%47==%31%72%33%34%4C%62%4B%63%75%37%47%2F%37%43%5A%37%58%79%51%4B%4C%20%78%20%5A%4C%20%6C%63%4B%51%79%58%37%5A%47%4C%20%78%20%5A%4C%20%78%20%5A%4C%20%6C%63%5A%20%78%20%4C%47%34%33%54%5B%63%4B%51%79%58%6C%20%4C%5A%20%4C%20%78%20%5A%4C%20%78%20%5A%4C%20%6C%63%51%4B%79%58%37%47%7C%5A%4C%20%78%20%5A%4C%20%78%5A%44%37%23%39%63%4B%51%79%58%6C%20%4C%5A%45%62%37%23%39%58%79%51%7C%44%37%23%39%58%79%51%7C%47%37%58%79%51%4B%63%6C%20%4C%5A%20%78%20%4C%5A%20%78%20%20%5A==%30=%30===';
+
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'All Blues',
+                    author: 'Davis Miles',
+                    style: 'Waltz',
+                    key: 'G',
+                    chordString: '[T34G7 |x |x |x |G7 |x |x |x |C7/G |x |x |x |G7 |x |x |x |D7#9 |x |Eb7#9 |D7#9 |G7 |x |x |x Z'
                 }
             ]);
         });
@@ -100,7 +130,7 @@ describe('IRealProUrlParser', () => {
             const decryptedString = 'G7LZ|K|clC-7YYY   |<comment>   G7XyQ|F^,YY C-7Y';
             const parser = new IRealProUrlParser();
 
-            expect(parser.beautifyChordString(decryptedString)).toBe('G7 xC-7Y | G7 |F^ Y C-7Y');
+            expect(parser.beautifyChordString(decryptedString)).toBe('G7||xC-7Y | G7 |F^ Y C-7Y');
         });
     });
 });

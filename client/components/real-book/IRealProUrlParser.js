@@ -145,6 +145,7 @@ export default class IRealProUrlParser {
 
             const obfuscatedChordString = parts[6].split(prefix)[1];
             const decryptedCordString = this.decrypt(obfuscatedChordString);
+
             const chordString = this.beautifyChordString(decryptedCordString);
 
             return {
@@ -205,7 +206,6 @@ export default class IRealProUrlParser {
      * @returns {*}
      */
     beautifyChordString(chords) {
-        // TODO check for empty spaces, need them to recognize chords not from the start of the bar
         return chords
             // Bar lines
             .replace(/LZ|K/g, '|')
@@ -220,7 +220,7 @@ export default class IRealProUrlParser {
             // Transform empty characters to spaces
             .replace(/XyQ|,/g, ' ')
             // Remove empty measures
-            .replace(/\|\s*\|/g, ' ')
+            .replace(/\|\s*\|/g, '|')
             // Remove spaces behind bar lines
             .replace(/\|\s+/g, '|')
             // Remove multiple whitespaces

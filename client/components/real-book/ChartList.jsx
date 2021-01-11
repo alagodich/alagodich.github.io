@@ -1,0 +1,47 @@
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+    charts: PropTypes.arrayOf(PropTypes.shape({
+        title: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired
+    })),
+    onClick: PropTypes.func
+};
+
+class ChartList extends PureComponent {
+
+    handleChartClick(chartId) {
+        return () => {
+            this.props.onClick(chartId);
+        };
+    }
+
+    render() {
+        if (!this.props.charts || !this.props.charts.length) {
+            return <div>{'Try to use search.'}</div>;
+        }
+
+        const charts = this.props.charts.slice(0, 50).map(chart => (
+            <div key={chart.id} className="item">
+                <i className="options icon"/>
+                <a className="content" onClick={this.handleChartClick(chart.id)}>
+                    {chart.title} <span style={{opacity: 0.5}}>{`--[${chart.author}]`}</span>
+                </a>
+            </div>
+        ));
+
+        return (
+            <div className="ui list">
+                {charts}
+                {this.props.charts.length > 50
+                    ? <p>{`... ${this.props.charts.length} songs found, try narrowing the search.`}</p>
+                    : null}
+            </div>
+        );
+    }
+}
+
+ChartList.propTypes = propTypes;
+
+export default ChartList;

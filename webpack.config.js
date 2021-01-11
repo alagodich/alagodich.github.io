@@ -1,8 +1,8 @@
 const path = require('path'),
+    webpack = require('webpack'),
     MiniCssExtractPlugin = require('mini-css-extract-plugin'),
+    {CleanWebpackPlugin} = require('clean-webpack-plugin'),
     config = {
-        target: 'web',
-        cache: true,
         entry: {
             site: path.resolve('client/main.jsx'),
             metronome: path.resolve('client/metronome.jsx'),
@@ -10,11 +10,14 @@ const path = require('path'),
             map: path.resolve('client/map.jsx')
         },
         output: {
-            publicPath: '',
+            publicPath: '/public/',
             path: path.resolve('public'),
-            filename: '[name].js'
+            filename: '[name].js',
+            chunkFilename: '[name].js'
         },
         plugins: [
+            new webpack.ProgressPlugin(),
+            new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({
                 filename: '[name].css'
             })

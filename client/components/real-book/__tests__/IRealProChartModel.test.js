@@ -193,6 +193,56 @@ describe('IRealProChartModel', () => {
         expect(outsideModel.chordString.length).toBe(219);
         expect(outsideModel.segments).toEqual(modelProps);
     });
+    it('should handle 2 bars repeats like in The African Queen', () => {
+        const props = {
+            title: 'The African Queen',
+            chordString: '[*AT44C-9 Db9|x |r C-9 Db9|x |r|][*AC-9 Db9|x |r C-9 Db9|x |r|][*BBb7 A7|Ab7 G7|C-9 Db9|x |C-9 Db9|x Z'
+        };
+        const model = new IRealProChartModel(props);
+
+        expect(model.title).toBe('The African Queen');
+        expect(model.chordString.length).toBe(102);
+
+        expect(model.segments).toEqual([
+            {
+                name: 'A',
+                data: [
+                    {timeSignature: '4 / 4', openingLine: '[', chords: 'C-9 Db9'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'C-9 Db9'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'C-9 Db9'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'C-9 Db9'},
+                    {openingLine: '|', chords: 'x', closingLine: ']'}
+                ]
+            },
+            {
+                name: 'A',
+                data: [
+                    {openingLine: '[', chords: 'C-9 Db9'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'C-9 Db9'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'C-9 Db9'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'C-9 Db9'},
+                    {openingLine: '|', chords: 'x', closingLine: ']'}
+                ]
+            },
+            {
+                name: 'B',
+                data: [
+                    {openingLine: '[', chords: 'Bb7 A7'},
+                    {openingLine: '|', chords: 'Ab7 G7'},
+                    {openingLine: '|', chords: 'C-9 Db9'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'C-9 Db9'},
+                    {openingLine: '|', chords: 'x', closingLine: 'Z'}
+                ]
+            }
+        ]);
+    });
 
     describe('parseBar', () => {
         it.skip('should handle simple bar with Alternate Chords', () => {

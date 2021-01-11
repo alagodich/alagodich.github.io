@@ -11,8 +11,8 @@ class Profile extends Component {
 
     render() {
         const items = this.props.description.map((params, index) => {
-                const iconClass = `${params.icon} icon`;
                 let content;
+                const iconClass = `${params.icon} icon`;
 
                 if (typeof params.content.href !== 'undefined') {
                     content = <a href={params.content.href} target="_blank" rel="noreferrer">{params.content.text}</a>;

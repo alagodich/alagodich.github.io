@@ -1,4 +1,5 @@
 import {timeSignatures, endings} from './IRealProUrlParser';
+import {default as _omit} from 'lodash/omit';
 
 export default class IRealProChartModel {
     constructor(props) {
@@ -56,9 +57,33 @@ export default class IRealProChartModel {
             // Split string by bar line separator
             .match(/([{}[\]|ZY])([^{}[\]|ZY]*)/g)
             // Process bar collection
-            .map(barString => this.parseBar(barString))
-            // Merge some parts together, for example closing bar line with the previous bar
-            .forEach(bar => {
+            .forEach(rawBarDataString => {
+                let barString = rawBarDataString;
+
+                // Process repeat sign (r)
+                if (barString.includes('r') && barString !== 'r') {
+                    // Split measure with (r), cut r from it and process the remains as usual
+                    const rSplitMatch = barString.match(/([^r]*)(r)([^r]*)/);
+                    const last2Bars = segment.slice(-2).map(bar => {
+                        const newBar = Object.assign({}, bar);
+
+                        // Cloned bar will always have simple opening bar line
+                        newBar.openingLine = '|';
+                        return _omit(newBar, 'timeSignature');
+                    });
+
+                    // If last of the cloned bar has special closing bar line, keep it only on cloned pair
+                    if (last2Bars[1].closingLine && last2Bars[1].closingLine !== '|') {
+                        segment[segment.length - 1].closingLine = '|';
+                    }
+                    segment.push(...last2Bars);
+                    // Remaining measure string with (r) sign
+                    barString = [rSplitMatch[1], rSplitMatch[3]].join('');
+                }
+
+                const bar = this.parseBar(barString);
+
+                // Merge some parts together, for example closing bar line with the previous bar
                 if (bar.closingLine && Object.getOwnPropertyNames(bar).length === 1) {
                     if (!segment[segment.length - 1]) {
                         throw new Error(`Invalid segment, closing bar as a first part: ${segmentString}`);
@@ -67,7 +92,6 @@ export default class IRealProChartModel {
                 } else {
                     segment.push(bar);
                 }
-                // console.log(bar);
             });
 
         return segment;
@@ -115,6 +139,7 @@ export default class IRealProChartModel {
             rawBarString = rawBarString.split('Q').join('');
         }
 
+        // Check if that part is a divider
         const isDivider = rawBarString === 'Y';
 
         if (isDivider) {
