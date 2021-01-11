@@ -97,10 +97,10 @@ describe('IRealProUrlParser', () => {
             expect(parser.beautifyChordString(decryptedString)).toBe('G7 |C^7(C#sus)');
         });
         it('should handle all possible combinations', () => {
-            const decryptedString = 'G7LZ|K|clC-7YYY   |<comment>   G7XyQ|F^,';
+            const decryptedString = 'G7LZ|K|clC-7YYY   |<comment>   G7XyQ|F^,YY C-7Y';
             const parser = new IRealProUrlParser();
 
-            expect(parser.beautifyChordString(decryptedString)).toBe('G7 xC-7Y | G7 |F^');
+            expect(parser.beautifyChordString(decryptedString)).toBe('G7 xC-7Y | G7 |F^ Y C-7Y');
         });
     });
 });

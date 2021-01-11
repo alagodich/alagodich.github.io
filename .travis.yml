@@ -13,6 +13,7 @@ before_install:
 
 script:
   - npm run lint
+  - npm run test --coverage
   - npm run fomantic
   - npm run build
 

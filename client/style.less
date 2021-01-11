@@ -39,20 +39,15 @@ a {
     }
 }
 
-.chart {
-    .bar {
-        .chords {
-            line-height: 3em;
-        }
-        .chord {
-            &__alter {
-                font-size: 1.7em;
-            }
-            &__step {
-                font-size: 3em;
-            }
-            &__kind {
-                font-size: 1.2em;
+table.ui.table.chart {
+    border-spacing: 0 1em;
+    tbody {
+        tr.chart__bar-line {
+            border-spacing: 5px;
+
+            td.chart__bar {
+                border-top: none;
+                border-bottom: none;
             }
         }
     }
@@ -67,17 +62,24 @@ a {
         &--left--light-light {
             border-left: 3px double;
         }
-        // &--top--light {
-        //     border-top: 1px dotted;
-        // }
         &--right--light-light {
             border-right: 3px double;
         }
-        &--left--heavy-light {
-            border-left: 5px double;
-        }
         &--right--light-heavy {
-            border-right: 5px double;
+            border-right: thick double;
+        }
+
+        &--left--heavy-dotted {
+            border-radius: 10px 0 0 10px;
+            border-left: thick double;
+        }
+        &--right--dotted-heavy {
+            border-radius: 0 10px 10px 0;
+            border-right: thick double;
+        }
+        // This is repeat ending top line
+        &--top--light {
+            border-top: 1px dotted;
         }
     }
 }

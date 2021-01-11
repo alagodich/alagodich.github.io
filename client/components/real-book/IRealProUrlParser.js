@@ -1,32 +1,32 @@
 export const barLines = [
-    //single bar line
+    // single bar line
     '|',
-    //opening double bar line
+    // opening double bar line
     '[',
-    //closing double bar line
+    // closing double bar line
     ']',
-    //opening repeat bar line
+    // opening repeat bar line
     '{',
-    //closing repeat bar line
+    // closing repeat bar line
     '}',
-    //Final thick double bar line
-    'Z',
+    // Final thick double bar line
+    'Z'
 ];
 
 export const timeSignatures = {
-    'T44': '4 / 4',
-    'T34': '3 / 4',
-    'T24': '2 / 4',
-    'T54': '5 / 4',
-    'T64': '6 / 4',
-    'T74': '7 / 4',
-    'T22': '2 / 2',
-    'T32': '3 / 2',
-    'T58': '5 / 8',
-    'T68': '6 / 8',
-    'T78': '7 / 8',
-    'T98': '9 / 8',
-    'T12': '12 / 8'
+    T44: '4 / 4',
+    T34: '3 / 4',
+    T24: '2 / 4',
+    T54: '5 / 4',
+    T64: '6 / 4',
+    T74: '7 / 4',
+    T22: '2 / 2',
+    T32: '3 / 2',
+    T58: '5 / 8',
+    T68: '6 / 8',
+    T78: '7 / 8',
+    T98: '9 / 8',
+    T12: '12 / 8'
 };
 
 /**
@@ -45,6 +45,7 @@ export const rehearsalMarks = [
     '*V',
     // Intro
     '*i',
+
     // Segno
     'S',
     // Coda
@@ -90,6 +91,7 @@ export default class IRealProUrlParser {
         }
 
         const songs = this.parseUrl(url);
+
         if (!songs || !songs.length) {
             return [];
         }
@@ -112,6 +114,7 @@ export default class IRealProUrlParser {
     parseUrl(url) {
         const decodedUrl = unescape(url);
         const rawData = decodedUrl.split('://')[1];
+
         if (!rawData) {
             return [];
         }
@@ -121,6 +124,7 @@ export default class IRealProUrlParser {
             const parts = rawSong.split('=');
 
             if (parts[2] && parts[2] !== '') {
+                // eslint-disable-next-line no-console
                 console.log('parts[2] found!!', parts[2]);
             }
 
@@ -131,7 +135,9 @@ export default class IRealProUrlParser {
             }
 
             if (!rawChordsStringWithPrefix.startsWith(prefix)) {
+                // eslint-disable-next-line no-console
                 console.log('Prefix is not at the beginning, find example, take chords from the next part!');
+                // eslint-disable-next-line no-console
                 console.log('It must be transpose value');
             }
 
@@ -219,8 +225,12 @@ export default class IRealProUrlParser {
             .replace(/\|\s+/g, '|')
             // Remove multiple whitespaces
             .replace(/\s+/g, ' ')
-            // remove small sign for small chords rendering
-            .replace(/(?<!su)s(?!us)/g, '')
+
+            // // remove small sign for small chords rendering
+            // .replace(/(?<!su)s(?!us)/g, '')
+            // For some reason linter is not happy with /(?<!su)s(?!us)/g, have to use split/replace for now
+            .split('sus').map(chunk => chunk.replace(/s/g, '')).join('sus')
+
             // remove section markers
             // .replace(/\*\w/g, '')
             // remove time signatures
@@ -229,6 +239,8 @@ export default class IRealProUrlParser {
             // .replace(/[lf]/g, '')
             // remove annotations
             .replace(/<.*?>/g, '')
+
+
             .trim();
     }
 }

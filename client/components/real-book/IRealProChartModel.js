@@ -21,7 +21,14 @@ export default class IRealProChartModel {
      * Split chart by named sections (A, B, C)
      */
     init() {
-        const segments = this.chordString.match(/(\*\w)([^*]+)/g);
+        const segments = this.chordString
+            /**
+             * In some cases segment name *A, *B may be inside bar lines, in some outside,
+             * we will put them always outside
+             */
+            .replace(/([{[|Y])(\*\w)/g, '$2$1')
+            // Split chord string by Segment name *A, *B, they are all now outside the bar lines
+            .match(/(\*\w)([^*]+)/g);
 
         if (!segments) {
             this.segments = [
@@ -42,8 +49,28 @@ export default class IRealProChartModel {
      * @returns {*}
      */
     parseSegment(segmentString) {
-        return segmentString.match(/([{}[\]|ZY])([^{}[\]|ZY]*)/g)
-            .map(barString => this.parseBar(barString));
+        const segment = [];
+
+        // Process segment data string to form final chord collection
+        segmentString
+            // Split string by bar line separator
+            .match(/([{}[\]|ZY])([^{}[\]|ZY]*)/g)
+            // Process bar collection
+            .map(barString => this.parseBar(barString))
+            // Merge some parts together, for example closing bar line with the previous bar
+            .forEach(bar => {
+                if (bar.closingLine && Object.getOwnPropertyNames(bar).length === 1) {
+                    if (!segment[segment.length - 1]) {
+                        throw new Error(`Invalid segment, closing bar as a first part: ${segmentString}`);
+                    }
+                    segment[segment.length - 1].closingLine = bar.closingLine;
+                } else {
+                    segment.push(bar);
+                }
+                // console.log(bar);
+            });
+
+        return segment;
     }
 
     /**
@@ -54,7 +81,6 @@ export default class IRealProChartModel {
      */
     // eslint-disable-next-line complexity,max-statements
     parseBar(barString) {
-        // console.log('parseBar', barString);
         let rawBarString = barString.trim();
         const barProps = {};
 
@@ -121,11 +147,6 @@ export default class IRealProChartModel {
         if (rawBarString.length > 0) {
             throw new Error(`Unparsed rawBarString ${rawBarString}`);
         }
-        // console.log();
-        // console.log(
-        //     // rawBarString,
-        //     barProps
-        // );
 
         return barProps;
     }

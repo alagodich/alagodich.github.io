@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
 const propTypes = {
@@ -9,7 +9,7 @@ const propTypes = {
     onClick: PropTypes.func
 };
 
-class ChartPicker extends Component {
+class ChartPicker extends PureComponent {
 
     handleChartClick(chartIndex) {
         return () => {

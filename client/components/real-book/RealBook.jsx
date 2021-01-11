@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 /* eslint react/no-set-state: 0 */
 
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import Chart from './Chart.jsx';
 import ChartPicker from './ChartPicker.jsx';
 import IRealProUrlParser from './IRealProUrlParser';
@@ -15,7 +15,7 @@ const defaultState = {
     },
     charts = require('./playlists/songs.js');
 
-class RealBook extends Component {
+class RealBook extends PureComponent {
     constructor(props) {
         super(props);
         this.state = defaultState;
@@ -33,7 +33,7 @@ class RealBook extends Component {
         document.addEventListener('keyup', this.handleKeyPress, false);
 
         // TODO REMOVE
-        // this.loadChart(1);
+        // this.loadChart(0);
     }
 
     componentWillUnmount() {

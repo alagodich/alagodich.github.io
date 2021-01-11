@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {Table} from 'semantic-ui-react';
-// import Chord from './Chord.jsx';
+import Chord from './Chord.jsx';
 
 const propTypes = {
     model: PropTypes.shape({
@@ -18,129 +18,113 @@ const propTypes = {
                 closingLine: PropTypes.string,
                 ending: PropTypes.string,
                 timeSignature: PropTypes.string,
-                divider: PropTypes.string
+                divider: PropTypes.string,
+                coda: PropTypes.bool
             }))
         }))
     })
 };
 
-class Chart extends Component {
+const styles = {
+    table: {
+        fontWeight: 500,
+        fontSize: 20
+    },
+    sectionHeader: {
+        fontWeight: 900,
+        fontSize: 35
+    }
+};
+
+class Chart extends PureComponent {
+    processLines(segment) {
+        if (!segment) {
+            return null;
+        }
+        segment.lines = [];
+
+        let line = [];
+
+        segment.data.forEach(bar => {
+            // Not rendering dividers for now
+            if (bar.divider) {
+                return;
+            }
+
+            if (line.length < 4) {
+                // If it is a last bar in line, and has no closing line, add default
+                if (line.length === 3 && !bar.closingLine) {
+                    bar.closingLine = '|';
+                }
+
+                line.push(bar);
+
+                // If current closing bar line is not regular and current line is not and ending line, break the line
+                if (bar.closingLine && bar.closingLine !== '|' && line[0] && !line[0].ending) {
+                    segment.lines.push(line);
+                    line = [];
+                }
+            } else {
+                segment.lines.push(line);
+                line = [bar];
+            }
+        });
+        if (line.length) {
+            // If the last line is less than 4 bars and it is an ending line, fill it to the size of 4
+            if (line.length < 4 && line[0].ending) {
+                const filler = new Array(4 - line.length).fill({empty: true});
+
+                line = [...filler, ...line];
+            }
+            segment.lines.push(line);
+        }
+
+        return segment;
+    }
 
     renderChart() {
+        const tableRows = [];
+        const segments = this.props.model.segments
+            .map(segment => this.processLines(segment));
 
-        // function processBarline(barlines) {
-        //     let left, right, top;
-        //
-        //     if (!barlines) {
-        //         return [null, null, null];
-        //     }
-        //     for (const barline of barlines) {
-        //         const style = barline['bar-style'];
-        //
-        //         if (barline.$.location === 'left' && style) {
-        //             left = `barline--left--${style}`;
-        //         }
-        //         if (barline.$.location === 'right' && style) {
-        //             right = `barline--right--${style}`;
-        //         }
-        //
-        //         if (barline.$.location === 'right' && barline.ending && barline.ending[0].$.type === 'discontinue') {
-        //             top = 'barline--top--light';
-        //         }
-        //     }
-        //     return [left, right, top];
-        // }
-        //
-        // function getBarlinesClassnames(barlines, first) {
-        //     const classNames = [],
-        //         barlineClassNames = processBarline(barlines),
-        //         top = barlineClassNames[2];
-        //     let left = barlineClassNames[0],
-        //         right = barlineClassNames[1];
-        //
-        //     if (!left && first) {
-        //         left = 'barline--left--light';
-        //     }
-        //     if (left) {
-        //         classNames.push(left);
-        //     }
-        //
-        //     right = right ? right : 'barline--right--light';
-        //     classNames.push(right);
-        //
-        //     if (top) {
-        //         classNames.push(top);
-        //     }
-        //
-        //     return classNames;
-        // }
-        //
-        // function processBarChords(bar) {
-        //     const chords = [];
-        //
-        //     bar.harmony.forEach((chord, number) => {
-        //         const duration = bar.note[number].type[0];
-        //
-        //         chords.push(<Chord key={number} config={chord} duration={duration}/>);
-        //     });
-        //     return <div className="ui grid chords">{chords}</div>;
-        // }
-        //
-        // function secondRepeat(bar) {
-        //     if (bar.barline && bar.barline[1] && bar.barline[1].$.location === 'left') {
-        //         if (bar.barline[1].ending[0].$.type === 'start' && bar.barline[1].ending[0].$.number === '2') {
-        //             return true;
-        //         }
-        //     }
-        //     return false;
-        // }
-        //
-        // for (const barConfig of this.props.data.measure) {
-        //     const bar = processBarChords(barConfig),
-        //         index = this.props.data.measure.indexOf(barConfig),
-        //         first = counter === 0,
-        //         last = index === this.props.data.measure.length - 1,
-        //         lastInRow = counter === 3,
-        //         repeatEnded = barConfig.barline
-        //             && barConfig.barline[0]
-        //             && barConfig.barline[0].$.location === 'right'
-        //             && barConfig.barline[0]['bar-style']
-        //             && barConfig.barline[0]['bar-style'][0] === 'light-light';
-        //     let classNames = ['column', 'bar'].concat(getBarlinesClassnames(barConfig.barline, first));
-        //
-        //     if (secondRepeat(barConfig)) {
-        //         classNames = classNames.concat(['right', 'floated']);
-        //         inRepeat = true;
-        //     }
-        //
-        //     row.push(<div key={index} className={classNames.join(' ')}>{bar}</div>);
-        //     counter++;
-        //
-        //     if (last || lastInRow || (inRepeat && repeatEnded)) {
-        //         items.push(<div key={index} className="row">{row}</div>);
-        //         row = [];
-        //         counter = 0;
-        //         inRepeat = false;
-        //     }
-        //
-        // }
-        // console.log(this.props.model.segments);
+        segments.forEach((segment, segmentKey) => {
+            const headerCell = (
+                <Table.Cell
+                    width={1}
+                    verticalAlign="top"
+                    style={styles.sectionHeader}
+                    className="chart__bar"
+                >
+                    {segment.name}
+                </Table.Cell>
+            );
+
+            segment.lines.forEach((line, key) => {
+                tableRows.push(
+                    <Table.Row key={`${segmentKey}-${key}`} className="chart__bar-line">
+                        {key === 0 ? headerCell : <Table.Cell className="chart__bar" width={1} />}
+                        {line.map((bar, key) => <Chord key={key} {...bar} />)}
+                    </Table.Row>
+                );
+            });
+        });
 
         return (
-            <Table basic="very">
+            <Table
+                basic="very"
+                singleLine
+                fixed
+                columns={5}
+                style={styles.table}
+                className="chart"
+                unstackable
+                attached="top"
+            >
                 <Table.Body>
-                    {
-                        this.props.model.segments.map((segment, key) => (
-                            <Table.Row key={key}>
-                                <Table.Cell>{segment.name}</Table.Cell>
-                                <Table.Cell>{JSON.stringify(segment.data)}</Table.Cell>
-                            </Table.Row>
-                        ))
-                    }
+                    {tableRows}
                 </Table.Body>
             </Table>
         );
-        // return <div className="ui four column grid chart">{this.props.model.chordString}</div>;
     }
 
     render() {
