@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import {List, Icon} from 'semantic-ui-react';
 
 const propTypes = {
     charts: PropTypes.arrayOf(PropTypes.shape({
@@ -23,21 +24,23 @@ class ChartList extends PureComponent {
         }
 
         const charts = this.props.charts.slice(0, 50).map(chart => (
-            <div key={chart.id} className="item">
-                <i className="options icon"/>
-                <a className="content" onClick={this.handleChartClick(chart.id)}>
-                    {chart.title} <span style={{opacity: 0.5}}>{`--[${chart.author}]`}</span>
-                </a>
-            </div>
+            <List.Item key={chart.id}>
+                <Icon name="options" />
+                <List.Content>
+                    <a onClick={this.handleChartClick(chart.id)}>
+                        {chart.title} <span style={{opacity: 0.5}}>{`--[${chart.author}]`}</span>
+                    </a>
+                </List.Content>
+            </List.Item>
         ));
 
         return (
-            <div className="ui list">
+            <List className="chart-list">
                 {charts}
                 {this.props.charts.length > 50
                     ? <p>{`... ${this.props.charts.length} songs found, try narrowing the search.`}</p>
                     : null}
-            </div>
+            </List>
         );
     }
 }

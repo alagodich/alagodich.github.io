@@ -243,6 +243,87 @@ describe('IRealProChartModel', () => {
             }
         ]);
     });
+    it('should handle unclosed section like in Ahmid-6', () => {
+        const props = {
+            title: 'Ahmid-6',
+            chordString: '[*AT44D-7 |C#-7 |r|F#-7 B7|E-7 A7|G F|E- D-7|C^7 |B7 |Bb^7#11 |Ah7 D7b9|F#h7 B7b9|Eh7 A7b9|D-7 E-7|F-7 Bb7|Eb9sus|x|Ab^9|x|Ab7sus|x|Db^13|x|Dh7 G7b9|C-7 F7|F-7 Bb7|Gh7 C7#9|F-7 F#-7|G-7 C-7|T34lF#-7 B7 |E-7 A7sus|T24A7sus|T44lA7sus |x [*BD-7 |C#-7 |D-7 |C#-7 |F#-7 B7|E-7 A7|A-7 |ppD7|G^7 Bb7|Eb^7 B7|E^7 G7|C^7 Ab7|Db^7 E7|A^7 C7|F^7|x|E-7|x|F^7|x|E-7|x Z'
+        };
+
+        const model = new IRealProChartModel(props);
+
+        expect(model.title).toBe('Ahmid-6');
+        expect(model.chordString.length).toBe(356);
+
+        expect(model.segments).toEqual([
+            {
+                name: 'A',
+                data: [
+                    {timeSignature: '4 / 4', openingLine: '[', chords: 'D-7'},
+                    {openingLine: '|', chords: 'C#-7'},
+                    {openingLine: '|', chords: 'D-7'},
+                    {openingLine: '|', chords: 'C#-7', closingLine: '|'},
+                    {openingLine: '|', chords: 'F#-7 B7'},
+                    {openingLine: '|', chords: 'E-7 A7'},
+                    {openingLine: '|', chords: 'G F'},
+                    {openingLine: '|', chords: 'E- D-7'},
+                    {openingLine: '|', chords: 'C^7'},
+                    {openingLine: '|', chords: 'B7'},
+                    {openingLine: '|', chords: 'Bb^7#11'},
+                    {openingLine: '|', chords: 'Ah7 D7b9'},
+                    {openingLine: '|', chords: 'F#h7 B7b9'},
+                    {openingLine: '|', chords: 'Eh7 A7b9'},
+                    {openingLine: '|', chords: 'D-7 E-7'},
+                    {openingLine: '|', chords: 'F-7 Bb7'},
+                    {openingLine: '|', chords: 'Eb9sus'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'Ab^9'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'Ab7sus'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'Db^13'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'Dh7 G7b9'},
+                    {openingLine: '|', chords: 'C-7 F7'},
+                    {openingLine: '|', chords: 'F-7 Bb7'},
+                    {openingLine: '|', chords: 'Gh7 C7#9'},
+                    {openingLine: '|', chords: 'F-7 F#-7'},
+                    {openingLine: '|', chords: 'G-7 C-7'},
+                    {timeSignature: '3 / 4', openingLine: '|', chords: 'lF#-7 B7'},
+                    {openingLine: '|', chords: 'E-7 A7sus'},
+                    {timeSignature: '2 / 4', openingLine: '|', chords: 'A7sus'},
+                    {timeSignature: '4 / 4', openingLine: '|', chords: 'lA7sus'},
+                    {openingLine: '|', chords: 'x', closingLine: ']'}
+                ]
+            },
+            {
+                name: 'B',
+                data: [
+                    {openingLine: '[', chords: 'D-7'},
+                    {openingLine: '|', chords: 'C#-7'},
+                    {openingLine: '|', chords: 'D-7'},
+                    {openingLine: '|', chords: 'C#-7'},
+                    {openingLine: '|', chords: 'F#-7 B7'},
+                    {openingLine: '|', chords: 'E-7 A7'},
+                    {openingLine: '|', chords: 'A-7'},
+                    {openingLine: '|', chords: 'ppD7'},
+                    {openingLine: '|', chords: 'G^7 Bb7'},
+                    {openingLine: '|', chords: 'Eb^7 B7'},
+                    {openingLine: '|', chords: 'E^7 G7'},
+                    {openingLine: '|', chords: 'C^7 Ab7'},
+                    {openingLine: '|', chords: 'Db^7 E7'},
+                    {openingLine: '|', chords: 'A^7 C7'},
+                    {openingLine: '|', chords: 'F^7'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'E-7'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'F^7'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'E-7'},
+                    {openingLine: '|', chords: 'x', closingLine: 'Z'}
+                ]
+            }
+        ]);
+    });
 
     describe('parseBar', () => {
         it.skip('should handle simple bar with Alternate Chords', () => {

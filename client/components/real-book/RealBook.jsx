@@ -6,7 +6,7 @@ import Chart from './Chart.jsx';
 import ChartList from './ChartList.jsx';
 import IRealProUrlParser from './IRealProUrlParser';
 import IRealProChartModel from './IRealProChartModel';
-import {Menu, Input, Header} from 'semantic-ui-react';
+import {Menu, Input, Header, Icon} from 'semantic-ui-react';
 import {default as _escapeRegExp} from 'lodash/escapeRegExp';
 import {default as _filter} from 'lodash/filter';
 
@@ -116,7 +116,11 @@ class RealBook extends PureComponent {
 
             setTimeout(() => {
                 if (this.state.searchFilter.length < 1) {
-                    return this.setState({searchFilter: '', filteredSongs: this.state.library, loading: false});
+                    return this.setState({
+                        searchFilter: '',
+                        filteredSongs: this.state.library,
+                        loading: false
+                    });
                 }
 
                 const regExp = new RegExp(_escapeRegExp(this.state.searchFilter), 'i');
@@ -128,6 +132,14 @@ class RealBook extends PureComponent {
                 });
             }, 300);
         };
+    }
+
+    handleClearFilter() {
+        return () => this.setState({
+            searchFilter: '',
+            filteredSongs: this.state.library,
+            loading: false
+        });
     }
 
     handleChartClose() {
@@ -166,6 +178,20 @@ class RealBook extends PureComponent {
             )
             : (
                 <Menu.Menu position="right">
+                    {
+                        this.state.searchFilter && this.state.searchFilter.trim() !== ''
+                            ? (
+                                <Menu.Item>
+                                    <Icon
+                                        name="delete"
+                                        color="red"
+                                        title="Clear filter"
+                                        onClick={this.handleClearFilter()}
+                                    />
+                                </Menu.Item>
+                            )
+                            : null
+                    }
                     <Input
                         icon="search"
                         transparent

@@ -94,6 +94,10 @@ export default class IRealProChartModel {
                 }
             });
 
+        if (!segment[segment.length - 1].closingLine) {
+            segment[segment.length - 1].closingLine = ']';
+        }
+
         return segment;
     }
 

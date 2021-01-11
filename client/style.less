@@ -4,6 +4,7 @@ a {
 
 .ui.text.menu {
     margin: 0;
+    font-size: 1.1em;
 }
 
 .pagination {
@@ -11,16 +12,13 @@ a {
     &--big {
         font-size: 1.2em;
         line-height: 1.2em;
+        margin-bottom: 3px;
     }
 }
 
-.map {
-    height: 500px;
-    min-width: 310px;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
+/**
+ * Metronome
+ */
 .metronome {
     .canvas {
         width: 100%;
@@ -39,47 +37,59 @@ a {
     }
 }
 
-table.ui.table.chart {
-    border-spacing: 0 1em;
-    tbody {
-        tr.chart__bar-line {
-            border-spacing: 5px;
+/**
+ * Real Book
+ */
+.realbook {
 
-            td.chart__bar {
-                border-top: none;
-                border-bottom: none;
-            }
-        }
+    /* Chart List */
+    .chart-list .item a {
+        color: black;
     }
 
-    .barline {
-        &--left--light {
-            border-left: 1px solid;
-        }
-        &--right--light {
-            border-right: 1px solid;
-        }
-        &--left--light-light {
-            border-left: 3px double;
-        }
-        &--right--light-light {
-            border-right: 3px double;
-        }
-        &--right--light-heavy {
-            border-right: thick double;
+    /* Chart */
+    table.ui.table.chart {
+        border-spacing: 0 1em;
+        tbody {
+            tr.chart__bar-line {
+                border-spacing: 5px;
+
+                td.chart__bar {
+                    border-top: none;
+                    border-bottom: none;
+                }
+            }
         }
 
-        &--left--heavy-dotted {
-            border-radius: 10px 0 0 10px;
-            border-left: thick double;
-        }
-        &--right--dotted-heavy {
-            border-radius: 0 10px 10px 0;
-            border-right: thick double;
-        }
-        // This is repeat ending top line
-        &--top--light {
-            border-top: 1px dotted;
+        .barline {
+            &--left--light {
+                border-left: 1px solid;
+            }
+            &--right--light {
+                border-right: 1px solid;
+            }
+            &--left--light-light {
+                border-left: 3px double;
+            }
+            &--right--light-light {
+                border-right: 3px double;
+            }
+            &--right--light-heavy {
+                border-right: thick double;
+            }
+
+            &--left--heavy-dotted {
+                border-radius: 10px 0 0 10px;
+                border-left: thick double;
+            }
+            &--right--dotted-heavy {
+                border-radius: 0 10px 10px 0;
+                border-right: thick double;
+            }
+            // This is repeat ending top line
+            &--top--light {
+                border-top: 1px dotted;
+            }
         }
     }
 }

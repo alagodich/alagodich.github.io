@@ -1,45 +1,51 @@
-import $ from 'jquery';
-
 function filterTags() {
     const hash = decodeURI(window.location.hash).split('#')[1],
         selectedTags = hash
             ? hash.split(',').filter(tag => tag !== '')
             : [];
 
-    $('.ui.feed.site__posts > .event').each((index, post) => {
-        const $post = $(post),
-            postTags = $post.data('tags').split(',').filter(tag => tag !== ''),
-            postSelected = postTags.filter(tag => selectedTags.includes(tag)).length;
+    [...document.getElementsByClassName('site__posts')].forEach(container => {
+        const posts = [...container.getElementsByClassName('event')];
 
-        if (selectedTags.length && !postSelected) {
-            $post.hide();
-        } else {
-            $post.show();
-        }
+        posts.forEach(post => {
+            const postTags = post.dataset.tags
+                ? post.dataset.tags.split(',').filter(tag => tag !== '')
+                : [];
+            const postSelected = postTags.filter(tag => selectedTags.includes(tag)).length;
+
+            if (selectedTags.length && !postSelected) {
+                post.style.display = 'none';
+            } else {
+                post.style.display = 'block';
+            }
+        });
     });
 
-    $('.tag__selector').each((index, selector) => {
-        const $selector = $(selector),
-            selectorTag = $selector.data('tag');
+    [...document.getElementsByClassName('tag__selector')].forEach(selector => {
+        const selectorTag = selector.dataset.tag;
+        const classList = [...selector.classList]
+            .filter(className => className !== 'blue');
 
         if (selectedTags.includes(selectorTag)) {
-            $selector
-                .addClass('blue')
-                .prop('href', '#');
+            classList.push('blue');
+            selector.className = classList.join(' ');
+            selector.href = '#';
         } else {
-            $selector
-                .removeClass('blue')
-                .prop('href', `#${selectorTag}`);
+            selector.className = classList.join(' ');
+            selector.href = `#${selectorTag}`;
         }
     });
 }
 
-$(() => {
+(() => {
     filterTags();
 
     if ('onhashchange' in window) {
-        $(window).bind('hashchange', filterTags);
+        window.addEventListener('hashchange', filterTags);
     } else {
-        $('.tag__selector').mouseup(filterTags);
+        // Disable tags if browser does not support hash change event
+        [...document.getElementsByClassName('js--tag-bar')].forEach(element => {
+            element.style.display = 'none';
+        });
     }
-});
+})();
