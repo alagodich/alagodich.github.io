@@ -1,3 +1,8 @@
+/**
+ * Handle hash tags on post list
+ * This currently pollutes global namespace and should be reworked into React component
+ * To manage event listener lifecycle
+ */
 function filterTags() {
     const hash = decodeURI(window.location.hash).split('#')[1],
         selectedTags = hash
@@ -38,10 +43,18 @@ function filterTags() {
 }
 
 (() => {
+    const tagsAndPostsPresentOnPage =
+        document.getElementsByClassName('site__posts').length
+        && document.getElementsByClassName('tag__selector').length;
+
+    if (!tagsAndPostsPresentOnPage) {
+        return;
+    }
+
     filterTags();
 
     if ('onhashchange' in window) {
-        window.addEventListener('hashchange', filterTags);
+        window.addEventListener('hashchange', filterTags, false);
     } else {
         // Disable tags if browser does not support hash change event
         [...document.getElementsByClassName('js--tag-bar')].forEach(element => {

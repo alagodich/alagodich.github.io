@@ -1,9 +1,8 @@
 ### TODO
 
 #### Real Book
-* Add # Router
-* Add redux
 * Add scound
+* Add playlists and better navigation with global state store and redux
 
 #### Fluff
 * Try different fonts

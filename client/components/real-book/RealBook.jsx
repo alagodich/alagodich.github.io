@@ -34,6 +34,7 @@ class RealBook extends PureComponent {
 
         this.handleChartChange = this.handleChartChange.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleHashChange = this.handleHashChange.bind(this);
         this.handleChartClose = this.handleChartClose.bind(this);
     }
 
@@ -43,12 +44,14 @@ class RealBook extends PureComponent {
      */
     componentDidMount() {
         document.addEventListener('keyup', this.handleKeyPress, false);
+        window.addEventListener('hashchange', this.handleHashChange, false);
 
         this.loadLibrary();
     }
 
     componentWillUnmount() {
         document.removeEventListener('keyup', this.handleKeyPress, false);
+        window.removeEventListener('hashchange', this.handleHashChange, false);
     }
 
     handleKeyPress(event) {
@@ -84,6 +87,8 @@ class RealBook extends PureComponent {
             });
 
             this.setState({loading: false, library: mappedSongs, filteredSongs: mappedSongs});
+            // Initial hash read on page load (component mount)
+            this.handleHashChange();
         });
     }
 
@@ -103,11 +108,36 @@ class RealBook extends PureComponent {
         });
     }
 
+    handleHashChange() {
+        const hash = decodeURI(window.location.hash).split('#')[1];
+        const id = parseInt(hash, 10);
+
+        if (hash && hash !== '' && id.toString() === hash) {
+            if (this.state.library[id]) {
+                this.loadChart(id);
+            }
+        }
+    }
+
+    updateHash(hash) {
+        if (history && history.pushState) {
+            history.pushState(null, null, hash);
+        } else {
+            location.hash = hash;
+        }
+    }
+
     handleChartChange(id) {
-        if (!this.state.library[id]) {
+        const chartId = parseInt(id, 10);
+
+        if (chartId !== id) {
+            throw new Error('Invalid chart id');
+        }
+        if (!this.state.library[chartId]) {
             throw new Error('Song does not exists');
         }
-        this.loadChart(id);
+        this.updateHash(`#${chartId}`);
+        this.loadChart(chartId);
     }
 
     handleSearchFilterChange() {
@@ -143,6 +173,8 @@ class RealBook extends PureComponent {
     }
 
     handleChartClose() {
+        this.updateHash('#');
+
         this.setState({
             header: title,
             subHeader: null,
