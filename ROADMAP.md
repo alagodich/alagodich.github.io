@@ -10,6 +10,7 @@
 * Display ending lines properly, maybe SVG entire bar
 * Parse pauses in bar correctly, for example in Always And Forever
 * Analyze chords and add option to present them as steps
+* Check all songs after Armando's Rhumba
 
 #### Metronome
 * @svgdotjs/svg.js manipulates DOM so in react we have to use ref which becomes deprecated

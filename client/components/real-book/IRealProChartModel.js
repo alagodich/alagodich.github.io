@@ -27,7 +27,7 @@ export default class IRealProChartModel {
              * In some cases segment name *A, *B may be inside bar lines, in some outside,
              * we will put them always outside
              */
-            .replace(/([{[|Y])(\*\w)/g, '$2$1')
+            .replace(/([{[|Y])[\s]*(\*\w)/g, '$2$1')
             // Each ending should have and opening bar line
             .replace('}N', '}|N')
             // Split chord string by Segment name *A, *B, they are all now outside the bar lines

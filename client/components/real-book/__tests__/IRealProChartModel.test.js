@@ -520,6 +520,49 @@ describe('IRealProChartModel', () => {
             }
         ]);
     });
+    it('should handle Armando\'s Rhumba where segment name is inside and has a left whitespace', () => {
+        const props = {
+            title: 'Armando\'s Rhumba',
+            chordString: 'T44[*A C-7 |D7b9 |G7b13 |C-7 |C-7 |D7b9 |G7b13 |C-7 ][ *B C7b9 |F-7 |D7b9/F# |G-7 |Abo7 |D7b9/A |Bb7sus |x |Bb7b9sus |x (E7#9)|Eb6 (E) (F) (F#)|G7b13 Z'
+        };
+        const model = new IRealProChartModel(props);
+
+        expect(model.title).toBe('Armando\'s Rhumba');
+        expect(model.chordString.length).toBe(151);
+
+        expect(model.segments).toEqual([
+            {
+                name: 'A',
+                data: [
+                    {openingLine: '[', chords: 'C-7'},
+                    {openingLine: '|', chords: 'D7b9'},
+                    {openingLine: '|', chords: 'G7b13'},
+                    {openingLine: '|', chords: 'C-7'},
+                    {openingLine: '|', chords: 'C-7'},
+                    {openingLine: '|', chords: 'D7b9'},
+                    {openingLine: '|', chords: 'G7b13'},
+                    {openingLine: '|', chords: 'C-7', closingLine: ']'}
+                ]
+            },
+            {
+                name: 'B',
+                data: [
+                    {openingLine: '[', chords: 'C7b9'},
+                    {openingLine: '|', chords: 'F-7'},
+                    {openingLine: '|', chords: 'D7b9/F#'},
+                    {openingLine: '|', chords: 'G-7'},
+                    {openingLine: '|', chords: 'Abo7'},
+                    {openingLine: '|', chords: 'D7b9/A'},
+                    {openingLine: '|', chords: 'Bb7sus'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'Bb7b9sus'},
+                    {openingLine: '|', chords: 'x (E7#9)'},
+                    {openingLine: '|', chords: 'Eb6 (E) (F) (F#)'},
+                    {openingLine: '|', chords: 'G7b13', closingLine: 'Z'}
+                ]
+            }
+        ]);
+    });
 
     describe('parseSegment', () => {
         it('should handle repeat 2 bars (r)', () => {
