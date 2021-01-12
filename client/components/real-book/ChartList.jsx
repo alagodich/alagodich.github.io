@@ -38,7 +38,11 @@ class ChartList extends PureComponent {
             <List className="chart-list">
                 {charts}
                 {this.props.charts.length > 50
-                    ? <p>{`... ${this.props.charts.length} songs found, try narrowing the search.`}</p>
+                    ? (
+                        <p style={{marginTop: '1em'}}>
+                            {`... ${this.props.charts.length} songs found, try narrowing the search.`}
+                        </p>
+                    )
                     : null}
             </List>
         );

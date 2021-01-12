@@ -1,5 +1,7 @@
 ## My personal blog
 
+[![Build Status](https://travis-ci.org/alagodich/alagodich.github.io.svg?branch=master)](https://travis-ci.org/alagodich/alagodich.github.io)
+
 Written on [Jekyll](https://jekyllrb.com/)
 
 Hosted on [github-pages](https://pages.github.com/)

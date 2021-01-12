@@ -1,8 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
-import Metronome from './components/Metronome.jsx';
+import Metronome from './components/metronome/Metronome.jsx';
 const $metronomeContainer = document.getElementById('metronomeContainer');
 
 if ($metronomeContainer) {
-    render(<Metronome />, $metronomeContainer);
+    render(<React.StrictMode><Metronome /></React.StrictMode>, $metronomeContainer);
 }

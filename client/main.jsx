@@ -15,10 +15,9 @@ import './tags.jsx';
 const menuContainer = document.getElementById('react--component--menu');
 
 render(
-    <Menu
-        current={menuContainer.dataset.current}
-        items={JSON.parse(menuContainer.dataset.items)}
-    />,
+    <React.StrictMode>
+        <Menu current={menuContainer.dataset.current} items={JSON.parse(menuContainer.dataset.items)} />
+    </React.StrictMode>,
     menuContainer
 );
 
@@ -28,7 +27,7 @@ render(
     if (!id || id === '') {
         return;
     }
-    render(<Youtube id={id} />, element);
+    render(<React.StrictMode><Youtube id={id} /></React.StrictMode>, element);
 });
 
 [...document.getElementsByTagName('photo')].forEach(element => {
@@ -37,7 +36,7 @@ render(
     if (!src || src === '') {
         return;
     }
-    render(<Photo src={src} />, element);
+    render(<React.StrictMode><Photo src={src} /></React.StrictMode>, element);
 });
 
 [...document.getElementsByTagName('carousel')].forEach(element => {
@@ -47,7 +46,7 @@ render(
         return;
     }
 
-    render(<Carousel items={items} />, element);
+    render(<React.StrictMode><Carousel items={items} /></React.StrictMode>, element);
 });
 
 [...document.getElementsByTagName('profile')].forEach(element => {
@@ -61,7 +60,7 @@ render(
         return;
     }
 
-    render(<Profile {...props} />, element);
+    render(<React.StrictMode><Profile {...props} /></React.StrictMode>, element);
 });
 
 [...document.getElementsByClassName('popup')].forEach(element => {
@@ -71,5 +70,11 @@ render(
         return;
     }
 
-    render(<Popup trigger={<span>{element.innerHTML}</span>} content={content} />, element);
+    // Semantic react Popup still uses ref to find a node, gives warnings in Strict Mode
+    render(
+        <React.StrictMode>
+            <Popup trigger={<span>{element.innerHTML}</span>} content={content} />
+        </React.StrictMode>,
+        element
+    );
 });

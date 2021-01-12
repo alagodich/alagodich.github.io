@@ -6,8 +6,10 @@ const path = require('path'),
         entry: {
             site: path.resolve('client/main.jsx'),
             metronome: path.resolve('client/metronome.jsx'),
+            metronomeworker: path.resolve('client/components/metronome/metronomeworker.js'),
             realbook: path.resolve('client/realbook.jsx'),
-            map: path.resolve('client/map.jsx')
+            map: path.resolve('client/map.jsx'),
+            csound: path.resolve('client/csound.jsx')
         },
         output: {
             publicPath: '/public/',
@@ -55,6 +57,10 @@ const path = require('path'),
                             }
                         }
                     ]
+                },
+                {
+                    test: /\.csd$/i,
+                    use: 'raw-loader'
                 }
             ]
         }

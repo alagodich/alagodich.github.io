@@ -136,7 +136,7 @@ class Metronome extends Component {
         });
 
         // Init Worker
-        this.timerWorker = new Worker('assets/metronome/metronomeworker.js');
+        this.timerWorker = new Worker('public/metronomeworker.js');
         this.timerWorker.onmessage = message => {
             if (message.data === 'tick') {
                 this.scheduler();
@@ -566,7 +566,7 @@ class Metronome extends Component {
         return (
             <div className="metronome">
                 <div className="ui centered card">
-                    <div className="content" ref={c => (this.container = c)}>
+                    <div className="content">
                         <a
                             href={githubUrl}
                             target="_blank"
@@ -575,7 +575,7 @@ class Metronome extends Component {
                         >
                             <Icon name="github" style={{textDecoration: 'none', cursor: 'pointer'}} />
                         </a>
-                        <svg style={{width: '100%', height: 50}} ref={c => (this.svgContainer = c)}/>
+                        <svg style={{width: '100%', height: 50}} ref={c => (this.svgContainer = c)} />
                     </div>
                     <div className="extra content ui form">
                         <div id="controls">
