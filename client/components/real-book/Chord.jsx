@@ -9,7 +9,9 @@ const propTypes = {
     ending: PropTypes.string,
     timeSignature: PropTypes.string,
     divider: PropTypes.string,
-    coda: PropTypes.bool
+    coda: PropTypes.bool,
+    fermata: PropTypes.bool,
+    segno: PropTypes.bool
 };
 
 const barlineMap = {
@@ -67,6 +69,9 @@ class Chord extends Component {
             } else if (chord === 'x') {
                 // Bar repeat
                 chords.push(<span key={index} className="chord__bar-repeat">{'%'}</span>);
+            } else if (chord === 'n') {
+                // Bar repeat
+                chords.push(<span key={index} className="chord__no-chord">{'N.C.'}</span>);
             } else {
                 chords.push(chord);
             }
@@ -95,7 +100,13 @@ class Chord extends Component {
             );
         }
         if (this.props.coda) {
-            barContent.push(<span key="coda" style={{opacity: 0.5}}>{'(Coda)'}</span>);
+            barContent.push(<span key="coda" className="chord__coda">{'(Coda)'}</span>);
+        }
+        if (this.props.fermata) {
+            barContent.push(<span key="fermata" className="chord__fermata">{'(Fermata)'}</span>);
+        }
+        if (this.props.segno) {
+            barContent.push(<span key="segno" className="chord__segno">{'(Segno)'}</span>);
         }
         return (
             <Table.Cell

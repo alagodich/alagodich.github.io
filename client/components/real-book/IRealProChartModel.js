@@ -1,6 +1,12 @@
 import {timeSignatures, endings} from './IRealProUrlParser';
 import {default as _omit} from 'lodash/omit';
 
+const chordsStringExpresion = /[A-GWxn]([+\-^\dhob#sualt]*)(\/[A-G][#b]?)?/;
+const closingBarLines = {
+    ']': '[',
+    '}': '{'
+};
+
 export default class IRealProChartModel {
     constructor(props) {
         if (!props) {
@@ -24,11 +30,13 @@ export default class IRealProChartModel {
     init() {
         const segments = this.chordString
             /**
+             * TODO move these replaces to IRealProUrlParser
              * In some cases segment name *A, *B may be inside bar lines, in some outside,
              * we will put them always outside
+             * Keeping spaces, time signature Tdd and S inside
              */
-            .replace(/([{[|Y])[\s]*(\*\w)/g, '$2$1')
-            // Each ending should have and opening bar line
+            .replace(/([{[|Y])([\sT\dS]*)(\*[\w]{1})/g, '$3$1$2')
+            // Each ending should have opening bar line
             .replace('}N', '}|N')
             // Split chord string by Segment name *A, *B, they are all now outside the bar lines
             .match(/(\*\w)([^*]+)/g);
@@ -53,59 +61,76 @@ export default class IRealProChartModel {
      */
     parseSegment(segmentString) {
         const segment = [];
+        const segmentByBars = segmentString
+            // Split string by bar line separator
+            .match(/([{}[\]|ZY])([^{}[\]|ZY]*)/g);
+
+        if (!segmentByBars || !segmentByBars.length) {
+            throw new Error(`Song: ${this.title}. Segment string has no bar lines: ${segmentString}`);
+        }
 
         // Process segment data string to form final chord collection
-        segmentString
-            // Split string by bar line separator
-            .match(/([{}[\]|ZY])([^{}[\]|ZY]*)/g)
-            // Process bar collection
-            .forEach(rawBarDataString => {
-                let barString = rawBarDataString;
+        // eslint-disable-next-line complexity
+        segmentByBars.forEach(rawBarDataString => {
+            let barString = rawBarDataString;
 
-                // Process repeat sign (r)
-                if (barString.includes('r') && barString !== 'r') {
-                    // Split measure with (r), cut r from it and process the remains as usual
-                    const rSplitMatch = barString.match(/([^r]*)(r)([^r]*)/);
-                    const last2Bars = segment.slice(-2).map(bar => {
-                        const newBar = Object.assign({}, bar);
+            // Process repeat sign (r)
+            if (barString.includes('r') && barString !== 'r') {
+                // Split measure with (r), cut r from it and process the remains as usual
+                const rSplitMatch = barString.match(/([^r]*)(r)([^r]*)/);
+                const last2Bars = segment.slice(-2).map(bar => {
+                    const newBar = Object.assign({}, bar);
 
-                        // Cloned bar will always have simple opening bar line
-                        newBar.openingLine = '|';
-                        return _omit(newBar, 'timeSignature');
-                    });
+                    // Cloned bar will always have simple opening bar line
+                    newBar.openingLine = '|';
+                    return _omit(newBar, 'timeSignature');
+                });
 
-                    /**
-                     * If last of the cloned bar has special closing bar line,
-                     * keep it only on cloned pair
-                     * but remove from the last segment
-                     * If repeat is at the first 2 line bars then remove closing line
-                     */
-                    if (last2Bars[1].closingLine) {
-                        if (segment.length % 4) {
-                            const beforeLastSegment = Object.assign({}, segment[segment.length - 1]);
-
-                            segment[segment.length - 1] = _omit(beforeLastSegment, 'closingLine');
-                        } else if (last2Bars[1].closingLine !== '|') {
-                            segment[segment.length - 1].closingLine = '|';
-                        }
-                    }
-                    segment.push(...last2Bars);
-                    // Remaining measure string with (r) sign
-                    barString = [rSplitMatch[1], rSplitMatch[3]].join('');
+                if (last2Bars.length !== 2) {
+                    throw new Error(`Song: ${this.title}. Cannot repeat last 2 bars ${rawBarDataString}`);
                 }
+                /**
+                 * If last of the cloned bar has special closing bar line, keep it only on cloned pair
+                 * but remove from the last segment
+                 * If repeat is at the first 2 line bars then remove closing line
+                 */
+                if (last2Bars[1].closingLine) {
+                    if (segment.length % 4) {
+                        const beforeLastSegment = Object.assign({}, segment[segment.length - 1]);
 
-                const bar = this.parseBar(barString);
-
-                // Merge some parts together, for example closing bar line with the previous bar
-                if (bar.closingLine && Object.getOwnPropertyNames(bar).length === 1) {
-                    if (!segment[segment.length - 1]) {
-                        throw new Error(`Invalid segment, closing bar as a first part: ${segmentString}`);
+                        segment[segment.length - 1] = _omit(beforeLastSegment, 'closingLine');
+                    } else if (last2Bars[1].closingLine !== '|') {
+                        segment[segment.length - 1].closingLine = '|';
                     }
-                    segment[segment.length - 1].closingLine = bar.closingLine;
-                } else {
-                    segment.push(bar);
                 }
-            });
+                segment.push(...last2Bars);
+                // Remaining measure string with (r) sign
+                barString = [rSplitMatch[1], rSplitMatch[3]].join('');
+            }
+
+            const bar = this.parseBar(barString);
+
+            // Merge some parts together, for example closing bar line with the previous bar
+            if (bar.closingLine && Object.getOwnPropertyNames(bar).length === 1) {
+                if (!segment[segment.length - 1]) {
+                    throw new Error(`Invalid segment, closing bar as a first part: ${segmentString}`);
+                }
+                segment[segment.length - 1].closingLine = bar.closingLine;
+            } else if (closingBarLines[bar.openingLine]) {
+                // If bar opening line is actually closing bar line, move it to the previous bar
+                if (segment[segment.length - 1].closingLine) {
+                    throw new Error(
+                        `Song: ${this.title} trying to move closing bar to the previous bar ${segmentString}`
+                    );
+                }
+                segment[segment.length - 1].closingLine = bar.openingLine;
+
+                bar.openingLine = '|';
+                segment.push(bar);
+            } else {
+                segment.push(bar);
+            }
+        });
 
         if (!segment[segment.length - 1].closingLine) {
             segment[segment.length - 1].closingLine = ']';
@@ -130,7 +155,6 @@ export default class IRealProChartModel {
 
         if (timeSignature && timeSignature[0]) {
             if (!timeSignatures[timeSignature[0]]) {
-                // console.log('Invalid time signature', timeSignature);
                 throw new Error(`Invalid time signature ${rawBarString}`);
             }
             barProps.timeSignature = timeSignatures[timeSignature[0]];
@@ -155,6 +179,13 @@ export default class IRealProChartModel {
             barProps.coda = true;
             rawBarString = rawBarString.split('Q').join('');
         }
+        // Check and extract fermata
+        const hasFermata = rawBarString.includes('f');
+
+        if (hasFermata) {
+            barProps.fermata = true;
+            rawBarString = rawBarString.split('f').join('');
+        }
 
         // Check and extract segno
         const hasSegno = rawBarString.includes('S');
@@ -165,7 +196,7 @@ export default class IRealProChartModel {
         }
 
         // Check if that part is a divider
-        const isDivider = rawBarString === 'Y';
+        const isDivider = rawBarString.trim() === 'Y';
 
         if (isDivider) {
             barProps.divider = 'Y';
@@ -177,14 +208,11 @@ export default class IRealProChartModel {
             const closingBarLine = rawBarString.match(/([{}[\]|Z])/g);
 
             if (closingBarLine.length !== 1) {
-                throw new Error(`Unexpected rawBarString ${rawBarString}`);
+                throw new Error(`Song: ${this.title}. Unexpected chord string with length 1 ${rawBarString}`);
             }
             barProps.closingLine = closingBarLine[0];
             rawBarString = rawBarString.split(closingBarLine[0]).join('');
         }
-
-        // Replace p pause with (/ ) symbol
-        rawBarString = rawBarString.replace(/p/g, '\\ ');
 
         // Find the final opening line and chords
         const barParts = rawBarString.match(/([{}[\]|Z]+)([^{}[\]|Z]*)/);
@@ -193,12 +221,17 @@ export default class IRealProChartModel {
             barProps.openingLine = barParts[1];
             barProps.chords = barParts[2].trim();
 
+            // Bar string should be either recognizable or empty
+            if (barProps.chords !== '' && !barProps.chords.match(chordsStringExpresion)) {
+                throw new Error(`Song: ${this.title}. Unrecognized chords string found ${barProps.chords}`);
+            }
+
             rawBarString = rawBarString.split(barParts[0]).join('');
         }
 
         // After opening line and a chord there should be nothing more left
         if (rawBarString.length > 0) {
-            throw new Error(`Unparsed rawBarString ${rawBarString}`);
+            throw new Error(`Song: ${this.title}. Unparsed left overs ${rawBarString}`);
         }
 
         return barProps;

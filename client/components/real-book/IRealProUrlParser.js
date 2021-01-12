@@ -68,7 +68,34 @@ export const endings = [
     'N0'
 ];
 
-// What is this prefix?
+// eslint-disable-next-line no-unused-vars
+const others = [
+    // Space, todo, check how it differs from regular space ' ', it often met with 2 bar repeat
+    'XyQ',
+    // Arbitrary text
+    /<(.*?)>/,
+    // Repeat one bar
+    'x',
+    // 'cl' is repeat 'x', not sure why they need another marking for it
+    'cl',
+    // Visual space between lines
+    'Y',
+    // No chord (N.C)
+    'n',
+    // Pause
+    'p',
+    // todo find out what it is, often goes before chords 'lF#-7 B7' 'lA7sus' (Ahmid-6)
+    'l',
+    // Unknown, not reflected in chart
+    'U',
+    // 'K' and 'LZ' seems like both regular bar lines
+    'K',
+    'LZ',
+    // The base same chord as before, used to mark inversion like in Butterfly
+    'W'
+];
+
+// Probably iReal Pro url format version token
 const prefix = '1r34LbKcu7';
 
 /**
@@ -124,8 +151,7 @@ export default class IRealProUrlParser {
             const parts = rawSong.split('=');
 
             if (parts[2] && parts[2] !== '') {
-                // eslint-disable-next-line no-console
-                console.log('parts[2] found!!', parts[2]);
+                throw new Error(`parts[2] found in data url ${parts[2]}`);
             }
 
             const rawChordsStringWithPrefix = parts[6];
@@ -135,14 +161,10 @@ export default class IRealProUrlParser {
             }
 
             if (!rawChordsStringWithPrefix.startsWith(prefix)) {
-                // eslint-disable-next-line no-console
-                console.log('Prefix is not at the beginning, find example, take chords from the next part!');
-                // eslint-disable-next-line no-console
-                console.log('It must be transpose value');
+                throw new Error('Prefix is not at the beginning, find example, take chords from the next part!');
             }
 
             // todo there may be additional player properties: style, bpm, transpose, repeats
-
             const obfuscatedChordString = parts[6].split(prefix)[1];
             const decryptedCordString = this.decrypt(obfuscatedChordString);
 
@@ -178,16 +200,19 @@ export default class IRealProUrlParser {
         }
 
         const decryptedChunks = chunks.map((rawChunk, index) => {
-            const chunk = index === chunks.length - 1
+            const isLastChunk = index === chunks.length - 1;
+            const chunk = isLastChunk
                 ? rawChunk.replace(/\s*$/, '')
                 : rawChunk;
 
-            if (chunk.length < 50) {
-                // console.log('chunk length < 50, returning as is');
+            /**
+             * If right trimmed chunk is shorter than 50 characters return as is
+             * If the last chunk it can equal 50 character right trimmed
+             */
+            if (chunk.length < 50 || (isLastChunk && chunk.length <= 50)) {
                 return chunk;
             }
             if (index === chunks.length - 2 && chunks[chunks.length - 1].length < 2) {
-                // console.log('Last chunk is too short, returning before last as is.');
                 return chunk;
             }
             const decryptedChunk = chunk.split('');
@@ -224,10 +249,6 @@ export default class IRealProUrlParser {
             .replace(/(?<!a)l(?!t)/g, ' ')
             // remove U, todo find out what (U) means it is not reflected visually in chart
             .replace(/U/g, '')
-            // Remove stars, todo what are those stars?
-            // .replace(/\*\s*\*/g, '')
-            // No chord symbol Example: |C7ppF7|, watch p symbol!
-            // .replace(/[np]/g, 'n')
             // Remove multiple vertical spaces
             .replace(/Y+/g, 'Y')
             // Transform empty characters to spaces
@@ -240,9 +261,18 @@ export default class IRealProUrlParser {
             .replace(/\s+/g, ' ')
             // // remove small sign for small chords rendering
             .replace(/(?<!su)s(?!us)/g, '')
+            // remove u if not part of sus, song Crosscurrent currently has a type with (us) instead of (sus)
+            .replace(/(?<!s)u(?!s)/g, '')
             // remove annotations
             .replace(/<.*?>/g, '')
+            // Add space before (x)
             .replace(/([^\s|]+)(x)/g, '$1 $2')
+            // Replace p pause with (/ ) symbol
+            .replace(/p/g, '\\ ')
+            // Each named segment should have opening bar line, it is often omitted
+            .replace(/([}\]])[\s]*(\*[\w])(?![\s]*[[{|])/, '$1[$2')
+            // Replace (*) if it is not a part of segment name, only acceptable segment names listed in rehearsalMarks
+            .replace(/\*(?=[^ABCDiV]+)/g, '')
 
             .trim();
     }

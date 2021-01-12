@@ -246,13 +246,13 @@ describe('IRealProChartModel', () => {
     it('should handle unclosed section like in Ahmid-6', () => {
         const props = {
             title: 'Ahmid-6',
-            chordString: '[*AT44D-7 |C#-7 |r|F#-7 B7|E-7 A7|G F|E- D-7|C^7 |B7 |Bb^7#11 |Ah7 D7b9|F#h7 B7b9|Eh7 A7b9|D-7 E-7|F-7 Bb7|Eb9sus|x|Ab^9|x|Ab7sus|x|Db^13|x|Dh7 G7b9|C-7 F7|F-7 Bb7|Gh7 C7#9|F-7 F#-7|G-7 C-7|T34lF#-7 B7 |E-7 A7sus|T24A7sus|T44lA7sus |x [*BD-7 |C#-7 |D-7 |C#-7 |F#-7 B7|E-7 A7|A-7 |ppD7|G^7 Bb7|Eb^7 B7|E^7 G7|C^7 Ab7|Db^7 E7|A^7 C7|F^7|x|E-7|x|F^7|x|E-7|x Z'
+            chordString: '[*AT44D-7 |C#-7 |r|F#-7 B7|E-7 A7|G F|E- D-7|C^7 |B7 |Bb^7#11 |Ah7 D7b9|F#h7 B7b9|Eh7 A7b9|D-7 E-7|F-7 Bb7|Eb9sus|x|Ab^9|x|Ab7sus|x|Db^13|x|Dh7 G7b9|C-7 F7|F-7 Bb7|Gh7 C7#9|F-7 F#-7|G-7 C-7|T34 F#-7 B7 |E-7 A7sus|T24A7sus|T44 A7sus |x [*BD-7 |C#-7 |D-7 |C#-7 |F#-7 B7|E-7 A7|A-7 |\\ \\ D7|G^7 Bb7|Eb^7 B7|E^7 G7|C^7 Ab7|Db^7 E7|A^7 C7|F^7|x|E-7|x|F^7|x|E-7|x Z'
         };
 
         const model = new IRealProChartModel(props);
 
         expect(model.title).toBe('Ahmid-6');
-        expect(model.chordString.length).toBe(356);
+        expect(model.chordString.length).toBe(358);
 
         expect(model.segments).toEqual([
             {
@@ -288,10 +288,10 @@ describe('IRealProChartModel', () => {
                     {openingLine: '|', chords: 'Gh7 C7#9'},
                     {openingLine: '|', chords: 'F-7 F#-7'},
                     {openingLine: '|', chords: 'G-7 C-7'},
-                    {timeSignature: '3 / 4', openingLine: '|', chords: 'lF#-7 B7'},
+                    {timeSignature: '3 / 4', openingLine: '|', chords: 'F#-7 B7'},
                     {openingLine: '|', chords: 'E-7 A7sus'},
                     {timeSignature: '2 / 4', openingLine: '|', chords: 'A7sus'},
-                    {timeSignature: '4 / 4', openingLine: '|', chords: 'lA7sus'},
+                    {timeSignature: '4 / 4', openingLine: '|', chords: 'A7sus'},
                     {openingLine: '|', chords: 'x', closingLine: ']'}
                 ]
             },
@@ -563,6 +563,380 @@ describe('IRealProChartModel', () => {
             }
         ]);
     });
+    it('should handle Alone Too Long with double pause (pp)', () => {
+        const props = {
+            title: 'Alone Too Long',
+            chordString: '{*AT44G6 |\\ \\ G#o7|A-7 D7|x |A-7 |D7 |N1G6 E-7|A-7 D7 } |N2G6 |F#h7 B7b9 ][*BE- E-/D|E-/C# \\ C7 B7 |E-6 |x |E- E-/D|A7 |A-11 |D7 ][*AG6 |\\ \\ G#o7|A-7 D7|x |A-7 |D7 |G6 E-7|A-7 D7 Z'
+        };
+        const model = new IRealProChartModel(props);
+
+        expect(model.title).toBe('Alone Too Long');
+        expect(model.chordString.length).toBe(180);
+
+        expect(model.segments).toEqual([
+            {
+                name: 'A',
+                data: [
+                    {timeSignature: '4 / 4', openingLine: '{', chords: 'G6'},
+                    {openingLine: '|', chords: '\\ \\ G#o7'},
+                    {openingLine: '|', chords: 'A-7 D7'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'A-7'},
+                    {openingLine: '|', chords: 'D7'},
+                    {ending: 'N1', openingLine: '|', chords: 'G6 E-7'},
+                    {openingLine: '|', chords: 'A-7 D7', closingLine: '}'},
+                    {ending: 'N2', openingLine: '|', chords: 'G6'},
+                    {openingLine: '|', chords: 'F#h7 B7b9', closingLine: ']'}
+                ]
+            },
+            {
+                name: 'B',
+                data: [
+                    {openingLine: '[', chords: 'E- E-/D'},
+                    {openingLine: '|', chords: 'E-/C# \\ C7 B7'},
+                    {openingLine: '|', chords: 'E-6'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'E- E-/D'},
+                    {openingLine: '|', chords: 'A7'},
+                    {openingLine: '|', chords: 'A-11'},
+                    {openingLine: '|', chords: 'D7', closingLine: ']'}
+                ]
+            },
+            {
+                name: 'A',
+                data: [
+                    {openingLine: '[', chords: 'G6'},
+                    {openingLine: '|', chords: '\\ \\ G#o7'},
+                    {openingLine: '|', chords: 'A-7 D7'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'A-7'},
+                    {openingLine: '|', chords: 'D7'},
+                    {openingLine: '|', chords: 'G6 E-7'},
+                    {openingLine: '|', chords: 'A-7 D7', closingLine: 'Z'}
+                ]
+            }
+        ]);
+    });
+    it('should handle Crosscurrent', () => {
+        const props = {
+            title: 'Crosscurrent',
+            author: 'Lennie Tristano',
+            style: 'Up Tempo Swing',
+            key: 'F',
+            chordString: '[*AT44F^7 D7#5|G-7 C7|A-7 D7b9|G-7 C7|F^7 F7|Bb^7 Bo7|C7sus C7|F^7 C7#11 ][*BF^7 Ab7|G-7 C7|F6 D7b9|G-7 C7|F^7 F7|C7#11(Bb^7) (Bo7)|(C*7*) x (C7)|F^7#11 ][*CBb-7 |A^7#11 |Ab-7 |G^7#11 |Gb^7 |B7 D7|G-7 |C7#11 ][*AF^7 D7b9|G-7 C7|A-7 D7b9|G-7 C7|F^7 F7|C7#11(Bb^7) (Bo7)|(C7sus) x (C7)|F^7#11 C7#5 ]'
+        };
+        const model = new IRealProChartModel(props);
+
+        expect(model.title).toBe('Crosscurrent');
+        expect(model.chordString.length).toBe(297);
+
+
+        expect(model.segments).toEqual([
+            {
+                name: 'A',
+                data: [
+                    {timeSignature: '4 / 4', openingLine: '[', chords: 'F^7 D7#5'},
+                    {openingLine: '|', chords: 'G-7 C7'},
+                    {openingLine: '|', chords: 'A-7 D7b9'},
+                    {openingLine: '|', chords: 'G-7 C7'},
+                    {openingLine: '|', chords: 'F^7 F7'},
+                    {openingLine: '|', chords: 'Bb^7 Bo7'},
+                    {openingLine: '|', chords: 'C7sus C7'},
+                    {openingLine: '|', chords: 'F^7 C7#11', closingLine: ']'}
+                ]
+            },
+            {
+                name: 'B',
+                data: [
+                    {openingLine: '[', chords: 'F^7 Ab7'},
+                    {openingLine: '|', chords: 'G-7 C7'},
+                    {openingLine: '|', chords: 'F6 D7b9'},
+                    {openingLine: '|', chords: 'G-7 C7'},
+                    {openingLine: '|', chords: 'F^7 F7'},
+                    {openingLine: '|', chords: 'C7#11(Bb^7) (Bo7)'},
+                    {openingLine: '|', chords: '(C', closingLine: ']'}
+                ]
+            },
+            {
+                name: 'C',
+                data: [
+                    {openingLine: '[', chords: 'Bb-7'},
+                    {openingLine: '|', chords: 'A^7#11'},
+                    {openingLine: '|', chords: 'Ab-7'},
+                    {openingLine: '|', chords: 'G^7#11'},
+                    {openingLine: '|', chords: 'Gb^7'},
+                    {openingLine: '|', chords: 'B7 D7'},
+                    {openingLine: '|', chords: 'G-7'},
+                    {openingLine: '|', chords: 'C7#11', closingLine: ']'}
+                ]
+            },
+            {
+                name: 'A',
+                data: [
+                    {openingLine: '[', chords: 'F^7 D7b9'},
+                    {openingLine: '|', chords: 'G-7 C7'},
+                    {openingLine: '|', chords: 'A-7 D7b9'},
+                    {openingLine: '|', chords: 'G-7 C7'},
+                    {openingLine: '|', chords: 'F^7 F7'},
+                    {openingLine: '|', chords: 'C7#11(Bb^7) (Bo7)'},
+                    {openingLine: '|', chords: '(C7sus) x (C7)'},
+                    {openingLine: '|', chords: 'F^7#11 C7#5', closingLine: ']'}
+                ]
+            }
+        ]);
+    });
+    it('should handle Killer Joe', () => {
+        const props = {
+            title: 'Killer Joe',
+            chordString: '{T44*AC9 |Bb9#11 |r|r|r|}[*BEh7 |A7b9 |Eb-7 |Ab7 |A7 |Ab7 |E-7 |A7 ][*AC9 |Bb9#11 |r|r|r|Z'
+        };
+        const model = new IRealProChartModel(props);
+
+        expect(model.title).toBe('Killer Joe');
+        expect(model.chordString.length).toBe(90);
+
+        expect(model.segments).toEqual([
+            {
+                name: 'A',
+                data: [
+                    {timeSignature: '4 / 4', openingLine: '{', chords: 'C9'},
+                    {openingLine: '|', chords: 'Bb9#11'},
+                    {openingLine: '|', chords: 'C9'},
+                    {openingLine: '|', chords: 'Bb9#11', closingLine: '|'},
+                    {openingLine: '|', chords: 'C9'},
+                    {openingLine: '|', chords: 'Bb9#11'},
+                    {openingLine: '|', chords: 'C9'},
+                    {openingLine: '|', chords: 'Bb9#11', closingLine: '}'}
+                ]
+            },
+            {
+                name: 'B',
+                data: [
+                    {openingLine: '[', chords: 'Eh7'},
+                    {openingLine: '|', chords: 'A7b9'},
+                    {openingLine: '|', chords: 'Eb-7'},
+                    {openingLine: '|', chords: 'Ab7'},
+                    {openingLine: '|', chords: 'A7'},
+                    {openingLine: '|', chords: 'Ab7'},
+                    {openingLine: '|', chords: 'E-7'},
+                    {openingLine: '|', chords: 'A7', closingLine: ']'}
+                ]
+            },
+            {
+                name: 'A',
+                data: [
+                    {openingLine: '[', chords: 'C9'},
+                    {openingLine: '|', chords: 'Bb9#11'},
+                    {openingLine: '|', chords: 'C9'},
+                    {openingLine: '|', chords: 'Bb9#11', closingLine: '|'},
+                    {openingLine: '|', chords: 'C9'},
+                    {openingLine: '|', chords: 'Bb9#11'},
+                    {openingLine: '|', chords: 'C9'},
+                    {openingLine: '|', chords: 'Bb9#11', closingLine: 'Z'}
+                ]
+            }
+        ]);
+    });
+    it('should handle Moanin\'', () => {
+        const props = {
+            title: 'Moanin\'',
+            chordString: '{T44*An Bb|F n |r|r|r| }[*BBb-7 Ab9|G7b9 C7#9|F-7 |F7b9 B7|Bb-7 Ab9|G7b9 |Gh7 |C7b9 ]Y{S*AF-7 Ab7|G7 C7b9|r|r|r| }[*BBb-7 Ab9|G7b9 C7#9|F-7 |F7b9 B7|Bb-7 Ab9|G7b9 |Gh7 |C7b9 ]'
+        };
+        const model = new IRealProChartModel(props);
+
+        expect(model.title).toBe('Moanin\'');
+        expect(model.chordString.length).toBe(175);
+
+        expect(model.segments).toEqual([
+            {
+                name: 'A',
+                data: [
+                    {timeSignature: '4 / 4', openingLine: '{', chords: 'n Bb'},
+                    {openingLine: '|', chords: 'F n'},
+                    {openingLine: '|', chords: 'n Bb'},
+                    {openingLine: '|', chords: 'F n', closingLine: '|'},
+                    {openingLine: '|', chords: 'n Bb'},
+                    {openingLine: '|', chords: 'F n'},
+                    {openingLine: '|', chords: 'n Bb'},
+                    {openingLine: '|', chords: 'F n', closingLine: '}'}
+                ]
+            },
+            {
+                name: 'B',
+                data: [
+                    {openingLine: '[', chords: 'Bb-7 Ab9'},
+                    {openingLine: '|', chords: 'G7b9 C7#9'},
+                    {openingLine: '|', chords: 'F-7'},
+                    {openingLine: '|', chords: 'F7b9 B7'},
+                    {openingLine: '|', chords: 'Bb-7 Ab9'},
+                    {openingLine: '|', chords: 'G7b9'},
+                    {openingLine: '|', chords: 'Gh7'},
+                    {openingLine: '|', chords: 'C7b9', closingLine: ']'},
+                    {divider: 'Y', closingLine: ']'}
+                ]
+            },
+            {
+                name: 'A',
+                data: [
+                    {segno: true, openingLine: '{', chords: 'F-7 Ab7'},
+                    {openingLine: '|', chords: 'G7 C7b9'},
+                    {segno: true, openingLine: '|', chords: 'F-7 Ab7'},
+                    {openingLine: '|', chords: 'G7 C7b9', closingLine: '|'},
+                    {segno: true, openingLine: '|', chords: 'F-7 Ab7'},
+                    {openingLine: '|', chords: 'G7 C7b9'},
+                    {segno: true, openingLine: '|', chords: 'F-7 Ab7'},
+                    {openingLine: '|', chords: 'G7 C7b9', closingLine: '}'}
+                ]
+            },
+            {
+                name: 'B',
+                data: [
+                    {openingLine: '[', chords: 'Bb-7 Ab9'},
+                    {openingLine: '|', chords: 'G7b9 C7#9'},
+                    {openingLine: '|', chords: 'F-7'},
+                    {openingLine: '|', chords: 'F7b9 B7'},
+                    {openingLine: '|', chords: 'Bb-7 Ab9'},
+                    {openingLine: '|', chords: 'G7b9'},
+                    {openingLine: '|', chords: 'Gh7'},
+                    {openingLine: '|', chords: 'C7b9', closingLine: ']'}
+                ]
+            }
+        ]);
+    });
+    it('should handle Brazilian Suite', () => {
+        const props = {
+            title: 'Brazilian Suite',
+            chordString: '{*iT44Ab-7 |Eb-7 |Ab-7 |Eb-7 }{*AAb-7 |Ab-7/Gb |E^7#11 |Eb-7 |Db-7 |Eb7b9 |D7b5 |Db7 |C^7#5 |B7 |Bb7b9 |Eb7#9 |Ab-7 |Eb7b9 ]Ab-7 |B7/F# |Fh7 |Bb7 |E-7 |A7 |D^7 |Eb-7 Ab7|Db^7 |Bb-7 |Eb-7 |Ab7 |Db^7 |Bb-7 |Eb^7#11 |Eb7 |Ab-7 |Ab-7/Gb |Eb^7#11 |Eb-7 |Db-7 |Eb7b9 ]{Ab-7|Eb-7|Ab-7|Eb-7 } Q|Db^7|Db^7 Z'
+        };
+        const model = new IRealProChartModel(props);
+
+        expect(model.title).toBe('Brazilian Suite');
+        expect(model.chordString.length).toBe(298);
+
+        expect(model.segments).toEqual([
+            {
+                name: 'i',
+                data: [
+                    {timeSignature: '4 / 4', openingLine: '{', chords: 'Ab-7'},
+                    {openingLine: '|', chords: 'Eb-7'},
+                    {openingLine: '|', chords: 'Ab-7'},
+                    {openingLine: '|', chords: 'Eb-7', closingLine: '}'}
+                ]
+            },
+            {
+                name: 'A',
+                data: [
+                    {openingLine: '{', chords: 'Ab-7'},
+                    {openingLine: '|', chords: 'Ab-7/Gb'},
+                    {openingLine: '|', chords: 'E^7#11'},
+                    {openingLine: '|', chords: 'Eb-7'},
+                    {openingLine: '|', chords: 'Db-7'},
+                    {openingLine: '|', chords: 'Eb7b9'},
+                    {openingLine: '|', chords: 'D7b5'},
+                    {openingLine: '|', chords: 'Db7'},
+                    {openingLine: '|', chords: 'C^7#5'},
+                    {openingLine: '|', chords: 'B7'},
+                    {openingLine: '|', chords: 'Bb7b9'},
+                    {openingLine: '|', chords: 'Eb7#9'},
+                    {openingLine: '|', chords: 'Ab-7'},
+                    {openingLine: '|', chords: 'Eb7b9', closingLine: ']'},
+                    {openingLine: '|', chords: 'Ab-7'},
+                    {openingLine: '|', chords: 'B7/F#'},
+                    {openingLine: '|', chords: 'Fh7'},
+                    {openingLine: '|', chords: 'Bb7'},
+                    {openingLine: '|', chords: 'E-7'},
+                    {openingLine: '|', chords: 'A7'},
+                    {openingLine: '|', chords: 'D^7'},
+                    {openingLine: '|', chords: 'Eb-7 Ab7'},
+                    {openingLine: '|', chords: 'Db^7'},
+                    {openingLine: '|', chords: 'Bb-7'},
+                    {openingLine: '|', chords: 'Eb-7'},
+                    {openingLine: '|', chords: 'Ab7'},
+                    {openingLine: '|', chords: 'Db^7'},
+                    {openingLine: '|', chords: 'Bb-7'},
+                    {openingLine: '|', chords: 'Eb^7#11'},
+                    {openingLine: '|', chords: 'Eb7'},
+                    {openingLine: '|', chords: 'Ab-7'},
+                    {openingLine: '|', chords: 'Ab-7/Gb'},
+                    {openingLine: '|', chords: 'Eb^7#11'},
+                    {openingLine: '|', chords: 'Eb-7'},
+                    {openingLine: '|', chords: 'Db-7'},
+                    {openingLine: '|', chords: 'Eb7b9', closingLine: ']'},
+                    {openingLine: '{', chords: 'Ab-7'},
+                    {openingLine: '|', chords: 'Eb-7'},
+                    {openingLine: '|', chords: 'Ab-7'},
+                    {openingLine: '|', chords: 'Eb-7', closingLine: '}'},
+                    {coda: true, chords: '', openingLine: '|'},
+                    {openingLine: '|', chords: 'Db^7'},
+                    {openingLine: '|', chords: 'Db^7', closingLine: 'Z'}
+                ]
+            }
+        ]);
+    });
+    it('should handle Butterfly', () => {
+        const props = {
+            title: 'Butterfly',
+            chordString: '{*iT44F-7 |\\ A-7 |F-7 |\\ A-7 }{S*AF-11 |\\ A-11 |F-11 |\\ D-11 }[*Bn Bb7|n |n |n A7#9#5 |Ab^7/Bb |Ab^7#5/Bb |Ab^7/Bb |Bb13 |Eb13sus |x |Eb7#9#5 |x |Ab13sus |\\ \\ W/C QC7/E |n F-7|\\ A-7 |{F-7 |\\ A-7  } Y{QF-11  |x |x |x }{Bb13 |x |x |x }fA^7#11 Z'
+        };
+        const model = new IRealProChartModel(props);
+
+        expect(model.title).toBe('Butterfly');
+        expect(model.chordString.length).toBe(242);
+
+        expect(model.segments).toEqual([
+            {
+                name: 'i',
+                data: [
+                    {timeSignature: '4 / 4', openingLine: '{', chords: 'F-7'},
+                    {openingLine: '|', chords: '\\ A-7'},
+                    {openingLine: '|', chords: 'F-7'},
+                    {openingLine: '|', chords: '\\ A-7', closingLine: '}'}
+                ]
+            },
+            {
+                name: 'A',
+                data: [
+                    {segno: true, openingLine: '{', chords: 'F-11'},
+                    {openingLine: '|', chords: '\\ A-11'},
+                    {openingLine: '|', chords: 'F-11'},
+                    {openingLine: '|', chords: '\\ D-11', closingLine: '}'}
+                ]
+            },
+            {
+                name: 'B',
+                data: [
+                    {openingLine: '[', chords: 'n Bb7'},
+                    {openingLine: '|', chords: 'n'},
+                    {openingLine: '|', chords: 'n'},
+                    {openingLine: '|', chords: 'n A7#9#5'},
+                    {openingLine: '|', chords: 'Ab^7/Bb'},
+                    {openingLine: '|', chords: 'Ab^7#5/Bb'},
+                    {openingLine: '|', chords: 'Ab^7/Bb'},
+                    {openingLine: '|', chords: 'Bb13'},
+                    {openingLine: '|', chords: 'Eb13sus'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'Eb7#9#5'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'Ab13sus'},
+                    {coda: true, openingLine: '|', chords: '\\ \\ W/C C7/E'},
+                    {openingLine: '|', chords: 'n F-7'},
+                    {openingLine: '|', chords: '\\ A-7', closingLine: '|'},
+                    {openingLine: '{', chords: 'F-7'},
+                    {openingLine: '|', chords: '\\ A-7', closingLine: '}'},
+                    {divider: 'Y'},
+                    {coda: true, openingLine: '{', chords: 'F-11'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'x', closingLine: '}'},
+                    {openingLine: '{', chords: 'Bb13'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'x', closingLine: '}'},
+                    {openingLine: '|', chords: 'A^7#11', closingLine: 'Z', fermata: true}
+                ]
+            }
+        ]);
+    });
 
     describe('parseSegment', () => {
         it('should handle repeat 2 bars (r)', () => {
@@ -617,14 +991,6 @@ describe('IRealProChartModel', () => {
             const model = new IRealProChartModel();
 
             expect(model.parseBar(barString)).toEqual({openingLine: '{', chords: 'C C/E', segno: true});
-        });
-        it('should handle Bar with pp from Alone Too Long', () => {
-            const barStringWithTwoPauses = '|ppG#o7';
-            const barStringWithOnePause = '|pG#o7';
-            const model = new IRealProChartModel();
-
-            expect(model.parseBar(barStringWithOnePause)).toEqual({openingLine: '|', chords: '\\ G#o7'});
-            expect(model.parseBar(barStringWithTwoPauses)).toEqual({openingLine: '|', chords: '\\ \\ G#o7'});
         });
     });
 });

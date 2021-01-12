@@ -108,7 +108,7 @@ describe('Chart Component', () => {
             author: 'Metheny Pat',
             style: 'Even 8ths',
             key: 'C',
-            chordString: '[*AT44D-7 |C#-7 |r|F#-7 B7|E-7 A7|G F|E- D-7|C^7 |B7 |Bb^7#11 |Ah7 D7b9|F#h7 B7b9|Eh7 A7b9|D-7 E-7|F-7 Bb7|Eb9sus|x|Ab^9|x|Ab7sus|x|Db^13|x|Dh7 G7b9|C-7 F7|F-7 Bb7|Gh7 C7#9|F-7 F#-7|G-7 C-7|T34 F#-7 B7 |E-7 A7sus|T24A7sus|T44 A7sus |x [*BD-7 |C#-7 |D-7 |C#-7 |F#-7 B7|E-7 A7|A-7 |ppD7|G^7 Bb7|Eb^7 B7|E^7 G7|C^7 Ab7|Db^7 E7|A^7 C7|F^7|x|E-7|x|F^7|x|E-7|x Z'
+            chordString: '[*AT44D-7 |C#-7 |r|F#-7 B7|E-7 A7|G F|E- D-7|C^7 |B7 |Bb^7#11 |Ah7 D7b9|F#h7 B7b9|Eh7 A7b9|D-7 E-7|F-7 Bb7|Eb9sus|x|Ab^9|x|Ab7sus|x|Db^13|x|Dh7 G7b9|C-7 F7|F-7 Bb7|Gh7 C7#9|F-7 F#-7|G-7 C-7|T34 F#-7 B7 |E-7 A7sus|T24A7sus|T44 A7sus |x [*BD-7 |C#-7 |D-7 |C#-7 |F#-7 B7|E-7 A7|A-7 |\\ \\ D7|G^7 Bb7|Eb^7 B7|E^7 G7|C^7 Ab7|Db^7 E7|A^7 C7|F^7|x|E-7|x|F^7|x|E-7|x Z'
         };
         const model = new IRealProChartModel(props);
 
@@ -132,14 +132,15 @@ describe('Chart Component', () => {
 
         expect(tree).toMatchSnapshot();
     });
-    it('should render Among My Souvenirs with repeats of different sizes', () => {
+    it('should render Butterfly fermata and pauses and N.C.', () => {
         const props = {
-            title: 'Among My Souvenirs',
-            author: 'Horatio Nicholls',
-            style: 'Ballad',
-            key: 'Eb',
-            chordString: '{*AT44Eb^7 Eo |F-7 |Bb7 |Eb^7 |Eb^7 Gbo |F-7 |Bb7 |N1Eb^7 }|N2Eb^7 |Eb7 [*BAb^7 |F-7 Bb9#5|Eb^7 |C-7 |F-7 |Bb7 |G7 C-7|F7 Bb7#5 ]*AEb^7 Eo |F-7 |Bb7 Bb9#5|Eb^7 |Eb^7 Gbo |F-7 |Bb7 |Eb6 |F-7 Bb7 Z'
+            title: 'Butterfly',
+            author: 'Herbie Hancock',
+            style: 'Funk',
+            key: 'F-',
+            chordString: '{*iT44F-7 |\\ A-7 |F-7 |\\ A-7 }{S*AF-11 |\\ A-11 |F-11 |\\ D-11 }[*Bn Bb7|n |n |n A7#9#5 |Ab^7/Bb |Ab^7#5/Bb |Ab^7/Bb |Bb13 |Eb13sus |x |Eb7#9#5 |x |Ab13sus |\\ \\ W/C QC7/E |n F-7|\\ A-7 |{F-7 |\\ A-7  } Y{QF-11  |x |x |x }{Bb13 |x |x |x }fA^7#11 Z'
         };
+
         const model = new IRealProChartModel(props);
 
         const element = create(<Chart model={model}/>);
