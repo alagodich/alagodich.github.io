@@ -6,7 +6,8 @@
   "scripts": {
     "start": "JEKYLL_ENV=development bundle exec jekyll serve --draft",
     "lint": "eslint --config ./.eslintrc.json --ext .js,.jsx client",
-    "test": "jest",
+    "test": "jest --errorOnDeprecated --logHeapUsage --verbose",
+    "test:watch": "npm run test -- --watch",
     "build": "rm -rf ./public && webpack --config webpack.config.production.js",
     "build:watch": "webpack --config webpack.config.dev.js",
     "fomantic": "gulp build-fomantic",

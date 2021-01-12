@@ -31,42 +31,39 @@ exports[`Chart Component should render 500 Miles High 1`] = `
         <td
           className="four wide chart__bar barline--left--light-light"
         >
-          <span>
-            E-7
+          <span
+            className="chord__time-signature"
+          >
+            4 / 4
           </span>
+          E-7
+           
         </td>
         <td
           className="center aligned four wide chart__bar barline--left--light"
         >
           <span
-            style={
-              Object {
-                "opacity": 0.5,
-              }
-            }
+            className="chord__bar-repeat"
           >
             %
           </span>
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            G-7
-          </span>
+          G-7
+           
         </td>
         <td
           className="center aligned four wide chart__bar barline--left--light barline--right--light"
         >
           <span
-            style={
-              Object {
-                "opacity": 0.5,
-              }
-            }
+            className="chord__bar-repeat"
           >
             %
           </span>
+           
         </td>
       </tr>
       <tr
@@ -78,36 +75,30 @@ exports[`Chart Component should render 500 Miles High 1`] = `
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            Bb^7
-          </span>
+          Bb^7
+           
         </td>
         <td
           className="center aligned four wide chart__bar barline--left--light"
         >
           <span
-            style={
-              Object {
-                "opacity": 0.5,
-              }
-            }
+            className="chord__bar-repeat"
           >
             %
           </span>
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            Bh7
-          </span>
+          Bh7
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light barline--right--light"
         >
-          <span>
-            E7#9
-          </span>
+          E7#9
+           
         </td>
       </tr>
       <tr
@@ -119,42 +110,34 @@ exports[`Chart Component should render 500 Miles High 1`] = `
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            A-7
-          </span>
+          A-7
+           
         </td>
         <td
           className="center aligned four wide chart__bar barline--left--light"
         >
           <span
-            style={
-              Object {
-                "opacity": 0.5,
-              }
-            }
+            className="chord__bar-repeat"
           >
             %
           </span>
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            F#h7
-          </span>
+          F#h7
+           
         </td>
         <td
           className="center aligned four wide chart__bar barline--left--light barline--right--light"
         >
           <span
-            style={
-              Object {
-                "opacity": 0.5,
-              }
-            }
+            className="chord__bar-repeat"
           >
             %
           </span>
+           
         </td>
       </tr>
       <tr
@@ -166,22 +149,18 @@ exports[`Chart Component should render 500 Miles High 1`] = `
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            F-7
-          </span>
+          F-7
+           
         </td>
         <td
           className="center aligned four wide chart__bar barline--left--light"
         >
           <span
-            style={
-              Object {
-                "opacity": 0.5,
-              }
-            }
+            className="chord__bar-repeat"
           >
             %
           </span>
+           
           <span
             style={
               Object {
@@ -195,22 +174,18 @@ exports[`Chart Component should render 500 Miles High 1`] = `
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            C-7
-          </span>
+          C-7
+           
         </td>
         <td
           className="center aligned four wide chart__bar barline--left--light barline--right--light"
         >
           <span
-            style={
-              Object {
-                "opacity": 0.5,
-              }
-            }
+            className="chord__bar-repeat"
           >
             %
           </span>
+           
         </td>
       </tr>
       <tr
@@ -222,22 +197,18 @@ exports[`Chart Component should render 500 Miles High 1`] = `
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            B7#9
-          </span>
+          B7#9
+           
         </td>
         <td
           className="center aligned four wide chart__bar barline--left--light barline--right--light-heavy"
         >
           <span
-            style={
-              Object {
-                "opacity": 0.5,
-              }
-            }
+            className="chord__bar-repeat"
           >
             %
           </span>
+           
         </td>
       </tr>
       <tr
@@ -249,9 +220,8 @@ exports[`Chart Component should render 500 Miles High 1`] = `
         <td
           className="four wide chart__bar barline--left--heavy-dotted"
         >
-          <span>
-            C-7
-          </span>
+          C-7
+           
           <span
             style={
               Object {
@@ -266,34 +236,27 @@ exports[`Chart Component should render 500 Miles High 1`] = `
           className="center aligned four wide chart__bar barline--left--light"
         >
           <span
-            style={
-              Object {
-                "opacity": 0.5,
-              }
-            }
+            className="chord__bar-repeat"
           >
             %
           </span>
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            Ab^7
-          </span>
+          Ab^7
+           
         </td>
         <td
           className="center aligned four wide chart__bar barline--left--light barline--right--dotted-heavy"
         >
           <span
-            style={
-              Object {
-                "opacity": 0.5,
-              }
-            }
+            className="chord__bar-repeat"
           >
             %
           </span>
+           
         </td>
       </tr>
     </tbody>
@@ -332,30 +295,35 @@ exports[`Chart Component should render Afternoon in Paris 1`] = `
         <td
           className="four wide chart__bar barline--left--heavy-dotted"
         >
-          <span>
-            C^7
+          <span
+            className="chord__time-signature"
+          >
+            4 / 4
           </span>
+          C^7
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            C-7 F7
-          </span>
+          C-7
+           
+          F7
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            Bb^7
-          </span>
+          Bb^7
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light barline--right--light"
         >
-          <span>
-            Bb-7 Eb7
-          </span>
+          Bb-7
+           
+          Eb7
+           
         </td>
       </tr>
       <tr
@@ -367,30 +335,30 @@ exports[`Chart Component should render Afternoon in Paris 1`] = `
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            Ab^7
-          </span>
+          Ab^7
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            D-7 G7#9
-          </span>
+          D-7
+           
+          G7#9
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light barline--top--light"
         >
-          <span>
-            C^7
-          </span>
+          C^7
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light barline--right--dotted-heavy"
         >
-          <span>
-            D-7 G7
-          </span>
+          D-7
+           
+          G7
+           
         </td>
       </tr>
       <tr
@@ -401,33 +369,25 @@ exports[`Chart Component should render Afternoon in Paris 1`] = `
         />
         <td
           className="four wide chart__bar"
-        >
-          <span />
-        </td>
+        />
         <td
           className="four wide chart__bar"
-        >
-          <span />
-        </td>
+        />
         <td
           className="four wide chart__bar barline--left--light barline--top--light"
         >
-          <span>
-            C^7
-          </span>
+          C^7
+           
         </td>
         <td
           className="center aligned four wide chart__bar barline--left--light barline--right--light-light"
         >
           <span
-            style={
-              Object {
-                "opacity": 0.5,
-              }
-            }
+            className="chord__bar-repeat"
           >
             %
           </span>
+           
         </td>
       </tr>
       <tr
@@ -447,30 +407,26 @@ exports[`Chart Component should render Afternoon in Paris 1`] = `
         <td
           className="four wide chart__bar barline--left--light-light"
         >
-          <span>
-            D-7
-          </span>
+          D-7
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            G7
-          </span>
+          G7
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            C^7/E
-          </span>
+          C^7/E
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light barline--right--light"
         >
-          <span>
-            A7
-          </span>
+          A7
+           
         </td>
       </tr>
       <tr
@@ -482,30 +438,40 @@ exports[`Chart Component should render Afternoon in Paris 1`] = `
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            D-7
-          </span>
+          D-7
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            G7
-          </span>
+          G7
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            C^7(C#-7) (F#7)
+          C^7
+          <span
+            className="chord__alt-chord"
+          >
+            (C#-7)
           </span>
+           
+          
+          <span
+            className="chord__alt-chord"
+          >
+            (F#7)
+          </span>
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light barline--right--light-light"
         >
-          <span>
-            D-7 G7
-          </span>
+          D-7
+           
+          G7
+           
         </td>
       </tr>
       <tr
@@ -525,30 +491,30 @@ exports[`Chart Component should render Afternoon in Paris 1`] = `
         <td
           className="four wide chart__bar barline--left--light-light"
         >
-          <span>
-            C^7
-          </span>
+          C^7
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            C-7 F7
-          </span>
+          C-7
+           
+          F7
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            Bb^7
-          </span>
+          Bb^7
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light barline--right--light"
         >
-          <span>
-            Bb-7 Eb7
-          </span>
+          Bb-7
+           
+          Eb7
+           
         </td>
       </tr>
       <tr
@@ -560,30 +526,2476 @@ exports[`Chart Component should render Afternoon in Paris 1`] = `
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            Ab^7
-          </span>
+          Ab^7
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            D-7 G7#9
-          </span>
+          D-7
+           
+          G7#9
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light"
         >
-          <span>
-            C^7
-          </span>
+          C^7
+           
         </td>
         <td
           className="four wide chart__bar barline--left--light barline--right--light-heavy"
         >
-          <span>
-            D-7 G7
+          D-7
+           
+          G7
+           
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Chart Component should render Agua De Beber (alt) and (sus) 1`] = `
+<div>
+  <table
+    className="ui fixed single line unstackable top attached very basic five column table chart"
+    style={
+      Object {
+        "fontSize": 20,
+        "fontWeight": 500,
+      }
+    }
+  >
+    <tbody
+      className=""
+    >
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          i
+        </td>
+        <td
+          className="four wide chart__bar barline--left--heavy-dotted"
+        >
+          <span
+            className="chord__time-signature"
+          >
+            4 / 4
           </span>
+          D-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          E7#9
+           
+          A7b13
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          E7#9
+           
+          A7b13
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bb^7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--dotted-heavy"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          A
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light-light"
+        >
+          E7b9
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          A7alt
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          G7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          G-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F^7
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          E7
+           
+          Eb7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+          Dbo7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F7/C
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          E7#9/B
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          E7b9
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          A7sus
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light-light"
+        >
+          D7b9
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          B
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light-light"
+        >
+          G7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          G-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          D7b9
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          G7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          G-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light-light"
+        >
+          A7b13
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          C
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light-light"
+        >
+          D-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          E7#9
+           
+          A7b13
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          E7#9
+           
+          A7b13
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bb^7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light-heavy"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Chart Component should render Ahmid-6 with multiple time signatures 1`] = `
+<div>
+  <table
+    className="ui fixed single line unstackable top attached very basic five column table chart"
+    style={
+      Object {
+        "fontSize": 20,
+        "fontWeight": 500,
+      }
+    }
+  >
+    <tbody
+      className=""
+    >
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          A
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light-light"
+        >
+          <span
+            className="chord__time-signature"
+          >
+            4 / 4
+          </span>
+          D-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C#-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          C#-7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F#-7
+           
+          B7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          E-7
+           
+          A7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          G
+           
+          F
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          E-
+           
+          D-7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C^7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          B7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bb^7#11
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          Ah7
+           
+          D7b9
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F#h7
+           
+          B7b9
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Eh7
+           
+          A7b9
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+          E-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          F-7
+           
+          Bb7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Eb9sus
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Ab^9
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Ab7sus
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Db^13
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Dh7
+           
+          G7b9
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C-7
+           
+          F7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F-7
+           
+          Bb7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          Gh7
+           
+          C7#9
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F-7
+           
+          F#-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          G-7
+           
+          C-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__time-signature"
+          >
+            3 / 4
+          </span>
+          F#-7
+           
+          B7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          E-7
+           
+          A7sus
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__time-signature"
+          >
+            2 / 4
+          </span>
+          A7sus
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__time-signature"
+          >
+            4 / 4
+          </span>
+          A7sus
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light-light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          B
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light-light"
+        >
+          D-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C#-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          C#-7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F#-7
+           
+          B7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          E-7
+           
+          A7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          A-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          \\
+           
+          \\
+           
+          D7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          G^7
+           
+          Bb7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Eb^7
+           
+          B7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          E^7
+           
+          G7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          C^7
+           
+          Ab7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Db^7
+           
+          E7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          A^7
+           
+          C7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F^7
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          E-7
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F^7
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          E-7
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light-heavy"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Chart Component should render Airmail Special with Segno symbol (s), and 4 repeats 1`] = `
+<div>
+  <table
+    className="ui fixed single line unstackable top attached very basic five column table chart"
+    style={
+      Object {
+        "fontSize": 20,
+        "fontWeight": 500,
+      }
+    }
+  >
+    <tbody
+      className=""
+    >
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          i
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light-light"
+        >
+          <span
+            className="chord__time-signature"
+          >
+            4 / 4
+          </span>
+          C6
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C6
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C6
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C6
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light-light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light-light"
+        >
+          Co7
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Co7
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Co7
+           
+          Bo7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bbo7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Ab7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light-light"
+        >
+          G7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          A
+        </td>
+        <td
+          className="four wide chart__bar barline--left--heavy-dotted"
+        >
+          C
+           
+          C/E
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F
+           
+          G
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C
+           
+          C/E
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          F
+           
+          G
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C
+           
+          C7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F
+           
+          F#o7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C/G
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--dotted-heavy"
+        >
+          C
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          B
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light-light"
+        >
+          Co7
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Co7
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Co7
+           
+          Bo7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bbo7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Ab7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light-heavy"
+        >
+          G7
+           
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Chart Component should render Alfie with strange long second ending 1`] = `
+<div>
+  <table
+    className="ui fixed single line unstackable top attached very basic five column table chart"
+    style={
+      Object {
+        "fontSize": 20,
+        "fontWeight": 500,
+      }
+    }
+  >
+    <tbody
+      className=""
+    >
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          A
+        </td>
+        <td
+          className="four wide chart__bar barline--left--heavy-dotted"
+        >
+          <span
+            className="chord__time-signature"
+          >
+            4 / 4
+          </span>
+          Bb^7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F7sus
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bb^7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          D-7
+           
+          G7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+          G-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C-7
+           
+          F7sus
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          Bbo7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light barline--top--light"
+        >
+          F7sus
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--dotted-heavy"
+        >
+          F7
+           
+          F7#5
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          B
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light-light barline--top--light"
+        >
+          A-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bb-/C
+           
+          C7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          A-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          C7sus
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          A-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bb-/C
+           
+          C7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F7sus
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light-light"
+        >
+          F6
+           
+          F7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          A
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light-light"
+        >
+          Bb^7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F7sus
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Eh7
+           
+          Eb7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          D-7
+           
+          G-7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Eh7
+           
+          Eb7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+          G-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C7#11
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          C-7
+           
+          F7sus
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bbo7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F7sus
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bo7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          C-9
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bo7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light-heavy"
+        >
+          Bb^7
+           
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Chart Component should render All Through The Night with 2 long repeats 1`] = `
+<div>
+  <table
+    className="ui fixed single line unstackable top attached very basic five column table chart"
+    style={
+      Object {
+        "fontSize": 20,
+        "fontWeight": 500,
+      }
+    }
+  >
+    <tbody
+      className=""
+    >
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          A
+        </td>
+        <td
+          className="four wide chart__bar barline--left--heavy-dotted"
+        >
+          <span
+            className="chord__time-signature"
+          >
+            4 / 4
+          </span>
+          F^7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Eh7
+           
+          A7b9
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+          Db7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          C-7
+           
+          F7b9
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bb^7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bb-7
+           
+          Eb7b9
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Ab^7
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light barline--top--light"
+        >
+          Ah7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D7b9
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Gh7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          C7b9
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F6
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D7b9
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          G-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--dotted-heavy"
+        >
+          C7b9
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light barline--top--light"
+        >
+          E^7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          E7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bbh7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          Eb7b9
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Ab^7
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Gh7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light-light"
+        >
+          C7b9
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          B
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light-light"
+        >
+          F-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Dh7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Gh7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          C7b9
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Eb-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Ab7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Db6
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Gh7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C7b9
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          F-7/Eb
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Dh7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          G7b9
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Gh7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light-light"
+        >
+          C7b9
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          C
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light-light"
+        >
+          F^7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Eh7
+           
+          A7b9
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D-7
+           
+          Db7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          C-7
+           
+          F7b9
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bb^7
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bb-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          Eb7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          A-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          G-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          C7b9
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F6
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          D7#9
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          G-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light-heavy"
+        >
+          C7b9
+           
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Chart Component should render Among My Souvenirs with repeats of different sizes 1`] = `
+<div>
+  <table
+    className="ui fixed single line unstackable top attached very basic five column table chart"
+    style={
+      Object {
+        "fontSize": 20,
+        "fontWeight": 500,
+      }
+    }
+  >
+    <tbody
+      className=""
+    >
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          A
+        </td>
+        <td
+          className="four wide chart__bar barline--left--heavy-dotted"
+        >
+          <span
+            className="chord__time-signature"
+          >
+            4 / 4
+          </span>
+          Eb^7
+           
+          Eo
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bb7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          Eb^7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Eb^7
+           
+          Gbo
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bb7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--dotted-heavy barline--top--light"
+        >
+          Eb^7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light barline--top--light"
+        >
+          Eb^7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light-light"
+        >
+          Eb7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          B
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light-light"
+        >
+          Ab^7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F-7
+           
+          Bb9#5
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Eb^7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          C-7
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bb7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          G7
+           
+          C-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light-light"
+        >
+          F7
+           
+          Bb7#5
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          A
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bb7
+           
+          Bb9#5
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Eb^7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light"
+        >
+          Eb^7
+           
+          Gbo
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          F-7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Bb7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Eb6
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light barline--right--light-heavy"
+        >
+          F-7
+           
+          Bb7
+           
         </td>
       </tr>
     </tbody>
@@ -594,5 +3006,291 @@ exports[`Chart Component should render Afternoon in Paris 1`] = `
 exports[`Chart Component should render empty 1`] = `
 <div>
   Loading...
+</div>
+`;
+
+exports[`Chart Component should render song with repeats (r), The African Queen 1`] = `
+<div>
+  <table
+    className="ui fixed single line unstackable top attached very basic five column table chart"
+    style={
+      Object {
+        "fontSize": 20,
+        "fontWeight": 500,
+      }
+    }
+  >
+    <tbody
+      className=""
+    >
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          A
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light-light"
+        >
+          <span
+            className="chord__time-signature"
+          >
+            4 / 4
+          </span>
+          C-9
+           
+          Db9
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C-9
+           
+          Db9
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C-9
+           
+          Db9
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C-9
+           
+          Db9
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light-light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          A
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light-light"
+        >
+          C-9
+           
+          Db9
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C-9
+           
+          Db9
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C-9
+           
+          Db9
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C-9
+           
+          Db9
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light-light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="top aligned one wide chart__bar"
+          style={
+            Object {
+              "fontSize": 35,
+              "fontWeight": 900,
+            }
+          }
+        >
+          B
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light-light"
+        >
+          Bb7
+           
+          A7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          Ab7
+           
+          G7
+           
+        </td>
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C-9
+           
+          Db9
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+      <tr
+        className="chart__bar-line"
+      >
+        <td
+          className="one wide chart__bar"
+        />
+        <td
+          className="four wide chart__bar barline--left--light"
+        >
+          C-9
+           
+          Db9
+           
+        </td>
+        <td
+          className="center aligned four wide chart__bar barline--left--light barline--right--light-heavy"
+        >
+          <span
+            className="chord__bar-repeat"
+          >
+            %
+          </span>
+           
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 `;

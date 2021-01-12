@@ -51,6 +51,33 @@ class Chord extends Component {
         return classes.join(' ');
     }
 
+    renderChords() {
+        if (!this.props.chords) {
+            return [];
+        }
+        const chords = [];
+
+        this.props.chords.split(' ').forEach((chord, index) => {
+            const withAltChord = chord.match(/([^)]*)(\([^)]+\))/);
+
+            if (withAltChord) {
+                chords.push(withAltChord[1]);
+                // Alternative chord
+                chords.push(<span key={`${index}-alt`} className="chord__alt-chord">{withAltChord[2]}</span>);
+            } else if (chord === 'x') {
+                // Bar repeat
+                chords.push(<span key={index} className="chord__bar-repeat">{'%'}</span>);
+            } else {
+                chords.push(chord);
+            }
+
+            // In bar chord divider
+            chords.push(' ');
+        });
+
+        return chords;
+    }
+
     render() {
         const props = {};
 
@@ -58,15 +85,16 @@ class Chord extends Component {
             props.textAlign = 'center';
         }
 
-        const barContent = [];
+        const barContent = this.renderChords();
 
-        barContent.push(
-            this.props.chords === 'x'
-                ? <span key="%" style={{opacity: 0.5}}>{'%'}</span>
-                : <span key="chords">{this.props.chords}</span>
-        );
+        if (this.props.timeSignature) {
+            barContent.unshift(
+                <span className="chord__time-signature" key="time-signature">
+                    {this.props.timeSignature}
+                </span>
+            );
+        }
         if (this.props.coda) {
-            // barContent.push(<Label ribbon="right" color="teal">{'Coda'}</Label>);
             barContent.push(<span key="coda" style={{opacity: 0.5}}>{'(Coda)'}</span>);
         }
         return (

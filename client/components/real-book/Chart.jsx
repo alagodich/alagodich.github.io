@@ -45,7 +45,10 @@ class Chart extends PureComponent {
 
         let line = [];
 
-        segment.data.forEach(bar => {
+        // eslint-disable-next-line complexity
+        segment.data.forEach(barData => {
+            const bar = Object.assign({}, barData);
+
             // Not rendering dividers for now
             if (bar.divider) {
                 return;
@@ -55,6 +58,7 @@ class Chart extends PureComponent {
                 // If it is a last bar in line, and has no closing line, add default
                 if (line.length === 3 && !bar.closingLine) {
                     bar.closingLine = '|';
+                    barData.closingLine = '|';
                 }
 
                 line.push(bar);

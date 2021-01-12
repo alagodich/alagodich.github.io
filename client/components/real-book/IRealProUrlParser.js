@@ -148,9 +148,14 @@ export default class IRealProUrlParser {
 
             const chordString = this.beautifyChordString(decryptedCordString);
 
+            const authorNameParts = parts[1].split(' ');
+            const author = authorNameParts.length === 2
+                ? `${authorNameParts[1]} ${authorNameParts[0]}`
+                : parts[1];
+
             return {
                 title: parts[0],
-                author: parts[1],
+                author,
                 style: parts[3],
                 key: parts[4],
                 chordString
@@ -172,7 +177,11 @@ export default class IRealProUrlParser {
             return '';
         }
 
-        const decryptedChunks = chunks.map((chunk, index) => {
+        const decryptedChunks = chunks.map((rawChunk, index) => {
+            const chunk = index === chunks.length - 1
+                ? rawChunk.replace(/\s*$/, '')
+                : rawChunk;
+
             if (chunk.length < 50) {
                 // console.log('chunk length < 50, returning as is');
                 return chunk;
@@ -211,6 +220,10 @@ export default class IRealProUrlParser {
             .replace(/LZ|K/g, '|')
             // Repeat cord = x
             .replace(/cl/g, 'x')
+            // remove l but not alt, todo find out what (l) means it is not reflected visually in chart
+            .replace(/(?<!a)l(?!t)/g, ' ')
+            // remove U, todo find out what (U) means it is not reflected visually in chart
+            .replace(/U/g, '')
             // Remove stars, todo what are those stars?
             // .replace(/\*\s*\*/g, '')
             // No chord symbol Example: |C7ppF7|, watch p symbol!
@@ -225,21 +238,11 @@ export default class IRealProUrlParser {
             .replace(/\|\s+/g, '|')
             // Remove multiple whitespaces
             .replace(/\s+/g, ' ')
-
             // // remove small sign for small chords rendering
-            // .replace(/(?<!su)s(?!us)/g, '')
-            // For some reason linter is not happy with /(?<!su)s(?!us)/g, have to use split/replace for now
-            .split('sus').map(chunk => chunk.replace(/s/g, '')).join('sus')
-
-            // remove section markers
-            // .replace(/\*\w/g, '')
-            // remove time signatures
-            // .replace(/T\d\d/g, '')
-            // remove l and f
-            // .replace(/[lf]/g, '')
+            .replace(/(?<!su)s(?!us)/g, '')
             // remove annotations
             .replace(/<.*?>/g, '')
-
+            .replace(/([^\s|]+)(x)/g, '$1 $2')
 
             .trim();
     }

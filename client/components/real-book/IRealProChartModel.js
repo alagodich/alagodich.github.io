@@ -28,6 +28,8 @@ export default class IRealProChartModel {
              * we will put them always outside
              */
             .replace(/([{[|Y])(\*\w)/g, '$2$1')
+            // Each ending should have and opening bar line
+            .replace('}N', '}|N')
             // Split chord string by Segment name *A, *B, they are all now outside the bar lines
             .match(/(\*\w)([^*]+)/g);
 
@@ -72,9 +74,20 @@ export default class IRealProChartModel {
                         return _omit(newBar, 'timeSignature');
                     });
 
-                    // If last of the cloned bar has special closing bar line, keep it only on cloned pair
-                    if (last2Bars[1].closingLine && last2Bars[1].closingLine !== '|') {
-                        segment[segment.length - 1].closingLine = '|';
+                    /**
+                     * If last of the cloned bar has special closing bar line,
+                     * keep it only on cloned pair
+                     * but remove from the last segment
+                     * If repeat is at the first 2 line bars then remove closing line
+                     */
+                    if (last2Bars[1].closingLine) {
+                        if (segment.length % 4) {
+                            const beforeLastSegment = Object.assign({}, segment[segment.length - 1]);
+
+                            segment[segment.length - 1] = _omit(beforeLastSegment, 'closingLine');
+                        } else if (last2Bars[1].closingLine !== '|') {
+                            segment[segment.length - 1].closingLine = '|';
+                        }
                     }
                     segment.push(...last2Bars);
                     // Remaining measure string with (r) sign
@@ -143,6 +156,14 @@ export default class IRealProChartModel {
             rawBarString = rawBarString.split('Q').join('');
         }
 
+        // Check and extract segno
+        const hasSegno = rawBarString.includes('S');
+
+        if (hasSegno) {
+            barProps.segno = true;
+            rawBarString = rawBarString.split('S').join('');
+        }
+
         // Check if that part is a divider
         const isDivider = rawBarString === 'Y';
 
@@ -151,7 +172,7 @@ export default class IRealProChartModel {
             rawBarString = '';
         }
 
-        // Handle closing brackets
+        // Handle closing brackets, they are the only thing existing in barString
         if (rawBarString.length === 1) {
             const closingBarLine = rawBarString.match(/([{}[\]|Z])/g);
 
@@ -161,6 +182,9 @@ export default class IRealProChartModel {
             barProps.closingLine = closingBarLine[0];
             rawBarString = rawBarString.split(closingBarLine[0]).join('');
         }
+
+        // Replace p pause with (/ ) symbol
+        rawBarString = rawBarString.replace(/p/g, '\\ ');
 
         // Find the final opening line and chords
         const barParts = rawBarString.match(/([{}[\]|Z]+)([^{}[\]|Z]*)/);

@@ -22,7 +22,7 @@ describe('Chart Component', () => {
         };
         const model = new IRealProChartModel(props);
 
-        const element = create(<Chart model={model} />);
+        const element = create(<Chart model={model}/>);
         const tree = element.toJSON();
 
         expect(tree).toMatchSnapshot();
@@ -37,11 +37,117 @@ describe('Chart Component', () => {
         };
         const model = new IRealProChartModel(props);
 
-        const element = create(<Chart model={model} />);
+        const element = create(<Chart model={model}/>);
         const tree = element.toJSON();
 
         expect(tree).toMatchSnapshot();
     });
+    it('should render song with repeats (r), The African Queen', () => {
+        const props = {
+            title: 'African Queen, The',
+            author: 'Silver Horace',
+            style: 'Latin',
+            key: 'C-',
+            chordString: '[*AT44C-9 Db9|x |r|C-9 Db9|x |r|][*AC-9 Db9|x |r|C-9 Db9|x |r|][*BBb7 A7|Ab7 G7|C-9 Db9|x |C-9 Db9|x Z'
+        };
+        const model = new IRealProChartModel(props);
+
+        const element = create(<Chart model={model}/>);
+        const tree = element.toJSON();
+
+        expect(tree).toMatchSnapshot();
+    });
+    it('should render Agua De Beber (alt) and (sus)', () => {
+        const props = {
+            title: 'Agua De Beber',
+            author: 'Jobim Antonio-Carlos',
+            style: 'Bossa Nova',
+            key: 'D-',
+            chordString: '*i{T44D-7 |E7#9 A7b13|D-7 |E7#9 A7b13|D-7 |Bb^7 |D-7 |x }*A[E7b9 |A7alt |D-7 |G7 |G-7 |C7 |F^7 |x |E7 Eb7|D-7 Dbo7|F7/C |E7#9/B |E7b9 |A7sus |D-7 |D7b9 ]*B[G7 |G-7 |D-7 |D7b9 |G7 |G-7 |D-7 |A7b13 ]*C[D-7 |E7#9 A7b13|D-7 |E7#9 A7b13|D-7 |Bb^7 |D-7 |x Z'
+        };
+        const model = new IRealProChartModel(props);
+
+        const element = create(<Chart model={model}/>);
+        const tree = element.toJSON();
+
+        expect(tree).toMatchSnapshot();
+    });
+    it('should render Airmail Special with Segno symbol (s), and 4 repeats', () => {
+        const props = {
+            title: 'Airmail Special',
+            author: 'Christian Charlie',
+            style: 'Medium Up Swing',
+            key: 'C',
+            chordString: '[*iT44C6 |x |r|r|r|][Co7 |x |r|Co7 Bo7|Bbo7 |Ab7 |G7 ] {*ASC C/E|F G|C C/E|F G|C C7|F F#o7|C/G |C  }[*BCo7 |x |r|Co7 Bo7|Bbo7 |Ab7 |G7 Z'
+        };
+        const model = new IRealProChartModel(props);
+
+        const element = create(<Chart model={model}/>);
+        const tree = element.toJSON();
+
+        expect(tree).toMatchSnapshot();
+    });
+    it('should render Alfie with strange long second ending', () => {
+        const props = {
+            title: 'Alfie',
+            author: 'Bacharach Burt',
+            style: 'Ballad',
+            key: 'Bb',
+            chordString: '{*AT44Bb^7 |F7sus |Bb^7 |D-7 G7|C-7 |D-7 G-7|C-7 F7sus|Bbo7 |N1F7sus |F7 F7#5 } [*BN2A-7 |Bb-/C C7|A-7 |C7sus |A-7 |Bb-/C C7|F7sus |F6 F7 ][*ABb^7 |F7sus |Eh7 Eb7|D-7 G-7|Eh7 Eb7|D-7 G-7|C7#11 |C-7 F7sus|Bbo7 |F7sus |Bo7 |C-9 |Bo7 |Bb^7 Z'
+        };
+        const model = new IRealProChartModel(props);
+
+        const element = create(<Chart model={model}/>);
+        const tree = element.toJSON();
+
+        expect(tree).toMatchSnapshot();
+    });
+    it('should render Ahmid-6 with multiple time signatures', () => {
+        const props = {
+            title: 'Ahmid-6',
+            author: 'Metheny Pat',
+            style: 'Even 8ths',
+            key: 'C',
+            chordString: '[*AT44D-7 |C#-7 |r|F#-7 B7|E-7 A7|G F|E- D-7|C^7 |B7 |Bb^7#11 |Ah7 D7b9|F#h7 B7b9|Eh7 A7b9|D-7 E-7|F-7 Bb7|Eb9sus|x|Ab^9|x|Ab7sus|x|Db^13|x|Dh7 G7b9|C-7 F7|F-7 Bb7|Gh7 C7#9|F-7 F#-7|G-7 C-7|T34 F#-7 B7 |E-7 A7sus|T24A7sus|T44 A7sus |x [*BD-7 |C#-7 |D-7 |C#-7 |F#-7 B7|E-7 A7|A-7 |ppD7|G^7 Bb7|Eb^7 B7|E^7 G7|C^7 Ab7|Db^7 E7|A^7 C7|F^7|x|E-7|x|F^7|x|E-7|x Z'
+        };
+        const model = new IRealProChartModel(props);
+
+        const element = create(<Chart model={model}/>);
+        const tree = element.toJSON();
+
+        expect(tree).toMatchSnapshot();
+    });
+    it('should render All Through The Night with 2 long repeats', () => {
+        const props = {
+            title: 'All Through The Night',
+            author: 'Cole Porter',
+            style: 'Medium Swing',
+            key: 'F',
+            chordString: '{*AT44F^7 |Eh7 A7b9|D-7 Db7|C-7 F7b9|Bb^7 |Bb-7 Eb7b9|Ab^7 |x |N1Ah7|D7b9|Gh7|C7b9|F6|D7b9|G-7|C7b9 }|N2E^7|E7|Bbh7|Eb7b9|Ab^7|x|Gh7|C7b9 ][*BF-7|Dh7|Gh7|C7b9|Eb-7|Ab7|Db6|x|Gh7|C7b9|F-7|F-7/Eb|Dh7|G7b9|Gh7|C7b9 ][*CF^7 |Eh7 A7b9|D-7 Db7|C-7 F7b9|Bb^7 |x |Bb-7 |Eb7 |A-7 |D7 |G-7 |C7b9 |F6 |D7#9 |G-7 |C7b9 Z'
+        };
+        const model = new IRealProChartModel(props);
+
+        const element = create(<Chart model={model}/>);
+        const tree = element.toJSON();
+
+        expect(tree).toMatchSnapshot();
+    });
+    it('should render Among My Souvenirs with repeats of different sizes', () => {
+        const props = {
+            title: 'Among My Souvenirs',
+            author: 'Horatio Nicholls',
+            style: 'Ballad',
+            key: 'Eb',
+            chordString: '{*AT44Eb^7 Eo |F-7 |Bb7 |Eb^7 |Eb^7 Gbo |F-7 |Bb7 |N1Eb^7 }|N2Eb^7 |Eb7 [*BAb^7 |F-7 Bb9#5|Eb^7 |C-7 |F-7 |Bb7 |G7 C-7|F7 Bb7#5 ]*AEb^7 Eo |F-7 |Bb7 Bb9#5|Eb^7 |Eb^7 Gbo |F-7 |Bb7 |Eb6 |F-7 Bb7 Z'
+        };
+        const model = new IRealProChartModel(props);
+
+        const element = create(<Chart model={model}/>);
+        const tree = element.toJSON();
+
+        expect(tree).toMatchSnapshot();
+    });
+
     describe('processLines', () => {
         it('should handle empty call', () => {
             const element = create(<Chart/>);
@@ -177,6 +283,109 @@ describe('Chart Component', () => {
                         {openingLine: '|', chords: 'x'},
                         {openingLine: '|', chords: 'Ab^7'},
                         {openingLine: '|', chords: 'x', closingLine: '}'}
+                    ]
+                ]
+            });
+        });
+
+        it('should process lines with long 8 bars repeats, All Through The Night', () => {
+            const element = create(<Chart/>);
+            const instance = element.getInstance();
+
+            const segment = {
+                name: 'A',
+                data: [
+                    {timeSignature: '4 / 4', openingLine: '{', chords: 'F^7'},
+                    {openingLine: '|', chords: 'Eh7 A7b9'},
+                    {openingLine: '|', chords: 'D-7 Db7'},
+                    {openingLine: '|', chords: 'C-7 F7b9', closingLine: '|'},
+                    {openingLine: '|', chords: 'Bb^7'},
+                    {openingLine: '|', chords: 'Bb-7 Eb7b9'},
+                    {openingLine: '|', chords: 'Ab^7'},
+                    {openingLine: '|', chords: 'x', closingLine: '|'},
+                    {ending: 'N1', openingLine: '|', chords: 'Ah7'},
+                    {openingLine: '|', chords: 'D7b9'},
+                    {openingLine: '|', chords: 'Gh7'},
+                    {openingLine: '|', chords: 'C7b9', closingLine: '|'},
+                    {openingLine: '|', chords: 'F6'},
+                    {openingLine: '|', chords: 'D7b9'},
+                    {openingLine: '|', chords: 'G-7'},
+                    {openingLine: '|', chords: 'C7b9', closingLine: '}'},
+                    {ending: 'N2', openingLine: '|', chords: 'E^7'},
+                    {openingLine: '|', chords: 'E7'},
+                    {openingLine: '|', chords: 'Bbh7'},
+                    {openingLine: '|', chords: 'Eb7b9', closingLine: '|'},
+                    {openingLine: '|', chords: 'Ab^7'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'Gh7'},
+                    {openingLine: '|', chords: 'C7b9', closingLine: ']'}
+                ]
+            };
+
+            expect(instance.processLines(segment)).toEqual({
+                name: 'A',
+                data: [
+                    {timeSignature: '4 / 4', openingLine: '{', chords: 'F^7'},
+                    {openingLine: '|', chords: 'Eh7 A7b9'},
+                    {openingLine: '|', chords: 'D-7 Db7'},
+                    {openingLine: '|', chords: 'C-7 F7b9', closingLine: '|'},
+                    {openingLine: '|', chords: 'Bb^7'},
+                    {openingLine: '|', chords: 'Bb-7 Eb7b9'},
+                    {openingLine: '|', chords: 'Ab^7'},
+                    {openingLine: '|', chords: 'x', closingLine: '|'},
+                    {ending: 'N1', openingLine: '|', chords: 'Ah7'},
+                    {openingLine: '|', chords: 'D7b9'},
+                    {openingLine: '|', chords: 'Gh7'},
+                    {openingLine: '|', chords: 'C7b9', closingLine: '|'},
+                    {openingLine: '|', chords: 'F6'},
+                    {openingLine: '|', chords: 'D7b9'},
+                    {openingLine: '|', chords: 'G-7'},
+                    {openingLine: '|', chords: 'C7b9', closingLine: '}'},
+                    {ending: 'N2', openingLine: '|', chords: 'E^7'},
+                    {openingLine: '|', chords: 'E7'},
+                    {openingLine: '|', chords: 'Bbh7'},
+                    {openingLine: '|', chords: 'Eb7b9', closingLine: '|'},
+                    {openingLine: '|', chords: 'Ab^7'},
+                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'Gh7'},
+                    {openingLine: '|', chords: 'C7b9', closingLine: ']'}
+                ],
+                lines: [
+                    [
+                        {timeSignature: '4 / 4', openingLine: '{', chords: 'F^7'},
+                        {openingLine: '|', chords: 'Eh7 A7b9'},
+                        {openingLine: '|', chords: 'D-7 Db7'},
+                        {openingLine: '|', chords: 'C-7 F7b9', closingLine: '|'}
+                    ],
+                    [
+                        {openingLine: '|', chords: 'Bb^7'},
+                        {openingLine: '|', chords: 'Bb-7 Eb7b9'},
+                        {openingLine: '|', chords: 'Ab^7'},
+                        {openingLine: '|', chords: 'x', closingLine: '|'}
+                    ],
+                    [
+                        {ending: 'N1', openingLine: '|', chords: 'Ah7'},
+                        {openingLine: '|', chords: 'D7b9'},
+                        {openingLine: '|', chords: 'Gh7'},
+                        {openingLine: '|', chords: 'C7b9', closingLine: '|'}
+                    ],
+                    [
+                        {openingLine: '|', chords: 'F6'},
+                        {openingLine: '|', chords: 'D7b9'},
+                        {openingLine: '|', chords: 'G-7'},
+                        {openingLine: '|', chords: 'C7b9', closingLine: '}'}
+                    ],
+                    [
+                        {ending: 'N2', openingLine: '|', chords: 'E^7'},
+                        {openingLine: '|', chords: 'E7'},
+                        {openingLine: '|', chords: 'Bbh7'},
+                        {openingLine: '|', chords: 'Eb7b9', closingLine: '|'}
+                    ],
+                    [
+                        {openingLine: '|', chords: 'Ab^7'},
+                        {openingLine: '|', chords: 'x'},
+                        {openingLine: '|', chords: 'Gh7'},
+                        {openingLine: '|', chords: 'C7b9', closingLine: ']'}
                     ]
                 ]
             });

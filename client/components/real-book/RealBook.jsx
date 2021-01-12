@@ -58,6 +58,20 @@ class RealBook extends PureComponent {
         if (event.key === 'Escape') {
             event.preventDefault();
             this.handleChartClose();
+        } else if (this.state.chart && event.key === 'ArrowLeft') {
+            const hash = decodeURI(window.location.hash).split('#')[1];
+            const id = parseInt(hash, 10);
+
+            if (this.state.library[id - 1]) {
+                this.handleChartChange(id - 1);
+            }
+        } else if (this.state.chart && event.key === 'ArrowRight') {
+            const hash = decodeURI(window.location.hash).split('#')[1];
+            const id = parseInt(hash, 10);
+
+            if (this.state.library[id + 1]) {
+                this.handleChartChange(id + 1);
+            }
         }
     }
 
@@ -71,7 +85,6 @@ class RealBook extends PureComponent {
         //     });
         //     this.setState({loading: false, library: latinSongs});
         // });
-
 
         getPlaylist('jazz').then(data => {
             const parser = new IRealProUrlParser();
@@ -104,7 +117,7 @@ class RealBook extends PureComponent {
         this.setState({
             chart,
             header: chart.title,
-            subHeader: chart.author
+            subHeader: `${chart.author} // ${chart.style} // ${chart.key}`
         });
     }
 

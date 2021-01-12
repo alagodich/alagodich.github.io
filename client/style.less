@@ -51,46 +51,64 @@ a {
     table.ui.table.chart {
         border-spacing: 0 1em;
         tbody {
-            tr.chart__bar-line {
+            .chart__bar-line {
                 border-spacing: 5px;
 
-                td.chart__bar {
+                .chart__bar {
                     border-top: none;
                     border-bottom: none;
+
+                    .chord {
+                        &__bar-repeat {
+                            opacity: 0.5;
+                            font-size: 1.1em;
+                        }
+                        &__alt-chord {
+                            opacity: 0.5;
+                        }
+                        &__time-signature {
+                            text-orientation: upright;
+                            writing-mode: vertical-rl;
+                            font-size: 0.5em;
+                            letter-spacing: -7px;
+                            margin-left: -10px;
+                        }
+                    }
+                }
+
+                .barline {
+                    &--left--light {
+                        border-left: 1px solid;
+                    }
+                    &--right--light {
+                        border-right: 1px solid;
+                    }
+                    &--left--light-light {
+                        border-left: 5px double;
+                    }
+                    &--right--light-light {
+                        border-right: 5px double;
+                    }
+                    &--right--light-heavy {
+                        border-right: 8px double;
+                    }
+
+                    &--left--heavy-dotted {
+                        border-radius: 10px 0 0 10px;
+                        border-left: thick double;
+                    }
+                    &--right--dotted-heavy {
+                        border-radius: 0 10px 10px 0;
+                        border-right: thick double;
+                    }
+                    // This is repeat ending top line
+                    &--top--light {
+                        border-top: 1px #ccc dashed;
+                    }
                 }
             }
         }
 
-        .barline {
-            &--left--light {
-                border-left: 1px solid;
-            }
-            &--right--light {
-                border-right: 1px solid;
-            }
-            &--left--light-light {
-                border-left: 3px double;
-            }
-            &--right--light-light {
-                border-right: 3px double;
-            }
-            &--right--light-heavy {
-                border-right: thick double;
-            }
-
-            &--left--heavy-dotted {
-                border-radius: 10px 0 0 10px;
-                border-left: thick double;
-            }
-            &--right--dotted-heavy {
-                border-radius: 0 10px 10px 0;
-                border-right: thick double;
-            }
-            // This is repeat ending top line
-            &--top--light {
-                border-top: 1px dotted;
-            }
-        }
     }
 }
 
