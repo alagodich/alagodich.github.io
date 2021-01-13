@@ -245,9 +245,21 @@ export default class IRealProUrlParser {
             .replace(/LZ|K/g, '|')
             // Repeat cord = x
             .replace(/cl/g, 'x')
+
+            /**
+             * Lookahead and Lookbehind regex do not work in mobile browsers
+             * So for now using workaround
+             */
             // remove l but not alt, todo find out what (l) means it is not reflected visually in chart
-            .replace(/(?<!a)l(?!t)/g, ' ')
+            // .replace(/(?<!a)l(?!t)/g, ' ')
+            .split('alt').map(chunk => chunk.replace(/l/g, ' ')).join('alt')
             // remove U, todo find out what (U) means it is not reflected visually in chart
+            // // remove small sign for small chords rendering
+            // .replace(/(?<!su)s(?!us)/g, '')
+            .split('sus').map(chunk => chunk.replace(/[su]/g, '')).join('sus')
+            // remove u if not part of sus, song Crosscurrent currently has a type with (us) instead of (sus)
+            // .replace(/(?<!s)u(?!s)/g, '')
+
             .replace(/U/g, '')
             // Remove multiple vertical spaces
             .replace(/Y+/g, 'Y')
@@ -259,10 +271,6 @@ export default class IRealProUrlParser {
             .replace(/\|\s+/g, '|')
             // Remove multiple whitespaces
             .replace(/\s+/g, ' ')
-            // // remove small sign for small chords rendering
-            .replace(/(?<!su)s(?!us)/g, '')
-            // remove u if not part of sus, song Crosscurrent currently has a type with (us) instead of (sus)
-            .replace(/(?<!s)u(?!s)/g, '')
             // remove annotations
             .replace(/<.*?>/g, '')
             // Add space before (x)

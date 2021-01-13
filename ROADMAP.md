@@ -3,6 +3,8 @@
 * Add reporting performance to Google Analytics
 
 #### Real Book
+* Remove all look behind, they are not supported by mobile browsers
+* Say nothing found if filter not empty
 * Add playlists and better navigation with global state store and redux
 * Handle too many chords in bar, decrease font size
 * Encrypt song to data url for export

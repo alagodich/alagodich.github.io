@@ -1,6 +1,6 @@
 {
   "name": "alagodich.github.io",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Personal blog.",
   "main": "index.html",
   "scripts": {
@@ -11,7 +11,8 @@
     "build": "rm -rf ./public && webpack --config webpack.config.production.js",
     "build:watch": "webpack --config webpack.config.dev.js",
     "fomantic": "gulp build-fomantic",
-    "build:all": "npm run fomantic && npm run lint && npm run test && npm run build"
+    "build:all": "npm run fomantic && npm run lint && npm run test && npm run build",
+    "browser-sync": "browser-sync start --proxy localhost:4000 --files _site/**"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
     "@babel/preset-react": "^7.12.10",
     "@svgdotjs/svg.js": "^3.0.16",
     "babel-loader": "^8.2.2",
+    "browser-sync": "^2.26.13",
     "clean-webpack-plugin": "^3.0.0",
     "core-js": "^3.8.2",
     "css-loader": "^5.0.1",
