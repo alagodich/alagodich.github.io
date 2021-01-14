@@ -22,10 +22,6 @@
   "license": "ISC",
   "homepage": "https://github.com/alagodich/alagodich.github.io#readme",
   "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/eslint-parser": "^7.12.1",
-    "@babel/preset-env": "^7.12.11",
-    "@babel/preset-react": "^7.12.10",
     "@kunstmusik/csound": "^6.15.0",
     "@svgdotjs/svg.js": "^3.0.16",
     "@types/jest": "^26.0.20",
@@ -37,7 +33,6 @@
     "@types/webpack": "^4.41.26",
     "@typescript-eslint/eslint-plugin": "^4.13.0",
     "@typescript-eslint/parser": "^4.13.0",
-    "babel-loader": "^8.2.2",
     "browser-sync": "^2.26.13",
     "css-loader": "^5.0.1",
     "css-minimizer-webpack-plugin": "^1.2.0",

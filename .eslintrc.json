@@ -29,16 +29,6 @@
         "spyOn": false,
         "test": false
     },
-
-    "parser": "@babel/eslint-parser",
-    "parserOptions": {
-        "sourceType": "module",
-        "ecmaVersion": 2018,
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "allowImportExportEverywhere": true
-    },
     "overrides": [{
         "files": ["*.ts", "*.tsx"],
         "env": {
@@ -55,7 +45,8 @@
                 "jsx": true
             },
             "ecmaVersion": 2018,
-            "sourceType": "module"
+            "sourceType": "module",
+            "allowImportExportEverywhere": true
         },
         "settings": {
             "import/resolver": {"eslint-import-resolver-typescript": true}

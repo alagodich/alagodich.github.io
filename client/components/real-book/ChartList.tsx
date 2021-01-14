@@ -11,7 +11,7 @@ export const ChartList = (props: IChartListProps): ReactElement => {
 
     function handleChartClick(chartId: number | undefined): () => void {
         return () => {
-            if (chartId) {
+            if (chartId !== undefined) {
                 props.onClick(chartId);
             }
         };
