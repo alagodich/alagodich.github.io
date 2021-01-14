@@ -1,1 +1,0 @@
-(self.webpackChunkalagodich_github_io=self.webpackChunkalagodich_github_io||[]).push([[297],{63906:()=>{},12993:()=>{},791:()=>{}}]);
