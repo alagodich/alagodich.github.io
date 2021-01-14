@@ -20,7 +20,7 @@ class ChartList extends PureComponent {
 
     render() {
         if (!this.props.charts || !this.props.charts.length) {
-            return <div>{'Try to use search.'}</div>;
+            return <div>{'Nothing found, try different search criteria.'}</div>;
         }
 
         const charts = this.props.charts.slice(0, 50).map(chart => (

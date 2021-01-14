@@ -1,0 +1,11 @@
+/**
+ * Declare missing types here
+ */
+
+declare module 'react-slick';
+declare module '@kunstmusik/csound';
+declare module '*.csd' {
+    const value: string;
+
+    export default value;
+}

@@ -1,6 +1,7 @@
 /* eslint no-console: 0 */
+/* eslint react/sort-comp: 0 */
 
-import React, {Component} from 'react';
+import React, {Component, ReactElement} from 'react';
 import {Input, Button, Icon, Checkbox, Radio} from 'semantic-ui-react';
 import {SVG} from '@svgdotjs/svg.js';
 
@@ -26,7 +27,7 @@ const minTempo = 30,
     stressedNoteColor = '#DB2828',
     noteColor = '#2185D0',
     emptyNoteColor = '#EEE',
-    defaultState = {
+    defaultState: IMetronomeState = {
         tempo: 101.0,
         noteResolution: 4,
         isPlaying: false,
@@ -35,16 +36,42 @@ const minTempo = 30,
         volume: 0.5,
         useOscillator: false
     },
-    spaceKeyCode = 32,
-    githubUrl = 'https://github.com/alagodich/alagodich.github.io/blob/master/client/components/Metronome.jsx';
+    githubUrl = 'https://github.com/alagodich/alagodich.github.io/blob/master/client/components/Metronome.jsx',
+    // Inner width of the semantic ui card box
+    svgWidth = 254;
+
+interface IMetronomeState {
+    tempo: number;
+    noteResolution: number;
+    isPlaying: boolean;
+    signature: string;
+    accentFirstBeat: boolean;
+    volume: number;
+    useOscillator: boolean;
+}
 
 /**
  * TODO get rid of Snap and render svg with pure js
  */
-class Metronome extends Component {
+class Metronome extends Component<any, IMetronomeState> {
+    // eslint-disable-next-line react/sort-comp
+    private audioContext: any;
+    private timerWorker: Worker | null;
+    private current16thNote: number;
+    private nextNoteTime: number;
+    // private notesInQueue: INote[];
+    private quartersQuantity = 0;
+    private sixteenthQuantity = 0;
+    private nextNoteMultiplier = 0;
+    private svg: any;
+    private pointer: any;
+    private spacing = 0;
+    private unlocked: boolean;
+    private decodedBeatSound: any;
+    private svgContainer: HTMLElement | undefined;
 
-    constructor() {
-        super();
+    constructor(props: never) {
+        super(props);
 
         this.state = defaultState;
 
@@ -57,18 +84,14 @@ class Metronome extends Component {
          * with next interval (in case the timer is late)
          */
         this.nextNoteTime = 0.0;
-        this.notesInQueue = [];
-        this.quartersQuantity = null;
-        this.sixteenthQuantity = null;
-        this.nextNoteMultiplier = null;
+        // this.notesInQueue = [];
+        // this.quartersQuantity ;
+        // this.sixteenthQuantity = null;
+        // this.nextNoteMultiplier = null;
 
         this.svg = null;
-        // Inner width of the semantic ui card box
-        this.svgWidth = 254;
-
         this.pointer = null;
-
-        this.spacing = null;
+        // this.spacing;
         /**
          * Unlocked AudioContext on iOS devices
          */
@@ -87,19 +110,18 @@ class Metronome extends Component {
      * Init metronome after the component is mounted
      * Init checkboxes
      */
-    componentDidMount() {
+    public componentDidMount(): void {
         this.init();
-        document.addEventListener('keyup', this.handleKeyPress, false);
+        document.addEventListener('keyup', this.handleKeyPress as any, false);
     }
 
-    componentWillUnmount() {
-        document.removeEventListener('keyup', this.handleKeyPress, false);
+    public componentWillUnmount(): void {
+        document.removeEventListener('keyup', this.handleKeyPress as any, false);
     }
 
-    handleKeyPress(event) {
-        if (event.keyCode === spaceKeyCode) {
+    public handleKeyPress(event: React.KeyboardEvent<any>): void {
+        if (event.key === ' ') {
             event.preventDefault();
-            // $('.toggle.checkbox input').blur();
             this.handlePlay();
         }
     }
@@ -109,11 +131,11 @@ class Metronome extends Component {
      * Pre-load beat sound
      * Start drawer loop
      */
-    init() {
+    public init(): void {
         // Default
         const AudioContext = window.AudioContext
             // Safari and old versions of Chrome
-            || window.webkitAudioContext
+            || (window as any).webkitAudioContext
             || false;
 
         this.initSvg();
@@ -148,14 +170,14 @@ class Metronome extends Component {
     /**
      * Create svg with default ruler and pointer
      */
-    initSvg() {
+    public initSvg(): void {
         const svgNode = this.svgContainer;
 
         if (!svgNode) {
             return;
         }
 
-        this.svg = SVG().addTo(this.svgContainer);
+        this.svg = SVG().addTo(this.svgContainer as HTMLElement);
 
         this.drawRuler();
         this.drawPointer();
@@ -164,7 +186,7 @@ class Metronome extends Component {
     /**
      * Draw ruler depending on metronome params
      */
-    drawRuler() {
+    public drawRuler(): void {
         let ruler = this.svg.findOne('.svg--ruler');
 
         // Clear existing ruler, before drawing a new one
@@ -174,9 +196,9 @@ class Metronome extends Component {
             ruler = this.svg.group().addClass('svg--ruler');
         }
         this.initParams();
-        this.spacing = (this.svgWidth - (this.sixteenthQuantity * rulerLineWidth)) / this.sixteenthQuantity;
+        this.spacing = (svgWidth - (this.sixteenthQuantity * rulerLineWidth)) / this.sixteenthQuantity;
         // Draw ruler base line
-        ruler.line(svgPadding / 2, svgHeight, this.svgWidth + (svgPadding), svgHeight);
+        ruler.line(svgPadding / 2, svgHeight, svgWidth + (svgPadding), svgHeight);
 
         for (let i = 0; i <= this.sixteenthQuantity; i++) {
             const x = (this.spacing * i) + (i * rulerLineWidth) + (svgPadding),
@@ -190,7 +212,7 @@ class Metronome extends Component {
     /**
      * Draw transparent pointer
      */
-    drawPointer() {
+    public drawPointer(): void {
         this.pointer = this.svg.polygon([
             [svgPadding, svgHeight - quarterSerifHeight].join(','),
             [svgPadding + 3, svgHeight - 38].join(','),
@@ -202,7 +224,7 @@ class Metronome extends Component {
     /**
      * Move pointer to the current beat serif and apply color
      */
-    movePointer() {
+    public movePointer(): void {
         const x = (this.spacing * this.current16thNote) + (this.current16thNote);
         const color = this.state.accentFirstBeat && this.current16thNote === 0
             ? stressedNoteColor
@@ -214,7 +236,7 @@ class Metronome extends Component {
     /**
      * Init params from controls
      */
-    initParams() {
+    public initParams(): void {
         if (this.state.signature === '4/4') {
             this.sixteenthQuantity = this.state.noteResolution === 12 ? 12 : 16;
         }
@@ -229,7 +251,7 @@ class Metronome extends Component {
      * Load mp3 beat data and decode it
      * @returns Promise
      */
-    loadBeatData() {
+    public loadBeatData(): Promise<any> {
         return new Promise((resolve, reject) => {
             const request = new XMLHttpRequest();
 
@@ -238,9 +260,9 @@ class Metronome extends Component {
             request.onload = () => {
                 const audioData = request.response;
 
-                this.audioContext.decodeAudioData(audioData, buffer => {
+                this.audioContext.decodeAudioData(audioData, (buffer: any) => {
                     resolve(buffer);
-                }, error => {
+                }, (error: any) => {
                     console.log(`Error decoding audio data. ${error.err}`);
                     reject(error.err);
                 });
@@ -252,16 +274,16 @@ class Metronome extends Component {
     /**
      * Toggle worker by sending start or stop
      */
-    handlePlay() {
+    public handlePlay(): void {
         this.unlock();
         this.setState({isPlaying: !this.state.isPlaying}, () => {
             if (this.state.isPlaying) {
                 this.initParams();
                 this.current16thNote = -1;
                 this.nextNoteTime = this.audioContext.currentTime;
-                this.timerWorker.postMessage('start');
+                (this.timerWorker as Worker).postMessage('start');
             } else {
-                this.timerWorker.postMessage('stop');
+                (this.timerWorker as Worker).postMessage('stop');
             }
         });
     }
@@ -270,13 +292,13 @@ class Metronome extends Component {
      * Restart metronome if it was playing
      * @note No need to change state of the object invoking play()
      */
-    startOver() {
+    public startOver(): void {
         if (this.state.isPlaying) {
-            this.timerWorker.postMessage('stop');
+            (this.timerWorker as Worker).postMessage('stop');
             this.initParams();
             this.current16thNote = -1;
             this.nextNoteTime = this.audioContext.currentTime;
-            this.timerWorker.postMessage('start');
+            (this.timerWorker as Worker).postMessage('start');
         }
     }
 
@@ -284,7 +306,7 @@ class Metronome extends Component {
      * While there are notes that will need to play before the next interval,
      * schedule them and advance the pointer.
      */
-    scheduler() {
+    public scheduler(): void {
         while (this.nextNoteTime < this.audioContext.currentTime + scheduleAheadTime) {
             this.scheduleNote(this.current16thNote, this.nextNoteTime);
             this.nextNote();
@@ -294,7 +316,7 @@ class Metronome extends Component {
     /**
      * Advance current note and time by a 16th note
      */
-    nextNote() {
+    public nextNote(): void {
         const secondsPerBeat = 60.0 / this.state.tempo;
 
         this.nextNoteTime += secondsPerBeat * this.nextNoteMultiplier;
@@ -311,8 +333,8 @@ class Metronome extends Component {
      * @param beatNumber
      * @param time
      */
-    scheduleNote(beatNumber, time) {
-        this.notesInQueue.push({note: beatNumber, time});
+    public scheduleNote(beatNumber: number, time: number): void {
+        // this.notesInQueue.push({note: beatNumber, time});
         this.movePointer();
         if (!this.noteShouldBePlayed(beatNumber)) {
             return;
@@ -330,7 +352,7 @@ class Metronome extends Component {
      * @param beatNumber
      * @returns {*}
      */
-    getAudioSource(beatNumber) {
+    public getAudioSource(beatNumber: number): OscillatorNode {
         let source;
         const gainNode = this.audioContext.createGain();
 
@@ -354,6 +376,7 @@ class Metronome extends Component {
         source.connect(gainNode);
         gainNode.connect(this.audioContext.destination);
         gainNode.gain.value = this.state.volume;
+
         return source;
     }
 
@@ -362,7 +385,7 @@ class Metronome extends Component {
      * @see https://developer.apple.com/library/safari/documentation/AudioVideo/Conceptual/
      * Using_HTML5_Audio_Video/PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html
      */
-    unlock() {
+    public unlock(): void {
         // https://developers.google.com/web/updates/2017/09/autoplay-policy-changes#webaudio
         this.audioContext.resume();
 
@@ -388,7 +411,7 @@ class Metronome extends Component {
      * Check for a known iOS device
      * @returns {boolean}
      */
-    iOS() {
+    public iOS(): boolean {
         const iDevices = [
             'iPad Simulator',
             'iPhone Simulator',
@@ -411,7 +434,7 @@ class Metronome extends Component {
      * Detect IE
      * returns version of IE or false, if browser is not Internet Explorer
      */
-    isIE() {
+    public isIE(): boolean {
         const userAgent = window.navigator.userAgent,
             msie = userAgent.indexOf('MSIE '),
             // IE 11 => return version number
@@ -421,16 +444,16 @@ class Metronome extends Component {
 
         if (msie > 0) {
             // IE 10 or older => return version number
-            return parseInt(userAgent.substring(msie + 5, userAgent.indexOf('.', msie)), 10);
+            return Boolean(parseInt(userAgent.substring(msie + 5, userAgent.indexOf('.', msie)), 10));
         }
 
         if (trident > 0) {
-            return parseInt(userAgent.substring(rv + 3, userAgent.indexOf('.', rv)), 10);
+            return Boolean(parseInt(userAgent.substring(rv + 3, userAgent.indexOf('.', rv)), 10));
         }
 
         if (edge > 0) {
             // Edge (IE 12+) => return version number
-            return parseInt(userAgent.substring(edge + 5, userAgent.indexOf('.', edge)), 10);
+            return Boolean(parseInt(userAgent.substring(edge + 5, userAgent.indexOf('.', edge)), 10));
         }
 
         // other browser
@@ -448,8 +471,8 @@ class Metronome extends Component {
      *
      * @return bool
      */
-    isChrome() {
-        const isChromium = window.chrome,
+    public isChrome(): boolean {
+        const isChromium = (window as any).chrome,
             winNav = window.navigator,
             vendorName = winNav.vendor,
             isOpera = winNav.userAgent.includes('OPR'),
@@ -462,7 +485,7 @@ class Metronome extends Component {
                 && isOpera === false
                 && isIEedge === false;
 
-        return isIOSChrome || isChrome;
+        return Boolean(isIOSChrome || isChrome);
     }
 
     /**
@@ -473,15 +496,15 @@ class Metronome extends Component {
      *
      * Because currentTime is always zero this.noteShouldBePlayed() never returns true
      */
-    hasNormalAudioContext() {
-        return window.AudioContext;
+    public hasNormalAudioContext(): boolean {
+        return window.hasOwnProperty('AudioContext');
     }
 
     /**
      * @param beatNumber
      * @returns {boolean}
      */
-    noteShouldBePlayed(beatNumber) {
+    public noteShouldBePlayed(beatNumber: number): boolean {
         // Play only quarter notes
         if (this.state.noteResolution === 4) {
             if (beatNumber % 4) {
@@ -504,11 +527,11 @@ class Metronome extends Component {
         return true;
     }
 
-    handleChangeTempo(event) {
-        this.setState({tempo: event.target.value}, this.startOver);
+    public handleChangeTempo(event: React.ChangeEvent<HTMLInputElement>): void {
+        this.setState({tempo: parseInt(event.target.value, 10)}, this.startOver);
     }
 
-    handleChangeResolution(value) {
+    public handleChangeResolution(value: number): () => void {
         return () => {
             this.setState({noteResolution: value}, () => {
                 this.drawRuler();
@@ -517,7 +540,7 @@ class Metronome extends Component {
         };
     }
 
-    handleChangeSignature(value) {
+    public handleChangeSignature(value: string): () => void {
         return () => {
             this.setState({signature: value}, () => {
                 this.drawRuler();
@@ -527,20 +550,20 @@ class Metronome extends Component {
 
     }
 
-    handleChangeVolume(event) {
-        this.setState({volume: event.target.value / 100});
+    public handleChangeVolume(event: React.ChangeEvent<HTMLInputElement>): void {
+        this.setState({volume: parseInt(event.target.value, 10) / 100});
     }
 
-    handleToggleAccentFirstBeat() {
+    public handleToggleAccentFirstBeat(): void {
         this.setState({accentFirstBeat: !this.state.accentFirstBeat}, this.startOver);
     }
 
-    handleToggleUseOscillator() {
+    public handleToggleUseOscillator(): void {
         this.setState({useOscillator: !this.state.useOscillator}, this.startOver);
     }
 
-    render() {
-        const volume = parseInt(this.state.volume * 100, 10);
+    public render(): ReactElement {
+        const volume = this.state.volume * 100;
 
         if (!this.isChrome() && !this.hasNormalAudioContext()) {
             const documentationUrl = 'https://developer.apple.com/library/content/documentation/AudioVideo'
@@ -575,7 +598,10 @@ class Metronome extends Component {
                         >
                             <Icon name="github" style={{textDecoration: 'none', cursor: 'pointer'}} />
                         </a>
-                        <svg style={{width: '100%', height: 50}} ref={c => (this.svgContainer = c)} />
+                        <svg
+                            style={{width: '100%', height: 50}}
+                            ref={element => (this.svgContainer = element as any)}
+                        />
                     </div>
                     <div className="extra content ui form">
                         <div id="controls">

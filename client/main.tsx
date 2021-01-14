@@ -1,27 +1,30 @@
 import React from 'react';
 import {render} from 'react-dom';
-import Menu from './components/Menu.jsx';
-import Youtube from './components/Youtube.jsx';
-import Photo from './components/Photo.jsx';
-import Carousel from './components/Carousel.jsx';
-import Profile from './components/Profile.jsx';
+import Menu from './components/Menu';
+import {Youtube} from './components/Youtube';
+import {Photo} from './components/Photo';
+import {Carousel} from './components/Carousel';
+import {Profile} from './components/Profile';
 import {Popup} from 'semantic-ui-react';
 
 import '../semantic/dist/semantic.css';
 import './style.less';
 
-import './tags.jsx';
+import './tags.ts';
 
-const menuContainer = document.getElementById('react--component--menu');
+const menuContainer: HTMLDivElement = document.getElementById('react--component--menu') as HTMLDivElement;
 
 render(
     <React.StrictMode>
-        <Menu current={menuContainer.dataset.current} items={JSON.parse(menuContainer.dataset.items)} />
+        <Menu
+            current={menuContainer.dataset.current as string}
+            items={JSON.parse(menuContainer.dataset.items as string)}
+        />
     </React.StrictMode>,
     menuContainer
 );
 
-[...document.getElementsByTagName('youtube')].forEach(element => {
+[...document.getElementsByTagName('youtube') as any].forEach(element => {
     const id = element.dataset.id;
 
     if (!id || id === '') {
@@ -30,7 +33,7 @@ render(
     render(<React.StrictMode><Youtube id={id} /></React.StrictMode>, element);
 });
 
-[...document.getElementsByTagName('photo')].forEach(element => {
+[...document.getElementsByTagName('photo') as any].forEach(element => {
     const src = element.dataset.src;
 
     if (!src || src === '') {
@@ -39,7 +42,7 @@ render(
     render(<React.StrictMode><Photo src={src} /></React.StrictMode>, element);
 });
 
-[...document.getElementsByTagName('carousel')].forEach(element => {
+[...document.getElementsByTagName('carousel') as any].forEach(element => {
     const items = JSON.parse(element.dataset.items);
 
     if (!items) {
@@ -49,7 +52,7 @@ render(
     render(<React.StrictMode><Carousel items={items} /></React.StrictMode>, element);
 });
 
-[...document.getElementsByTagName('profile')].forEach(element => {
+[...document.getElementsByTagName('profile') as any].forEach(element => {
     const props = {
         name: element.dataset.name,
         avatar: JSON.parse(element.dataset.avatar),
@@ -63,7 +66,7 @@ render(
     render(<React.StrictMode><Profile {...props} /></React.StrictMode>, element);
 });
 
-[...document.getElementsByClassName('popup')].forEach(element => {
+[...document.getElementsByClassName('popup') as any].forEach(element => {
     const content = element.dataset.content;
 
     if (!content || content === '') {

@@ -6,9 +6,10 @@ import Chart from './Chart.jsx';
 import ChartList from './ChartList.jsx';
 import IRealProUrlParser from './IRealProUrlParser';
 import IRealProChartModel from './IRealProChartModel';
-import {Menu, Input, Header, Icon} from 'semantic-ui-react';
+import {Menu, Input, Header, Icon, Grid} from 'semantic-ui-react';
 import {default as _escapeRegExp} from 'lodash/escapeRegExp';
 import {default as _filter} from 'lodash/filter';
+import RealBookAnalyzeCharts from './RealBookAnalyzeCharts.jsx';
 
 function getPlaylist(name) {
     // eslint-disable-next-line no-inline-comments
@@ -29,7 +30,8 @@ class RealBook extends PureComponent {
             loading: true,
             library: [],
             searchFilter: '',
-            filteredSongs: []
+            filteredSongs: [],
+            analyzeCharts: false
         };
 
         this.handleChartChange = this.handleChartChange.bind(this);
@@ -189,31 +191,32 @@ class RealBook extends PureComponent {
         this.updateHash('#');
 
         this.setState({
-            header: title,
+            header: null,
             subHeader: null,
             chart: null
         });
     }
 
-    render() {
-        const content = this.state.chart
-                ? <Chart model={this.state.chart} />
-                : <ChartList charts={this.state.filteredSongs} onClick={this.handleChartChange} />,
-            closeChartButton = this.state.chart
-                ? (
-                    <a onClick={this.handleChartClose}>
-                        <i className="angle blue double left icon" style={{cursor: 'pointer'}}/>
-                    </a>
-                )
-                : null,
-            align = this.state.chart ? 'right' : 'left';
+    handleToggleAnalyzeCharts() {
+        return () => {
+            this.setState({analyzeCharts: !this.state.analyzeCharts, chart: null});
+        };
+    }
 
+    renderMenu() {
         const rightMenu = this.state.chart
             ? (
                 <Menu.Menu position="right">
                     <Header as="h2" textAlign="right">
                         <Header.Content>
-                            {closeChartButton} {this.state.header}
+                            {this.state.chart
+                                ? (
+                                    <a onClick={this.handleChartClose} title="You can press Esc to close the chart.">
+                                        <Icon name="angle double left" color="blue" style={{cursor: 'pointer'}} />
+                                    </a>
+                                )
+                                : null}
+                            {this.state.header}
                             <Header.Subheader>
                                 {this.state.subHeader}
                             </Header.Subheader>
@@ -223,6 +226,15 @@ class RealBook extends PureComponent {
             )
             : (
                 <Menu.Menu position="right">
+                    {<Menu.Item>
+                        <Icon
+                            name="chart pie"
+                            style={{cursor: 'pointer'}}
+                            title="Analyze charts"
+                            onClick={this.handleToggleAnalyzeCharts()}
+                            color={this.state.analyzeCharts ? 'blue' : null}
+                        />
+                    </Menu.Item>}
                     {
                         this.state.searchFilter && this.state.searchFilter.trim() !== ''
                             ? (
@@ -250,18 +262,38 @@ class RealBook extends PureComponent {
             ? null
             : (
                 <Header as="h2" style={{marginBottom: 0}}>
-                    <Header.Content>
-                        {this.state.header}
-                    </Header.Content>
+                    <Header.Content>{title}</Header.Content>
                 </Header>
             );
 
         return (
+            <Menu secondary text pointing>
+                {leftHeader}
+                {rightMenu}
+            </Menu>
+        );
+    }
+
+    render() {
+        const content = this.state.chart
+            ? <Chart model={this.state.chart} />
+            : (
+                <Grid columns={2} stackable>
+                    <Grid.Column>
+                        <ChartList charts={this.state.filteredSongs} onClick={this.handleChartChange} />
+                    </Grid.Column>
+                    <Grid.Column>
+                        {this.state.analyzeCharts
+                            ? <RealBookAnalyzeCharts songs={this.state.filteredSongs} />
+                            : null
+                        }
+                    </Grid.Column>
+                </Grid>
+            );
+
+        return (
             <div className="realbook">
-                <Menu secondary pointing position={align}>
-                    {leftHeader}
-                    {rightMenu}
-                </Menu>
+                {this.renderMenu()}
                 {this.state.loading
                     ? <div>{'...loading'}</div>
                     : <div className="ui basic segment">{content}</div>

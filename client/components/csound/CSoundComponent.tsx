@@ -1,14 +1,21 @@
-import React, {Component} from 'react';
+import React, {Component, ReactElement} from 'react';
 import {default as CSound} from '@kunstmusik/csound';
 import randomDiatonicChordsCsd from './orchestras/random-diatonic-chords.csd';
 
-const orchestras = {
+const orchestras: {[key: string]: string} = {
     'random-diatonic-chords.csd': randomDiatonicChordsCsd
 };
 
-export default class CSoundComponent extends Component {
+interface ICSoundComponentState {
+    loading: boolean;
+    orchestraLoaded: string;
+    playing: boolean;
+    cSound: any;
+    messages: string[];
+}
 
-    constructor(props) {
+export default class CSoundComponent extends Component<any, ICSoundComponentState> {
+    constructor(props: never) {
         super(props);
         this.state = {
             loading: true,
@@ -21,7 +28,7 @@ export default class CSoundComponent extends Component {
         this.handleBeforeUnload = this.handleBeforeUnload.bind(this);
     }
 
-    componentDidMount() {
+    public componentDidMount(): void {
         window.addEventListener('beforeunload', this.handleBeforeUnload);
         CSound.initialize().then(() => {
             const cSound = new CSound();
@@ -31,18 +38,18 @@ export default class CSoundComponent extends Component {
         });
     }
 
-    componentWillUnmount() {
+    public componentWillUnmount(): void {
         this.handleBeforeUnload();
         window.removeEventListener('beforeunload', this.handleBeforeUnload);
     }
 
-    handleBeforeUnload() {
+    public handleBeforeUnload(): void {
         this.state.cSound.stop();
         this.state.cSound.reset();
         this.state.cSound.destroy();
     }
 
-    handleCSoundMessage() {
+    public handleCSoundMessage(): (message: string) => void {
         return message => {
             const messages = this.state.messages;
 
@@ -51,7 +58,7 @@ export default class CSoundComponent extends Component {
         };
     }
 
-    handleCSoundPlay() {
+    public handleCSoundPlay(): () => void {
         return () => {
             this.state.cSound.setOption('-+msg_color=false');
             this.state.cSound.start();
@@ -65,7 +72,7 @@ export default class CSoundComponent extends Component {
         };
     }
 
-    handleCSoundStop() {
+    public handleCSoundStop(): () => void {
         return () => {
             if (CSound.CSOUND_AUDIO_CONTEXT.state === 'running') {
                 CSound.CSOUND_AUDIO_CONTEXT.suspend().then(() => {
@@ -76,7 +83,7 @@ export default class CSoundComponent extends Component {
         };
     }
 
-    handleLoadOrchestra(orchestra) {
+    public handleLoadOrchestra(orchestra: string): () => void {
         if (!orchestras[orchestra]) {
             throw new Error(`Unknown orchestra ${orchestra}`);
         }
@@ -86,7 +93,7 @@ export default class CSoundComponent extends Component {
         };
     }
 
-    handleOrchestraReset() {
+    public handleOrchestraReset(): () => void {
         return () => {
             this.state.cSound.stop();
             this.state.cSound.reset();
@@ -94,7 +101,7 @@ export default class CSoundComponent extends Component {
         };
     }
 
-    render() {
+    public render(): ReactElement {
         return (
             <div>
                 <div style={{marginBottom: '1em'}}>

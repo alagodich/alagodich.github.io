@@ -2,7 +2,7 @@ import IRealProUrlParser from '../IRealProUrlParser';
 import IRealProChartModel from '../IRealProChartModel';
 const allJazzSongsUrls = require('../playlists/jazz');
 
-describe('', () => {
+describe('UrlParser and ChartModel integration', () => {
     it('should handle all jazz songs', () => {
         const parser = new IRealProUrlParser();
 
@@ -93,4 +93,47 @@ describe('', () => {
             });
         }).not.toThrow();
     });
+
+    // it('should export', done => {
+    //     const parser = new IRealProUrlParser();
+    //     const models = [];
+    //     const strings = [];
+    //
+    //     parser.parse(allJazzSongsUrls[0]).forEach(props => {
+    //         strings.push(props);
+    //         models.push(new IRealProChartModel(props));
+    //     });
+    //     parser.parse(allJazzSongsUrls[1]).forEach(props => {
+    //         strings.push(props);
+    //         models.push(new IRealProChartModel(props));
+    //     });
+    //     parser.parse(allJazzSongsUrls[2]).forEach(props => {
+    //         strings.push(props);
+    //         models.push(new IRealProChartModel(props));
+    //     });
+    //     parser.parse(allJazzSongsUrls[3]).forEach(props => {
+    //         strings.push(props);
+    //         models.push(new IRealProChartModel(props));
+    //     });
+    //     parser.parse(allJazzSongsUrls[4]).forEach(props => {
+    //         strings.push(props);
+    //         models.push(new IRealProChartModel(props));
+    //     });
+    //
+    //     fs.writeFile(
+    //         path.join(__dirname, '../../../../all-jazz-model-format.json'),
+    //         JSON.stringify(models, null, '    '),
+    //         'utf8',
+    //         () => {
+    //             fs.writeFile(
+    //                 path.join(__dirname, '../../../../all-jazz-string-format.json'),
+    //                 JSON.stringify(strings, null, '    '),
+    //                 'utf8',
+    //                 () => {
+    //                     done();
+    //                 }
+    //             );
+    //         }
+    //     );
+    // });
 });

@@ -9,10 +9,10 @@ function filterTags() {
             ? hash.split(',').filter(tag => tag !== '')
             : [];
 
-    [...document.getElementsByClassName('site__posts')].forEach(container => {
-        const posts = [...container.getElementsByClassName('event')];
+    [...document.getElementsByClassName('site__posts') as any].forEach((container: HTMLDivElement) => {
+        const posts = [...container.getElementsByClassName('event') as any];
 
-        posts.forEach(post => {
+        posts.forEach((post: HTMLDivElement) => {
             const postTags = post.dataset.tags
                 ? post.dataset.tags.split(',').filter(tag => tag !== '')
                 : [];
@@ -26,9 +26,11 @@ function filterTags() {
         });
     });
 
-    [...document.getElementsByClassName('tag__selector')].forEach(selector => {
-        const selectorTag = selector.dataset.tag;
-        const classList = [...selector.classList]
+    [...document.getElementsByClassName('tag__selector') as any].forEach((selector: HTMLAnchorElement) => {
+        const selectorTag = selector.dataset.tag
+            ? selector.dataset.tag
+            : '';
+        const classList = [...selector.classList as any]
             .filter(className => className !== 'blue');
 
         if (selectedTags.includes(selectorTag)) {
@@ -57,7 +59,7 @@ function filterTags() {
         window.addEventListener('hashchange', filterTags, false);
     } else {
         // Disable tags if browser does not support hash change event
-        [...document.getElementsByClassName('js--tag-bar')].forEach(element => {
+        [...document.getElementsByClassName('js--tag-bar') as any].forEach(element => {
             element.style.display = 'none';
         });
     }

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {Table} from 'semantic-ui-react';
 
@@ -29,7 +29,7 @@ const barlineMap = {
     Z: 'barline--right--light-heavy'
 };
 
-class Chord extends Component {
+class Chord extends PureComponent {
 
     getBarlineClasses() {
         const classes = ['chart__bar'];

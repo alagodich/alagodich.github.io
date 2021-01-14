@@ -2,11 +2,13 @@
 * Add https://github.com/GoogleChrome/web-vitals
 * Add reporting performance to Google Analytics
 
+#### Map
+* Rework, try highcharts, am4 charts are too heavy
+
 #### Real Book
-* Remove all look behind, they are not supported by mobile browsers
-* Say nothing found if filter not empty
-* Add playlists and better navigation with global state store and redux
+* Mobile Layout
 * Handle too many chords in bar, decrease font size
+* Add playlists and better navigation with global state store and redux
 * Encrypt song to data url for export
 * Display repeat ending top borders properly, maybe SVG entire bar
 * Render W symbol as a space (Butterfly), Coda, Segno and Fermata symbols (Always And Forever)
