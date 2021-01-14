@@ -1,6 +1,6 @@
 import IRealProUrlParser from '../IRealProUrlParser';
 import IRealProChartModel from '../IRealProChartModel';
-const allJazzSongsUrls = require('../playlists/jazz');
+import allJazzSongsUrls from '../playlists/jazz';
 
 describe('UrlParser and ChartModel integration', () => {
     it('should handle all jazz songs', () => {

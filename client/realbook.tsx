@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import RealBook from './components/real-book/RealBook.jsx';
+import RealBook from './components/real-book/RealBook';
 const $realBookContainer = document.getElementById('realBookContainer');
 
 if ($realBookContainer) {

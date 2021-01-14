@@ -1,14 +1,48 @@
 import {timeSignatures, endings} from './IRealProUrlParser';
 import {default as _omit} from 'lodash/omit';
 
+export interface IIRealProChartModelProps {
+    id?: number;
+    title: string;
+    author: string;
+    style: string;
+    key: string;
+    chordString: string;
+}
+
+export interface IIRealProChartBar {
+    chords?: string;
+    openingLine?: string;
+    closingLine?: string;
+    ending?: string;
+    timeSignature?: string;
+    divider?: string;
+    coda?: boolean;
+    fermata?: boolean;
+    segno?: boolean;
+}
+
+export interface IIRealProChartSegment {
+    name: string;
+    data: IIRealProChartBar[];
+    lines?: IIRealProChartBar[][];
+}
+
 const chordsStringExpresion = /[A-GWxn]([+\-^\dhob#sualt]*)(\/[A-G][#b]?)?/;
-const closingBarLines = {
+const closingBarLines: {[index: string]: string} = {
     ']': '[',
     '}': '{'
 };
 
 export default class IRealProChartModel {
-    constructor(props) {
+    public title = '';
+    public author = '';
+    public style = '';
+    public key = '';
+    public chordString = '';
+    public segments: IIRealProChartSegment[] = [];
+
+    constructor(props: IIRealProChartModelProps) {
         if (!props) {
             return;
         }
@@ -27,7 +61,7 @@ export default class IRealProChartModel {
      *
      * Split chart by named sections (A, B, C)
      */
-    init() {
+    private init(): void {
         const segments = this.chordString
             /**
              * TODO move these replaces to IRealProUrlParser
@@ -56,11 +90,11 @@ export default class IRealProChartModel {
 
     /**
      * Split data string by segments
+     *
      * @param segmentString
-     * @returns {*}
      */
-    parseSegment(segmentString) {
-        const segment = [];
+    public parseSegment(segmentString: string): IIRealProChartBar[] {
+        const segment: IIRealProChartBar[] = [];
         const segmentByBars = segmentString
             // Split string by bar line separator
             .match(/([{}[\]|ZY])([^{}[\]|ZY]*)/g);
@@ -86,7 +120,7 @@ export default class IRealProChartModel {
                     return _omit(newBar, 'timeSignature');
                 });
 
-                if (last2Bars.length !== 2) {
+                if (!rSplitMatch || last2Bars.length !== 2) {
                     throw new Error(`Song: ${this.title}. Cannot repeat last 2 bars ${rawBarDataString}`);
                 }
                 /**
@@ -104,6 +138,7 @@ export default class IRealProChartModel {
                     }
                 }
                 segment.push(...last2Bars);
+
                 // Remaining measure string with (r) sign
                 barString = [rSplitMatch[1], rSplitMatch[3]].join('');
             }
@@ -116,7 +151,7 @@ export default class IRealProChartModel {
                     throw new Error(`Invalid segment, closing bar as a first part: ${segmentString}`);
                 }
                 segment[segment.length - 1].closingLine = bar.closingLine;
-            } else if (closingBarLines[bar.openingLine]) {
+            } else if (bar.openingLine && closingBarLines[bar.openingLine]) {
                 // If bar opening line is actually closing bar line, move it to the previous bar
                 if (segment[segment.length - 1].closingLine) {
                     throw new Error(
@@ -143,12 +178,11 @@ export default class IRealProChartModel {
      * Parse bar string, find all possible elements and return bar props object
      *
      * @param barString
-     * @returns {{}}
      */
     // eslint-disable-next-line complexity,max-statements
-    parseBar(barString) {
+    public parseBar(barString: string): IIRealProChartBar {
         let rawBarString = barString.trim();
-        const barProps = {};
+        const barProps: IIRealProChartBar = {};
 
         // Check and extract time signature
         const timeSignature = rawBarString.match(/(T\d\d)/g);
@@ -207,7 +241,7 @@ export default class IRealProChartModel {
         if (rawBarString.length === 1) {
             const closingBarLine = rawBarString.match(/([{}[\]|Z])/g);
 
-            if (closingBarLine.length !== 1) {
+            if (!closingBarLine || closingBarLine.length !== 1) {
                 throw new Error(`Song: ${this.title}. Unexpected chord string with length 1 ${rawBarString}`);
             }
             barProps.closingLine = closingBarLine[0];

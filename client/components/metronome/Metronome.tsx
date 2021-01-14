@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 /* eslint react/sort-comp: 0 */
 
-import React, {Component, ReactElement} from 'react';
+import React, {ReactElement} from 'react';
 import {Input, Button, Icon, Checkbox, Radio} from 'semantic-ui-react';
 import {SVG} from '@svgdotjs/svg.js';
 
@@ -53,7 +53,7 @@ interface IMetronomeState {
 /**
  * TODO get rid of Snap and render svg with pure js
  */
-class Metronome extends Component<any, IMetronomeState> {
+class Metronome extends React.PureComponent<Record<string, unknown>, IMetronomeState> {
     // eslint-disable-next-line react/sort-comp
     private audioContext: any;
     private timerWorker: Worker | null;
@@ -70,7 +70,7 @@ class Metronome extends Component<any, IMetronomeState> {
     private decodedBeatSound: any;
     private svgContainer: HTMLElement | undefined;
 
-    constructor(props: never) {
+    constructor(props: Record<string, unknown>) {
         super(props);
 
         this.state = defaultState;

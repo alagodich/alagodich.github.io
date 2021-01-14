@@ -1,31 +1,49 @@
-/* eslint no-console: 0 */
 /* eslint react/no-set-state: 0 */
 
-import React, {PureComponent} from 'react';
-import Chart from './Chart.jsx';
-import ChartList from './ChartList.jsx';
+import React, {PureComponent, ReactElement} from 'react';
+import Chart from './Chart';
+import {ChartList} from './ChartList';
 import IRealProUrlParser from './IRealProUrlParser';
-import IRealProChartModel from './IRealProChartModel';
+import {default as IRealProChartModel, IIRealProChartModelProps} from './IRealProChartModel';
 import {Menu, Input, Header, Icon, Grid} from 'semantic-ui-react';
 import {default as _escapeRegExp} from 'lodash/escapeRegExp';
 import {default as _filter} from 'lodash/filter';
-import RealBookAnalyzeCharts from './RealBookAnalyzeCharts.jsx';
+import RealBookAnalyzeCharts from './RealBookAnalyzeCharts';
 
-function getPlaylist(name) {
+interface IRealBookState {
+    header: string;
+    subHeader: string;
+    chart: IRealProChartModel | null;
+    loading: boolean;
+    library: IIRealProChartModelProps[];
+    searchFilter: string;
+    filteredSongs: IIRealProChartModelProps[];
+    analyzeCharts: boolean;
+}
+
+function getPlaylist(name: string): Promise<any> {
     // eslint-disable-next-line no-inline-comments
-    return import(/* webpackChunkName: "[request]" */ `./playlists/${name}.js`)
+    return import(/* webpackChunkName: "[request]" */ `./playlists/${name}.ts`)
         .then(data => data.default);
+}
+
+function updateHash(hash: string): void {
+    if (history && history.pushState) {
+        history.pushState(null, '', hash);
+    } else {
+        location.hash = hash;
+    }
 }
 
 const title = 'Real Book';
 
-class RealBook extends PureComponent {
-    constructor(props) {
+class RealBook extends PureComponent<Record<string, unknown>, IRealBookState> {
+    constructor(props: Record<string, unknown>) {
         super(props);
 
         this.state = {
             header: title,
-            subHeader: null,
+            subHeader: '',
             chart: null,
             loading: true,
             library: [],
@@ -44,19 +62,19 @@ class RealBook extends PureComponent {
      * Init metronome after the component is mounted
      * Init checkboxes
      */
-    componentDidMount() {
-        document.addEventListener('keyup', this.handleKeyPress, false);
+    public componentDidMount(): void {
+        document.addEventListener('keyup', this.handleKeyPress as any, false);
         window.addEventListener('hashchange', this.handleHashChange, false);
 
         this.loadLibrary();
     }
 
-    componentWillUnmount() {
-        document.removeEventListener('keyup', this.handleKeyPress, false);
+    public componentWillUnmount(): void {
+        document.removeEventListener('keyup', this.handleKeyPress as any, false);
         window.removeEventListener('hashchange', this.handleHashChange, false);
     }
 
-    handleKeyPress(event) {
+    public handleKeyPress(event: React.KeyboardEvent): void {
         if (event.key === 'Escape') {
             event.preventDefault();
             this.handleChartClose();
@@ -77,7 +95,7 @@ class RealBook extends PureComponent {
         }
     }
 
-    loadLibrary() {
+    private loadLibrary(): void {
         // getPlaylist('latin').then(data => {
         //     const parser = new IRealProUrlParser();
         //     const latinSongs = [];
@@ -90,10 +108,10 @@ class RealBook extends PureComponent {
 
         getPlaylist('jazz').then(data => {
             const parser = new IRealProUrlParser();
-            const jazzStandards = [];
+            const jazzStandards: IIRealProChartModelProps[] = [];
 
-            data.forEach(url => {
-                jazzStandards.push(...parser.parse(url));
+            data.forEach((url: string) => {
+                jazzStandards.push(...parser.parse(url) as any);
             });
 
             const mappedSongs = jazzStandards.map((song, index) => {
@@ -107,7 +125,7 @@ class RealBook extends PureComponent {
         });
     }
 
-    loadChart(id) {
+    private loadChart(id: number) {
         const chartProps = this.state.library[id];
 
         if (!chartProps) {
@@ -123,7 +141,7 @@ class RealBook extends PureComponent {
         });
     }
 
-    handleHashChange() {
+    private handleHashChange() {
         const hash = decodeURI(window.location.hash).split('#')[1];
         const id = parseInt(hash, 10);
 
@@ -134,29 +152,16 @@ class RealBook extends PureComponent {
         }
     }
 
-    updateHash(hash) {
-        if (history && history.pushState) {
-            history.pushState(null, null, hash);
-        } else {
-            location.hash = hash;
-        }
-    }
-
-    handleChartChange(id) {
-        const chartId = parseInt(id, 10);
-
-        if (chartId !== id) {
-            throw new Error('Invalid chart id');
-        }
-        if (!this.state.library[chartId]) {
+    private handleChartChange(id: number): void {
+        if (!this.state.library[id]) {
             throw new Error('Song does not exists');
         }
-        this.updateHash(`#${chartId}`);
-        this.loadChart(chartId);
+        updateHash(`#${id}`);
+        this.loadChart(id);
     }
 
-    handleSearchFilterChange() {
-        return (event, {value}) => {
+    private handleSearchFilterChange() {
+        return (event: React.ChangeEvent, {value}: {value: string}) => {
             this.setState({searchFilter: value, loading: true});
 
             setTimeout(() => {
@@ -169,7 +174,7 @@ class RealBook extends PureComponent {
                 }
 
                 const regExp = new RegExp(_escapeRegExp(this.state.searchFilter), 'i');
-                const isMatch = item => regExp.test(item.title + item.author);
+                const isMatch = (item: IIRealProChartModelProps) => regExp.test(item.title + item.author);
 
                 return this.setState({
                     loading: false,
@@ -179,7 +184,7 @@ class RealBook extends PureComponent {
         };
     }
 
-    handleClearFilter() {
+    private handleClearFilter() {
         return () => this.setState({
             searchFilter: '',
             filteredSongs: this.state.library,
@@ -187,23 +192,23 @@ class RealBook extends PureComponent {
         });
     }
 
-    handleChartClose() {
-        this.updateHash('#');
+    private handleChartClose() {
+        updateHash('#');
 
         this.setState({
-            header: null,
-            subHeader: null,
+            header: '',
+            subHeader: '',
             chart: null
         });
     }
 
-    handleToggleAnalyzeCharts() {
+    private handleToggleAnalyzeCharts() {
         return () => {
             this.setState({analyzeCharts: !this.state.analyzeCharts, chart: null});
         };
     }
 
-    renderMenu() {
+    private renderMenu(): ReactElement {
         const rightMenu = this.state.chart
             ? (
                 <Menu.Menu position="right">
@@ -228,11 +233,11 @@ class RealBook extends PureComponent {
                 <Menu.Menu position="right">
                     {<Menu.Item>
                         <Icon
-                            name="chart pie"
+                            name="chart line"
                             style={{cursor: 'pointer'}}
-                            title="Analyze charts"
+                            title="Analyze data"
                             onClick={this.handleToggleAnalyzeCharts()}
-                            color={this.state.analyzeCharts ? 'blue' : null}
+                            color={this.state.analyzeCharts ? 'blue' : 'grey'}
                         />
                     </Menu.Item>}
                     {
@@ -274,7 +279,7 @@ class RealBook extends PureComponent {
         );
     }
 
-    render() {
+    public render(): ReactElement {
         const content = this.state.chart
             ? <Chart model={this.state.chart} />
             : (

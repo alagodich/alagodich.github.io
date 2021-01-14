@@ -27,7 +27,6 @@ const path = require('path'),
         module: {
             rules: [
                 {test: /\.tsx?$/, loader: 'ts-loader'},
-                {test: /\.(jsx|js)$/, loader: 'babel-loader'},
                 {test: /\.(css|less)$/i, use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']},
                 {test: /\.(woff(2)?|ttf|png|eot|svg)(\?v=\d+\.\d+\.\d+)?$/, use: ['file-loader']},
                 {

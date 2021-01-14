@@ -1,3 +1,5 @@
+import {IIRealProChartModelProps} from './IRealProChartModel';
+
 export const barLines = [
     // single bar line
     '|',
@@ -13,7 +15,7 @@ export const barLines = [
     'Z'
 ];
 
-export const timeSignatures = {
+export const timeSignatures: {[index: string]: string} = {
     T44: '4 / 4',
     T34: '3 / 4',
     T24: '2 / 4',
@@ -68,8 +70,7 @@ export const endings = [
     'N0'
 ];
 
-// eslint-disable-next-line no-unused-vars
-const others = [
+export const otherSymbols = [
     // Space, todo, check how it differs from regular space ' ', it often met with 2 bar repeat
     'XyQ',
     // Arbitrary text
@@ -110,20 +111,13 @@ export default class IRealProUrlParser {
      * Parse iRealPro url and return set of Chart props for iRealProChartModel
      *
      * @param url
-     * @returns {T[]|*[]}
      */
-    parse(url) {
+    public parse(url: string): IIRealProChartModelProps[] {
         if (!url || url === '') {
             return [];
         }
 
-        const songs = this.parseUrl(url);
-
-        if (!songs || !songs.length) {
-            return [];
-        }
-
-        return songs.filter(props => props);
+        return this.parseUrl(url);
     }
 
     /**
@@ -138,7 +132,7 @@ export default class IRealProUrlParser {
      * 5 – n (no longer used)
      * 6 – Chord Progression (This is the main part of this url and will be explained in detail below)
      */
-    parseUrl(url) {
+    private parseUrl(url: string): IIRealProChartModelProps[] {
         const decodedUrl = unescape(url);
         const rawData = decodedUrl.split('://')[1];
 
@@ -157,7 +151,10 @@ export default class IRealProUrlParser {
             const rawChordsStringWithPrefix = parts[6];
 
             if (!rawChordsStringWithPrefix) {
-                return null;
+                // This is a non song part of url, TODO add to tests
+                // For example it can be playlist name
+                return null as any;
+                // throw new Error(`Raw data with prefix not found in the string ${rawSong}`);
             }
 
             if (!rawChordsStringWithPrefix.startsWith(prefix)) {
@@ -182,7 +179,7 @@ export default class IRealProUrlParser {
                 key: parts[4],
                 chordString
             };
-        });
+        }).filter(song => song);
     }
 
     /**
@@ -190,9 +187,8 @@ export default class IRealProUrlParser {
      * Big thanks to https://github.com/drs251/pyRealParser for solution
      *
      * @param chordString
-     * @returns {string|*}
      */
-    decrypt(chordString) {
+    public decrypt(chordString: string): string {
         const chunks = chordString.match(/.{1,50}/g);
 
         if (!chunks) {
@@ -237,9 +233,8 @@ export default class IRealProUrlParser {
      * Removes redundant characters from chords string
      *
      * @param chords
-     * @returns {*}
      */
-    beautifyChordString(chords) {
+    public beautifyChordString(chords: string): string {
         return chords
             // Bar lines
             .replace(/LZ|K/g, '|')

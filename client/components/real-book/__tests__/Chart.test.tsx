@@ -1,17 +1,11 @@
 /* eslint max-len: 0 */
 
-import Chart from '../Chart.jsx';
+import Chart from '../Chart';
 import React from 'react';
 import {create} from 'react-test-renderer';
 import IRealProChartModel from '../IRealProChartModel';
 
 describe('Chart Component', () => {
-    it('should render empty', () => {
-        const element = create(<Chart/>);
-        const tree = element.toJSON();
-
-        expect(tree).toMatchSnapshot();
-    });
     it('should render Afternoon in Paris', () => {
         const props = {
             title: 'Afternoon In Paris',
@@ -151,16 +145,11 @@ describe('Chart Component', () => {
 
     describe('processLines', () => {
         it('should handle empty call', () => {
-            const element = create(<Chart/>);
-            const instance = element.getInstance();
-
-            expect(instance.processLines()).toBeNull();
-            expect(instance.processLines('')).toBeNull();
-            expect(instance.processLines(null)).toBeNull();
+            expect(Chart.prototype.processLines(undefined as any)).toBeUndefined();
+            expect(Chart.prototype.processLines('' as any)).toBe('');
+            expect(Chart.prototype.processLines(null as any)).toBeNull();
         });
         it('should correctly process segment with repeat', () => {
-            const element = create(<Chart/>);
-            const instance = element.getInstance();
             const segment = {
                 name: 'A',
                 data: [
@@ -177,7 +166,7 @@ describe('Chart Component', () => {
                 ]
             };
 
-            expect(instance.processLines(segment)).toEqual({
+            expect(Chart.prototype.processLines(segment)).toEqual({
                 name: 'A',
                 data: [
                     {timeSignature: '4 / 4', openingLine: '{', chords: 'C^7'},
@@ -215,8 +204,6 @@ describe('Chart Component', () => {
         });
 
         it('should process not /4 number of chords with no repeat', () => {
-            const element = create(<Chart/>);
-            const instance = element.getInstance();
             const segment = {
                 name: '',
                 data: [
@@ -238,7 +225,7 @@ describe('Chart Component', () => {
                 ]
             };
 
-            expect(instance.processLines(segment)).toEqual({
+            expect(Chart.prototype.processLines(segment)).toEqual({
                 name: '',
                 data: [
                     {timeSignature: '4 / 4', openingLine: '[', chords: 'E-7'},
@@ -290,9 +277,6 @@ describe('Chart Component', () => {
         });
 
         it('should process lines with long 8 bars repeats, All Through The Night', () => {
-            const element = create(<Chart/>);
-            const instance = element.getInstance();
-
             const segment = {
                 name: 'A',
                 data: [
@@ -323,7 +307,7 @@ describe('Chart Component', () => {
                 ]
             };
 
-            expect(instance.processLines(segment)).toEqual({
+            expect(Chart.prototype.processLines(segment)).toEqual({
                 name: 'A',
                 data: [
                     {timeSignature: '4 / 4', openingLine: '{', chords: 'F^7'},

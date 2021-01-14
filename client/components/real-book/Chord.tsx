@@ -1,20 +1,8 @@
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
-import {Table} from 'semantic-ui-react';
+import React, {PureComponent, ReactElement} from 'react';
+import {IIRealProChartBar} from './IRealProChartModel';
+import {Table, TableCellProps} from 'semantic-ui-react';
 
-const propTypes = {
-    chords: PropTypes.string,
-    openingLine: PropTypes.string,
-    closingLine: PropTypes.string,
-    ending: PropTypes.string,
-    timeSignature: PropTypes.string,
-    divider: PropTypes.string,
-    coda: PropTypes.bool,
-    fermata: PropTypes.bool,
-    segno: PropTypes.bool
-};
-
-const barlineMap = {
+const barlineMap: {[index: string]: string} = {
     // single bar line is not participating as it is the same for opening and closing
     // '|',
     // opening double bar line
@@ -29,9 +17,9 @@ const barlineMap = {
     Z: 'barline--right--light-heavy'
 };
 
-class Chord extends PureComponent {
+class Chord extends PureComponent<IIRealProChartBar, never> {
 
-    getBarlineClasses() {
+    private getBarlineClasses(): string {
         const classes = ['chart__bar'];
 
         if (this.props.openingLine === '|') {
@@ -40,10 +28,10 @@ class Chord extends PureComponent {
         if (this.props.closingLine === '|') {
             classes.push('barline--right--light');
         }
-        if (barlineMap[this.props.openingLine]) {
+        if (this.props.openingLine && barlineMap[this.props.openingLine]) {
             classes.push(barlineMap[this.props.openingLine]);
         }
-        if (barlineMap[this.props.closingLine]) {
+        if (this.props.closingLine && barlineMap[this.props.closingLine]) {
             classes.push(barlineMap[this.props.closingLine]);
         }
         if (this.props.ending) {
@@ -53,11 +41,11 @@ class Chord extends PureComponent {
         return classes.join(' ');
     }
 
-    renderChords() {
+    public renderChords(): Array<ReactElement | string> {
         if (!this.props.chords) {
             return [];
         }
-        const chords = [];
+        const chords: Array<ReactElement | string> = [];
 
         this.props.chords.split(' ').forEach((chord, index) => {
             const withAltChord = chord.match(/([^)]*)(\([^)]+\))/);
@@ -83,8 +71,11 @@ class Chord extends PureComponent {
         return chords;
     }
 
-    render() {
-        const props = {};
+    public render(): ReactElement {
+        const props: TableCellProps = {
+            width: 4,
+            className: this.getBarlineClasses()
+        };
 
         if (this.props.chords === 'x') {
             props.textAlign = 'center';
@@ -110,8 +101,6 @@ class Chord extends PureComponent {
         }
         return (
             <Table.Cell
-                width={4}
-                className={this.getBarlineClasses()}
                 {...props}
             >
                 {barContent}
@@ -120,7 +109,5 @@ class Chord extends PureComponent {
     }
 
 }
-
-Chord.propTypes = propTypes;
 
 export default Chord;

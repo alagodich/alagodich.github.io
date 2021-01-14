@@ -8,7 +8,6 @@ describe('IRealProUrlParser', () => {
         it('should init empty', () => {
             const parser = new IRealProUrlParser();
 
-            expect(parser.parse()).toEqual([]);
             expect(parser.parse('')).toEqual([]);
         });
         it('should handle single song', () => {

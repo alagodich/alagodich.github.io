@@ -1,29 +1,11 @@
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
+import React, {PureComponent, ReactElement} from 'react';
 import {Table} from 'semantic-ui-react';
-import Chord from './Chord.jsx';
+import Chord from './Chord';
+import IRealProChartModel, {IIRealProChartBar, IIRealProChartSegment} from './IRealProChartModel';
 
-const propTypes = {
-    model: PropTypes.shape({
-        title: PropTypes.string,
-        author: PropTypes.string,
-        style: PropTypes.string,
-        key: PropTypes.string,
-        chordString: PropTypes.string,
-        segments: PropTypes.arrayOf(PropTypes.shape({
-            name: PropTypes.string,
-            data: PropTypes.arrayOf(PropTypes.shape({
-                chords: PropTypes.string,
-                openingLine: PropTypes.string,
-                closingLine: PropTypes.string,
-                ending: PropTypes.string,
-                timeSignature: PropTypes.string,
-                divider: PropTypes.string,
-                coda: PropTypes.bool
-            }))
-        }))
-    })
-};
+interface IChartProps {
+    model: IRealProChartModel;
+}
 
 const styles = {
     table: {
@@ -36,21 +18,21 @@ const styles = {
     }
 };
 
-class Chart extends PureComponent {
-    processLines(segment) {
-        if (!segment) {
-            return null;
+class Chart extends PureComponent<IChartProps, never> {
+    public processLines(segment: IIRealProChartSegment): IIRealProChartSegment {
+        if (!segment || !segment.data) {
+            return segment;
         }
-        segment.lines = [];
+        segment.lines = [] as IIRealProChartBar[][];
 
-        let line = [];
+        let line: IIRealProChartBar[] = [];
 
         // eslint-disable-next-line complexity
         segment.data.forEach(barData => {
             const bar = Object.assign({}, barData);
 
             // Not rendering dividers for now
-            if (bar.divider) {
+            if (bar.divider || !segment.lines) {
                 return;
             }
 
@@ -86,8 +68,8 @@ class Chart extends PureComponent {
         return segment;
     }
 
-    renderChart() {
-        const tableRows = [];
+    public renderChart(): ReactElement {
+        const tableRows: ReactElement[] = [];
         const segments = this.props.model.segments
             .map(segment => this.processLines(segment));
 
@@ -103,11 +85,15 @@ class Chart extends PureComponent {
                 </Table.Cell>
             );
 
+            if (!segment.lines) {
+                return;
+            }
+
             segment.lines.forEach((line, key) => {
                 tableRows.push(
                     <Table.Row key={`${segmentKey}-${key}`} className="chart__bar-line">
                         {key === 0 ? headerCell : <Table.Cell className="chart__bar" width={1} />}
-                        {line.map((bar, key) => <Chord key={key} {...bar} />)}
+                        {line.map((bar, barKey) => <Chord key={barKey} {...bar} />)}
                     </Table.Row>
                 );
             });
@@ -131,11 +117,9 @@ class Chart extends PureComponent {
         );
     }
 
-    render() {
+    public render(): ReactElement {
         return <div>{this.props.model ? this.renderChart() : 'Loading...'}</div>;
     }
 }
-
-Chart.propTypes = propTypes;
 
 export default Chart;
