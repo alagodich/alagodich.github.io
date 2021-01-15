@@ -1,6 +1,6 @@
 import React, {PureComponent, ReactElement} from 'react';
 import {IIRealProChartBar} from './types';
-import {Table, TableCellProps} from 'semantic-ui-react';
+import {Table, TableCellProps, Segment} from 'semantic-ui-react';
 
 const barlineMap: {[index: string]: string} = {
     // single bar line is not participating as it is the same for opening and closing
@@ -41,32 +41,13 @@ class Chord extends PureComponent<IIRealProChartBar, never> {
         return classes.join(' ');
     }
 
-    public renderChords(): Array<ReactElement | string> {
+    public renderChords(): {chords: Array<ReactElement | string>; altChords?: Array<ReactElement | string>} {
         if (!this.props.chords) {
-            return [];
+            return {chords: ['']};
         }
+        // const chordsAsString: Array<ReactElement | string> = [];
         const chords: Array<ReactElement | string> = [];
-
-        // this.props.chords.split(' ').forEach((chord, index) => {
-        //     const withAltChord = chord.match(/([^(]*)(\([^)]+\))/);
-        //
-        //     if (withAltChord) {
-        //         chords.push(withAltChord[1]);
-        //         // Alternative chord
-        //         chords.push(<span key={`${index}-alt`} className="chord__alt-chord">{withAltChord[2]}</span>);
-        //     } else if (chord === 'x') {
-        //         // Bar repeat
-        //         chords.push(<span key={index} className="chord__bar-repeat">{'%'}</span>);
-        //     } else if (chord === 'n') {
-        //         // Bar repeat
-        //         chords.push(<span key={index} className="chord__no-chord">{'N.C.'}</span>);
-        //     } else {
-        //         chords.push(chord);
-        //     }
-        //
-        //     // In bar chord divider
-        //     chords.push(' ');
-        // });
+        const altChords: Array<ReactElement | string> = [];
 
         // TODO make numeric option in container with redux
         // TODO render W, empty root
@@ -82,27 +63,28 @@ class Chord extends PureComponent<IIRealProChartBar, never> {
                 chords.push(<span key={`${key}-harmony`} className="chord__pause">{' / '}</span>);
             } else {
                 chords.push(
-                    <span key={`${key}-harmony`} className="ui large text">
+                    <span key={`${key}-harmony`} className="ui big text">
                         {`${chord.root}${chord.shift}`}
                         {chord.quality ? <span className="ui tiny text">{chord.quality}</span> : null}
                         {chord.inversion ? <span className="ui tiny text">{chord.inversion}</span> : null}
                     </span>
                 );
                 if (chord.alt) {
-                    chords.push(
+                    altChords.push(
                         <span key={`${key}-harmony-alt`} className="ui medium text chord__alt-chord">
                             {`${chord.alt.root}${chord.alt.shift}`}
                             {chord.alt.quality ? <span className="ui tiny text">{chord.alt.quality}</span> : null}
                             {chord.alt.inversion ? <span className="ui tiny text">{chord.alt.inversion}</span> : null}
                         </span>
                     );
+                    altChords.push(' ');
                 }
             }
             // In bar chord divider
             chords.push(' ');
         });
 
-        return chords;
+        return {chords, altChords};
     }
 
     public render(): ReactElement {
@@ -114,30 +96,42 @@ class Chord extends PureComponent<IIRealProChartBar, never> {
         if (this.props.chords === 'x') {
             props.textAlign = 'center';
         }
-
-        const barContent = this.renderChords();
+        const {chords, altChords} = this.renderChords();
+        const otherSigns = [];
 
         if (this.props.timeSignature) {
-            barContent.unshift(
+            otherSigns.unshift(
                 <span className="chord__time-signature" key="time-signature">
                     {this.props.timeSignature}
                 </span>
             );
         }
         if (this.props.coda) {
-            barContent.push(<span key="coda" className="ui blue small text chord__coda">{'(c)'}</span>);
+            otherSigns.push(<span key="coda" className="ui red small text chord__coda">{'(c)'}</span>);
         }
         if (this.props.fermata) {
-            barContent.push(<span key="fermata" className="ui red small text chord__fermata">{'(f)'}</span>);
+            otherSigns.push(<span key="fermata" className="ui red small text chord__fermata">{'(f)'}</span>);
         }
         if (this.props.segno) {
-            barContent.push(<span key="segno" className="ui teal small text chord__segno">{'(s)'}</span>);
+            otherSigns.push(<span key="segno" className="ui red small text chord__segno">{'(s)'}</span>);
         }
         return (
             <Table.Cell
                 {...props}
             >
-                {barContent}
+                <Segment.Group horizontal className="basic">
+                    <Segment basic compact>{otherSigns}</Segment>
+                    {
+                        altChords?.length
+                            ? (
+                                <Segment basic>
+                                    <Segment vertical basic>{altChords}</Segment>
+                                    <Segment vertical basic>{chords}</Segment>
+                                </Segment>
+                            )
+                            : <Segment vertical basic>{chords}</Segment>
+                    }
+                </Segment.Group>
             </Table.Cell>
         );
     }

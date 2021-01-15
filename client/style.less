@@ -49,14 +49,32 @@ a {
 
     /* Chart */
     table.ui.table.chart {
+        font-weight: 500;
         border-spacing: 0 1em;
         tbody {
+            .chart__section-header {
+                font-weight: 900;
+                font-size: 35px;
+            }
             .chart__bar-line {
                 border-spacing: 5px;
 
                 .chart__bar {
+                    font-size: 1.5em;
                     border-top: none;
                     border-bottom: none;
+
+                    padding: 0;
+                    margin: 0;
+                    .segment {
+                        padding-top: 0;
+                        padding-bottom: 0;
+                        margin-top: 0;
+                        margin-bottom: 0;
+                    }
+                    .segment.vertical {
+                        margin: auto;
+                    }
 
                     .chord {
                         &__bar-repeat {
@@ -69,7 +87,7 @@ a {
                         &__time-signature {
                             text-orientation: upright;
                             writing-mode: vertical-rl;
-                            font-size: 0.5em;
+                            font-size: 0.8em;
                             letter-spacing: -7px;
                             margin-left: -10px;
                         }

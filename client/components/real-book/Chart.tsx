@@ -8,17 +8,6 @@ interface IChartProps {
     model: IRealProChartModel;
 }
 
-const styles = {
-    table: {
-        fontWeight: 500,
-        fontSize: 20
-    },
-    sectionHeader: {
-        fontWeight: 900,
-        fontSize: 35
-    }
-};
-
 class Chart extends PureComponent<IChartProps, never> {
     public processLines(segment: IIRealProChartSegment): IIRealProChartSegment {
         if (!segment || !segment.data) {
@@ -78,9 +67,7 @@ class Chart extends PureComponent<IChartProps, never> {
             const headerCell = (
                 <Table.Cell
                     width={1}
-                    verticalAlign="top"
-                    style={styles.sectionHeader}
-                    className="chart__bar"
+                    className="chart__bar chart__section-header"
                 >
                     {segment.name}
                 </Table.Cell>
@@ -106,7 +93,6 @@ class Chart extends PureComponent<IChartProps, never> {
                 singleLine
                 fixed
                 columns={5}
-                style={styles.table}
                 className="chart"
                 unstackable
                 attached="top"
