@@ -1,38 +1,15 @@
-import {timeSignatures, endings} from './IRealProUrlParser';
 import {default as _omit} from 'lodash/omit';
-
-export interface IIRealProChartModelProps {
-    id?: number;
-    title: string;
-    author: string;
-    style: string;
-    key: string;
-    chordString: string;
-}
-
-export interface IIRealProChartBar {
-    chords?: string;
-    openingLine?: string;
-    closingLine?: string;
-    ending?: string;
-    timeSignature?: string;
-    divider?: string;
-    coda?: boolean;
-    fermata?: boolean;
-    segno?: boolean;
-}
-
-export interface IIRealProChartSegment {
-    name: string;
-    data: IIRealProChartBar[];
-    lines?: IIRealProChartBar[][];
-}
-
-const chordsStringExpresion = /[A-GWxn]([+\-^\dhob#sualt]*)(\/[A-G][#b]?)?/;
-const closingBarLines: {[index: string]: string} = {
-    ']': '[',
-    '}': '{'
-};
+import {
+    IIRealProChartSegment,
+    IIRealProChartModelProps,
+    IIRealProChartBar,
+    chordsStringExpresion,
+    closingBarLines,
+    IIRealProChord,
+    timeSignatures,
+    endings,
+    roots
+} from './types';
 
 export default class IRealProChartModel {
     public title = '';
@@ -245,6 +222,7 @@ export default class IRealProChartModel {
         if (barParts && barParts[0] && barParts[1] && barParts[2]) {
             barProps.openingLine = barParts[1];
             barProps.chords = barParts[2].trim();
+            barProps.harmony = this.parseHarmony(barProps.chords);
 
             // Bar string should be either recognizable or empty
             if (barProps.chords !== '' && !barProps.chords.match(chordsStringExpresion)) {
@@ -262,4 +240,43 @@ export default class IRealProChartModel {
         return barProps;
     }
 
+    public parseHarmony(harmonyString: string): IIRealProChord[] {
+        const harmony = harmonyString.split(' ').map((chordString: string) => {
+            const chordParts = chordString.match(chordsStringExpresion);
+
+            if (!chordParts) {
+                throw new Error(`Song: ${this.title}.Chord not recognized ${harmonyString}.`);
+            }
+            // console.log(chordParts);
+            const chord: IIRealProChord = {
+                root: chordParts[1],
+                shift: chordParts[2],
+                quality: chordParts[3],
+                inversion: chordParts[4],
+                numeric: roots.indexOf(chordParts[1]) + 1
+            };
+
+            if (chordParts[5]) {
+                const altChordParts = chordParts[5]
+                    .replace(/[()]*/g, '')
+                    .match(chordsStringExpresion);
+
+                if (!altChordParts) {
+                    throw new Error(`Song: ${this.title}.Alt chord not recognized ${harmonyString}.`);
+                }
+
+                chord.alt = {
+                    root: altChordParts[1],
+                    shift: altChordParts[2],
+                    quality: altChordParts[3],
+                    inversion: altChordParts[4],
+                    numeric: roots.indexOf(altChordParts[1]) + 1
+                };
+            }
+
+            return chord;
+        });
+
+        return harmony;
+    }
 }

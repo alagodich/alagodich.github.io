@@ -74,6 +74,17 @@ describe('UrlParser and ChartModel integration', () => {
                 expect(model.key.length).not.toBe(0);
                 expect(model.chordString.length).not.toBe(0);
                 expect(model.segments.length).not.toBe(0);
+
+                model.segments.forEach(segment => {
+                    segment.data.forEach(bar => {
+                        console.log(bar.chords, model.title);
+                        expect(bar.chords?.split(' ').join('')).toEqual(bar.harmony?.map(chord => {
+                            return [chord.root, chord.shift, chord.quality, chord.inversion]
+                                .filter(item => item)
+                                .join('');
+                        }).join(''));
+                    });
+                });
             });
         }).not.toThrow();
     });
@@ -90,6 +101,16 @@ describe('UrlParser and ChartModel integration', () => {
                 expect(model.key.length).not.toBe(0);
                 expect(model.chordString.length).not.toBe(0);
                 expect(model.segments.length).not.toBe(0);
+
+                // model.segments.forEach(segment => {
+                //     segment.data.forEach(bar => {
+                //         expect(bar.chords?.split(' ').join('')).toEqual(bar.harmony?.map(chord => {
+                //             return [chord.root, chord.shift, chord.quality, chord.inversion]
+                //                 .filter(item => item)
+                //                 .join('');
+                //         }).join(''));
+                //     });
+                // });
             });
         }).not.toThrow();
     });

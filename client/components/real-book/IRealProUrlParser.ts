@@ -1,103 +1,4 @@
-import {IIRealProChartModelProps} from './IRealProChartModel';
-
-export const barLines = [
-    // single bar line
-    '|',
-    // opening double bar line
-    '[',
-    // closing double bar line
-    ']',
-    // opening repeat bar line
-    '{',
-    // closing repeat bar line
-    '}',
-    // Final thick double bar line
-    'Z'
-];
-
-export const timeSignatures: {[index: string]: string} = {
-    T44: '4 / 4',
-    T34: '3 / 4',
-    T24: '2 / 4',
-    T54: '5 / 4',
-    T64: '6 / 4',
-    T74: '7 / 4',
-    T22: '2 / 2',
-    T32: '3 / 2',
-    T58: '5 / 8',
-    T68: '6 / 8',
-    T78: '7 / 8',
-    T98: '9 / 8',
-    T12: '12 / 8'
-};
-
-/**
- * Example: *A[C |A- |SD- |G7 QZ
- */
-export const rehearsalMarks = [
-    // A section
-    '*A',
-    // B section
-    '*B',
-    // C Section
-    '*C',
-    // D Section
-    '*D',
-    // Verse
-    '*V',
-    // Intro
-    '*i',
-
-    // Segno
-    'S',
-    // Coda
-    'Q',
-    // Fermata
-    'f'
-];
-
-/**
- * Example: T44{C |A- |N1D- |G7 } |N2D- G7 |C6 Z
- */
-export const endings = [
-    // First Ending
-    'N1',
-    // Second Ending
-    'N2',
-    // Third Ending
-    'N3',
-    // No text Ending
-    'N0'
-];
-
-export const otherSymbols = [
-    // Space, todo, check how it differs from regular space ' ', it often met with 2 bar repeat
-    'XyQ',
-    // Arbitrary text
-    /<(.*?)>/,
-    // Repeat one bar
-    'x',
-    // 'cl' is repeat 'x', not sure why they need another marking for it
-    'cl',
-    // Visual space between lines
-    'Y',
-    // No chord (N.C)
-    'n',
-    // Pause
-    'p',
-    // todo find out what it is, often goes before chords 'lF#-7 B7' 'lA7sus' (Ahmid-6)
-    'l',
-    // Unknown, not reflected in chart
-    'U',
-    // 'K' and 'LZ' seems like both regular bar lines
-    'K',
-    'LZ',
-    // The base same chord as before, used to mark inversion like in Butterfly
-    'W'
-];
-
-// Probably iReal Pro url format version token
-const prefix = '1r34LbKcu7';
+import {IIRealProChartModelProps, iRealProUrlFormatVersionPrefix} from './types';
 
 /**
  * Parse iReal Pro format url
@@ -157,12 +58,12 @@ export default class IRealProUrlParser {
                 // throw new Error(`Raw data with prefix not found in the string ${rawSong}`);
             }
 
-            if (!rawChordsStringWithPrefix.startsWith(prefix)) {
+            if (!rawChordsStringWithPrefix.startsWith(iRealProUrlFormatVersionPrefix)) {
                 throw new Error('Prefix is not at the beginning, find example, take chords from the next part!');
             }
 
             // todo there may be additional player properties: style, bpm, transpose, repeats
-            const obfuscatedChordString = parts[6].split(prefix)[1];
+            const obfuscatedChordString = parts[6].split(iRealProUrlFormatVersionPrefix)[1];
             const decryptedCordString = this.decrypt(obfuscatedChordString);
 
             const chordString = this.beautifyChordString(decryptedCordString);
@@ -271,7 +172,8 @@ export default class IRealProUrlParser {
             // Add space before (x)
             .replace(/([^\s|]+)(x)/g, '$1 $2')
             // Replace p pause with (/ ) symbol
-            .replace(/p/g, '\\ ')
+            // TODO FIX PAUSE
+            // .replace(/p/g, '\\ ')
             // Each named segment should have opening bar line, it is often omitted
             .replace(/([}\]])[\s]*(\*[\w])(?![\s]*[[{|])/, '$1[$2')
             // Replace (*) if it is not a part of segment name, only acceptable segment names listed in rehearsalMarks

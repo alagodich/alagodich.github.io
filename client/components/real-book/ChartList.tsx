@@ -1,6 +1,6 @@
 import React, {ReactElement} from 'react';
 import {List, Icon} from 'semantic-ui-react';
-import {IIRealProChartModelProps} from './IRealProChartModel';
+import {IIRealProChartModelProps} from './types';
 
 interface IChartListProps {
     onClick: (chartId: number) => void;

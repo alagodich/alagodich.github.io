@@ -1,5 +1,5 @@
 import React, {PureComponent, ReactElement} from 'react';
-import {IIRealProChartModelProps} from './IRealProChartModel';
+import {IIRealProChartModelProps} from './types';
 import {default as _groupBy} from 'lodash/groupBy';
 import {Divider} from 'semantic-ui-react';
 

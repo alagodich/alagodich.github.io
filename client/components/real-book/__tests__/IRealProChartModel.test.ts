@@ -1,6 +1,7 @@
 /* eslint max-len: 0 */
 
-import IRealProChartModel, {IIRealProChartModelProps} from '../IRealProChartModel';
+import IRealProChartModel from '../IRealProChartModel';
+import {IIRealProChartModelProps} from '../types';
 
 const emptyRealProChartProps: IIRealProChartModelProps = {
     title: '',

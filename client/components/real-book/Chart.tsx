@@ -1,7 +1,8 @@
 import React, {PureComponent, ReactElement} from 'react';
 import {Table} from 'semantic-ui-react';
 import Chord from './Chord';
-import IRealProChartModel, {IIRealProChartBar, IIRealProChartSegment} from './IRealProChartModel';
+import IRealProChartModel from './IRealProChartModel';
+import {IIRealProChartBar, IIRealProChartSegment} from './types';
 
 interface IChartProps {
     model: IRealProChartModel;
