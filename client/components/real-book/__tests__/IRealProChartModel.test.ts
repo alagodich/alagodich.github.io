@@ -124,10 +124,10 @@ describe('IRealProChartModel', () => {
             }
         ]);
     });
-    it('should handle string with segment name inside and outside the bar lines', () => {
+    it('should handle string with segment name inside and outside the bar lines, A Night In Tunisia', () => {
         const propsWithSegmentsInsideBars = {
             title: 'A Night In Tunisia',
-            chordString: '{*AT44Eb7 |D- |Eb7 |D- |Eb7 |D- |Eh7 A7b9|D- }[*BAh7 |D7b9 |G-7 |x |Gh7 |C7b9 |F^7 |Eh7 A7b9 ][*AEb7 |D- |Eb7 |D- |Eb7 |D- |Eh7 A7b9|D- Q ZY[QEh7 |x |Eb7#11 |x |D-7 |x |G7#11 |x |G-^7 |G-7 |Gb7#9 |x |F^7 |x |Eh7 |A7b9 Z'
+            chordString: '*A{T44Eb7 |D- |Eb7 |D- |Eb7 |D- |Eh7 A7b9|D- }*B[Ah7 |D7b9 |G-7 |x |Gh7 |C7b9 |F^7 |Eh7 A7b9 ]*A[Eb7 |D- |Eb7 |D- |Eb7 |D- |Eh7 A7b9|D- Q ZY[QEh7 |x |Eb7#11 |x |D-7 |x |G7#11 |x |G-^7 |G-7 |Gb7#9 |x |F^7 |x |Eh7 |A7b9 Z'
         } as IIRealProChartModelProps;
         const modelProps = [
             {
@@ -206,7 +206,7 @@ describe('IRealProChartModel', () => {
     it('should handle 2 bars repeats (r) like in The African Queen', () => {
         const props = {
             title: 'The African Queen',
-            chordString: '[*AT44C-9 Db9|x |r C-9 Db9|x |r|][*AC-9 Db9|x |r C-9 Db9|x |r|][*BBb7 A7|Ab7 G7|C-9 Db9|x |C-9 Db9|x Z'
+            chordString: '*A[T44C-9 Db9|x |r|C-9 Db9|x |r|]*A[C-9 Db9|x |r|C-9 Db9|x |r|]*B[Bb7 A7|Ab7 G7|C-9 Db9|x |C-9 Db9|x Z'
         } as IIRealProChartModelProps;
         const model = new IRealProChartModel(props);
 
@@ -220,7 +220,7 @@ describe('IRealProChartModel', () => {
                     {timeSignature: '4 / 4', openingLine: '[', chords: 'C-9 Db9'},
                     {openingLine: '|', chords: 'x'},
                     {openingLine: '|', chords: 'C-9 Db9'},
-                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'x', closingLine: '|'},
                     {openingLine: '|', chords: 'C-9 Db9'},
                     {openingLine: '|', chords: 'x'},
                     {openingLine: '|', chords: 'C-9 Db9'},
@@ -233,7 +233,7 @@ describe('IRealProChartModel', () => {
                     {openingLine: '[', chords: 'C-9 Db9'},
                     {openingLine: '|', chords: 'x'},
                     {openingLine: '|', chords: 'C-9 Db9'},
-                    {openingLine: '|', chords: 'x'},
+                    {openingLine: '|', chords: 'x', closingLine: '|'},
                     {openingLine: '|', chords: 'C-9 Db9'},
                     {openingLine: '|', chords: 'x'},
                     {openingLine: '|', chords: 'C-9 Db9'},
@@ -256,7 +256,7 @@ describe('IRealProChartModel', () => {
     it('should handle unclosed section like in Ahmid-6', () => {
         const props = {
             title: 'Ahmid-6',
-            chordString: '[*AT44D-7 |C#-7 |r|F#-7 B7|E-7 A7|G F|E- D-7|C^7 |B7 |Bb^7#11 |Ah7 D7b9|F#h7 B7b9|Eh7 A7b9|D-7 E-7|F-7 Bb7|Eb9sus|x|Ab^9|x|Ab7sus|x|Db^13|x|Dh7 G7b9|C-7 F7|F-7 Bb7|Gh7 C7#9|F-7 F#-7|G-7 C-7|T34 F#-7 B7 |E-7 A7sus|T24A7sus|T44 A7sus |x [*BD-7 |C#-7 |D-7 |C#-7 |F#-7 B7|E-7 A7|A-7 |\\ \\ D7|G^7 Bb7|Eb^7 B7|E^7 G7|C^7 Ab7|Db^7 E7|A^7 C7|F^7|x|E-7|x|F^7|x|E-7|x Z'
+            chordString: '*A[T44D-7 |C#-7 |r|F#-7 B7|E-7 A7|G F|E- D-7|C^7 |B7 |Bb^7#11 |Ah7 D7b9|F#h7 B7b9|Eh7 A7b9|D-7 E-7|F-7 Bb7|Eb9sus|x|Ab^9|x|Ab7sus|x|Db^13|x|Dh7 G7b9|C-7 F7|F-7 Bb7|Gh7 C7#9|F-7 F#-7|G-7 C-7|T34 F#-7 B7 |E-7 A7sus|T24A7sus|T44 A7sus |x *B[D-7 |C#-7 |D-7 |C#-7 |F#-7 B7|E-7 A7|A-7 |\\ \\ D7|G^7 Bb7|Eb^7 B7|E^7 G7|C^7 Ab7|Db^7 E7|A^7 C7|F^7|x|E-7|x|F^7|x|E-7|x Z'
         } as IIRealProChartModelProps;
 
         const model = new IRealProChartModel(props);
@@ -337,7 +337,7 @@ describe('IRealProChartModel', () => {
     it('should handle Airmail Special with Segno symbol (s) and 4 double repeats', () => {
         const props = {
             title: 'Airmail Special',
-            chordString: '[*iT44C6 |x |r|r|r|][Co7 |x |r|Co7 Bo7|Bbo7 |Ab7 |G7 ] {*ASC C/E|F G|C C/E|F G|C C7|F F#o7|C/G |C  }[*BCo7 |x |r|Co7 Bo7|Bbo7 |Ab7 |G7 Z'
+            chordString: '*i[T44C6 |x |r|r|r|][Co7 |x |r|Co7 Bo7|Bbo7 |Ab7 |G7 ] *A{SC C/E|F G|C C/E|F G|C C7|F F#o7|C/G |C  }*B[Co7 |x |r|Co7 Bo7|Bbo7 |Ab7 |G7 Z'
         } as IIRealProChartModelProps;
 
         const model = new IRealProChartModel(props);
@@ -533,7 +533,7 @@ describe('IRealProChartModel', () => {
     it('should handle Armando\'s Rhumba where segment name is inside and has a left whitespace', () => {
         const props = {
             title: 'Armando\'s Rhumba',
-            chordString: 'T44[*A C-7 |D7b9 |G7b13 |C-7 |C-7 |D7b9 |G7b13 |C-7 ][ *B C7b9 |F-7 |D7b9/F# |G-7 |Abo7 |D7b9/A |Bb7sus |x |Bb7b9sus |x (E7#9)|Eb6 (E) (F) (F#)|G7b13 Z'
+            chordString: '*A[T44 C-7 |D7b9 |G7b13 |C-7 |C-7 |D7b9 |G7b13 |C-7 ]*B[  C7b9 |F-7 |D7b9/F# |G-7 |Abo7 |D7b9/A |Bb7sus |x |Bb7b9sus |x (E7#9)|Eb6 (E) (F) (F#)|G7b13 Z'
         } as IIRealProChartModelProps;
         const model = new IRealProChartModel(props);
 
@@ -544,7 +544,7 @@ describe('IRealProChartModel', () => {
             {
                 name: 'A',
                 data: [
-                    {openingLine: '[', chords: 'C-7'},
+                    {openingLine: '[', chords: 'C-7', timeSignature: '4 / 4'},
                     {openingLine: '|', chords: 'D7b9'},
                     {openingLine: '|', chords: 'G7b13'},
                     {openingLine: '|', chords: 'C-7'},
@@ -576,7 +576,7 @@ describe('IRealProChartModel', () => {
     it('should handle Alone Too Long with double pause (pp)', () => {
         const props = {
             title: 'Alone Too Long',
-            chordString: '{*AT44G6 |\\ \\ G#o7|A-7 D7|x |A-7 |D7 |N1G6 E-7|A-7 D7 } |N2G6 |F#h7 B7b9 ][*BE- E-/D|E-/C# \\ C7 B7 |E-6 |x |E- E-/D|A7 |A-11 |D7 ][*AG6 |\\ \\ G#o7|A-7 D7|x |A-7 |D7 |G6 E-7|A-7 D7 Z'
+            chordString: '*A{T44G6 |\\ \\ G#o7|A-7 D7|x |A-7 |D7 |N1G6 E-7|A-7 D7 } |N2G6 |F#h7 B7b9 ]*B[E- E-/D|E-/C# \\ C7 B7 |E-6 |x |E- E-/D|A7 |A-11 |D7 ]*A[G6 |\\ \\ G#o7|A-7 D7|x |A-7 |D7 |G6 E-7|A-7 D7 Z'
         } as IIRealProChartModelProps;
         const model = new IRealProChartModel(props);
 
@@ -633,12 +633,12 @@ describe('IRealProChartModel', () => {
             author: 'Lennie Tristano',
             style: 'Up Tempo Swing',
             key: 'F',
-            chordString: '[*AT44F^7 D7#5|G-7 C7|A-7 D7b9|G-7 C7|F^7 F7|Bb^7 Bo7|C7sus C7|F^7 C7#11 ][*BF^7 Ab7|G-7 C7|F6 D7b9|G-7 C7|F^7 F7|C7#11(Bb^7) (Bo7)|(C*7*) x (C7)|F^7#11 ][*CBb-7 |A^7#11 |Ab-7 |G^7#11 |Gb^7 |B7 D7|G-7 |C7#11 ][*AF^7 D7b9|G-7 C7|A-7 D7b9|G-7 C7|F^7 F7|C7#11(Bb^7) (Bo7)|(C7sus) x (C7)|F^7#11 C7#5 ]'
+            chordString: '*A[T44F^7 D7#5|G-7 C7|A-7 D7b9|G-7 C7|F^7 F7|Bb^7 Bo7|C7sus C7|F^7 C7#11 ]*B[F^7 Ab7|G-7 C7|F6 D7b9|G-7 C7|F^7 F7|C7#11(Bb^7) (Bo7)|(C7) x (C7)|F^7#11 ]*C[Bb-7 |A^7#11 |Ab-7 |G^7#11 |Gb^7 |B7 D7|G-7 |C7#11 ]*A[F^7 D7b9|G-7 C7|A-7 D7b9|G-7 C7|F^7 F7|C7#11(Bb^7) (Bo7)|(C7sus) x (C7)|F^7#11 C7#5 ]'
         };
         const model = new IRealProChartModel(props);
 
         expect(model.title).toBe('Crosscurrent');
-        expect(model.chordString.length).toBe(297);
+        expect(model.chordString.length).toBe(295);
 
 
         expect(model.segments).toEqual([
@@ -664,7 +664,8 @@ describe('IRealProChartModel', () => {
                     {openingLine: '|', chords: 'G-7 C7'},
                     {openingLine: '|', chords: 'F^7 F7'},
                     {openingLine: '|', chords: 'C7#11(Bb^7) (Bo7)'},
-                    {openingLine: '|', chords: '(C', closingLine: ']'}
+                    {openingLine: '|', chords: '(C7) x (C7)'},
+                    {openingLine: '|', chords: 'F^7#11', closingLine: ']'}
                 ]
             },
             {
@@ -698,7 +699,7 @@ describe('IRealProChartModel', () => {
     it('should handle Killer Joe', () => {
         const props = {
             title: 'Killer Joe',
-            chordString: '{T44*AC9 |Bb9#11 |r|r|r|}[*BEh7 |A7b9 |Eb-7 |Ab7 |A7 |Ab7 |E-7 |A7 ][*AC9 |Bb9#11 |r|r|r|Z'
+            chordString: '*A{T44C9 |Bb9#11 |r|r|r|}*B[Eh7 |A7b9 |Eb-7 |Ab7 |A7 |Ab7 |E-7 |A7 ]*A[C9 |Bb9#11 |r|r|r|Z'
         } as IIRealProChartModelProps;
         const model = new IRealProChartModel(props);
 
@@ -750,7 +751,7 @@ describe('IRealProChartModel', () => {
     it('should handle Moanin\'', () => {
         const props = {
             title: 'Moanin\'',
-            chordString: '{T44*An Bb|F n |r|r|r| }[*BBb-7 Ab9|G7b9 C7#9|F-7 |F7b9 B7|Bb-7 Ab9|G7b9 |Gh7 |C7b9 ]Y{S*AF-7 Ab7|G7 C7b9|r|r|r| }[*BBb-7 Ab9|G7b9 C7#9|F-7 |F7b9 B7|Bb-7 Ab9|G7b9 |Gh7 |C7b9 ]'
+            chordString: '*A{T44n Bb|F n |r|r|r| }*B[Bb-7 Ab9|G7b9 C7#9|F-7 |F7b9 B7|Bb-7 Ab9|G7b9 |Gh7 |C7b9 ]Y*A{SF-7 Ab7|G7 C7b9|r|r|r| }*B[Bb-7 Ab9|G7b9 C7#9|F-7 |F7b9 B7|Bb-7 Ab9|G7b9 |Gh7 |C7b9 ]'
         } as IIRealProChartModelProps;
         const model = new IRealProChartModel(props);
 
@@ -816,7 +817,7 @@ describe('IRealProChartModel', () => {
     it('should handle Brazilian Suite', () => {
         const props = {
             title: 'Brazilian Suite',
-            chordString: '{*iT44Ab-7 |Eb-7 |Ab-7 |Eb-7 }{*AAb-7 |Ab-7/Gb |E^7#11 |Eb-7 |Db-7 |Eb7b9 |D7b5 |Db7 |C^7#5 |B7 |Bb7b9 |Eb7#9 |Ab-7 |Eb7b9 ]Ab-7 |B7/F# |Fh7 |Bb7 |E-7 |A7 |D^7 |Eb-7 Ab7|Db^7 |Bb-7 |Eb-7 |Ab7 |Db^7 |Bb-7 |Eb^7#11 |Eb7 |Ab-7 |Ab-7/Gb |Eb^7#11 |Eb-7 |Db-7 |Eb7b9 ]{Ab-7|Eb-7|Ab-7|Eb-7 } Q|Db^7|Db^7 Z'
+            chordString: '*i{T44Ab-7 |Eb-7 |Ab-7 |Eb-7 }*A{Ab-7 |Ab-7/Gb |E^7#11 |Eb-7 |Db-7 |Eb7b9 |D7b5 |Db7 |C^7#5 |B7 |Bb7b9 |Eb7#9 |Ab-7 |Eb7b9 ]Ab-7 |B7/F# |Fh7 |Bb7 |E-7 |A7 |D^7 |Eb-7 Ab7|Db^7 |Bb-7 |Eb-7 |Ab7 |Db^7 |Bb-7 |Eb^7#11 |Eb7 |Ab-7 |Ab-7/Gb |Eb^7#11 |Eb-7 |Db-7 |Eb7b9 ]{Ab-7|Eb-7|Ab-7|Eb-7 } Q|Db^7|Db^7 Z'
         } as IIRealProChartModelProps;
         const model = new IRealProChartModel(props);
 
@@ -886,7 +887,7 @@ describe('IRealProChartModel', () => {
     it('should handle Butterfly', () => {
         const props = {
             title: 'Butterfly',
-            chordString: '{*iT44F-7 |\\ A-7 |F-7 |\\ A-7 }{S*AF-11 |\\ A-11 |F-11 |\\ D-11 }[*Bn Bb7|n |n |n A7#9#5 |Ab^7/Bb |Ab^7#5/Bb |Ab^7/Bb |Bb13 |Eb13sus |x |Eb7#9#5 |x |Ab13sus |\\ \\ W/C QC7/E |n F-7|\\ A-7 |{F-7 |\\ A-7  } Y{QF-11  |x |x |x }{Bb13 |x |x |x }fA^7#11 Z'
+            chordString: '*i{T44F-7 |\\ A-7 |F-7 |\\ A-7 }*A{SF-11 |\\ A-11 |F-11 |\\ D-11 }*B[n Bb7|n |n |n A7#9#5 |Ab^7/Bb |Ab^7#5/Bb |Ab^7/Bb |Bb13 |Eb13sus |x |Eb7#9#5 |x |Ab13sus |\\ \\ W/C QC7/E |n F-7|\\ A-7 |{F-7 |\\ A-7  } Y{QF-11  |x |x |x }{Bb13 |x |x |x }fA^7#11 Z'
         } as IIRealProChartModelProps;
         const model = new IRealProChartModel(props);
 

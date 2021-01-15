@@ -42,7 +42,7 @@ describe('Chart Component', () => {
             author: 'Silver Horace',
             style: 'Latin',
             key: 'C-',
-            chordString: '[*AT44C-9 Db9|x |r|C-9 Db9|x |r|][*AC-9 Db9|x |r|C-9 Db9|x |r|][*BBb7 A7|Ab7 G7|C-9 Db9|x |C-9 Db9|x Z'
+            chordString: '*A[T44C-9 Db9|x |r|C-9 Db9|x |r|]*A[C-9 Db9|x |r|C-9 Db9|x |r|]*B[Bb7 A7|Ab7 G7|C-9 Db9|x |C-9 Db9|x Z'
         };
         const model = new IRealProChartModel(props);
 
@@ -72,7 +72,7 @@ describe('Chart Component', () => {
             author: 'Christian Charlie',
             style: 'Medium Up Swing',
             key: 'C',
-            chordString: '[*iT44C6 |x |r|r|r|][Co7 |x |r|Co7 Bo7|Bbo7 |Ab7 |G7 ] {*ASC C/E|F G|C C/E|F G|C C7|F F#o7|C/G |C  }[*BCo7 |x |r|Co7 Bo7|Bbo7 |Ab7 |G7 Z'
+            chordString: '*i[T44C6 |x |r|r|r|][Co7 |x |r|Co7 Bo7|Bbo7 |Ab7 |G7 ] *A{SC C/E|F G|C C/E|F G|C C7|F F#o7|C/G |C  }*B[Co7 |x |r|Co7 Bo7|Bbo7 |Ab7 |G7 Z'
         };
         const model = new IRealProChartModel(props);
 
@@ -87,7 +87,7 @@ describe('Chart Component', () => {
             author: 'Bacharach Burt',
             style: 'Ballad',
             key: 'Bb',
-            chordString: '{*AT44Bb^7 |F7sus |Bb^7 |D-7 G7|C-7 |D-7 G-7|C-7 F7sus|Bbo7 |N1F7sus |F7 F7#5 } [*BN2A-7 |Bb-/C C7|A-7 |C7sus |A-7 |Bb-/C C7|F7sus |F6 F7 ][*ABb^7 |F7sus |Eh7 Eb7|D-7 G-7|Eh7 Eb7|D-7 G-7|C7#11 |C-7 F7sus|Bbo7 |F7sus |Bo7 |C-9 |Bo7 |Bb^7 Z'
+            chordString: '*A{T44Bb^7 |F7sus |Bb^7 |D-7 G7|C-7 |D-7 G-7|C-7 F7sus|Bbo7 |N1F7sus |F7 F7#5 } *B[N2A-7 |Bb-/C C7|A-7 |C7sus |A-7 |Bb-/C C7|F7sus |F6 F7 ]*A[Bb^7 |F7sus |Eh7 Eb7|D-7 G-7|Eh7 Eb7|D-7 G-7|C7#11 |C-7 F7sus|Bbo7 |F7sus |Bo7 |C-9 |Bo7 |Bb^7 Z'
         };
         const model = new IRealProChartModel(props);
 
@@ -102,7 +102,7 @@ describe('Chart Component', () => {
             author: 'Metheny Pat',
             style: 'Even 8ths',
             key: 'C',
-            chordString: '[*AT44D-7 |C#-7 |r|F#-7 B7|E-7 A7|G F|E- D-7|C^7 |B7 |Bb^7#11 |Ah7 D7b9|F#h7 B7b9|Eh7 A7b9|D-7 E-7|F-7 Bb7|Eb9sus|x|Ab^9|x|Ab7sus|x|Db^13|x|Dh7 G7b9|C-7 F7|F-7 Bb7|Gh7 C7#9|F-7 F#-7|G-7 C-7|T34 F#-7 B7 |E-7 A7sus|T24A7sus|T44 A7sus |x [*BD-7 |C#-7 |D-7 |C#-7 |F#-7 B7|E-7 A7|A-7 |\\ \\ D7|G^7 Bb7|Eb^7 B7|E^7 G7|C^7 Ab7|Db^7 E7|A^7 C7|F^7|x|E-7|x|F^7|x|E-7|x Z'
+            chordString: '*A[T44D-7 |C#-7 |r|F#-7 B7|E-7 A7|G F|E- D-7|C^7 |B7 |Bb^7#11 |Ah7 D7b9|F#h7 B7b9|Eh7 A7b9|D-7 E-7|F-7 Bb7|Eb9sus|x|Ab^9|x|Ab7sus|x|Db^13|x|Dh7 G7b9|C-7 F7|F-7 Bb7|Gh7 C7#9|F-7 F#-7|G-7 C-7|T34 F#-7 B7 |E-7 A7sus|T24A7sus|T44 A7sus |x *B[D-7 |C#-7 |D-7 |C#-7 |F#-7 B7|E-7 A7|A-7 |\\ \\ D7|G^7 Bb7|Eb^7 B7|E^7 G7|C^7 Ab7|Db^7 E7|A^7 C7|F^7|x|E-7|x|F^7|x|E-7|x Z'
         };
         const model = new IRealProChartModel(props);
 
@@ -117,7 +117,7 @@ describe('Chart Component', () => {
             author: 'Cole Porter',
             style: 'Medium Swing',
             key: 'F',
-            chordString: '{*AT44F^7 |Eh7 A7b9|D-7 Db7|C-7 F7b9|Bb^7 |Bb-7 Eb7b9|Ab^7 |x |N1Ah7|D7b9|Gh7|C7b9|F6|D7b9|G-7|C7b9 }|N2E^7|E7|Bbh7|Eb7b9|Ab^7|x|Gh7|C7b9 ][*BF-7|Dh7|Gh7|C7b9|Eb-7|Ab7|Db6|x|Gh7|C7b9|F-7|F-7/Eb|Dh7|G7b9|Gh7|C7b9 ][*CF^7 |Eh7 A7b9|D-7 Db7|C-7 F7b9|Bb^7 |x |Bb-7 |Eb7 |A-7 |D7 |G-7 |C7b9 |F6 |D7#9 |G-7 |C7b9 Z'
+            chordString: '*A{T44F^7 |Eh7 A7b9|D-7 Db7|C-7 F7b9|Bb^7 |Bb-7 Eb7b9|Ab^7 |x |N1Ah7|D7b9|Gh7|C7b9|F6|D7b9|G-7|C7b9 }|N2E^7|E7|Bbh7|Eb7b9|Ab^7|x|Gh7|C7b9 ]*B[F-7|Dh7|Gh7|C7b9|Eb-7|Ab7|Db6|x|Gh7|C7b9|F-7|F-7/Eb|Dh7|G7b9|Gh7|C7b9 ]*C[F^7 |Eh7 A7b9|D-7 Db7|C-7 F7b9|Bb^7 |x |Bb-7 |Eb7 |A-7 |D7 |G-7 |C7b9 |F6 |D7#9 |G-7 |C7b9 Z'
         };
         const model = new IRealProChartModel(props);
 
@@ -132,7 +132,7 @@ describe('Chart Component', () => {
             author: 'Herbie Hancock',
             style: 'Funk',
             key: 'F-',
-            chordString: '{*iT44F-7 |\\ A-7 |F-7 |\\ A-7 }{S*AF-11 |\\ A-11 |F-11 |\\ D-11 }[*Bn Bb7|n |n |n A7#9#5 |Ab^7/Bb |Ab^7#5/Bb |Ab^7/Bb |Bb13 |Eb13sus |x |Eb7#9#5 |x |Ab13sus |\\ \\ W/C QC7/E |n F-7|\\ A-7 |{F-7 |\\ A-7  } Y{QF-11  |x |x |x }{Bb13 |x |x |x }fA^7#11 Z'
+            chordString: '*i{T44F-7 |\\ A-7 |F-7 |\\ A-7 }*A{SF-11 |\\ A-11 |F-11 |\\ D-11 }*B[n Bb7|n |n |n A7#9#5 |Ab^7/Bb |Ab^7#5/Bb |Ab^7/Bb |Bb13 |Eb13sus |x |Eb7#9#5 |x |Ab13sus |\\ \\ W/C QC7/E |n F-7|\\ A-7 |{F-7 |\\ A-7  } Y{QF-11  |x |x |x }{Bb13 |x |x |x }fA^7#11 Z'
         };
 
         const model = new IRealProChartModel(props);

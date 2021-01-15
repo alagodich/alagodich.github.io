@@ -1,6 +1,6 @@
 /* eslint react/no-set-state: 0 */
 
-import React, {PureComponent, ReactElement} from 'react';
+import React, {Component, ReactElement} from 'react';
 import Chart from './Chart';
 import {ChartList} from './ChartList';
 import IRealProUrlParser from './IRealProUrlParser';
@@ -37,7 +37,7 @@ function updateHash(hash: string): void {
 
 const title = 'Real Book';
 
-class RealBook extends PureComponent<Record<string, unknown>, IRealBookState> {
+class RealBook extends Component<Record<string, unknown>, IRealBookState> {
     constructor(props: Record<string, unknown>) {
         super(props);
 
@@ -188,7 +188,8 @@ class RealBook extends PureComponent<Record<string, unknown>, IRealBookState> {
         return () => this.setState({
             searchFilter: '',
             filteredSongs: this.state.library,
-            loading: false
+            loading: false,
+            chart: null
         });
     }
 

@@ -1,12 +1,10 @@
 import React, {PureComponent, ReactElement} from 'react';
 import {IIRealProChartModelProps} from './IRealProChartModel';
+import {default as _groupBy} from 'lodash/groupBy';
+import {Divider} from 'semantic-ui-react';
 
 interface IRealBookAnalyzeChartsProps {
     songs: IIRealProChartModelProps[];
-}
-
-interface IRealBookAnalyzeChartsState {
-    keysChart: {data: IChartSeriesItem[]};
 }
 
 interface IChartSeriesItem {
@@ -15,63 +13,50 @@ interface IChartSeriesItem {
     children?: IChartSeriesItem[];
 }
 
-class RealBookAnalyzeCharts extends PureComponent<IRealBookAnalyzeChartsProps, IRealBookAnalyzeChartsState> {
-    constructor(props: IRealBookAnalyzeChartsProps) {
-        super(props);
+class RealBookAnalyzeCharts extends PureComponent<IRealBookAnalyzeChartsProps, never> {
+    public getStyleToKeysSeries(): IChartSeriesItem[] {
+        const stylesToKeys: IChartSeriesItem[] = [];
+        const byStyles = _groupBy(this.props.songs, 'style');
 
-        this.state = {
-            keysChart: {data: []}
-        };
-    }
+        Object.getOwnPropertyNames(byStyles).forEach((styleName: string) => {
+            const style: IChartSeriesItem = {
+                name: styleName,
+                children: []
+            };
 
-    public componentDidMount(): void {
-        this.loadKeysChartData();
-    }
+            const byKey = _groupBy(byStyles[styleName], 'key');
 
-    public loadKeysChartData(): void {
-        const keysChart: {data: IChartSeriesItem[]} = {
-            data: [
-                {
-                    name: 'Keys',
-                    children: []
-                }
-            ]
-        };
-        const keys: {[key: string]: number} = {};
-
-        this.props.songs.forEach(song => {
-            if (!keys[song.key]) {
-                keys[song.key] = 1;
-            } else {
-                keys[song.key]++;
-            }
-        });
-
-        Object.getOwnPropertyNames(keys).forEach(key => {
-            const children: IChartSeriesItem[] = [];
-            const styles: {[style: string]: number} = {};
-
-            this.props.songs.filter(song => song.key === key).forEach(song => {
-                if (!styles[song.style]) {
-                    styles[song.style] = 1;
-                } else {
-                    styles[song.style]++;
-                }
-            });
-            Object.getOwnPropertyNames(styles).forEach(style => {
-                children.push({name: style, value: styles[style]});
+            Object.getOwnPropertyNames(byKey).forEach((key: string) => {
+                style.children?.push({name: key, value: byKey[key].length});
             });
 
-            if (keysChart.data[0].children) {
-                keysChart.data[0].children.push({name: key, value: keys[key], children});
-            }
+            stylesToKeys.push(style);
         });
-        this.setState({keysChart});
+
+        return stylesToKeys;
+    }
+
+    public renderSeries(): ReactElement {
+        return (
+            <div>
+                {this.getStyleToKeysSeries().map(style => (
+                    <div key={style.name}>
+                        <span style={{textDecoration: 'underline'}}>
+                            {`${style.name} [${style.children?.reduce((counter: number, key: IChartSeriesItem) =>
+                                counter + (key && key.value ? key.value : 0), 0)}]`}
+                        </span>
+                        <br />
+                        {style.children?.map(key => `${key.name}[${key.value}]`).join(' / ')}
+                        <Divider />
+                    </div>
+                ))}
+            </div>
+        );
     }
 
     public render(): ReactElement {
         return (
-            <div>{JSON.stringify(this.state.keysChart)}</div>
+            <div>{this.renderSeries()}</div>
         );
     }
 

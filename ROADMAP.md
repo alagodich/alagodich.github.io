@@ -12,7 +12,7 @@
 * Add playlists and better navigation with global state store and redux
 * Encrypt song to data url for export
 * Analyze chords and add option to present them as steps, build Markov Chain
-* Check all songs after Armando's Rhumba
+* Store songs in parsed format but add ability to import url
 
 #### csound
 * Integrate with real book

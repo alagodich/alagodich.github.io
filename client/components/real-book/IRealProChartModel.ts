@@ -63,15 +63,6 @@ export default class IRealProChartModel {
      */
     private init(): void {
         const segments = this.chordString
-            /**
-             * TODO move these replaces to IRealProUrlParser
-             * In some cases segment name *A, *B may be inside bar lines, in some outside,
-             * we will put them always outside
-             * Keeping spaces, time signature Tdd and S inside
-             */
-            .replace(/([{[|Y])([\sT\dS]*)(\*[\w]{1})/g, '$3$1$2')
-            // Each ending should have opening bar line
-            .replace('}N', '}|N')
             // Split chord string by Segment name *A, *B, they are all now outside the bar lines
             .match(/(\*\w)([^*]+)/g);
 
@@ -148,7 +139,7 @@ export default class IRealProChartModel {
             // Merge some parts together, for example closing bar line with the previous bar
             if (bar.closingLine && Object.getOwnPropertyNames(bar).length === 1) {
                 if (!segment[segment.length - 1]) {
-                    throw new Error(`Invalid segment, closing bar as a first part: ${segmentString}`);
+                    throw new Error(`Song: ${this.title}. Closing bar as a first part: ${segmentString}.`);
                 }
                 segment[segment.length - 1].closingLine = bar.closingLine;
             } else if (bar.openingLine && closingBarLines[bar.openingLine]) {

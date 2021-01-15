@@ -34,7 +34,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Allman Brothers',
                     style: 'Rock Pop',
                     key: 'E',
-                    chordString: '{*iE |F#- |G#- |F#- |[*AE |F#- |G#- |F#- |E |F#- |A B|C#- D|E F#-|G#- A|C |fB }|*iE |F#- |G#- |F#- |*BE |D |A |B |C#- |A |B |fB |[*AE |F#- |G#- |F#- |E |F#- |A B|C#- D|E F#-|G#- A|C |fB }|E |F#- |C |fB |{*iE |F#- |G#- |F#- }'
+                    chordString: '*i{E |F#- |G#- |F#- |*A[E |F#- |G#- |F#- |E |F#- |A B|C#- D|E F#-|G#- A|C |fB }*i|E |F#- |G#- |F#- *B|E |D |A |B |C#- |A |B |fB |*A[E |F#- |G#- |F#- |E |F#- |A B|C#- D|E F#-|G#- A|C |fB }|E |F#- |C |fB |*i{E |F#- |G#- |F#- }'
                 },
                 {
                     title: 'Honeysuckle Rose',
@@ -56,7 +56,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Horace Silver',
                     style: 'Latin',
                     key: 'C-',
-                    chordString: '[*AT44C-9 Db9|x |r|C-9 Db9|x |r|][*AC-9 Db9|x |r|C-9 Db9|x |r|][*BBb7 A7|Ab7 G7|C-9 Db9|x |C-9 Db9|x Z'
+                    chordString: '*A[T44C-9 Db9|x |r|C-9 Db9|x |r|]*A[C-9 Db9|x |r|C-9 Db9|x |r|]*B[Bb7 A7|Ab7 G7|C-9 Db9|x |C-9 Db9|x Z'
                 }
             ]);
         });
@@ -86,7 +86,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Earl Warren',
                     style: 'Medium Swing',
                     key: 'C',
-                    chordString: '{*AT44C9 |Eb-6 |C9 |Eb-6 |Bb |Bb7 A7 Ab7 G7|N1 C9 F#o7 |C9 Ab7 G7} |N2 C9 F#o7|C9 F7 Bb][*B Bb |Eb Eb6|Eb6 |x |G9 |F F6 |F9 |F7 ][*AC9 |Eb-6 |C9 |Eb-6 |Bb |Bb7 A7 Ab7 G7|C9 F#o7 |C6 F7 Bb D9Z'
+                    chordString: '*A{T44C9 |Eb-6 |C9 |Eb-6 |Bb |Bb7 A7 Ab7 G7|N1 C9 F#o7 |C9 Ab7 G7} |N2 C9 F#o7|C9 F7 Bb]*B[ Bb |Eb Eb6|Eb6 |x |G9 |F F6 |F9 |F7 ]*A[C9 |Eb-6 |C9 |Eb-6 |Bb |Bb7 A7 Ab7 G7|C9 F#o7 |C6 F7 Bb D9Z'
                 }
             ]);
         });
@@ -131,7 +131,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Charlie Christian',
                     style: 'Medium Up Swing',
                     key: 'C',
-                    chordString: '[*iT44C6 |x |r|r|r|][Co7 |x |r|Co7 Bo7|Bbo7 |Ab7 |G7 ] {*ASC C/E|F G|C C/E|F G|C C7|F F#o7|C/G |C  }[*BCo7 |x |r|Co7 Bo7|Bbo7 |Ab7 |G7 Z'
+                    chordString: '*i[T44C6 |x |r|r|r|][Co7 |x |r|Co7 Bo7|Bbo7 |Ab7 |G7 ] *A{SC C/E|F G|C C/E|F G|C C7|F F#o7|C/G |C  }*B[Co7 |x |r|Co7 Bo7|Bbo7 |Ab7 |G7 Z'
                 }
             ]);
         });
@@ -146,7 +146,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Pat Metheny',
                     style: 'Ballad',
                     key: 'A-',
-                    chordString: '[*iT44A- |D-6 |A- |D-6 D-11 ][*AA-9 D-7 E-7 |F^7 G9 E7/G# |A-9 Ab^7|C^7/G F#h7|F^7 Eb69|D9 G7sus|C^7 |F-7/G E/G# ][*BSA-9 D-9 E-7 |F-7 Bb7|Eb^7 Bb/D|Db^7 |C-7 Ab/C|F-7 G-7|Ah7 D7b5|G^7 Bh7 E7 ][*C A-9 D-7 E-7 |F^7 G9 E7/G# |A-9 Ab^7|C^7/G F#h7|Y|F^7 Eb69|D9 F/G Q|C^7 |F-6/G |C^7 |F-6/G Z Y[QC^7 |F-6/G |C^7 |F-6/G G#o |A-9 Z'
+                    chordString: '*i[T44A- |D-6 |A- |D-6 D-11 ]*A[A-9 D-7 E-7 |F^7 G9 E7/G# |A-9 Ab^7|C^7/G F#h7|F^7 Eb69|D9 G7sus|C^7 |F-7/G E/G# ]*B[SA-9 D-9 E-7 |F-7 Bb7|Eb^7 Bb/D|Db^7 |C-7 Ab/C|F-7 G-7|Ah7 D7b5|G^7 Bh7 E7 ]*C[ A-9 D-7 E-7 |F^7 G9 E7/G# |A-9 Ab^7|C^7/G F#h7|Y|F^7 Eb69|D9 F/G Q|C^7 |F-6/G |C^7 |F-6/G Z Y[QC^7 |F-6/G |C^7 |F-6/G G#o |A-9 Z'
                 }
             ]);
         });
@@ -161,7 +161,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Michael Gibbs',
                     style: 'Ballad',
                     key: 'D',
-                    chordString: '[*iT44D7 |x |x |x ]{*AD7 |x |x |x |D7 |x |C^7 |x |D7 |x |E7 |x |x |x |D^7 |x |E7 |x |Gb7 |x |Gbh7 |E7 |x |E7b5 Q }Y{QD7 |x |x |x }'
+                    chordString: '*i[T44D7 |x |x |x ]*A{D7 |x |x |x |D7 |x |C^7 |x |D7 |x |E7 |x |x |x |D^7 |x |E7 |x |Gb7 |x |Gbh7 |E7 |x |E7b5 Q }Y{QD7 |x |x |x }'
                 }
             ]);
         });
@@ -176,7 +176,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Arthur Schwartz',
                     style: 'Ballad',
                     key: 'G',
-                    chordString: '{*AT44G6 |\\ \\ G#o7|A-7 D7|x |A-7 |D7 |N1G6 E-7|A-7 D7 } |N2G6 |F#h7 B7b9 ][*BE- E-/D|E-/C# \\ C7 B7 |E-6 |x |E- E-/D|A7 |A-11 |D7 ][*AG6 |\\ \\ G#o7|A-7 D7|x |A-7 |D7 |G6 E-7|A-7 D7 Z'
+                    chordString: '*A{T44G6 |\\ \\ G#o7|A-7 D7|x |A-7 |D7 |N1G6 E-7|A-7 D7 } |N2G6 |F#h7 B7b9 ]*B[E- E-/D|E-/C# \\ C7 B7 |E-6 |x |E- E-/D|A7 |A-11 |D7 ]*A[G6 |\\ \\ G#o7|A-7 D7|x |A-7 |D7 |G6 E-7|A-7 D7 Z'
                 }
             ]);
         });
@@ -191,7 +191,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Pat Metheny',
                     style: 'Even 8ths',
                     key: 'C',
-                    chordString: '[*AT44D-7 |C#-7 |r|F#-7 B7|E-7 A7|G F|E- D-7|C^7 |B7 |Bb^7#11 |Ah7 D7b9|F#h7 B7b9|Eh7 A7b9|D-7 E-7|F-7 Bb7|Eb9sus|x|Ab^9|x|Ab7sus|x|Db^13|x|Dh7 G7b9|C-7 F7|F-7 Bb7|Gh7 C7#9|F-7 F#-7|G-7 C-7|T34 F#-7 B7 |E-7 A7sus|T24A7sus|T44 A7sus |x [*BD-7 |C#-7 |D-7 |C#-7 |F#-7 B7|E-7 A7|A-7 |\\ \\ D7|G^7 Bb7|Eb^7 B7|E^7 G7|C^7 Ab7|Db^7 E7|A^7 C7|F^7|x|E-7|x|F^7|x|E-7|x Z'
+                    chordString: '*A[T44D-7 |C#-7 |r|F#-7 B7|E-7 A7|G F|E- D-7|C^7 |B7 |Bb^7#11 |Ah7 D7b9|F#h7 B7b9|Eh7 A7b9|D-7 E-7|F-7 Bb7|Eb9sus|x|Ab^9|x|Ab7sus|x|Db^13|x|Dh7 G7b9|C-7 F7|F-7 Bb7|Gh7 C7#9|F-7 F#-7|G-7 C-7|T34 F#-7 B7 |E-7 A7sus|T24A7sus|T44 A7sus |x *B[D-7 |C#-7 |D-7 |C#-7 |F#-7 B7|E-7 A7|A-7 |\\ \\ D7|G^7 Bb7|Eb^7 B7|E^7 G7|C^7 Ab7|Db^7 E7|A^7 C7|F^7|x|E-7|x|F^7|x|E-7|x Z'
                 }
             ]);
         });
@@ -206,7 +206,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Lennie Tristano',
                     style: 'Up Tempo Swing',
                     key: 'F',
-                    chordString: '[*AT44F^7 D7#5|G-7 C7|A-7 D7b9|G-7 C7|F^7 F7|Bb^7 Bo7|C7sus C7|F^7 C7#11 ][*BF^7 Ab7|G-7 C7|F6 D7b9|G-7 C7|F^7 F7|C7#11(Bb^7) (Bo7)|(C7) x (C7)|F^7#11 ][*CBb-7 |A^7#11 |Ab-7 |G^7#11 |Gb^7 |B7 D7|G-7 |C7#11 ][*AF^7 D7b9|G-7 C7|A-7 D7b9|G-7 C7|F^7 F7|C7#11(Bb^7) (Bo7)|(C7sus) x (C7)|F^7#11 C7#5 ]'
+                    chordString: '*A[T44F^7 D7#5|G-7 C7|A-7 D7b9|G-7 C7|F^7 F7|Bb^7 Bo7|C7sus C7|F^7 C7#11 ]*B[F^7 Ab7|G-7 C7|F6 D7b9|G-7 C7|F^7 F7|C7#11(Bb^7) (Bo7)|(C7) x (C7)|F^7#11 ]*C[Bb-7 |A^7#11 |Ab-7 |G^7#11 |Gb^7 |B7 D7|G-7 |C7#11 ]*A[F^7 D7b9|G-7 C7|A-7 D7b9|G-7 C7|F^7 F7|C7#11(Bb^7) (Bo7)|(C7sus) x (C7)|F^7#11 C7#5 ]'
                 }
             ]);
         });
@@ -221,7 +221,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Cedar Walton',
                     style: 'Medium Up Swing',
                     key: 'C',
-                    chordString: '[*iT44D^9/A|E-7/A|r|r|r|D#^9/A|E-7/A|r|r|r|]{*AD^9 |C^9 |D^9 |C^9 |D^9 |Ab7#11 |G^7 |C#h7 F#7 |B-7 |C^9 |B-7 E13 G^9|Gb13b9 Ab13b9/F|Bb13/E Eb13#11/Eb }[*BD^9/A|E-7/A|r|r|r|]*C D^9 |C^9 |D^9 |C^9 |D^9 |Ab7#11 |G^7 |C#h7 F#7#11|B-7 |C^9 |B-7 E13|Bb-7 Eb9|D^9/A|E-7/A|r|r|r|Z'
+                    chordString: '*i[T44D^9/A|E-7/A|r|r|r|D#^9/A|E-7/A|r|r|r|]*A{D^9 |C^9 |D^9 |C^9 |D^9 |Ab7#11 |G^7 |C#h7 F#7 |B-7 |C^9 |B-7 E13 G^9|Gb13b9 Ab13b9/F|Bb13/E Eb13#11/Eb }*B[D^9/A|E-7/A|r|r|r|]*C D^9 |C^9 |D^9 |C^9 |D^9 |Ab7#11 |G^7 |C#h7 F#7#11|B-7 |C^9 |B-7 E13|Bb-7 Eb9|D^9/A|E-7/A|r|r|r|Z'
                 }
             ]);
         });
@@ -251,7 +251,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Benny Golson',
                     style: 'Medium Swing',
                     key: 'C',
-                    chordString: '{T44*AC9 |Bb9#11 |r|r|r|}[*BEh7 |A7b9 |Eb-7 |Ab7 |A7 |Ab7 |E-7 |A7 ][*AC9 |Bb9#11 |r|r|r|Z'
+                    chordString: '*A{T44C9 |Bb9#11 |r|r|r|}*B[Eh7 |A7b9 |Eb-7 |Ab7 |A7 |Ab7 |E-7 |A7 ]*A[C9 |Bb9#11 |r|r|r|Z'
                 }
             ]);
         });
@@ -266,7 +266,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Miles Davis',
                     style: 'Medium Swing',
                     key: 'C',
-                    chordString: '[*AT44C^7 |x |x |x |D-7 |G-7 |x |x |F^7 |x |Bb^7 |B7 E7|A- A-/G|F#h7 F7|Eh7 |A7 ][*BD-7 |x |C^7 |x |D-7 |G-7 |\\ \\ C7|F^7 |Bh7 |E7+ |Eh7 Q|A7 |D-7 |G7 |D7 |G7 ]Y[QA7 |D-7 |x |G7sus |Bb^7 |Db7 |C^7 |x |x Z'
+                    chordString: '*A[T44C^7 |x |x |x |D-7 |G-7 |x |x |F^7 |x |Bb^7 |B7 E7|A- A-/G|F#h7 F7|Eh7 |A7 ]*B[D-7 |x |C^7 |x |D-7 |G-7 |\\ \\ C7|F^7 |Bh7 |E7+ |Eh7 Q|A7 |D-7 |G7 |D7 |G7 ]Y[QA7 |D-7 |x |G7sus |Bb^7 |Db7 |C^7 |x |x Z'
                 }
             ]);
         });
@@ -281,7 +281,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Bobby Timmons',
                     style: 'Medium Swing',
                     key: 'F-',
-                    chordString: '{T44*An Bb|F n |r|r|r| }[*BBb-7 Ab9|G7b9 C7#9|F-7 |F7b9 B7|Bb-7 Ab9|G7b9 |Gh7 |C7b9 ]Y{S*AF-7 Ab7|G7 C7b9|r|r|r| }[*BBb-7 Ab9|G7b9 C7#9|F-7 |F7b9 B7|Bb-7 Ab9|G7b9 |Gh7 |C7b9 ]'
+                    chordString: '*A{T44n Bb|F n |r|r|r| }*B[Bb-7 Ab9|G7b9 C7#9|F-7 |F7b9 B7|Bb-7 Ab9|G7b9 |Gh7 |C7b9 ]Y*A{SF-7 Ab7|G7 C7b9|r|r|r| }*B[Bb-7 Ab9|G7b9 C7#9|F-7 |F7b9 B7|Bb-7 Ab9|G7b9 |Gh7 |C7b9 ]'
                 }
             ]);
         });
@@ -296,7 +296,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Michel Petrucciani',
                     style: 'Bossa Nova',
                     key: 'Bb-',
-                    chordString: '{*iT44Ab-7 |Eb-7 |Ab-7 |Eb-7 }{*AAb-7 |Ab-7/Gb |E^7#11 |Eb-7 |Db-7 |Eb7b9 |D7b5 |Db7 |C^7#5 |B7 |Bb7b9 |Eb7#9 |Ab-7 |Eb7b9 ]Ab-7 |B7/F# |Fh7 |Bb7 |E-7 |A7 |D^7 |Eb-7 Ab7|Db^7 |Bb-7 |Eb-7 |Ab7 |Db^7 |Bb-7 |Eb^7#11 |Eb7 |Ab-7 |Ab-7/Gb |Eb^7#11 |Eb-7 |Db-7 |Eb7b9 ]{Ab-7|Eb-7|Ab-7|Eb-7 } Q|Db^7|Db^7 Z'
+                    chordString: '*i{T44Ab-7 |Eb-7 |Ab-7 |Eb-7 }*A{Ab-7 |Ab-7/Gb |E^7#11 |Eb-7 |Db-7 |Eb7b9 |D7b5 |Db7 |C^7#5 |B7 |Bb7b9 |Eb7#9 |Ab-7 |Eb7b9 ]Ab-7 |B7/F# |Fh7 |Bb7 |E-7 |A7 |D^7 |Eb-7 Ab7|Db^7 |Bb-7 |Eb-7 |Ab7 |Db^7 |Bb-7 |Eb^7#11 |Eb7 |Ab-7 |Ab-7/Gb |Eb^7#11 |Eb-7 |Db-7 |Eb7b9 ]{Ab-7|Eb-7|Ab-7|Eb-7 }|QDb^7|Db^7 Z'
                 }
             ]);
         });
@@ -311,7 +311,67 @@ describe('IRealProUrlParser', () => {
                     author: 'Herbie Hancock',
                     style: 'Funk',
                     key: 'F-',
-                    chordString: '{*iT44F-7 |\\ A-7 |F-7 |\\ A-7 }{S*AF-11 |\\ A-11 |F-11 |\\ D-11 }[*Bn Bb7|n |n |n A7#9#5 |Ab^7/Bb |Ab^7#5/Bb |Ab^7/Bb |Bb13 |Eb13sus |x |Eb7#9#5 |x |Ab13sus |\\ \\ W/C QC7/E |n F-7|\\ A-7 |{F-7 |\\ A-7  } Y{QF-11  |x |x |x }{Bb13 |x |x |x }fA^7#11 Z'
+                    chordString: '*i{T44F-7 |\\ A-7 |F-7 |\\ A-7 }*A{SF-11 |\\ A-11 |F-11 |\\ D-11 }*B[n Bb7|n |n |n A7#9#5 |Ab^7/Bb |Ab^7#5/Bb |Ab^7/Bb |Bb13 |Eb13sus |x |Eb7#9#5 |x |Ab13sus |\\ \\ W/C QC7/E |n F-7|\\ A-7 |{F-7 |\\ A-7  } Y{QF-11  |x |x |x }{Bb13 |x |x |x }fA^7#11 Z'
+                }
+            ]);
+        });
+        it('should handle Armando\'s Rhumba with segment symbol inside bar line, we should move it outside', () => {
+            const songWithRepeats = 'irealb://%41%72%6D%61%6E%64%6F%27%73%20%52%68%75%6D%62%61=%43%6F%72%65%61%20%43%68%69%63%6B==%4C%61%74%69%6E=%43%2D==%31%72%33%34%4C%62%4B%63%75%37%58%39%62%37%44%41%6C%43%2D%37%2D%43%7C%51%79%58%37%2D%43%7C%51%79%58%33%62%31%37%47%7C%51%79%58%39%62%37%44%7C%51%79%58%37%58%79%51%7C%2A%5B%34%34%54%7C%51%79%58%23%62%31%33%58%79%44%7C%51%79%58%37%2D%46%7C%51%79%58%39%62%43%37%2C%42%2A%2C%5B%5D%51%79%58%37%2D%43%7C%51%37%62%39%2F%46%37%47%7C%51%79%2C%73%75%73%39%51%7C%41%62%6F%4C%20%6C%63%4B%51%79%58%2C%73%75%73%37%62%7C%42%51%79%58%41%2F%39%62%37%44%7C%51%79%58%37%5A%42%62%37%62%79%58%37%2D%47%58%79%51%4B%63%6C%20%28%45%37%23%39%29%4C%5A%45%62%36%20%28%45%29%20%28%46%29%20%28%46%23%29%7C%47%37%62%31%33%58%79%51%5A%20==%30=%30===';
+
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'Armando\'s Rhumba',
+                    author: 'Chick Corea',
+                    style: 'Latin',
+                    key: 'C-',
+                    chordString: '*A[T44 C-7 |D7b9 |G7b13 |C-7 |C-7 |D7b9 |G7b13 |C-7 ]*B[  C7b9 |F-7 |D7b9/F# |G-7 |Abo7 |D7b9/A |Bb7sus |x |Bb7b9sus |x (E7#9)|Eb6 (E) (F) (F#)|G7b13 Z'
+                }
+            ]);
+        });
+        it('should handle put opening line before ending if it is missing', () => {
+            const songWithRepeats = 'irealb://%49%66%20%49%20%52%75%6C%65%64%20%54%68%65%20%57%6F%72%6C%64=%42%72%69%63%75%73%73%65%20%4C%65%73%6C%69%65==%42%61%6C%6C%61%64=%46==%31%72%33%34%4C%62%4B%63%75%37%44%20%73%75%73%34%6C%42%62%5E%62%45%20%37%2D%41%6C%7C%2C%37%62%42%2C%37%73%43%20%36%62%42%5A%4C%35%23%37%5E%62%42%20%37%39%4C%5A%44%37%34%54%69%2A%5B%2C%33%31%46%29%47%31%33%20%44%37%2D%43%73%20%37%5E%46%5A%4C%36%46%20%46%2A%41%7B%5D%51%79%58%73%75%73%37%43%5A%4C%39%62%28%42%62%5E%37%5A%4C%39%62%37%20%2D%44%6C%7C%28%45%2D%37%29%41%28%73%75%73%41%73%20%29%73%75%73%37%41%33%28%31%62%42%5A%4C%29%33%31%62%42%28%37%41%20%37%29%41%37%2C%37%2D%45%6C%7C%37%44%20%37%2D%5A%44%2D%37%20%2C%37%43%2C%73%75%73%43%73%20%33%31%47%5A%39%4C%62%37%44%20%37%2D%41%31%4E%5A%4C%33%31%47%7D%4E%32%6C%41%4C%39%5E%2D%44%7C%29%47%2F%37%47%31%33%2C%47%41%20%37%2D%45%5A%4C%37%2D%42%20%37%5E%44%42%6C%2A%5B%5D%2C%37%41%2C%37%2D%45%2C%46%2F%37%37%2C%20%28%41%73%5A%4C%39%62%37%2D%47%29%37%42%2D%37%2C%57%47%73%5A%4C%37%2D%44%20%37%2D%41%6C%7C%62%2F%42%37%43%2C%39%43%73%20%37%2D%47%7C%2C%41%2F%2D%37%28%47%2D%20%37%2D%23%46%6C%41%2A%5B%5D%28%43%37%29%41%2D%47%2C%37%45%2C%37%68%42%73%5A%4C%43%2F%2D%37%44%20%37%2D%44%6C%7C%29%37%6F%23%43%28%37%37%2C%43%37%2C%68%45%2C%46%2F%44%5A%4C%37%5E%5A%46%5E%37%20%5A%4C%35%23%39%62%37%41%20%73%75%73%37%41%4C%5A%33%31%62%42%20%37%2D%45%5A%4C%37%5E%62%42%44%2D%20%44%2D%4C%36%46%20%46%4C%39%62%45%20%4C%5A%43%36%20%79%58%36%2D%62%42%7C%51%79%58%37%2D%47%43%5B%2A%5D%20%37%44%20%39%62%37%44%5A%4C%37%68%41%51%7C%41%2D%37%37%47%20%39%2D%42%73%20%44%2F%20%44%37%4C%5A%45%2F%46%20%46%6C%7C%2C%37%43%66%2C%73%75%43%73%73%66%20%73%75%73%37%43%66%5A%4C%37%2D%47%62%4C%5A%42%62%39%62%37%44%5A%62%2D%2F%44%62%2C%43%37%2C%7C%66%6C%46%2C%20%5A%20==%30=%30===';
+
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'If I Ruled The World',
+                    author: 'Leslie Bricusse',
+                    style: 'Ballad',
+                    key: 'F',
+                    chordString: '*i[T44 Bb^7 Bb^7#5|Bb6 C7 Bb7 |A-7 Eb9|D7sus D7b9|G13 Db9|C7sus ]*A{F F6|F^7 C-7(Bb^7)F13 |E-7(E-7) A7(Bb13)|Bb13(A7sus) Asus(A7)A7 |D- D-^9|D-7 G13|N1A-7 D7b9|G13 Csus C7 }|N2 A-7 D7b9|G13 G7/F E-7 A7 ]*B[ D^7 B-7|E-7 A7 (A7/G)|F#-7 B-7 W/A |G-7 C9 C7/Bb|A-7 D-7|G-7(G-7)G-7/F Eh(C7)A7(C#o7)|D-7 D-7/C|Bh7 E7 G-7 C7 ]*A[ F F6|F^7 Bb^7|E-7 Bb13|A7sus A7b9#5|D- D-^7|D-9 G7|C6 Ah7|D7b9 D7 ]*C[G-7 |Bb-6 |A-7 Eb9|D7b9 D7|G-7|fC7sus fCsus fC7 |F F/Eb|Bb/D Bb-/Db C7 |f F Z'
+                }
+            ]);
+        });
+        it('should handle A Night In Tunisia, harmony string has coda on divider Y, outside any bars', () => {
+            const songWithRepeats = 'irealb://%41%20%4E%69%67%68%74%20%49%6E%20%54%75%6E%69%73%69%61=%47%69%6C%6C%65%73%70%69%65%20%44%69%7A%7A%79==%4C%61%74%69%6E=%44%2D==%31%72%33%34%4C%62%4B%63%75%37%41%20%37%68%45%34%45%62%37%58%44%7C%51%79%58%37%62%45%7C%51%79%58%2D%44%51%7C%79%58%37%62%45%7C%51%79%58%2D%44%7C%51%79%2D%58%79%51%7C%34%54%41%2A%7B%37%43%7C%51%79%44%2D%58%79%51%4C%20%6C%63%4B%51%79%58%37%2D%47%7C%51%79%39%58%62%37%44%7C%51%79%58%37%68%41%42%2A%5B%7D%5A%47%68%37%58%5A%4C%39%62%37%79%58%2D%44%7C%7C%46%5E%37%58%45%7C%51%79%58%2D%44%7C%51%79%58%37%62%45%2A%41%5B%5D%20%39%62%37%41%20%37%68%45%7C%51%79%62%37%58%79%51%51%79%58%39%62%37%62%45%5A%4C%58%79%51%7C%44%79%58%37%68%45%51%5B%59%5A%20%51%20%20%2D%5A%44%4C%39%62%37%41%20%37%68%45%7C%51%79%58%2D%51%4B%63%6C%20%37%62%45%7C%51%58%37%2D%47%7C%51%4B%63%6C%20%2D%47%5A%4C%20%6C%63%4B%51%79%58%31%31%23%47%37%5A%4C%20%6C%63%4B%51%79%58%37%2D%44%5A%4C%5E%37%58%79%51%79%58%31%31%23%79%51%7C%47%62%37%23%39%58%79%51%4B%63%6C%20%4C%5A%46%5E%37%58%79%51%4B%63%6C%20%4C%5A%45%68%37%58%79%51%7C%41%37%62%39%58%79%51%5A%20==%30=%30===';
+
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'A Night In Tunisia',
+                    author: 'Dizzy Gillespie',
+                    style: 'Latin',
+                    key: 'D-',
+                    chordString: '*A{T44Eb7 |D- |Eb7 |D- |Eb7 |D- |Eh7 A7b9|D- }*B[Ah7 |D7b9 |G-7 |x |Gh7 |C7b9 |F^7 |Eh7 A7b9 ]*A[Eb7 |D- |Eb7 |D- |Eb7 |D- |Eh7 A7b9|D- Q ZY[QEh7 |x |Eb7#11 |x |D-7 |x |G7#11 |x |G-^7 |G-7 |Gb7#9 |x |F^7 |x |Eh7 |A7b9 Z'
+                }
+            ]);
+        });
+        it('should handle Litha it has double open braces', () => {
+            const songWithRepeats = 'irealb://%4C%69%74%68%61=%43%6F%72%65%61%20%43%68%69%63%6B==%55%70%20%54%65%6D%70%6F%20%53%77%69%6E%67=%44==%31%72%33%34%4C%62%4B%63%75%37%51%79%58%37%2D%38%44%5E%37%58%37%5E%62%41%7C%51%79%58%37%2D%62%42%7C%51%58%79%37%5E%42%7C%51%79%58%37%2D%23%43%7C%51%79%58%79%51%7C%47%36%54%5B%41%2A%37%5E%43%5A%4C%31%31%4C%5A%78%4C%78%5A%4C%37%5E%62%45%5A%4C%78%5A%4C%78%4C%5A%78%5A%4C%37%5E%44%5A%4C%78%5A%4C%78%5A%4C%5A%78%4C%5A%78%23%37%5E%46%7C%20%20%51%79%58%78%4C%5A%78%4C%78%5A%4C%78%5A%4C%78%5A%4C%39%23%37%42%5A%78%4C%5A%4C%78%5A%4C%78%5A%4C%73%75%73%37%46%5A%20%5D%58%79%51%5A%4C%78%5A%4C%78%5A%4C%78%5A%5B%45%2D%37%4C%5A%4C%73%75%73%37%62%42%5A%4C%78%5A%4C%78%4C%5A%78%5A%4C%78%5A%4C%78%5A%4C%78%5A%4C%78%5A%78%4C%5A%78%4C%34%34%54%42%2A%4C%78%5A%4C%78%78%4C%5A%78%4C%37%62%45%5A%4C%78%5A%4C%78%5A%4C%78%5A%4C%5A%78%4C%78%5A%4C%78%5A%4C%78%5A%4C%37%2D%41%5A%73%75%73%4C%5A%5A%4C%78%5A%4C%5A%78%4C%5A%78%4C%5A%78%4C%5A%78%4C%5A%78%20%5A==%30=%30===';
+
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'Litha',
+                    author: 'Chick Corea',
+                    style: 'Up Tempo Swing',
+                    key: 'D',
+                    chordString: '*A[T68D^7 |C#-7 |B^7 |Bb-7 |Ab^7 |G-7 |F^7#11|x|x|x|D^7|x|x|x|Eb^7|x|x|x|C^7|x|x|x|F7sus|x|x|x|B7#9|x|x|x ]*B[T44E-7|x|x|x|x|x|x|x|Bb7sus|x|x|x|x|x|x|x|A-7|x|x|x|x|x|x|x|Eb7sus|x|x|x|x|x|x|x Z'
                 }
             ]);
         });
