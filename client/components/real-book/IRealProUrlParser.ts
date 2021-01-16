@@ -172,8 +172,7 @@ export default class IRealProUrlParser {
             // Add space before (x)
             .replace(/([^\s|]+)(x)/g, '$1 $2')
             // Replace p pause with (/ ) symbol
-            // TODO FIX PAUSE
-            // .replace(/p/g, '\\ ')
+            .replace(/p[\s]*/g, 'p ')
             // Each named segment should have opening bar line, it is often omitted
             .replace(/([}\]])[\s]*(\*[\w])(?![\s]*[[{|])/, '$1[$2')
             // Replace (*) if it is not a part of segment name, only acceptable segment names listed in rehearsalMarks

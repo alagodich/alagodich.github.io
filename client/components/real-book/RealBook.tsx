@@ -97,6 +97,7 @@ class RealBook extends Component<Record<string, unknown>, IRealBookState> {
     }
 
     private loadLibrary(): void {
+        // TODO Implement playlists first
         // getPlaylist('latin').then(data => {
         //     const parser = new IRealProUrlParser();
         //     const latinSongs = [];
@@ -211,6 +212,7 @@ class RealBook extends Component<Record<string, unknown>, IRealBookState> {
     }
 
     private renderMenu(): ReactElement {
+        // TODO make numeric option in container with redux
         const rightMenu = this.state.chart
             ? (
                 <Menu.Menu position="right">
@@ -226,6 +228,17 @@ class RealBook extends Component<Record<string, unknown>, IRealBookState> {
                             {this.state.header}
                             <Header.Subheader>
                                 {this.state.subHeader}
+                                <a
+                                    href={`https://www.youtube.com/results?search_query=${encodeURIComponent(
+                                        `${this.state.chart.title} ${this.state.chart.author}`
+                                    )}`}
+                                    title="Search song on YouTube"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    style={{textDecoration: 'none', marginLeft: 5}}
+                                >
+                                    <Icon name="youtube play" color="red" />
+                                </a>
                             </Header.Subheader>
                         </Header.Content>
                     </Header>

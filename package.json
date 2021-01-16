@@ -1,6 +1,6 @@
 {
   "name": "alagodich.github.io",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Personal blog.",
   "main": "index.html",
   "scripts": {
@@ -12,7 +12,8 @@
     "build:watch": "rm -rf ./public && webpack --config webpack.config.dev.js",
     "fomantic": "gulp build-fomantic",
     "build:all": "npm run fomantic && npm run lint && npm run test && npm run build",
-    "browser-sync": "browser-sync start --proxy localhost:4000 --files _site/**"
+    "browser-sync": "browser-sync start --proxy localhost:4000 --files _site/**",
+    "cypress": "cypress open"
   },
   "repository": {
     "type": "git",
@@ -36,7 +37,8 @@
     "browser-sync": "^2.26.13",
     "css-loader": "^5.0.1",
     "css-minimizer-webpack-plugin": "^1.2.0",
-    "eslint": "^7.17.0",
+    "cypress": "^6.2.1",
+    "eslint": "^7.18.0",
     "eslint-import-resolver-typescript": "^2.3.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-react": "^7.22.0",
@@ -63,7 +65,7 @@
     "tslib": "^2.1.0",
     "typescript": "^4.1.3",
     "url-loader": "^4.1.1",
-    "webpack": "^5.14.0",
+    "webpack": "^5.15.0",
     "webpack-cli": "^4.3.1"
   }
 }

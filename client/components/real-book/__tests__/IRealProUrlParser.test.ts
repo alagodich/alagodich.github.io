@@ -1,9 +1,13 @@
 /* eslint max-len: 0 */
+/* eslint max-statements: 0 */
 
 import IRealProUrlParser from '../IRealProUrlParser';
+import util from 'util';
+
+// eslint-disable-next-line no-console,@typescript-eslint/no-unused-vars,no-unused-vars
+const varDump = (object: any) => console.log(util.inspect(object, {depth: null}));
 
 describe('IRealProUrlParser', () => {
-
     describe('parse', () => {
         it('should init empty', () => {
             const parser = new IRealProUrlParser();
@@ -176,7 +180,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Arthur Schwartz',
                     style: 'Ballad',
                     key: 'G',
-                    chordString: '*A{T44G6 |\\ \\ G#o7|A-7 D7|x |A-7 |D7 |N1G6 E-7|A-7 D7 } |N2G6 |F#h7 B7b9 ]*B[E- E-/D|E-/C# \\ C7 B7 |E-6 |x |E- E-/D|A7 |A-11 |D7 ]*A[G6 |\\ \\ G#o7|A-7 D7|x |A-7 |D7 |G6 E-7|A-7 D7 Z'
+                    chordString: '*A{T44G6 |p p G#o7|A-7 D7|x |A-7 |D7 |N1G6 E-7|A-7 D7 } |N2G6 |F#h7 B7b9 ]*B[E- E-/D|E-/C# p C7 B7 |E-6 |x |E- E-/D|A7 |A-11 |D7 ]*A[G6 |p p G#o7|A-7 D7|x |A-7 |D7 |G6 E-7|A-7 D7 Z'
                 }
             ]);
         });
@@ -191,7 +195,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Pat Metheny',
                     style: 'Even 8ths',
                     key: 'C',
-                    chordString: '*A[T44D-7 |C#-7 |r|F#-7 B7|E-7 A7|G F|E- D-7|C^7 |B7 |Bb^7#11 |Ah7 D7b9|F#h7 B7b9|Eh7 A7b9|D-7 E-7|F-7 Bb7|Eb9sus|x|Ab^9|x|Ab7sus|x|Db^13|x|Dh7 G7b9|C-7 F7|F-7 Bb7|Gh7 C7#9|F-7 F#-7|G-7 C-7|T34 F#-7 B7 |E-7 A7sus|T24A7sus|T44 A7sus |x *B[D-7 |C#-7 |D-7 |C#-7 |F#-7 B7|E-7 A7|A-7 |\\ \\ D7|G^7 Bb7|Eb^7 B7|E^7 G7|C^7 Ab7|Db^7 E7|A^7 C7|F^7|x|E-7|x|F^7|x|E-7|x Z'
+                    chordString: '*A[T44D-7 |C#-7 |r|F#-7 B7|E-7 A7|G F|E- D-7|C^7 |B7 |Bb^7#11 |Ah7 D7b9|F#h7 B7b9|Eh7 A7b9|D-7 E-7|F-7 Bb7|Eb9sus|x|Ab^9|x|Ab7sus|x|Db^13|x|Dh7 G7b9|C-7 F7|F-7 Bb7|Gh7 C7#9|F-7 F#-7|G-7 C-7|T34 F#-7 B7 |E-7 A7sus|T24A7sus|T44 A7sus |x *B[D-7 |C#-7 |D-7 |C#-7 |F#-7 B7|E-7 A7|A-7 |p p D7|G^7 Bb7|Eb^7 B7|E^7 G7|C^7 Ab7|Db^7 E7|A^7 C7|F^7|x|E-7|x|F^7|x|E-7|x Z'
                 }
             ]);
         });
@@ -266,7 +270,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Miles Davis',
                     style: 'Medium Swing',
                     key: 'C',
-                    chordString: '*A[T44C^7 |x |x |x |D-7 |G-7 |x |x |F^7 |x |Bb^7 |B7 E7|A- A-/G|F#h7 F7|Eh7 |A7 ]*B[D-7 |x |C^7 |x |D-7 |G-7 |\\ \\ C7|F^7 |Bh7 |E7+ |Eh7 Q|A7 |D-7 |G7 |D7 |G7 ]Y[QA7 |D-7 |x |G7sus |Bb^7 |Db7 |C^7 |x |x Z'
+                    chordString: '*A[T44C^7 |x |x |x |D-7 |G-7 |x |x |F^7 |x |Bb^7 |B7 E7|A- A-/G|F#h7 F7|Eh7 |A7 ]*B[D-7 |x |C^7 |x |D-7 |G-7 |p p C7|F^7 |Bh7 |E7+ |Eh7 Q|A7 |D-7 |G7 |D7 |G7 ]Y[QA7 |D-7 |x |G7sus |Bb^7 |Db7 |C^7 |x |x Z'
                 }
             ]);
         });
@@ -311,7 +315,7 @@ describe('IRealProUrlParser', () => {
                     author: 'Herbie Hancock',
                     style: 'Funk',
                     key: 'F-',
-                    chordString: '*i{T44F-7 |\\ A-7 |F-7 |\\ A-7 }*A{SF-11 |\\ A-11 |F-11 |\\ D-11 }*B[n Bb7|n |n |n A7#9#5 |Ab^7/Bb |Ab^7#5/Bb |Ab^7/Bb |Bb13 |Eb13sus |x |Eb7#9#5 |x |Ab13sus |\\ \\ W/C QC7/E |n F-7|\\ A-7 |{F-7 |\\ A-7  } Y{QF-11  |x |x |x }{Bb13 |x |x |x }fA^7#11 Z'
+                    chordString: '*i{T44F-7 |p A-7 |F-7 |p A-7 }*A{SF-11 |p A-11 |F-11 |p D-11 }*B[n Bb7|n |n |n A7#9#5 |Ab^7/Bb |Ab^7#5/Bb |Ab^7/Bb |Bb13 |Eb13sus |x |Eb7#9#5 |x |Ab13sus |p p W/C QC7/E |n F-7|p A-7 |{F-7 |p A-7  } Y{QF-11  |x |x |x }{Bb13 |x |x |x }fA^7#11 Z'
                 }
             ]);
         });
@@ -372,6 +376,36 @@ describe('IRealProUrlParser', () => {
                     style: 'Up Tempo Swing',
                     key: 'D',
                     chordString: '*A[T68D^7 |C#-7 |B^7 |Bb-7 |Ab^7 |G-7 |F^7#11|x|x|x|D^7|x|x|x|Eb^7|x|x|x|C^7|x|x|x|F7sus|x|x|x|B7#9|x|x|x ]*B[T44E-7|x|x|x|x|x|x|x|Bb7sus|x|x|x|x|x|x|x|A-7|x|x|x|x|x|x|x|Eb7sus|x|x|x|x|x|x|x Z'
+                }
+            ]);
+        });
+        it('should handle Alone Together', () => {
+            const songWithRepeats = 'irealb://%41%6C%6F%6E%65%20%54%6F%67%65%74%68%65%72=%53%63%68%77%61%72%74%7A%20%41%72%74%68%75%72==%4D%65%64%69%75%6D%20%53%77%69%6E%67=%44%2D==%31%72%33%34%4C%62%4B%63%75%37%37%68%41%7C%51%34%44%2D%36%58%5A%4C%39%62%37%41%20%37%68%45%7C%51%79%58%2D%36%44%5A%4C%39%62%37%41%20%37%68%45%7C%51%79%44%2D%36%58%79%34%54%7B%41%2A%39%62%37%41%20%4C%5A%47%2D%37%79%58%37%5E%46%5A%4C%37%43%20%37%2D%47%5A%37%4C%45%20%37%2D%42%5A%4C%20%6C%63%4B%51%79%58%51%7C%45%68%37%39%62%37%44%20%79%58%37%68%41%5E%37%58%79%51%20%6C%63%4B%51%79%58%37%5E%44%6C%32%4E%7D%29%20%39%62%37%41%28%20%78%29%37%68%45%28%20%7C%20%5D%2A%42%5B%44%31%4E%5A%4C%37%41%20%37%68%39%58%79%51%7C%37%5E%46%7C%51%79%58%39%62%37%43%7C%51%79%37%58%68%47%5A%4C%20%6C%63%4B%51%79%58%36%2D%47%58%79%51%7C%45%62%37%44%7C%51%5A%4C%37%68%42%41%5B%44%2D%36%4C%39%62%37%41%20%37%68%45%7C%51%79%58%36%44%2D%5A%4C%39%62%37%41%20%37%68%45%7C%51%79%58%5A%44%2D%36%20%2A%5D%20%39%62%42%62%37%20%41%37%62%39%4C%5A%44%2D%36%58%79%51%7C%45%68%37%20%41%37%62%39%20%5A==%30=%30===';
+
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'Alone Together',
+                    author: 'Arthur Schwartz',
+                    style: 'Medium Swing',
+                    key: 'D-',
+                    chordString: '*A{T44D-6 |Eh7 A7b9|D-6 |Eh7 A7b9|D-6 |Ah7 D7b9|G-7 |x |B-7 E7|G-7 C7|F^7 |Eh7 A7b9|N1D^7 |(Eh7) x (A7b9) }|N2 D^7 |x ]*B[Ah7 |D7b9 |G-6 |x |Gh7 |C7b9 |F^7 |Eh7 A7b9 ]*A[D-6 |Eh7 A7b9|D-6 |Eh7 A7b9|D-6 Bh7|Bb7 A7b9|D-6 |Eh7 A7b9 Z'
+                }
+            ]);
+        });
+        it('should handle Ana Maria', () => {
+            const songWithRepeats = 'irealb://%41%6E%61%20%4D%61%72%69%61=%53%68%6F%72%74%65%72%20%57%61%79%6E%65==%45%76%65%6E%20%38%74%68%73=%47==%31%72%33%34%4C%62%4B%63%75%37%79%58%46%2F%37%34%47%5E%37%58%79%58%47%2F%37%5E%62%45%7C%51%79%58%73%75%37%73%47%7C%51%79%58%47%2F%37%5E%62%45%7C%51%79%51%7C%44%62%5E%34%54%5B%41%2A%58%43%2F%44%7C%37%23%31%31%58%73%37%43%7C%51%79%58%37%2D%47%7C%51%79%58%41%62%2F%62%42%7C%51%79%58%37%2D%62%41%7C%51%79%75%73%58%79%51%5E%62%47%7C%51%79%58%47%2F%37%73%75%73%58%79%79%58%73%75%73%39%62%37%47%7B%51%79%58%43%62%2F%41%5A%4C%43%2F%62%42%20%43%2F%62%41%7C%51%51%7C%45%62%5E%37%43%7C%51%79%23%37%46%20%37%47%5E%37%58%79%58%73%75%73%37%62%45%5A%4C%74%6C%61%37%45%46%20%2F%62%45%7C%51%79%58%73%75%73%37%47%7C%51%79%51%7C%44%5E%5B%42%2A%7D%51%41%20%37%5E%62%2D%37%58%79%51%73%75%73%37%43%7C%51%79%58%37%2D%47%7C%51%58%79%62%41%2F%62%42%7C%51%79%58%37%2D%62%41%7C%58%79%51%7C%42%62%42%5A%4C%35%78%5A%4C%37%2D%2D%37%58%79%51%5A%4C%37%2D%42%5B%43%2A%20%78%5A%4C%73%75%37%73%62%44%5A%4C%78%5A%4C%73%75%73%37%62%42%7C%78%4C%5A%45%62%46%5A%4C%37%2D%20%37%5E%62%42%20%46%37%23%35%37%43%5A%4C%37%2D%47%5A%4C%62%41%2F%62%42%4C%5A%37%2D%62%41%7C%51%79%58%37%2D%62%42%5A%4C%73%75%73%4C%5A%37%5E%44%5A%4C%41%2D%37%4C%5A%46%2D%37%20%45%2D%37%20%7B%47%37%62%39%73%75%73%58%79%51%7C%45%62%5E%37%2F%47%20%20%20%7D==%30=%30===';
+
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'Ana Maria',
+                    author: 'Wayne Shorter',
+                    style: 'Even 8ths',
+                    key: 'G',
+                    chordString: '*A[T44G^7 |Eb^7/G |G7sus |Eb^7/G |Db^7/F |Gb^7#11 |Ab-7 |Bb/Ab |G-7 |C7sus |D/C |C7sus |Ab/C Bb/C|Ab/C {G7b9sus |Eb^7/G }*B[G^7 |G7sus |Eb/F E7alt|Eb7sus |D^7 F7#5|Bb-7 |Ab-7 |Bb/Ab |G-7 |C7sus |Bb^7 A-7|F-7 |Bb7sus|x|Db7sus|x *C[B-7|x|Eb-7|x|D^7 F7#5|Bb-7 |Ab-7|Bb/Ab|G-7|C7sus|Bb^7 A-7|F-7 E-7 {G7b9sus |Eb^7/G }'
                 }
             ]);
         });

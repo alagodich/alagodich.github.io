@@ -9,12 +9,11 @@ interface IChartProps {
 }
 
 class Chart extends PureComponent<IChartProps, never> {
-    public processLines(segment: IIRealProChartSegment): IIRealProChartSegment {
+    public processLines(segment: IIRealProChartSegment): IIRealProChartBar[][] {
         if (!segment || !segment.data) {
-            return segment;
+            return [];
         }
-        segment.lines = [] as IIRealProChartBar[][];
-
+        const lines: IIRealProChartBar[][] = [];
         let line: IIRealProChartBar[] = [];
 
         // eslint-disable-next-line complexity
@@ -22,26 +21,26 @@ class Chart extends PureComponent<IChartProps, never> {
             const bar = Object.assign({}, barData);
 
             // Not rendering dividers for now
-            if (bar.divider || !segment.lines) {
+            if (bar.divider || !lines) {
                 return;
             }
 
             if (line.length < 4) {
                 // If it is a last bar in line, and has no closing line, add default
-                if (line.length === 3 && !bar.closingLine) {
-                    bar.closingLine = '|';
-                    barData.closingLine = '|';
+                if (line.length === 3 && !bar.close) {
+                    bar.close = '|';
+                    barData.close = '|';
                 }
 
                 line.push(bar);
 
                 // If current closing bar line is not regular and current line is not and ending line, break the line
-                if (bar.closingLine && bar.closingLine !== '|' && line[0] && !line[0].ending) {
-                    segment.lines.push(line);
+                if (bar.close && bar.close !== '|' && line[0] && !line[0].ending) {
+                    lines.push(line);
                     line = [];
                 }
             } else {
-                segment.lines.push(line);
+                lines.push(line);
                 line = [bar];
             }
         });
@@ -52,32 +51,31 @@ class Chart extends PureComponent<IChartProps, never> {
 
                 line = [...filler, ...line];
             }
-            segment.lines.push(line);
+            lines.push(line);
         }
 
-        return segment;
+        return lines;
     }
 
     public renderChart(): ReactElement {
         const tableRows: ReactElement[] = [];
-        const segments = this.props.model.segments
-            .map(segment => this.processLines(segment));
 
-        segments.forEach((segment, segmentKey) => {
+        this.props.model.segments.forEach((segment, segmentKey) => {
             const headerCell = (
                 <Table.Cell
                     width={1}
-                    className="chart__bar chart__section-header"
+                    className="chart__section-header"
                 >
                     {segment.name}
                 </Table.Cell>
             );
+            const lines = this.processLines(segment);
 
-            if (!segment.lines) {
+            if (!lines) {
                 return;
             }
 
-            segment.lines.forEach((line, key) => {
+            lines.forEach((line, key) => {
                 tableRows.push(
                     <Table.Row key={`${segmentKey}-${key}`} className="chart__bar-line">
                         {key === 0 ? headerCell : <Table.Cell className="chart__bar" width={1} />}

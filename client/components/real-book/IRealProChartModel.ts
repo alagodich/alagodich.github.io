@@ -11,6 +11,25 @@ import {
     roots
 } from './types';
 
+function fillChord(chordParts: RegExpMatchArray, tuneKeyShift: number): IIRealProChord {
+    let chordNumericIndex = roots.indexOf(chordParts[1]) + 1;
+
+    if (chordNumericIndex) {
+        chordNumericIndex -= tuneKeyShift;
+        if (chordNumericIndex <= 0) {
+            chordNumericIndex += 7;
+        }
+    }
+
+    return {
+        root: chordParts[1],
+        ...(chordParts[2] ? {shift: chordParts[2]} : null),
+        ...(chordParts[3] && chordParts[3] !== '' ? {quality: chordParts[3]} : null),
+        ...(chordParts[4] ? {inversion: chordParts[4]} : null),
+        ...(chordNumericIndex ? {numeric: chordNumericIndex} : null)
+    };
+}
+
 export default class IRealProChartModel {
     public title = '';
     public author = '';
@@ -84,7 +103,7 @@ export default class IRealProChartModel {
                     const newBar = Object.assign({}, bar);
 
                     // Cloned bar will always have simple opening bar line
-                    newBar.openingLine = '|';
+                    newBar.open = '|';
                     return _omit(newBar, 'timeSignature');
                 });
 
@@ -96,13 +115,13 @@ export default class IRealProChartModel {
                  * but remove from the last segment
                  * If repeat is at the first 2 line bars then remove closing line
                  */
-                if (last2Bars[1].closingLine) {
+                if (last2Bars[1].close) {
                     if (segment.length % 4) {
                         const beforeLastSegment = Object.assign({}, segment[segment.length - 1]);
 
-                        segment[segment.length - 1] = _omit(beforeLastSegment, 'closingLine');
-                    } else if (last2Bars[1].closingLine !== '|') {
-                        segment[segment.length - 1].closingLine = '|';
+                        segment[segment.length - 1] = _omit(beforeLastSegment, 'close');
+                    } else if (last2Bars[1].close !== '|') {
+                        segment[segment.length - 1].close = '|';
                     }
                 }
                 segment.push(...last2Bars);
@@ -114,29 +133,29 @@ export default class IRealProChartModel {
             const bar = this.parseBar(barString);
 
             // Merge some parts together, for example closing bar line with the previous bar
-            if (bar.closingLine && Object.getOwnPropertyNames(bar).length === 1) {
+            if (bar.close && Object.getOwnPropertyNames(bar).length === 1) {
                 if (!segment[segment.length - 1]) {
                     throw new Error(`Song: ${this.title}. Closing bar as a first part: ${segmentString}.`);
                 }
-                segment[segment.length - 1].closingLine = bar.closingLine;
-            } else if (bar.openingLine && closingBarLines[bar.openingLine]) {
+                segment[segment.length - 1].close = bar.close;
+            } else if (bar.open && closingBarLines[bar.open]) {
                 // If bar opening line is actually closing bar line, move it to the previous bar
-                if (segment[segment.length - 1].closingLine) {
+                if (segment[segment.length - 1].close) {
                     throw new Error(
                         `Song: ${this.title} trying to move closing bar to the previous bar ${segmentString}`
                     );
                 }
-                segment[segment.length - 1].closingLine = bar.openingLine;
+                segment[segment.length - 1].close = bar.open;
 
-                bar.openingLine = '|';
+                bar.open = '|';
                 segment.push(bar);
             } else {
                 segment.push(bar);
             }
         });
 
-        if (!segment[segment.length - 1].closingLine) {
-            segment[segment.length - 1].closingLine = ']';
+        if (!segment[segment.length - 1].close) {
+            segment[segment.length - 1].close = ']';
         }
 
         return segment;
@@ -212,7 +231,7 @@ export default class IRealProChartModel {
             if (!closingBarLine || closingBarLine.length !== 1) {
                 throw new Error(`Song: ${this.title}. Unexpected chord string with length 1 ${rawBarString}`);
             }
-            barProps.closingLine = closingBarLine[0];
+            barProps.close = closingBarLine[0];
             rawBarString = rawBarString.split(closingBarLine[0]).join('');
         }
 
@@ -220,13 +239,24 @@ export default class IRealProChartModel {
         const barParts = rawBarString.match(/([{}[\]|Z]+)([^{}[\]|Z]*)/);
 
         if (barParts && barParts[0] && barParts[1] && barParts[2]) {
-            barProps.openingLine = barParts[1];
-            barProps.chords = barParts[2].trim();
-            barProps.harmony = this.parseHarmony(barProps.chords);
+            barProps.open = barParts[1];
+            const chordString = barParts[2].trim();
+
+            // TODO remove chords from props
+            barProps.chords = chordString;
+
+            const [main, alt] = this.parseHarmony(chordString);
+
+            if (main && main.length) {
+                barProps.harmony = main;
+            }
+            if (alt && alt.length) {
+                barProps.alt = alt;
+            }
 
             // Bar string should be either recognizable or empty
-            if (barProps.chords !== '' && !barProps.chords.match(chordsStringExpresion)) {
-                throw new Error(`Song: ${this.title}. Unrecognized chords string found ${barProps.chords}`);
+            if (chordString !== '' && !chordString.match(chordsStringExpresion)) {
+                throw new Error(`Song: ${this.title}. Unrecognized chords string found ${chordString}`);
             }
 
             rawBarString = rawBarString.split(barParts[0]).join('');
@@ -240,21 +270,31 @@ export default class IRealProChartModel {
         return barProps;
     }
 
-    public parseHarmony(harmonyString: string): IIRealProChord[] {
-        const harmony = harmonyString.split(' ').map((chordString: string) => {
+    public parseHarmony(harmonyString: string): [IIRealProChord[], IIRealProChord[]?] {
+        const tuneKeyRoot = this.key?.match(/[A-G]/);
+        const tuneKeyShift = roots.indexOf(tuneKeyRoot ? tuneKeyRoot[0] : '');
+
+        // if (tuneKeyShift === -1) {
+        //     throw new Error(`Song: ${this.title}. Key not recognized ${this.key}.`);
+        // }
+
+        const main: IIRealProChord[] = [];
+        const alt: IIRealProChord[] = [];
+
+        // eslint-disable-next-line complexity
+        harmonyString.split(' ').forEach((chordString: string) => {
             const chordParts = chordString.match(chordsStringExpresion);
 
             if (!chordParts) {
-                throw new Error(`Song: ${this.title}.Chord not recognized ${harmonyString}.`);
+                throw new Error(`Song: ${this.title}. Chord not recognized ${harmonyString}.`);
             }
-            // console.log(chordParts);
-            const chord: IIRealProChord = {
-                root: chordParts[1],
-                shift: chordParts[2],
-                quality: chordParts[3],
-                inversion: chordParts[4],
-                numeric: roots.indexOf(chordParts[1]) + 1
-            };
+            if (['x', 'n', 'p'].includes(chordParts[1])) {
+                main.push({root: chordParts[1]});
+            } else if (chordParts[1] !== '') {
+                // todo make sure W is handled right
+
+                main.push(fillChord(chordParts, tuneKeyShift));
+            }
 
             if (chordParts[5]) {
                 const altChordParts = chordParts[5]
@@ -265,18 +305,11 @@ export default class IRealProChartModel {
                     throw new Error(`Song: ${this.title}.Alt chord not recognized ${harmonyString}.`);
                 }
 
-                chord.alt = {
-                    root: altChordParts[1],
-                    shift: altChordParts[2],
-                    quality: altChordParts[3],
-                    inversion: altChordParts[4],
-                    numeric: roots.indexOf(altChordParts[1]) + 1
-                };
+                alt.push(fillChord(altChordParts, tuneKeyShift));
             }
 
-            return chord;
         });
 
-        return harmony;
+        return [main, alt];
     }
 }

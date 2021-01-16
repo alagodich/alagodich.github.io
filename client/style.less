@@ -54,13 +54,14 @@ a {
         tbody {
             .chart__section-header {
                 font-weight: 900;
-                font-size: 35px;
+                font-size: 2em;
+                border-top: none;
+                border-bottom: none;
             }
             .chart__bar-line {
                 border-spacing: 5px;
 
                 .chart__bar {
-                    font-size: 1.5em;
                     border-top: none;
                     border-bottom: none;
 
@@ -78,11 +79,11 @@ a {
 
                     .chord {
                         &__bar-repeat {
-                            opacity: 0.6;
-                            font-size: 1.1em;
+                            //opacity: 0.6;
+                            //font-size: 1.1em;
                         }
                         &__alt-chord {
-                            opacity: 0.6;
+                            opacity: 0.7;
                         }
                         &__time-signature {
                             text-orientation: upright;
@@ -92,13 +93,19 @@ a {
                             margin-left: -10px;
                         }
                         &__coda {
-                            opacity: 0.6;
+                            //opacity: 0.6;
+                            position: relative;
+                            bottom: 10px;
                         }
                         &__fermata {
-                            opacity: 0.6;
+                            //opacity: 0.6;
+                            position: relative;
+                            bottom: 10px;
                         }
                         &__segno {
-                            opacity: 0.6;
+                            //opacity: 0.6;
+                            position: relative;
+                            bottom: 10px;
                         }
                     }
                 }

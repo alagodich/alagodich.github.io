@@ -1,6 +1,13 @@
 import IRealProUrlParser from '../IRealProUrlParser';
 import IRealProChartModel from '../IRealProChartModel';
 import allJazzSongsUrls from '../playlists/jazz';
+import util from 'util';
+// import {IIRealProChartModelProps} from '../types';
+// import fs from 'fs';
+// import path from 'path';
+
+// eslint-disable-next-line no-console,@typescript-eslint/no-unused-vars,no-unused-vars
+const varDump = (object: any) => console.log(util.inspect(object, {depth: null}));
 
 describe('UrlParser and ChartModel integration', () => {
     it('should handle all jazz songs', () => {
@@ -74,17 +81,6 @@ describe('UrlParser and ChartModel integration', () => {
                 expect(model.key.length).not.toBe(0);
                 expect(model.chordString.length).not.toBe(0);
                 expect(model.segments.length).not.toBe(0);
-
-                model.segments.forEach(segment => {
-                    segment.data.forEach(bar => {
-                        console.log(bar.chords, model.title);
-                        expect(bar.chords?.split(' ').join('')).toEqual(bar.harmony?.map(chord => {
-                            return [chord.root, chord.shift, chord.quality, chord.inversion]
-                                .filter(item => item)
-                                .join('');
-                        }).join(''));
-                    });
-                });
             });
         }).not.toThrow();
     });
@@ -117,8 +113,8 @@ describe('UrlParser and ChartModel integration', () => {
 
     // it('should export', done => {
     //     const parser = new IRealProUrlParser();
-    //     const models = [];
-    //     const strings = [];
+    //     const models: IRealProChartModel[] = [];
+    //     const strings: IIRealProChartModelProps[] = [];
     //
     //     parser.parse(allJazzSongsUrls[0]).forEach(props => {
     //         strings.push(props);
@@ -143,12 +139,12 @@ describe('UrlParser and ChartModel integration', () => {
     //
     //     fs.writeFile(
     //         path.join(__dirname, '../../../../all-jazz-model-format.json'),
-    //         JSON.stringify(models, null, '    '),
+    //         JSON.stringify(models),
     //         'utf8',
     //         () => {
     //             fs.writeFile(
     //                 path.join(__dirname, '../../../../all-jazz-string-format.json'),
-    //                 JSON.stringify(strings, null, '    '),
+    //                 JSON.stringify(strings),
     //                 'utf8',
     //                 () => {
     //                     done();

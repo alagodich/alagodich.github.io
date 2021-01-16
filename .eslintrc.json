@@ -18,6 +18,8 @@
     "plugins": ["react", "@typescript-eslint"],
     "globals": {
         "describe": false,
+        "context": false,
+        "cy": false,
         "it": false,
         "expect": false,
         "jest": false,
@@ -334,7 +336,8 @@
             "react/self-closing-comp": 1,
             "react/sort-comp": 1,
             "react/jsx-wrap-multilines": [1, {"return": true, "assignment": true, "declaration": true, "arrow": false}],
-            "react/forbid-prop-types": [1, {"forbid": ["any", "array"]}]
+            "react/forbid-prop-types": [1, {"forbid": ["any", "array"]}],
+            "react/jsx-no-target-blank": 1
         }
     }]
 

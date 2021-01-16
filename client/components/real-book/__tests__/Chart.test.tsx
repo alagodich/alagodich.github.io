@@ -4,6 +4,10 @@ import Chart from '../Chart';
 import React from 'react';
 import {create} from 'react-test-renderer';
 import IRealProChartModel from '../IRealProChartModel';
+import util from 'util';
+
+// eslint-disable-next-line no-console,@typescript-eslint/no-unused-vars,no-unused-vars
+const varDump = (object: any) => console.log(util.inspect(object, {depth: null}));
 
 describe('Chart Component', () => {
     it('should render Afternoon in Paris', () => {
@@ -145,235 +149,166 @@ describe('Chart Component', () => {
 
     describe('processLines', () => {
         it('should handle empty call', () => {
-            expect(Chart.prototype.processLines(undefined as any)).toBeUndefined();
-            expect(Chart.prototype.processLines('' as any)).toBe('');
-            expect(Chart.prototype.processLines(null as any)).toBeNull();
+            expect(Chart.prototype.processLines(undefined as any)).toEqual([]);
+            expect(Chart.prototype.processLines('' as any)).toEqual([]);
+            expect(Chart.prototype.processLines(null as any)).toEqual([]);
         });
         it('should correctly process segment with repeat', () => {
             const segment = {
                 name: 'A',
                 data: [
-                    {timeSignature: '4 / 4', openingLine: '{', chords: 'C^7'},
-                    {openingLine: '|', chords: 'C-7 F7'},
-                    {openingLine: '|', chords: 'Bb^7'},
-                    {openingLine: '|', chords: 'Bb-7 Eb7'},
-                    {openingLine: '|', chords: 'Ab^7'},
-                    {openingLine: '|', chords: 'D-7 G7#9'},
-                    {ending: 'N1', openingLine: '|', chords: 'C^7'},
-                    {openingLine: '|', chords: 'D-7 G7', closingLine: '}'},
-                    {ending: 'N2', openingLine: '|', chords: 'C^7'},
-                    {openingLine: '|', chords: 'x', closingLine: ']'}
+                    {timeSignature: '4 / 4', open: '{', chords: 'C^7'},
+                    {open: '|', chords: 'C-7 F7'},
+                    {open: '|', chords: 'Bb^7'},
+                    {open: '|', chords: 'Bb-7 Eb7'},
+                    {open: '|', chords: 'Ab^7'},
+                    {open: '|', chords: 'D-7 G7#9'},
+                    {ending: 'N1', open: '|', chords: 'C^7'},
+                    {open: '|', chords: 'D-7 G7', close: '}'},
+                    {ending: 'N2', open: '|', chords: 'C^7'},
+                    {open: '|', chords: 'x', close: ']'}
                 ]
             };
 
-            expect(Chart.prototype.processLines(segment)).toEqual({
-                name: 'A',
-                data: [
-                    {timeSignature: '4 / 4', openingLine: '{', chords: 'C^7'},
-                    {openingLine: '|', chords: 'C-7 F7'},
-                    {openingLine: '|', chords: 'Bb^7'},
-                    {openingLine: '|', chords: 'Bb-7 Eb7', closingLine: '|'},
-                    {openingLine: '|', chords: 'Ab^7'},
-                    {openingLine: '|', chords: 'D-7 G7#9'},
-                    {ending: 'N1', openingLine: '|', chords: 'C^7'},
-                    {openingLine: '|', chords: 'D-7 G7', closingLine: '}'},
-                    {ending: 'N2', openingLine: '|', chords: 'C^7'},
-                    {openingLine: '|', chords: 'x', closingLine: ']'}
+            expect(Chart.prototype.processLines(segment)).toEqual([
+                [
+                    {timeSignature: '4 / 4', open: '{', chords: 'C^7'},
+                    {open: '|', chords: 'C-7 F7'},
+                    {open: '|', chords: 'Bb^7'},
+                    {open: '|', chords: 'Bb-7 Eb7', close: '|'}
                 ],
-                lines: [
-                    [
-                        {timeSignature: '4 / 4', openingLine: '{', chords: 'C^7'},
-                        {openingLine: '|', chords: 'C-7 F7'},
-                        {openingLine: '|', chords: 'Bb^7'},
-                        {openingLine: '|', chords: 'Bb-7 Eb7', closingLine: '|'}
-                    ],
-                    [
-                        {openingLine: '|', chords: 'Ab^7'},
-                        {openingLine: '|', chords: 'D-7 G7#9'},
-                        {ending: 'N1', openingLine: '|', chords: 'C^7'},
-                        {openingLine: '|', chords: 'D-7 G7', closingLine: '}'}
-                    ],
-                    [
-                        {empty: true},
-                        {empty: true},
-                        {ending: 'N2', openingLine: '|', chords: 'C^7'},
-                        {openingLine: '|', chords: 'x', closingLine: ']'}
-                    ]
+                [
+                    {open: '|', chords: 'Ab^7'},
+                    {open: '|', chords: 'D-7 G7#9'},
+                    {ending: 'N1', open: '|', chords: 'C^7'},
+                    {open: '|', chords: 'D-7 G7', close: '}'}
+                ],
+                [
+                    {empty: true},
+                    {empty: true},
+                    {ending: 'N2', open: '|', chords: 'C^7'},
+                    {open: '|', chords: 'x', close: ']'}
                 ]
-            });
+            ]);
         });
 
         it('should process not /4 number of chords with no repeat', () => {
             const segment = {
                 name: '',
                 data: [
-                    {timeSignature: '4 / 4', openingLine: '[', chords: 'E-7'},
-                    {openingLine: '|', chords: 'x'},
-                    {openingLine: '|', chords: 'G-7'},
-                    {openingLine: '|', chords: 'x'},
-                    {openingLine: '|', chords: 'F-7'},
-                    {coda: true, openingLine: '|', chords: 'x'},
-                    {openingLine: '|', chords: 'C-7'},
-                    {openingLine: '|', chords: 'x'},
-                    {openingLine: '|', chords: 'B7#9'},
-                    {openingLine: '|', chords: 'x', closingLine: 'Z'},
+                    {timeSignature: '4 / 4', open: '[', chords: 'E-7'},
+                    {open: '|', chords: 'x'},
+                    {open: '|', chords: 'G-7'},
+                    {open: '|', chords: 'x'},
+                    {open: '|', chords: 'F-7'},
+                    {coda: true, open: '|', chords: 'x'},
+                    {open: '|', chords: 'C-7'},
+                    {open: '|', chords: 'x'},
+                    {open: '|', chords: 'B7#9'},
+                    {open: '|', chords: 'x', close: 'Z'},
                     {divider: 'Y'},
-                    {coda: true, openingLine: '{', chords: 'C-7'},
-                    {openingLine: '|', chords: 'x'},
-                    {openingLine: '|', chords: 'Ab^7'},
-                    {openingLine: '|', chords: 'x', closingLine: '}'}
+                    {coda: true, open: '{', chords: 'C-7'},
+                    {open: '|', chords: 'x'},
+                    {open: '|', chords: 'Ab^7'},
+                    {open: '|', chords: 'x', close: '}'}
                 ]
             };
 
-            expect(Chart.prototype.processLines(segment)).toEqual({
-                name: '',
-                data: [
-                    {timeSignature: '4 / 4', openingLine: '[', chords: 'E-7'},
-                    {openingLine: '|', chords: 'x'},
-                    {openingLine: '|', chords: 'G-7'},
-                    {openingLine: '|', chords: 'x', closingLine: '|'},
-
-                    {openingLine: '|', chords: 'F-7'},
-                    {coda: true, openingLine: '|', chords: 'x'},
-                    {openingLine: '|', chords: 'C-7'},
-                    {openingLine: '|', chords: 'x', closingLine: '|'},
-
-                    {openingLine: '|', chords: 'B7#9'},
-                    // Closing bar line other than | should change the line
-                    {openingLine: '|', chords: 'x', closingLine: 'Z'},
-                    // Ignoring divider for now
-                    {divider: 'Y'},
-
-                    {coda: true, openingLine: '{', chords: 'C-7'},
-                    {openingLine: '|', chords: 'x'},
-                    {openingLine: '|', chords: 'Ab^7'},
-                    {openingLine: '|', chords: 'x', closingLine: '}'}
+            expect(Chart.prototype.processLines(segment)).toEqual([
+                [
+                    {timeSignature: '4 / 4', open: '[', chords: 'E-7'},
+                    {open: '|', chords: 'x'},
+                    {open: '|', chords: 'G-7'},
+                    {open: '|', chords: 'x', close: '|'}
                 ],
-                lines: [
-                    [
-                        {timeSignature: '4 / 4', openingLine: '[', chords: 'E-7'},
-                        {openingLine: '|', chords: 'x'},
-                        {openingLine: '|', chords: 'G-7'},
-                        {openingLine: '|', chords: 'x', closingLine: '|'}
-                    ],
-                    [
-                        {openingLine: '|', chords: 'F-7'},
-                        {coda: true, openingLine: '|', chords: 'x'},
-                        {openingLine: '|', chords: 'C-7'},
-                        {openingLine: '|', chords: 'x', closingLine: '|'}
-                    ],
-                    [
-                        {openingLine: '|', chords: 'B7#9'},
-                        {openingLine: '|', chords: 'x', closingLine: 'Z'}
-                    ],
-                    [
-                        {coda: true, openingLine: '{', chords: 'C-7'},
-                        {openingLine: '|', chords: 'x'},
-                        {openingLine: '|', chords: 'Ab^7'},
-                        {openingLine: '|', chords: 'x', closingLine: '}'}
-                    ]
+                [
+                    {open: '|', chords: 'F-7'},
+                    {coda: true, open: '|', chords: 'x'},
+                    {open: '|', chords: 'C-7'},
+                    {open: '|', chords: 'x', close: '|'}
+                ],
+                [
+                    {open: '|', chords: 'B7#9'},
+                    {open: '|', chords: 'x', close: 'Z'}
+                ],
+                [
+                    {coda: true, open: '{', chords: 'C-7'},
+                    {open: '|', chords: 'x'},
+                    {open: '|', chords: 'Ab^7'},
+                    {open: '|', chords: 'x', close: '}'}
                 ]
-            });
+            ]);
         });
 
         it('should process lines with long 8 bars repeats, All Through The Night', () => {
             const segment = {
                 name: 'A',
                 data: [
-                    {timeSignature: '4 / 4', openingLine: '{', chords: 'F^7'},
-                    {openingLine: '|', chords: 'Eh7 A7b9'},
-                    {openingLine: '|', chords: 'D-7 Db7'},
-                    {openingLine: '|', chords: 'C-7 F7b9', closingLine: '|'},
-                    {openingLine: '|', chords: 'Bb^7'},
-                    {openingLine: '|', chords: 'Bb-7 Eb7b9'},
-                    {openingLine: '|', chords: 'Ab^7'},
-                    {openingLine: '|', chords: 'x', closingLine: '|'},
-                    {ending: 'N1', openingLine: '|', chords: 'Ah7'},
-                    {openingLine: '|', chords: 'D7b9'},
-                    {openingLine: '|', chords: 'Gh7'},
-                    {openingLine: '|', chords: 'C7b9', closingLine: '|'},
-                    {openingLine: '|', chords: 'F6'},
-                    {openingLine: '|', chords: 'D7b9'},
-                    {openingLine: '|', chords: 'G-7'},
-                    {openingLine: '|', chords: 'C7b9', closingLine: '}'},
-                    {ending: 'N2', openingLine: '|', chords: 'E^7'},
-                    {openingLine: '|', chords: 'E7'},
-                    {openingLine: '|', chords: 'Bbh7'},
-                    {openingLine: '|', chords: 'Eb7b9', closingLine: '|'},
-                    {openingLine: '|', chords: 'Ab^7'},
-                    {openingLine: '|', chords: 'x'},
-                    {openingLine: '|', chords: 'Gh7'},
-                    {openingLine: '|', chords: 'C7b9', closingLine: ']'}
+                    {timeSignature: '4 / 4', open: '{', chords: 'F^7'},
+                    {open: '|', chords: 'Eh7 A7b9'},
+                    {open: '|', chords: 'D-7 Db7'},
+                    {open: '|', chords: 'C-7 F7b9', close: '|'},
+                    {open: '|', chords: 'Bb^7'},
+                    {open: '|', chords: 'Bb-7 Eb7b9'},
+                    {open: '|', chords: 'Ab^7'},
+                    {open: '|', chords: 'x', close: '|'},
+                    {ending: 'N1', open: '|', chords: 'Ah7'},
+                    {open: '|', chords: 'D7b9'},
+                    {open: '|', chords: 'Gh7'},
+                    {open: '|', chords: 'C7b9', close: '|'},
+                    {open: '|', chords: 'F6'},
+                    {open: '|', chords: 'D7b9'},
+                    {open: '|', chords: 'G-7'},
+                    {open: '|', chords: 'C7b9', close: '}'},
+                    {ending: 'N2', open: '|', chords: 'E^7'},
+                    {open: '|', chords: 'E7'},
+                    {open: '|', chords: 'Bbh7'},
+                    {open: '|', chords: 'Eb7b9', close: '|'},
+                    {open: '|', chords: 'Ab^7'},
+                    {open: '|', chords: 'x'},
+                    {open: '|', chords: 'Gh7'},
+                    {open: '|', chords: 'C7b9', close: ']'}
                 ]
             };
 
-            expect(Chart.prototype.processLines(segment)).toEqual({
-                name: 'A',
-                data: [
-                    {timeSignature: '4 / 4', openingLine: '{', chords: 'F^7'},
-                    {openingLine: '|', chords: 'Eh7 A7b9'},
-                    {openingLine: '|', chords: 'D-7 Db7'},
-                    {openingLine: '|', chords: 'C-7 F7b9', closingLine: '|'},
-                    {openingLine: '|', chords: 'Bb^7'},
-                    {openingLine: '|', chords: 'Bb-7 Eb7b9'},
-                    {openingLine: '|', chords: 'Ab^7'},
-                    {openingLine: '|', chords: 'x', closingLine: '|'},
-                    {ending: 'N1', openingLine: '|', chords: 'Ah7'},
-                    {openingLine: '|', chords: 'D7b9'},
-                    {openingLine: '|', chords: 'Gh7'},
-                    {openingLine: '|', chords: 'C7b9', closingLine: '|'},
-                    {openingLine: '|', chords: 'F6'},
-                    {openingLine: '|', chords: 'D7b9'},
-                    {openingLine: '|', chords: 'G-7'},
-                    {openingLine: '|', chords: 'C7b9', closingLine: '}'},
-                    {ending: 'N2', openingLine: '|', chords: 'E^7'},
-                    {openingLine: '|', chords: 'E7'},
-                    {openingLine: '|', chords: 'Bbh7'},
-                    {openingLine: '|', chords: 'Eb7b9', closingLine: '|'},
-                    {openingLine: '|', chords: 'Ab^7'},
-                    {openingLine: '|', chords: 'x'},
-                    {openingLine: '|', chords: 'Gh7'},
-                    {openingLine: '|', chords: 'C7b9', closingLine: ']'}
+            expect(Chart.prototype.processLines(segment)).toEqual([
+                [
+                    {timeSignature: '4 / 4', open: '{', chords: 'F^7'},
+                    {open: '|', chords: 'Eh7 A7b9'},
+                    {open: '|', chords: 'D-7 Db7'},
+                    {open: '|', chords: 'C-7 F7b9', close: '|'}
                 ],
-                lines: [
-                    [
-                        {timeSignature: '4 / 4', openingLine: '{', chords: 'F^7'},
-                        {openingLine: '|', chords: 'Eh7 A7b9'},
-                        {openingLine: '|', chords: 'D-7 Db7'},
-                        {openingLine: '|', chords: 'C-7 F7b9', closingLine: '|'}
-                    ],
-                    [
-                        {openingLine: '|', chords: 'Bb^7'},
-                        {openingLine: '|', chords: 'Bb-7 Eb7b9'},
-                        {openingLine: '|', chords: 'Ab^7'},
-                        {openingLine: '|', chords: 'x', closingLine: '|'}
-                    ],
-                    [
-                        {ending: 'N1', openingLine: '|', chords: 'Ah7'},
-                        {openingLine: '|', chords: 'D7b9'},
-                        {openingLine: '|', chords: 'Gh7'},
-                        {openingLine: '|', chords: 'C7b9', closingLine: '|'}
-                    ],
-                    [
-                        {openingLine: '|', chords: 'F6'},
-                        {openingLine: '|', chords: 'D7b9'},
-                        {openingLine: '|', chords: 'G-7'},
-                        {openingLine: '|', chords: 'C7b9', closingLine: '}'}
-                    ],
-                    [
-                        {ending: 'N2', openingLine: '|', chords: 'E^7'},
-                        {openingLine: '|', chords: 'E7'},
-                        {openingLine: '|', chords: 'Bbh7'},
-                        {openingLine: '|', chords: 'Eb7b9', closingLine: '|'}
-                    ],
-                    [
-                        {openingLine: '|', chords: 'Ab^7'},
-                        {openingLine: '|', chords: 'x'},
-                        {openingLine: '|', chords: 'Gh7'},
-                        {openingLine: '|', chords: 'C7b9', closingLine: ']'}
-                    ]
+                [
+                    {open: '|', chords: 'Bb^7'},
+                    {open: '|', chords: 'Bb-7 Eb7b9'},
+                    {open: '|', chords: 'Ab^7'},
+                    {open: '|', chords: 'x', close: '|'}
+                ],
+                [
+                    {ending: 'N1', open: '|', chords: 'Ah7'},
+                    {open: '|', chords: 'D7b9'},
+                    {open: '|', chords: 'Gh7'},
+                    {open: '|', chords: 'C7b9', close: '|'}
+                ],
+                [
+                    {open: '|', chords: 'F6'},
+                    {open: '|', chords: 'D7b9'},
+                    {open: '|', chords: 'G-7'},
+                    {open: '|', chords: 'C7b9', close: '}'}
+                ],
+                [
+                    {ending: 'N2', open: '|', chords: 'E^7'},
+                    {open: '|', chords: 'E7'},
+                    {open: '|', chords: 'Bbh7'},
+                    {open: '|', chords: 'Eb7b9', close: '|'}
+                ],
+                [
+                    {open: '|', chords: 'Ab^7'},
+                    {open: '|', chords: 'x'},
+                    {open: '|', chords: 'Gh7'},
+                    {open: '|', chords: 'C7b9', close: ']'}
                 ]
-            });
+            ]);
         });
     });
 });

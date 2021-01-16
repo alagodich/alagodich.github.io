@@ -21,7 +21,13 @@ exclude: [
     "/semantic/",
     "irealb_parser.js",
     "yarn.lock",
-    "webpack.config.*"
+    "webpack.config.*",
+    "cypress",
+    "cypress.json",
+    "jest.config.js",
+    "ROADMAP.md",
+    "tsconfig.json",
+    "coverage"
 ]
 plugins: ["jekyll-paginate", "jekyll-sitemap"]
 paginate: 5

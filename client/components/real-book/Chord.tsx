@@ -22,17 +22,17 @@ class Chord extends PureComponent<IIRealProChartBar, never> {
     private getBarlineClasses(): string {
         const classes = ['chart__bar'];
 
-        if (this.props.openingLine === '|') {
+        if (this.props.open === '|') {
             classes.push('barline--left--light');
         }
-        if (this.props.closingLine === '|') {
+        if (this.props.close === '|') {
             classes.push('barline--right--light');
         }
-        if (this.props.openingLine && barlineMap[this.props.openingLine]) {
-            classes.push(barlineMap[this.props.openingLine]);
+        if (this.props.open && barlineMap[this.props.open]) {
+            classes.push(barlineMap[this.props.open]);
         }
-        if (this.props.closingLine && barlineMap[this.props.closingLine]) {
-            classes.push(barlineMap[this.props.closingLine]);
+        if (this.props.close && barlineMap[this.props.close]) {
+            classes.push(barlineMap[this.props.close]);
         }
         if (this.props.ending) {
             classes.push('barline--top--light');
@@ -45,43 +45,47 @@ class Chord extends PureComponent<IIRealProChartBar, never> {
         if (!this.props.chords) {
             return {chords: ['']};
         }
-        // const chordsAsString: Array<ReactElement | string> = [];
         const chords: Array<ReactElement | string> = [];
         const altChords: Array<ReactElement | string> = [];
 
-        // TODO make numeric option in container with redux
-        // TODO render W, empty root
+        // eslint-disable-next-line complexity
         this.props.harmony?.forEach((chord, key) => {
             if (chord.root === 'x') {
                 // Bar repeat
-                chords.push(<span key={`${key}-harmony`} className="chord__bar-repeat">{'%'}</span>);
+                chords.push(<span key={`${key}-harmony`} className="ui big text chord__bar-repeat">{'x'}</span>);
             } else if (chord.root === 'n') {
                 // Bar repeat
-                chords.push(<span key={`${key}-harmony`} className="chord__no-chord">{'N.C.'}</span>);
+                chords.push(<span key={`${key}-harmony`} className="ui big text chord__no-chord">{'N.C.'}</span>);
             } else if (chord.root === 'p') {
                 // Bar repeat
-                chords.push(<span key={`${key}-harmony`} className="chord__pause">{' / '}</span>);
-            } else {
+                chords.push(<span key={`${key}-harmony`} className="ui big text chord__pause">{' / '}</span>);
+            } else if (chord.root === 'W') {
+                chords.push(
+                    <span key={`${key}-harmony`} className="ui medium text">
+                        {' '}{chord.shift ?? null}
+                        {chord.quality ? <span className="ui tiny text">{chord.quality}</span> : null}
+                        {chord.inversion ? <span className="ui big text">{chord.inversion}</span> : null}
+                    </span>
+                );
+            } else if (chord.root || chord.shift || chord.quality || chord.inversion) {
                 chords.push(
                     <span key={`${key}-harmony`} className="ui big text">
-                        {`${chord.root}${chord.shift}`}
+                        {chord.root}{chord.shift ?? null}
                         {chord.quality ? <span className="ui tiny text">{chord.quality}</span> : null}
                         {chord.inversion ? <span className="ui tiny text">{chord.inversion}</span> : null}
                     </span>
                 );
-                if (chord.alt) {
-                    altChords.push(
-                        <span key={`${key}-harmony-alt`} className="ui medium text chord__alt-chord">
-                            {`${chord.alt.root}${chord.alt.shift}`}
-                            {chord.alt.quality ? <span className="ui tiny text">{chord.alt.quality}</span> : null}
-                            {chord.alt.inversion ? <span className="ui tiny text">{chord.alt.inversion}</span> : null}
-                        </span>
-                    );
-                    altChords.push(' ');
-                }
             }
-            // In bar chord divider
-            chords.push(' ');
+        });
+
+        this.props.alt?.forEach((chord, key) => {
+            altChords.push(
+                <span key={`${key}-harmony-alt`} className="ui big text chord__alt-chord">
+                    {chord.root}{chord.shift ?? null}
+                    {chord.quality ? <span className="ui tiny text">{chord.quality}</span> : null}
+                    {chord.inversion ? <span className="ui tiny text">{chord.inversion}</span> : null}
+                </span>
+            );
         });
 
         return {chords, altChords};
@@ -107,29 +111,47 @@ class Chord extends PureComponent<IIRealProChartBar, never> {
             );
         }
         if (this.props.coda) {
-            otherSigns.push(<span key="coda" className="ui red small text chord__coda">{'(c)'}</span>);
+            otherSigns.push(<span key="coda" className="ui red medium text chord__coda">{'(c)'}</span>);
         }
         if (this.props.fermata) {
-            otherSigns.push(<span key="fermata" className="ui red small text chord__fermata">{'(f)'}</span>);
+            otherSigns.push(<span key="fermata" className="ui red medium text chord__fermata">{'(f)'}</span>);
         }
         if (this.props.segno) {
-            otherSigns.push(<span key="segno" className="ui red small text chord__segno">{'(s)'}</span>);
+            otherSigns.push(<span key="segno" className="ui red medium text chord__segno">{'(s)'}</span>);
         }
         return (
             <Table.Cell
                 {...props}
             >
                 <Segment.Group horizontal className="basic">
-                    <Segment basic compact>{otherSigns}</Segment>
+                    {
+                        otherSigns.length
+                            ? <Segment basic compact>{otherSigns}</Segment>
+                            : null
+                    }
                     {
                         altChords?.length
                             ? (
                                 <Segment basic>
-                                    <Segment vertical basic>{altChords}</Segment>
-                                    <Segment vertical basic>{chords}</Segment>
+                                    <Segment vertical basic>
+                                        <Segment.Group className="basic" horizontal>
+                                            {altChords.map((item, key) => <Segment key={key} basic >{item}</Segment>)}
+                                        </Segment.Group>
+                                    </Segment>
+                                    <Segment vertical basic>
+                                        <Segment.Group className="basic" horizontal>
+                                            {chords.map((item, key) => <Segment key={key} basic >{item}</Segment>)}
+                                        </Segment.Group>
+                                    </Segment>
                                 </Segment>
                             )
-                            : <Segment vertical basic>{chords}</Segment>
+                            : (
+                                <Segment basic>
+                                    <Segment.Group className="basic" horizontal>
+                                        {chords.map((item, key) => <Segment key={key} basic >{item}</Segment>)}
+                                    </Segment.Group>
+                                </Segment>
+                            )
                     }
                 </Segment.Group>
             </Table.Cell>

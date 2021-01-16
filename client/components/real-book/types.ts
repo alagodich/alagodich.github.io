@@ -15,8 +15,8 @@ export interface IIRealProChartSegment {
 
 export interface IIRealProChartBar {
     chords?: string;
-    openingLine?: string;
-    closingLine?: string;
+    open?: string;
+    close?: string;
     ending?: string;
     timeSignature?: string;
     divider?: string;
@@ -24,14 +24,15 @@ export interface IIRealProChartBar {
     fermata?: boolean;
     segno?: boolean;
     harmony?: IIRealProChord[];
+    alt?: IIRealProChord[];
 }
 
 export interface IIRealProChord {
     root: string;
-    shift: string;
-    quality: string;
-    inversion: string;
-    numeric: number;
+    shift?: string;
+    quality?: string;
+    numeric?: number;
+    inversion?: string;
     alt?: IIRealProChord;
 }
 
