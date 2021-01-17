@@ -15,7 +15,7 @@
             "version": "detect"
         }
     },
-    "plugins": ["react", "@typescript-eslint"],
+    "plugins": ["react", "react-hooks", "@typescript-eslint"],
     "globals": {
         "describe": false,
         "context": false,

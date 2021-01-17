@@ -409,6 +409,21 @@ describe('IRealProUrlParser', () => {
                 }
             ]);
         });
+        it('should handle A.Amizade - C ABC BC with strange name and symbols', () => {
+            const songWithRepeats = 'irealb://A.Amizade%20%20-%20%20C%20ABC%20BC%3DFundo%20de%20Quintal%3D%3DSamba%3DA%3D%3D1r34LbKcu7L7E%20-4%3CLa%20F%20-%23CZL7%23G%20h%23D.%3E.%C3%A1ial%20aL%20%2C%C3%A1ial%237LZB4TC*%5B%5E-%23F%28%2CLZY%7BlZL7%23C%20h%23G%7CQyX%3EA..ogima%20ueM%3CA*F%23-%2C%207E%20AZ%20-EZL7LZE-ZL7%23F%20-%23CZL7%23Gh%20%23D%7CQyX%5EDZL%2C7A%20Bh%20E7-%23F%299YQyXQ%23h%20G%23QyX%7D%20%2C7E%20AZL%2C7%20E-BZL7%23F%20-%23CZL7XyQXyDZL7AXo%23D%7C-XyQ%7CZL%2C7A%20hE%7CQyXCZ%2CL7G%20sus7G%7CQyX-DD-XyQAB*S%5BX%5EDZLb9XyQE%7CQyX7A%7CQyX-%23FLZ%2C7%23C%20h%23G%7CQyXA%7C-%20A7%2C7E%7CQyEs%20%2CAQXyQ%207E%20-BZL%2C7%23F%20-%23ZCL%2C6-D%20h%23DC*%7BY%20%2CLZN1yX%5DQy-%2CA7%2C%7DXyQXyQXyQXyQ%7CN2%3CD.S.%20al%20Fine%3ElA%20E7%2C%20Z%20%3D%3D0%3D0%3D%3D%3D';
+
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'A.Amizade  -  C ABC BC',
+                    author: 'Fundo de Quintal',
+                    style: 'Samba',
+                    key: 'A',
+                    chordString: 'CT4BZ4D#h G#7|C#- Fa #7L- E7L E7 F( |yXQ|G#h C#7|{YAF#-#-^[F#-7EZL7|7 |D^ |D# h#G7|C#- F#7|-EA Bh E- ZA|DyXXQ#h ZC#- F#7|B-E 7|A E7 } #GL7 yQY9)*BAQyD|-Xy |G7sus G7L CZ |Eh A7 |Q-DD-X#oXA7|E7 7ZLb9X |G#h C#7 ZL#F- |A7 |EQyA|- AD^X[S]Xy1N AQXy*C{D#h D-6 LCZ-# F#7 |B- E7 QY |EyQQy- A7 } |N2 A E7 Z'
+                }
+            ]);
+        });
 
         it.skip('should handle song with misplaced prefix, transposed?', () => {});
         it.skip('should handle song without prefix', () => {});

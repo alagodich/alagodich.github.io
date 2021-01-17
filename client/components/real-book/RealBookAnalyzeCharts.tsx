@@ -1,11 +1,8 @@
-import React, {PureComponent, ReactElement} from 'react';
-import {IIRealProChartModelProps} from './types';
+import React, {ReactElement} from 'react';
 import {default as _groupBy} from 'lodash/groupBy';
-import {Divider} from 'semantic-ui-react';
-
-interface IRealBookAnalyzeChartsProps {
-    songs: IIRealProChartModelProps[];
-}
+import {Divider, Segment} from 'semantic-ui-react';
+import {useSelector} from 'react-redux';
+import {RootState} from './store/reducer';
 
 interface IChartSeriesItem {
     name: string;
@@ -13,10 +10,12 @@ interface IChartSeriesItem {
     children?: IChartSeriesItem[];
 }
 
-class RealBookAnalyzeCharts extends PureComponent<IRealBookAnalyzeChartsProps, never> {
-    public getStyleToKeysSeries(): IChartSeriesItem[] {
+export const RealBookAnalyzeCharts = (): ReactElement => {
+    const {songs} = useSelector((state: RootState) => state.library);
+
+    function getStyleToKeysSeries(): IChartSeriesItem[] {
         const stylesToKeys: IChartSeriesItem[] = [];
-        const byStyles = _groupBy(this.props.songs, 'style');
+        const byStyles = _groupBy(songs, 'style');
 
         Object.getOwnPropertyNames(byStyles).forEach((styleName: string) => {
             const style: IChartSeriesItem = {
@@ -36,10 +35,10 @@ class RealBookAnalyzeCharts extends PureComponent<IRealBookAnalyzeChartsProps, n
         return stylesToKeys;
     }
 
-    public renderSeries(): ReactElement {
+    function renderSeries(): ReactElement {
         return (
             <div>
-                {this.getStyleToKeysSeries().map(style => (
+                {getStyleToKeysSeries().map(style => (
                     <div key={style.name}>
                         <span style={{textDecoration: 'underline'}}>
                             {`${style.name} [${style.children?.reduce((counter: number, key: IChartSeriesItem) =>
@@ -54,12 +53,10 @@ class RealBookAnalyzeCharts extends PureComponent<IRealBookAnalyzeChartsProps, n
         );
     }
 
-    public render(): ReactElement {
-        return (
-            <div>{this.renderSeries()}</div>
-        );
-    }
+    return (
+        <Segment basic>
+            {renderSeries()}
+        </Segment>
+    );
+};
 
-}
-
-export default RealBookAnalyzeCharts;

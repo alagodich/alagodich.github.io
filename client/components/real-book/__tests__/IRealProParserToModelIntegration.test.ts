@@ -1,6 +1,7 @@
 import IRealProUrlParser from '../IRealProUrlParser';
 import IRealProChartModel from '../IRealProChartModel';
 import allJazzSongsUrls from '../playlists/jazz';
+import allLatinSongsUrls from '../playlists/latin';
 import util from 'util';
 // import {IIRealProChartModelProps} from '../types';
 // import fs from 'fs';
@@ -97,18 +98,27 @@ describe('UrlParser and ChartModel integration', () => {
                 expect(model.key.length).not.toBe(0);
                 expect(model.chordString.length).not.toBe(0);
                 expect(model.segments.length).not.toBe(0);
-
-                // model.segments.forEach(segment => {
-                //     segment.data.forEach(bar => {
-                //         expect(bar.chords?.split(' ').join('')).toEqual(bar.harmony?.map(chord => {
-                //             return [chord.root, chord.shift, chord.quality, chord.inversion]
-                //                 .filter(item => item)
-                //                 .join('');
-                //         }).join(''));
-                //     });
-                // });
             });
         }).not.toThrow();
+    });
+
+    it('should be able to parse and create model for all latin songs', () => {
+        const parser = new IRealProUrlParser();
+
+        allLatinSongsUrls.forEach(playlist => {
+            expect(() => {
+                parser.parse(playlist.url).forEach(songProps => {
+                    const model = new IRealProChartModel(songProps);
+
+                    expect(model.title.length).not.toBe(0);
+                    expect(model.author.length).not.toBe(0);
+                    expect(model.style.length).not.toBe(0);
+                    expect(model.key.length).not.toBe(0);
+                    expect(model.chordString.length).not.toBe(0);
+                    expect(model.segments.length).not.toBe(0);
+                });
+            }).not.toThrow();
+        });
     });
 
     // it('should export', done => {

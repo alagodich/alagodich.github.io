@@ -142,7 +142,7 @@ export default class IRealProChartModel {
                 // If bar opening line is actually closing bar line, move it to the previous bar
                 if (segment[segment.length - 1].close) {
                     throw new Error(
-                        `Song: ${this.title} trying to move closing bar to the previous bar ${segmentString}`
+                        `Song: ${this.title} trying to move closing bar to the previous bar ${segmentString}.`
                     );
                 }
                 segment[segment.length - 1].close = bar.open;

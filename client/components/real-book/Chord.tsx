@@ -1,5 +1,5 @@
 import React, {PureComponent, ReactElement} from 'react';
-import {IIRealProChartBar} from './types';
+import {IIRealProChartBar, IIRealProChord} from './types';
 import {Table, TableCellProps, Segment} from 'semantic-ui-react';
 
 const barlineMap: {[index: string]: string} = {
@@ -49,7 +49,7 @@ class Chord extends PureComponent<IIRealProChartBar, never> {
         const altChords: Array<ReactElement | string> = [];
 
         // eslint-disable-next-line complexity
-        this.props.harmony?.forEach((chord, key) => {
+        this.props.harmony?.forEach((chord: IIRealProChord, key: number) => {
             if (chord.root === 'x') {
                 // Bar repeat
                 chords.push(<span key={`${key}-harmony`} className="ui big text chord__bar-repeat">{'x'}</span>);
@@ -78,7 +78,7 @@ class Chord extends PureComponent<IIRealProChartBar, never> {
             }
         });
 
-        this.props.alt?.forEach((chord, key) => {
+        this.props.alt?.forEach((chord: IIRealProChord, key: number) => {
             altChords.push(
                 <span key={`${key}-harmony-alt`} className="ui big text chord__alt-chord">
                     {chord.root}{chord.shift ?? null}
@@ -160,4 +160,4 @@ class Chord extends PureComponent<IIRealProChartBar, never> {
 
 }
 
-export default Chord;
+export default React.memo(Chord);

@@ -1,66 +1,119 @@
-import React, {PureComponent, ReactElement} from 'react';
+import React, {ReactElement, useEffect} from 'react';
 import {Table} from 'semantic-ui-react';
 import Chord from './Chord';
+import {RouteComponentProps, Link, useHistory} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {loadSong} from './store/library-slice';
 import IRealProChartModel from './IRealProChartModel';
 import {IIRealProChartBar, IIRealProChartSegment} from './types';
+import {RootState} from './store/reducer';
 
 interface IChartProps {
-    model: IRealProChartModel;
+    playlist: string;
+    songId: string;
 }
 
-class Chart extends PureComponent<IChartProps, never> {
-    public processLines(segment: IIRealProChartSegment): IIRealProChartBar[][] {
-        if (!segment || !segment.data) {
-            return [];
+export function processLines(segment: IIRealProChartSegment): IIRealProChartBar[][] {
+    if (!segment || !segment.data) {
+        return [];
+    }
+    const lines: IIRealProChartBar[][] = [];
+    let line: IIRealProChartBar[] = [];
+
+    // eslint-disable-next-line complexity
+    segment.data.forEach(barData => {
+        const bar = Object.assign({}, barData);
+
+        // Not rendering dividers for now
+        if (bar.divider || !lines) {
+            return;
         }
-        const lines: IIRealProChartBar[][] = [];
-        let line: IIRealProChartBar[] = [];
 
+        if (line.length < 4) {
+            // If it is a last bar in line, and has no closing line, add default
+            if (line.length === 3 && !bar.close) {
+                bar.close = '|';
+                barData.close = '|';
+            }
+
+            line.push(bar);
+
+            // If current closing bar line is not regular and current line is not and ending line, break the line
+            if (bar.close && bar.close !== '|' && line[0] && !line[0].ending) {
+                lines.push(line);
+                line = [];
+            }
+        } else {
+            lines.push(line);
+            line = [bar];
+        }
+    });
+    if (line.length) {
+        // If the last line is less than 4 bars and it is an ending line, fill it to the size of 4
+        if (line.length < 4 && line[0].ending) {
+            const filler = new Array(4 - line.length).fill({empty: true});
+
+            line = [...filler, ...line];
+        }
+        lines.push(line);
+    }
+
+    return lines;
+}
+
+export const Chart = (props: RouteComponentProps<IChartProps>): ReactElement | null => {
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+    const {playlist, songId} = props.match.params;
+    const {
+        songs,
+        activePlaylist,
+        activeSong,
+        error,
+        displayType
+    } = useSelector((state: RootState) => state.library);
+
+    useEffect(() => {
+        dispatch(loadSong(playlist, parseInt(songId, 10)));
+    }, [playlist, songId]);
+
+    useEffect(() => {
         // eslint-disable-next-line complexity
-        segment.data.forEach(barData => {
-            const bar = Object.assign({}, barData);
-
-            // Not rendering dividers for now
-            if (bar.divider || !lines) {
+        function handleKeyPress(event: React.KeyboardEvent): void {
+            if ((!activeSong && activeSong !== 0) || displayType !== 'chart') {
                 return;
             }
 
-            if (line.length < 4) {
-                // If it is a last bar in line, and has no closing line, add default
-                if (line.length === 3 && !bar.close) {
-                    bar.close = '|';
-                    barData.close = '|';
+            if (event.key === 'Escape' || event.key === 'c') {
+                history.push(`/${activePlaylist}`);
+            } else if (event.key === 'ArrowLeft') {
+                if (songs[activeSong - 1]) {
+                    history.push(`/${activePlaylist}/${activeSong - 1}`);
                 }
-
-                line.push(bar);
-
-                // If current closing bar line is not regular and current line is not and ending line, break the line
-                if (bar.close && bar.close !== '|' && line[0] && !line[0].ending) {
-                    lines.push(line);
-                    line = [];
+            } else if (event.key === 'ArrowRight') {
+                if (songs[activeSong + 1]) {
+                    history.push(`/${activePlaylist}/${activeSong + 1}`);
                 }
-            } else {
-                lines.push(line);
-                line = [bar];
             }
-        });
-        if (line.length) {
-            // If the last line is less than 4 bars and it is an ending line, fill it to the size of 4
-            if (line.length < 4 && line[0].ending) {
-                const filler = new Array(4 - line.length).fill({empty: true});
-
-                line = [...filler, ...line];
-            }
-            lines.push(line);
         }
 
-        return lines;
-    }
+        document.addEventListener('keyup', handleKeyPress as any, false);
+        return function cleanUp() {
+            document.removeEventListener('keyup', handleKeyPress as any, false);
+        };
+    });
 
-    public renderChart(): ReactElement {
+    function renderChart(): ReactElement | null {
         const tableRows: ReactElement[] = [];
 
-        this.props.model.segments.forEach((segment, segmentKey) => {
+        if (!activeSong && activeSong !== 0) {
+            return null;
+        }
+
+        const model = new IRealProChartModel(songs[activeSong]);
+
+        model.segments.forEach((segment, segmentKey) => {
             const headerCell = (
                 <Table.Cell
                     width={1}
@@ -69,13 +122,13 @@ class Chart extends PureComponent<IChartProps, never> {
                     {segment.name}
                 </Table.Cell>
             );
-            const lines = this.processLines(segment);
+            const lines = processLines(segment);
 
             if (!lines) {
                 return;
             }
 
-            lines.forEach((line, key) => {
+            lines.forEach((line: IIRealProChartBar[], key) => {
                 tableRows.push(
                     <Table.Row key={`${segmentKey}-${key}`} className="chart__bar-line">
                         {key === 0 ? headerCell : <Table.Cell className="chart__bar" width={1} />}
@@ -102,9 +155,9 @@ class Chart extends PureComponent<IChartProps, never> {
         );
     }
 
-    public render(): ReactElement {
-        return <div>{this.props.model ? this.renderChart() : 'Loading...'}</div>;
-    }
-}
+    return error
+        ? <div>{error} <Link to={`/${playlist}`}>{'Back to playlist'}</Link></div>
+        : (activeSong || activeSong === 0) ? renderChart() : null;
+};
 
 export default Chart;

@@ -1,8 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
-import RealBook from './components/real-book/RealBook';
-const $realBookContainer = document.getElementById('realBookContainer');
+import RealBookProvider from './components/real-book/RealBookProvider';
+const realBookContainer = document.getElementById('realBookContainer');
 
-if ($realBookContainer) {
-    render(<React.StrictMode><RealBook /></React.StrictMode>, $realBookContainer);
+if (realBookContainer) {
+    render(<React.StrictMode><RealBookProvider /></React.StrictMode>, realBookContainer);
 }
