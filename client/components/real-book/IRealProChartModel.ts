@@ -60,20 +60,33 @@ export default class IRealProChartModel {
      */
     private init(): void {
         const segments = this.chordString
-            // Split chord string by Segment name *A, *B, they are all now outside the bar lines
-            .match(/(\*\w)([^*]+)/g);
+            // Split chord string by Segment name *A, *B, etc they are all now outside the bar lines
+            .match(/([*ABCDVi]*)([^*]+)/g);
 
         if (!segments) {
             this.segments = [
                 {name: '', data: this.parseSegment(this.chordString)}
             ];
-        } else {
-            this.segments = segments
-                .map(segmentString => ({
-                    name: segmentString[1],
-                    data: this.parseSegment(segmentString.substring(2))
-                }));
+            return;
         }
+
+        if (this.chordString !== segments.join('')) {
+            this.errors.push('missing some content after division on segments');
+        }
+        this.segments = segments
+            .map(segmentString => {
+                if (segmentString[0] === '*') {
+                    return {
+                        name: segmentString[1],
+                        data: this.parseSegment(segmentString.substring(2))
+                    };
+                }
+
+                return {
+                    name: '',
+                    data: this.parseSegment(segmentString)
+                };
+            });
     }
 
     /**

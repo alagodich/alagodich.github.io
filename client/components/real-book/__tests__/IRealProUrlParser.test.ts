@@ -497,6 +497,20 @@ describe('IRealProUrlParser', () => {
                 }
             ]);
         });
+        it('should handle The Bat with unnamed segment along with named', () => {
+            const songWithRepeats = 'irealb://%42%61%74%2C%20%54%68%65=%4D%65%74%68%65%6E%79%20%50%61%74==%42%61%6C%6C%61%64=%47==%31%72%33%34%4C%62%4B%63%75%37%33%54%5A%4C%37%20%44%2F%46%23%23%46%2F%44%20%2C%47%7C%59%5A%4C%37%44%20%37%2C%2D%41%20%70%20%44%5A%4C%37%41%20%2D%45%20%20%45%2D%20%41%47%34%34%54%7B%37%68%43%5A%4C%2D%4C%5A%44%62%2D%23%43%20%70%20%37%2D%62%45%34%34%54%42%5B%2A%59%5D%20%39%62%33%31%62%42%70%2C%62%43%2F%37%20%46%23%37%41%70%2C%44%34%32%54%5A%4C%2D%5E%37%20%44%62%31%43%5A%4C%33%31%62%44%20%33%31%44%20%37%62%2D%45%20%62%42%2F%62%47%7C%59%5A%4C%62%43%2F%33%62%39%20%46%62%43%20%70%20%20%62%43%2F%2D%20%42%62%37%23%43%2F%62%41%5A%4C%70%20%44%2F%62%42%20%70%37%20%5E%62%45%34%34%54%43%2A%5B%59%5D%20%2C%35%20%70%20%41%62%2C%37%68%46%34%2F%62%45%5A%4C%45%62%2F%42%62%41%51%5B%59%59%7D%20%37%44%20%37%68%41%20%20%70%62%42%2F%62%41%5A%4C%51%70%20%70%20%70%20%62%2F%42%62%20%7C%59%5A%4C%70%42%62%20%4C%5A%41%62%2F%42%62%20%4C%5A%45%62%2F%42%62%20%4C%5A%41%62%2F%42%62%4C%5A%66%45%62%2C%20%5A%20==%30=%30===';
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'Bat, The',
+                    author: 'Pat Metheny',
+                    style: 'Ballad',
+                    key: 'G',
+                    chordString: '{T44G D/F# E- A7|D p A-7 D7|Y|G D/F# E- A7|T34D p A-|Db/Cb p Bb13b9 ]Y*B[T44Eb-7 p C#-7 F#7|Ch7 p Cb^7 Db/Cb|Y|Gb/Bb Eb-7 D13 Db13|C13b9 F-|T24Fh7 Bb7#5 ]Y*C[T44Eb^7 p Bb/D p |Ab/C p Ab-/Cb p |Y|Eb/Bb p p p Q|Ab/Bb p Ah7 D7 }Y[QAb/Bb |Eb/Bb |Ab/Bb |Eb/Bb |Ab/Bb|fEb Z'
+                }
+            ]);
+        });
 
 
         it.skip('should handle song with misplaced prefix, transposed?', () => {});

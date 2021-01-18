@@ -207,6 +207,26 @@ describe('Chart Component', () => {
 
         expect(tree).toMatchSnapshot();
     });
+    it('should render The Bat, with unnamed first segment and hard form', () => {
+        const props = {
+            title: 'Bat, The',
+            author: 'Pat Metheny',
+            style: 'Ballad',
+            key: 'G',
+            chordString: '{T44G D/F# E- A7|D p A-7 D7|Y|G D/F# E- A7|T34D p A-|Db/Cb p Bb13b9 ]Y*B[T44Eb-7 p C#-7 F#7|Ch7 p Cb^7 Db/Cb|Y|Gb/Bb Eb-7 D13 Db13|C13b9 F-|T24Fh7 Bb7#5 ]Y*C[T44Eb^7 p Bb/D p |Ab/C p Ab-/Cb p |Y|Eb/Bb p p p Q|Ab/Bb p Ah7 D7 }Y[QAb/Bb |Eb/Bb |Ab/Bb |Eb/Bb |Ab/Bb|fEb Z'
+        };
+
+        (useSelector as any).mockImplementation(() => ({
+            songs: [props],
+            activePlaylist: 'jazz',
+            activeSong: 0
+        }));
+
+        const element = create(<Chart {...emptyBootstrapProps} />);
+        const tree = element.toJSON();
+
+        expect(tree).toMatchSnapshot();
+    });
 
     describe('processLines', () => {
         it('should handle empty call', () => {

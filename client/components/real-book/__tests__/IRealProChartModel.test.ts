@@ -4466,9 +4466,233 @@ describe('IRealProChartModel', () => {
             }
         ]);
     });
+    it('should handle The Bat, with unnamed segment along with named', () => {
+        const props = {
+            title: 'Bat, The',
+            author: 'Pat Metheny',
+            style: 'Ballad',
+            key: 'G',
+            chordString: '{T44G D/F# E- A7|D p A-7 D7|Y|G D/F# E- A7|T34D p A-|Db/Cb p Bb13b9 ]Y*B[T44Eb-7 p C#-7 F#7|Ch7 p Cb^7 Db/Cb|Y|Gb/Bb Eb-7 D13 Db13|C13b9 F-|T24Fh7 Bb7#5 ]Y*C[T44Eb^7 p Bb/D p |Ab/C p Ab-/Cb p |Y|Eb/Bb p p p Q|Ab/Bb p Ah7 D7 }Y[QAb/Bb |Eb/Bb |Ab/Bb |Eb/Bb |Ab/Bb|fEb Z'
+        } as IIRealProChartModelProps;
+        const model = new IRealProChartModel(props);
 
-    it.skip('// TODO Alvarà Jorge Aragão also errored', () => {});
-    it.skip('//TODO should properly recognize and handle chords inside double repeat bvvars', () => {});
+        expect(model.title).toBe('Bat, The');
+        expect(model.errors).toEqual([]);
+
+        expect(model.segments).toEqual([
+            {
+                name: '',
+                data: [
+                    {
+                        timeSignature: '4 / 4',
+                        open: '{',
+                        chords: 'G D/F# E- A7',
+                        harmony: [
+                            {root: 'G', numeric: 1},
+                            {root: 'D', inversion: '/F#', numeric: 5},
+                            {root: 'E', quality: '-', numeric: 6},
+                            {root: 'A', quality: '7', numeric: 2}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D p A-7 D7',
+                        harmony: [
+                            {root: 'D', numeric: 5},
+                            {root: 'p'},
+                            {root: 'A', quality: '-7', numeric: 2},
+                            {root: 'D', quality: '7', numeric: 5}
+                        ],
+                        close: '|'
+                    },
+                    {divider: 'Y'},
+                    {
+                        open: '|',
+                        chords: 'G D/F# E- A7',
+                        harmony: [
+                            {root: 'G', numeric: 1},
+                            {root: 'D', inversion: '/F#', numeric: 5},
+                            {root: 'E', quality: '-', numeric: 6},
+                            {root: 'A', quality: '7', numeric: 2}
+                        ]
+                    },
+                    {
+                        timeSignature: '3 / 4',
+                        open: '|',
+                        chords: 'D p A-',
+                        harmony: [
+                            {root: 'D', numeric: 5},
+                            {root: 'p'},
+                            {root: 'A', quality: '-', numeric: 2}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Db/Cb p Bb13b9',
+                        harmony: [
+                            {root: 'D', shift: 'b', inversion: '/Cb', numeric: 5},
+                            {root: 'p'},
+                            {root: 'B', shift: 'b', quality: '13b9', numeric: 3}
+                        ],
+                        close: ']'
+                    },
+                    {divider: 'Y', close: ']'}
+                ]
+            },
+            {
+                name: 'B',
+                data: [
+                    {
+                        timeSignature: '4 / 4',
+                        open: '[',
+                        chords: 'Eb-7 p C#-7 F#7',
+                        harmony: [
+                            {root: 'E', shift: 'b', quality: '-7', numeric: 6},
+                            {root: 'p'},
+                            {root: 'C', shift: '#', quality: '-7', numeric: 4},
+                            {root: 'F', shift: '#', quality: '7', numeric: 7}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Ch7 p Cb^7 Db/Cb',
+                        harmony: [
+                            {root: 'C', quality: 'h7', numeric: 4},
+                            {root: 'p'},
+                            {root: 'C', shift: 'b', quality: '^7', numeric: 4},
+                            {root: 'D', shift: 'b', inversion: '/Cb', numeric: 5}
+                        ],
+                        close: '|'
+                    },
+                    {divider: 'Y'},
+                    {
+                        open: '|',
+                        chords: 'Gb/Bb Eb-7 D13 Db13',
+                        harmony: [
+                            {root: 'G', shift: 'b', inversion: '/Bb', numeric: 1},
+                            {root: 'E', shift: 'b', quality: '-7', numeric: 6},
+                            {root: 'D', quality: '13', numeric: 5},
+                            {root: 'D', shift: 'b', quality: '13', numeric: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C13b9 F-',
+                        harmony: [
+                            {root: 'C', quality: '13b9', numeric: 4},
+                            {root: 'F', quality: '-', numeric: 7}
+                        ]
+                    },
+                    {
+                        timeSignature: '2 / 4',
+                        open: '|',
+                        chords: 'Fh7 Bb7#5',
+                        harmony: [
+                            {root: 'F', quality: 'h7', numeric: 7},
+                            {root: 'B', shift: 'b', quality: '7#5', numeric: 3}
+                        ],
+                        close: ']'
+                    },
+                    {divider: 'Y', close: ']'}
+                ]
+            },
+            {
+                name: 'C',
+                data: [
+                    {
+                        timeSignature: '4 / 4',
+                        open: '[',
+                        chords: 'Eb^7 p Bb/D p',
+                        harmony: [
+                            {root: 'E', shift: 'b', quality: '^7', numeric: 6},
+                            {root: 'p'},
+                            {root: 'B', shift: 'b', inversion: '/D', numeric: 3},
+                            {root: 'p'}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Ab/C p Ab-/Cb p',
+                        harmony: [
+                            {root: 'A', shift: 'b', inversion: '/C', numeric: 2},
+                            {root: 'p'},
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-',
+                                inversion: '/Cb',
+                                numeric: 2
+                            },
+                            {root: 'p'}
+                        ],
+                        close: '|'
+                    },
+                    {divider: 'Y'},
+                    {
+                        coda: true,
+                        open: '|',
+                        chords: 'Eb/Bb p p p',
+                        harmony: [
+                            {root: 'E', shift: 'b', inversion: '/Bb', numeric: 6},
+                            {root: 'p'},
+                            {root: 'p'},
+                            {root: 'p'}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Ab/Bb p Ah7 D7',
+                        harmony: [
+                            {root: 'A', shift: 'b', inversion: '/Bb', numeric: 2},
+                            {root: 'p'},
+                            {root: 'A', quality: 'h7', numeric: 2},
+                            {root: 'D', quality: '7', numeric: 5}
+                        ],
+                        close: '}'
+                    },
+                    {divider: 'Y'},
+                    {
+                        coda: true,
+                        open: '[',
+                        chords: 'Ab/Bb',
+                        harmony: [{root: 'A', shift: 'b', inversion: '/Bb', numeric: 2}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Eb/Bb',
+                        harmony: [{root: 'E', shift: 'b', inversion: '/Bb', numeric: 6}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Ab/Bb',
+                        harmony: [{root: 'A', shift: 'b', inversion: '/Bb', numeric: 2}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Eb/Bb',
+                        harmony: [{root: 'E', shift: 'b', inversion: '/Bb', numeric: 6}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Ab/Bb',
+                        harmony: [{root: 'A', shift: 'b', inversion: '/Bb', numeric: 2}]
+                    },
+                    {
+                        fermata: true,
+                        open: '|',
+                        chords: 'Eb',
+                        harmony: [{root: 'E', shift: 'b', numeric: 6}],
+                        close: 'Z'
+                    }
+                ]
+            }
+        ]);
+    });
+
+    it.skip('// TODO Alvarà Jorge Aragão also errored', () => {
+    });
+    it.skip('//TODO should properly recognize and handle chords inside double repeat bvvars', () => {
+    });
     describe('parseSegment', () => {
         it('should handle multiple repeats (r)', () => {
             const segmentString = '[T44C6 |x |r|r|r|]';

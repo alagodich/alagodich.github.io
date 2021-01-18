@@ -10796,6 +10796,1193 @@ exports[`Chart Component should render Butterfly fermata and pauses and N.C. 1`]
 </table>
 `;
 
+exports[`Chart Component should render The Bat, with unnamed first segment and hard form 1`] = `
+<table
+  className="ui fixed single line unstackable top attached very basic five column table chart"
+>
+  <tbody
+    className=""
+  >
+    <tr
+      className="chart__bar-line"
+    >
+      <td
+        className="one wide chart__section-header"
+      >
+        
+      </td>
+      <td
+        className="four wide chart__bar barline--left--heavy-dotted"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic compact segment"
+          >
+            <span
+              className="chord__time-signature"
+            >
+              4 / 4
+            </span>
+          </div>
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  G
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  D
+                  <span
+                    className="ui small text"
+                  >
+                    /F#
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  E
+                  <span
+                    className="ui small text"
+                  >
+                    -
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  A
+                  <span
+                    className="ui small text"
+                  >
+                    7
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td
+        className="four wide chart__bar barline--left--light barline--right--light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  D
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text chord__pause"
+                >
+                   / 
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  A
+                  <span
+                    className="ui small text"
+                  >
+                    -7
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  D
+                  <span
+                    className="ui small text"
+                  >
+                    7
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr
+      className="chart__bar-line"
+    >
+      <td
+        className="one wide chart__bar"
+      />
+      <td
+        className="four wide chart__bar barline--left--light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  G
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  D
+                  <span
+                    className="ui small text"
+                  >
+                    /F#
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  E
+                  <span
+                    className="ui small text"
+                  >
+                    -
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  A
+                  <span
+                    className="ui small text"
+                  >
+                    7
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td
+        className="four wide chart__bar barline--left--light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic compact segment"
+          >
+            <span
+              className="chord__time-signature"
+            >
+              3 / 4
+            </span>
+          </div>
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  D
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text chord__pause"
+                >
+                   / 
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  A
+                  <span
+                    className="ui small text"
+                  >
+                    -
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td
+        className="four wide chart__bar barline--left--light barline--right--light-light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  D
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    /Cb
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text chord__pause"
+                >
+                   / 
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  B
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    13b9
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr
+      className="chart__bar-line"
+    >
+      <td
+        className="one wide chart__section-header"
+      >
+        B
+      </td>
+      <td
+        className="four wide chart__bar barline--left--light-light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic compact segment"
+          >
+            <span
+              className="chord__time-signature"
+            >
+              4 / 4
+            </span>
+          </div>
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  E
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    -7
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text chord__pause"
+                >
+                   / 
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  C
+                  #
+                  <span
+                    className="ui small text"
+                  >
+                    -7
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  F
+                  #
+                  <span
+                    className="ui small text"
+                  >
+                    7
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td
+        className="four wide chart__bar barline--left--light barline--right--light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  C
+                  <span
+                    className="ui small text"
+                  >
+                    h7
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text chord__pause"
+                >
+                   / 
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  C
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    ^7
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  D
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    /Cb
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr
+      className="chart__bar-line"
+    >
+      <td
+        className="one wide chart__bar"
+      />
+      <td
+        className="four wide chart__bar barline--left--light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  G
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    /Bb
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  E
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    -7
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  D
+                  <span
+                    className="ui small text"
+                  >
+                    13
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  D
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    13
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td
+        className="four wide chart__bar barline--left--light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  C
+                  <span
+                    className="ui small text"
+                  >
+                    13b9
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  F
+                  <span
+                    className="ui small text"
+                  >
+                    -
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td
+        className="four wide chart__bar barline--left--light barline--right--light-light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic compact segment"
+          >
+            <span
+              className="chord__time-signature"
+            >
+              2 / 4
+            </span>
+          </div>
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  F
+                  <span
+                    className="ui small text"
+                  >
+                    h7
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  B
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    7#5
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr
+      className="chart__bar-line"
+    >
+      <td
+        className="one wide chart__section-header"
+      >
+        C
+      </td>
+      <td
+        className="four wide chart__bar barline--left--light-light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic compact segment"
+          >
+            <span
+              className="chord__time-signature"
+            >
+              4 / 4
+            </span>
+          </div>
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  E
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    ^7
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text chord__pause"
+                >
+                   / 
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  B
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    /D
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text chord__pause"
+                >
+                   / 
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td
+        className="four wide chart__bar barline--left--light barline--right--light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  A
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    /C
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text chord__pause"
+                >
+                   / 
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  A
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    -
+                  </span>
+                  <span
+                    className="ui small text"
+                  >
+                    /Cb
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text chord__pause"
+                >
+                   / 
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr
+      className="chart__bar-line"
+    >
+      <td
+        className="one wide chart__bar"
+      />
+      <td
+        className="four wide chart__bar barline--left--light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic compact segment"
+          >
+            <span
+              className="ui red medium text chord__coda"
+            >
+              (c)
+            </span>
+          </div>
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  E
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    /Bb
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text chord__pause"
+                >
+                   / 
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text chord__pause"
+                >
+                   / 
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text chord__pause"
+                >
+                   / 
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td
+        className="four wide chart__bar barline--left--light barline--right--dotted-heavy"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  A
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    /Bb
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text chord__pause"
+                >
+                   / 
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  A
+                  <span
+                    className="ui small text"
+                  >
+                    h7
+                  </span>
+                </span>
+              </div>
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  D
+                  <span
+                    className="ui small text"
+                  >
+                    7
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr
+      className="chart__bar-line"
+    >
+      <td
+        className="one wide chart__bar"
+      />
+      <td
+        className="four wide chart__bar barline--left--light-light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic compact segment"
+          >
+            <span
+              className="ui red medium text chord__coda"
+            >
+              (c)
+            </span>
+          </div>
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  A
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    /Bb
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td
+        className="four wide chart__bar barline--left--light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  E
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    /Bb
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td
+        className="four wide chart__bar barline--left--light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  A
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    /Bb
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td
+        className="four wide chart__bar barline--left--light barline--right--light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  E
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    /Bb
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr
+      className="chart__bar-line"
+    >
+      <td
+        className="one wide chart__bar"
+      />
+      <td
+        className="four wide chart__bar barline--left--light"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  A
+                  b
+                  <span
+                    className="ui small text"
+                  >
+                    /Bb
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td
+        className="four wide chart__bar barline--left--light barline--right--light-heavy"
+      >
+        <div
+          className="ui horizontal segments basic"
+        >
+          <div
+            className="ui basic compact segment"
+          >
+            <span
+              className="ui red medium text chord__fermata"
+            >
+              (f)
+            </span>
+          </div>
+          <div
+            className="ui basic segment"
+          >
+            <div
+              className="ui horizontal segments basic"
+            >
+              <div
+                className="ui basic segment"
+              >
+                <span
+                  className="ui big text"
+                >
+                  E
+                  b
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
 exports[`Chart Component should render song with repeats (r), The African Queen 1`] = `
 <table
   className="ui fixed single line unstackable top attached very basic five column table chart"
