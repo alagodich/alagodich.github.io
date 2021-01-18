@@ -5,12 +5,14 @@ import {RootState} from './store/reducer';
 import {toggleAnalyzeSegment, setSearchFilter} from './store/library-slice';
 import {toggleNotation} from './store/chart-slice';
 import {Link} from 'react-router-dom';
+import {useMediaQuery} from 'react-responsive';
 
 interface IRealBookHeader {
     displayType: 'playlist' | 'chart';
     header: string;
 }
 
+// eslint-disable-next-line complexity
 export const RealBookHeader = React.memo((props: IRealBookHeader): ReactElement => {
     const {
         songs,
@@ -21,6 +23,7 @@ export const RealBookHeader = React.memo((props: IRealBookHeader): ReactElement 
     } = useSelector((state: RootState) => state.library);
     const {notation} = useSelector((state: RootState) => state.chart);
     const dispatch = useDispatch();
+    const isDesktop = useMediaQuery({minWidth: 768});
 
     function handleToggleAnalyzeCharts() {
         dispatch(toggleAnalyzeSegment());
@@ -40,7 +43,7 @@ export const RealBookHeader = React.memo((props: IRealBookHeader): ReactElement 
             <Menu.Menu position="right">
                 <Header as="h2" textAlign="right">
                     <Header.Content>
-                        <Link to={`/${activePlaylist}`} title="You can press Esc to close the chart.">
+                        <Link to={`/${activePlaylist}`} title="You can press Esc or q to close the chart.">
                             <Icon name="angle double left" color="blue" style={{cursor: 'pointer'}} />
                         </Link>
                         {songs[activeSong].title}
@@ -109,14 +112,12 @@ export const RealBookHeader = React.memo((props: IRealBookHeader): ReactElement 
                 />
             </Menu.Item>
         )
-        : (
-            <Header as="h2" style={{marginBottom: 0}}>
-                <Header.Content>{props.header}</Header.Content>
-            </Header>
-        );
+        : isDesktop
+            ? <Menu.Header style={{marginBottom: 0}} content={props.header} as="h2" />
+            : <Menu.Item header content={props.header} />;
 
     return (
-        <Menu secondary text pointing>
+        <Menu secondary pointing>
             {leftHeader}
             {rightMenu}
         </Menu>

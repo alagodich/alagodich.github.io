@@ -1,6 +1,6 @@
 import React, {ReactElement, useEffect} from 'react';
 import {Table, Segment} from 'semantic-ui-react';
-import {Chord} from './Chord';
+import {ChartBar} from './ChartBar';
 import {RouteComponentProps, Link, useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {loadSong} from './store/library-slice';
@@ -149,7 +149,7 @@ export const Chart = React.memo((props: RouteComponentProps<IChartProps>): React
                 tableRows.push(
                     <Table.Row key={`${segmentKey}-${key}`} className="chart__bar-line">
                         {key === 0 ? headerCell : <Table.Cell className="chart__bar" width={1} />}
-                        {line.map((bar, barKey) => <Chord key={barKey} {...bar} notation={notation} />)}
+                        {line.map((bar, barKey) => <ChartBar key={barKey} {...bar} notation={notation} />)}
                     </Table.Row>
                 );
             });

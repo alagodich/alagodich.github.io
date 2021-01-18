@@ -1,7 +1,7 @@
 describe('Main Page', () => {
      it('should show list of songs', () => {
           cy.visit('http://localhost:4000/realbook.html');
-          cy.get('.realbook .header .content').contains('Real Book');
+          cy.get('.realbook .header').contains('Real Book');
           cy.get('.list').contains('500 Miles');
 
           cy.get('.right.menu input')

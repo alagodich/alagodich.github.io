@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import Menu from './components/Menu';
+import {MainMenu} from './components/MainMenu';
 import {Youtube} from './components/Youtube';
 import {Photo} from './components/Photo';
 import {Carousel} from './components/Carousel';
@@ -16,7 +16,7 @@ const menuContainer: HTMLDivElement = document.getElementById('react--component-
 
 render(
     <React.StrictMode>
-        <Menu
+        <MainMenu
             current={menuContainer.dataset.current as string}
             items={JSON.parse(menuContainer.dataset.items as string)}
         />
