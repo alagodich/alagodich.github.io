@@ -1,10 +1,12 @@
 import React, {Component, ReactElement} from 'react';
 import {default as CSound} from '@kunstmusik/csound';
-import randomDiatonicChordsCsd from './orchestras/random-diatonic-chords.csd';
+// import randomDiatonicChordsCsd from './orchestras/random-diatonic-chords.csd';
+import CsdGenerator from './CsdGenerator';
+import {IIRealProChord} from '../real-book/types';
 
-const orchestras: {[key: string]: string} = {
-    'random-diatonic-chords.csd': randomDiatonicChordsCsd
-};
+// const orchestras: {[key: string]: string} = {
+//     'random-diatonic-chords.csd': randomDiatonicChordsCsd
+// };
 
 interface ICSoundComponentState {
     loading: boolean;
@@ -84,11 +86,39 @@ export default class CSoundComponent extends Component<any, ICSoundComponentStat
     }
 
     public handleLoadOrchestra(orchestra: string): () => void {
-        if (!orchestras[orchestra]) {
-            throw new Error(`Unknown orchestra ${orchestra}`);
-        }
+        const csdGenerator = new CsdGenerator();
+
+        // TODO maybe we should set the key instead, but major/minor should be enough too
+        csdGenerator.setIsMajor(true);
+        csdGenerator.useDefaultInstruments();
+        const C: IIRealProChord = {
+            root: 'C',
+            numeric: 1,
+            quality: '^'
+        };
+        const Am: IIRealProChord = {
+            root: 'A',
+            numeric: 6,
+            quality: '-7'
+        };
+        const Dm: IIRealProChord = {
+            root: 'D',
+            numeric: 2,
+            quality: '-7'
+        };
+        const G7: IIRealProChord = {
+            root: 'G',
+            numeric: 5,
+            quality: '7'
+        };
+
+        csdGenerator.addChord(C, 0, 2);
+        csdGenerator.addChord(Am, 2, 2);
+        csdGenerator.addChord(Dm, 4, 2);
+        csdGenerator.addChord(G7, 6, 2);
+
         return () => {
-            this.state.cSound.compileCSD(orchestras[orchestra]);
+            this.state.cSound.compileCSD(csdGenerator.compile());
             this.setState({orchestraLoaded: orchestra});
         };
     }
@@ -106,7 +136,7 @@ export default class CSoundComponent extends Component<any, ICSoundComponentStat
             <div>
                 <div style={{marginBottom: '1em'}}>
                     <div>{'Orchestras:'}</div>
-                    <span>{'random-diatonic-chords.csd -- '}</span>
+                    <span>{'C Am Dm G7 -- '}</span>
                     {
                         this.state.orchestraLoaded === 'random-diatonic-chords.csd'
                             ? (
@@ -115,7 +145,7 @@ export default class CSoundComponent extends Component<any, ICSoundComponentStat
                                 </a>
                             )
                             : (
-                                <a href="#" onClick={this.handleLoadOrchestra('random-diatonic-chords.csd')}>
+                                <a href="#" onClick={this.handleLoadOrchestra('')}>
                                     {'load'}
                                 </a>
                             )

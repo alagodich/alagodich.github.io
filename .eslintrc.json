@@ -72,7 +72,8 @@
             "@typescript-eslint/indent": ["error", 4, {
                 "FunctionDeclaration": {"parameters": "first"},
                 "FunctionExpression": {"parameters": "first"},
-                "flatTernaryExpressions": true
+                "flatTernaryExpressions": true,
+                "SwitchCase": 1
             }],
             "@typescript-eslint/member-delimiter-style": "error",
             "@typescript-eslint/naming-convention": [
