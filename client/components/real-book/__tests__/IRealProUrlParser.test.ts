@@ -409,6 +409,21 @@ describe('IRealProUrlParser', () => {
                 }
             ]);
         });
+        it('should handle A. Beleza é Você, Menina - Bebeto with special symbols in title', () => {
+            const songWithRepeats = 'irealb://A.%20Beleza%20%C3%A9%20Voc%C3%AA%2C%20Menina%3DBebeto%3D%3DSamba-Funk%3DA-%3D%3D1r34LbKcu7ial..4E-7%20%3C%7BY%5DQyX7-EZL%207A-ZL%207-BZL%207-AZLLa...4Ti*%5B%7CQyX7-7XyQX7-AA*%7BY%7DQyX9-%7CEQyX7-A%7CQyX7-B%7CyQ%7CB-A%3E..a%7CQyX7Q%7CE-7X7-E%7CQyX7-A%7CQy7X-B%7CQyX9%5EC%5B%7DQyXyQ%7CA-yX7-A%7DQyX7Q%7CA-7X7-A%7CQyX7-B%7CQy9X%5ECB*%7BY%20QyX%5DQyXyQ%7CE-yX7-B-B%7CQy%5E9%28A-*%7BY%7DQyX7-E%7CQyX-7A%7CQyX7-B%7CQyX%297BC%5E9XCA*%7BYeniF%20N1A-7.D%3C%20%207-A2NZL%20QXyQyX%7DQyX7-E%7CQyXC.%20al%7CQyX7%3E%20Z%20%3D%3D0%3D0%3D%3D%3D';
+
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'A. Beleza é Você, Menina',
+                    author: 'Bebeto',
+                    style: 'Samba-Funk',
+                    key: 'A-',
+                    chordString: '*i[T44E-7 |A-7 |B-7 |A-7 |E-7 ]Y{A-7 |B-7 |A-7 |E-9 }Y*A{A-7 |B-7 |A-7 |E-7 }[C^9 |B-7 |A-7 |E-7 |A-7 |B-7 |A-7 ] Y*B{C^9 |B-7 |A-7 |E-7 }Y*A{C^9(A-7) |B-7 |A-7 |E-7 }Y*B{C^9 |B-7 |N1A-7 |E-7 } |N2A-7  Z'
+                }
+            ]);
+        });
         it('should handle A.Amizade - C ABC BC with strange name and symbols', () => {
             const songWithRepeats = 'irealb://A.Amizade%20%20-%20%20C%20ABC%20BC%3DFundo%20de%20Quintal%3D%3DSamba%3DA%3D%3D1r34LbKcu7L7E%20-4%3CLa%20F%20-%23CZL7%23G%20h%23D.%3E.%C3%A1ial%20aL%20%2C%C3%A1ial%237LZB4TC*%5B%5E-%23F%28%2CLZY%7BlZL7%23C%20h%23G%7CQyX%3EA..ogima%20ueM%3CA*F%23-%2C%207E%20AZ%20-EZL7LZE-ZL7%23F%20-%23CZL7%23Gh%20%23D%7CQyX%5EDZL%2C7A%20Bh%20E7-%23F%299YQyXQ%23h%20G%23QyX%7D%20%2C7E%20AZL%2C7%20E-BZL7%23F%20-%23CZL7XyQXyDZL7AXo%23D%7C-XyQ%7CZL%2C7A%20hE%7CQyXCZ%2CL7G%20sus7G%7CQyX-DD-XyQAB*S%5BX%5EDZLb9XyQE%7CQyX7A%7CQyX-%23FLZ%2C7%23C%20h%23G%7CQyXA%7C-%20A7%2C7E%7CQyEs%20%2CAQXyQ%207E%20-BZL%2C7%23F%20-%23ZCL%2C6-D%20h%23DC*%7BY%20%2CLZN1yX%5DQy-%2CA7%2C%7DXyQXyQXyQXyQ%7CN2%3CD.S.%20al%20Fine%3ElA%20E7%2C%20Z%20%3D%3D0%3D0%3D%3D%3D';
 
@@ -420,10 +435,69 @@ describe('IRealProUrlParser', () => {
                     author: 'Fundo de Quintal',
                     style: 'Samba',
                     key: 'A',
-                    chordString: 'CT4BZ4D#h G#7|C#- Fa #7L- E7L E7 F( |yXQ|G#h C#7|{YAF#-#-^[F#-7EZL7|7 |D^ |D# h#G7|C#- F#7|-EA Bh E- ZA|DyXXQ#h ZC#- F#7|B-E 7|A E7 } #GL7 yQY9)*BAQyD|-Xy |G7sus G7L CZ |Eh A7 |Q-DD-X#oXA7|E7 7ZLb9X |G#h C#7 ZL#F- |A7 |EQyA|- AD^X[S]Xy1N AQXy*C{D#h D-6 LCZ-# F#7 |B- E7 QY |EyQQy- A7 } |N2 A E7 Z'
+                    chordString: '*C[T44D#h G#7|C#- F#7|B- E7|A E7 |Y*A{A |G#h C#7|F#- (F#-^9)F#-7|E- A7 |D^ |D#h G#7|C#- F#7|Bh E7|E- A7|D#h G#7|C#- F#7|B- E7 |A E7 } Y*B[SA- |D- |G7sus G7 |C |Eh A7 |D- |D#o |E7b9 |A |G#h C#7 |F#- |A7 |E- A7 |D^ ] Y*C{D#h D-6 |C#- F#7 |B- E7 |N1A E- A7 } |N2 A E7 Z'
                 }
             ]);
         });
+        it('should handle A.Epopéia de Zumbi - In ABC ABC with strange name, form and symbols', () => {
+            const songWithRepeats = 'irealb://A.Epop%C3%A9ia%20de%20Zumbi%20-%20In%20ABC%20ABC%3DLopes%20Nei%3D%3DSamba%3DE-%3D%3D1r34LbKcu7%207Bn%2C4sE-%2CB%20%2C-E%7C%2C7B%20%2C7CsLZ6-E%2C7-EZL%2C7%5E-E7%2C%7CE-4Ti*%5B%29bB/7lE-%2CXyX7C%7CQyX%29%23F/7Dx%28%7CQyX7D%7CQyXx%7CQyQ%7Cx%28CA*%7BY%5DyX7B%7C7XyQ%7CF%7CQyXC%7CQyXG%7CQy7XD%7CQyX-A%7BY%7DQyXx%23hXyQB%7CQyXyXx%7CQ7XyQ%7C%5BY%20QyX%5D%20%2C7B%20-EN2ZL%20QyXQyX%7DQyXx*BEXyE1N%7CQ%20E%7BY%20Q%7Cx%20CZL%20xZL%207BZL%20-%23ZFL7%5E-%23F%20-%23FZL7%23E%2CB7%2CyXx%7CQ..%3C0N%23-XyQyXQyXQyX%7D%20%3Ex6%3CB7%20E%3E6%20%20%3C%7CQyX7B%7CQXyQ%7CFZLoFZLQyXasil%3E%7CQyX-EZL7B%20h%23F%20%3EQyX%3CC*%5BY%5DQyX-EXyQr%7CrB%20ed%20%20r%7CXyQ%7C%20%20r%7C%20B7%2CLZsE-%2CnlB7%2C%20Z%20%3D%3D0%3D0%3D%3D%3D';
+
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'A.Epopéia de Zumbi - In ABC ABC',
+                    author: 'Nei Lopes',
+                    style: 'Samba',
+                    key: 'E-',
+                    chordString: '*i[T44E- E-^7 |E-7 E-6|C7 B7 |E- B7 |E- nB7 ]Y*A{ E- |x |D7 |x(D7/F#) |C7 |x(C7/Bb) |B7 |x }Y{A- |D7 |G |C |F#h |B7 |N1E7 |x } |N2E- B7 ] Y*B[E |x |x |x C#7|F#- F#-^7|F#- |B7 |x |E B7 Y{E Fo|F#- |B7 |E B7 } |N0E- ]Y*C[F#h B7|E- |r|r|r|B7 |E- n B7 Z'
+                }
+            ]);
+        });
+        it('should handle Alguém me Avisou, it has extra chords in double bar repeat', () => {
+            const songWithRepeats = 'irealb://Algu%C3%A9m%20me%20Avisou%3DDona%20Ivone%20Lara%3D%3DSamba%3DD%3D%3D1r34LbKcu7v%20uE%3C4%3CFor%7CrQyXZL7A%20DZL7%20GD%3Eramahc%20em%20maXyQLZ4TA*%5B-E%7CZL%20l%C3%A1%3EDB%20%29h%23F%28%20%7CrQyXZ%29L-E%28%5EG%20-%23FZL-E%207%28B7%29ed%20mi%3E%20etnD%20D%23oo%20iuf%20erpmeS%3CB%5B*YY%5D%20QyX%7CrQyXZLbedieZL7A%20XyQr%7CXyQLZXyQr%7CF%23h%20B7LZ%7CXyQr%7CXyQLZXyQr%7C%20%20A7%20Z%20%3D%3D0%3D0%3D%3D%3D';
+
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'Alguém me Avisou',
+                    author: 'Dona Ivone Lara',
+                    style: 'Samba',
+                    key: 'D',
+                    chordString: '*A[T44D G7|D A7|r|D E-|F#- G^(E-)|r|(F#h) B7(B7)|E- A7|D D#o|r|]Y*B[ r|r|F#h B7|r|r|A7 Z'
+                }
+            ]);
+        });
+        it('should handle Amor e Festança, chart with no chords, only empty bars', () => {
+            const songWithRepeats = 'irealb://Amor%20e%20Festan%C3%A7a%3DAdalto%20Magalha%20e%20Toninho%20Geraes%3D%3DSamba%3DC%3D%3D1r34LbKcu7X%5BB*%5D%5BXyQLLQyXZLQyXZLQyXLZQyXZLQyXZLQyXZZXyQ%2044TA*yQLZXyQLZXyQLZXyQLZXyQLZXyQLZXyQLZXyQ%20Z%3D%3D0%3D0%3D%3D%3D';
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'Amor e Festança',
+                    author: 'Adalto Magalha e Toninho Geraes',
+                    style: 'Samba',
+                    key: 'C',
+                    chordString: '*A[T44 ||||]*B[ ||||Z'
+                }
+            ]);
+        });
+        it('should handle Jogral', () => {
+            const songWithRepeats = 'irealb://Jogral%3DDjavan-Neto-Filo%3D%3DSamba%3DBb%3D%3D1r34LbKcu71F%7CQy4G%5E9XQyX5%239%237G%7CQyX9D-ZL6-bE%209-bE%7CQy%7CC-9X4TA*%5B%209-bEQ%7CBb%5Eb9b7A%7CQyX9-EZL/F7-G%209-GZL7-A%2095XyQ%7CyX9b39%237B2Db-9%20sus9D1N%7CQyX9%5EbZBL9b7F%209-CZL9bGXyQ%7DNZL9bA9-GZL*BE-9D%20sus9D%7CQyX9%5EDLZ31A%20sus31A%7CQyX7%239%235%5B%5DQyX-bE%20913susyX9%5EGC*%5B%5DQyXsu9sD%7CQyX9%5EFZL31C%20Q%7CEb-C%7CQyX%209-GZ9XyQ%7C9%5EbB%7CQyX9b31F%7CyQX9-C%7CQyX5%239%237G%20A-7L-DZL67F%209-LZE-9G%209-bDZL9bA%209-Eb%7CQyX5b9b7A%7CQyXb9LZCF/7-GL%20nplb%5E9Xys%20%20nZLn%20%2C11%2331lDD*%7B%20QyX%5DQyXn%7CQD13%2C%7CBZL9biF%20%208%7D%7B%3CVa%20ZLxZL31D%3Eeuc%20llit%20olos%20dna%20pmr%7C%3C*6QyXnZx%3Eeniamp%20a.C.D%3CZLxZL11%233D1s%7D%20U%20%3E%29edaF%20dn%20al%20FV%28%20enLZD9sus%20Z%20%3DLatin-Brazil:%20Samba%3D200%3D3%3D%3D%3D';
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'Jogral',
+                    author: 'Djavan-Neto-Filo',
+                    style: 'Samba',
+                    key: 'Bb',
+                    chordString: '*A[T44G^9 |Eb-9 Eb-6|D-9 |G7#9#5 |C-9 |F13b9 |Bb^9 A-7|G-9 G-7/F|E-9 |A7b9b5 |Eb-9 Ab9|Db-9 Gb9|C-9 F7b9|Bb^9 |N1D9sus }|N2B7#9 ]*B[E-9 |A13sus A13|D^9 |D9sus D7#9#5|G-9 |C13sus C13|F^9 |D9sus ]*C[G^9 |Eb-9 Eb-6|D-9 |G7#9#5 |C-9 |F13b9 |Bb^9 A-7|G-9 G-7/F|E-9 |A7b9b5 |Eb-9 Ab9|Db-9 Gb9|C-9 F7b9|Bb^9 |n ] *D{ D13#11 n|n D13 |p n |n }{D13|x|r| }D13#11|x|x|D9sus Z'
+                }
+            ]);
+        });
+
 
         it.skip('should handle song with misplaced prefix, transposed?', () => {});
         it.skip('should handle song without prefix', () => {});

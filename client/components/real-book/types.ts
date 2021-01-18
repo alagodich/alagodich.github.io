@@ -10,7 +10,6 @@ export interface IIRealProChartModelProps {
 export interface IIRealProChartSegment {
     name: string;
     data: IIRealProChartBar[];
-    lines?: IIRealProChartBar[][];
 }
 
 export interface IIRealProChartBar {
@@ -25,6 +24,7 @@ export interface IIRealProChartBar {
     segno?: boolean;
     harmony?: IIRealProChord[];
     alt?: IIRealProChord[];
+    error?: string;
 }
 
 export interface IIRealProChord {
@@ -215,3 +215,4 @@ export const otherSymbols = [
 
 // Probably iReal Pro url format version token
 export const iRealProUrlFormatVersionPrefix = '1r34LbKcu7';
+export type IChordNotation = 'symbolic' | 'numeric';

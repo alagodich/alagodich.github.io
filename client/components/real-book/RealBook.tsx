@@ -10,7 +10,7 @@ import {RealBookAnalyzeCharts} from './RealBookAnalyzeCharts';
 
 const playlists = ['jazz', 'latin'];
 
-const RealBook: React.FunctionComponent = () => {
+const RealBook: React.FunctionComponent = React.memo(() => {
     const {
         displayType,
         showAnalyzeSegment
@@ -61,6 +61,6 @@ const RealBook: React.FunctionComponent = () => {
             </div>
         </HashRouter>
     );
-};
+});
 
 export default RealBook;

@@ -1,13 +1,16 @@
 /* eslint max-len: 0 */
 
 import {useSelector} from 'react-redux';
+
 jest.mock('react-redux', () => ({
     useSelector: jest.fn(),
-    useDispatch: () => jest.fn(() => {})
+    useDispatch: () => jest.fn(() => {
+    })
 }));
 
 jest.mock('react-router-dom', () => ({
-    useHistory: () => {}
+    useHistory: () => {
+    }
 }));
 
 import Chart, {processLines} from '../Chart';
@@ -365,6 +368,547 @@ describe('Chart Component', () => {
                     {open: '|', chords: 'x'},
                     {open: '|', chords: 'Gh7'},
                     {open: '|', chords: 'C7b9', close: ']'}
+                ]
+            ]);
+        });
+        it('should process lines divider inside segment, divider should break the line, A. Beleza é Você, Menina', () => {
+            const segment = {
+                name: 'i',
+                data: [
+                    {
+                        timeSignature: '4 / 4',
+                        open: '[',
+                        chords: 'E-7',
+                        harmony: [{root: 'E', quality: '-7', numeric: 5}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A-7',
+                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'B-7',
+                        harmony: [{root: 'B', quality: '-7', numeric: 2}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A-7',
+                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'E-7',
+                        harmony: [{root: 'E', quality: '-7', numeric: 5}],
+                        close: ']'
+                    },
+                    {divider: 'Y'},
+                    {
+                        open: '{',
+                        chords: 'A-7',
+                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'B-7',
+                        harmony: [{root: 'B', quality: '-7', numeric: 2}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A-7',
+                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'E-9',
+                        harmony: [{root: 'E', quality: '-9', numeric: 5}],
+                        close: '}'
+                    },
+                    {divider: 'Y', close: ']'}
+                ]
+            };
+
+            expect(processLines(segment)).toEqual([
+                [
+                    {
+                        timeSignature: '4 / 4',
+                        open: '[',
+                        chords: 'E-7',
+                        harmony: [{root: 'E', quality: '-7', numeric: 5}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A-7',
+                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'B-7',
+                        harmony: [{root: 'B', quality: '-7', numeric: 2}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A-7',
+                        harmony: [{root: 'A', quality: '-7', numeric: 1}],
+                        close: '|'
+                    }
+                ],
+                [
+                    {
+                        open: '|',
+                        chords: 'E-7',
+                        harmony: [{root: 'E', quality: '-7', numeric: 5}],
+                        close: ']'
+                    }
+                ],
+                [
+                    {
+                        open: '{',
+                        chords: 'A-7',
+                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'B-7',
+                        harmony: [{root: 'B', quality: '-7', numeric: 2}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A-7',
+                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'E-9',
+                        harmony: [{root: 'E', quality: '-9', numeric: 5}],
+                        close: '}'
+                    }
+                ]
+            ]);
+        });
+        it('should process lines divider after segment, A.Epopéia de Zumbi - In ABC ABC', () => {
+            const segment = {
+                name: 'A',
+                data: [
+                    {
+                        open: '{',
+                        chords: 'E-',
+                        harmony: [{root: 'E', quality: '-', numeric: 1}]
+                    },
+                    {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                    {
+                        open: '|',
+                        chords: 'D7',
+                        harmony: [{root: 'D', quality: '7', numeric: 7}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'x(D7/F#)',
+                        harmony: [{root: 'x'}],
+                        alt: [{root: 'D', quality: '7', inversion: '/F#', numeric: 7}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', numeric: 6}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'x(C7/Bb)',
+                        harmony: [{root: 'x'}],
+                        alt: [{root: 'C', quality: '7', inversion: '/Bb', numeric: 6}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'B7',
+                        harmony: [{root: 'B', quality: '7', numeric: 5}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'x',
+                        harmony: [{root: 'x'}],
+                        close: '}'
+                    },
+                    {divider: 'Y'},
+                    {
+                        open: '{',
+                        chords: 'A-',
+                        harmony: [{root: 'A', quality: '-', numeric: 4}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D7',
+                        harmony: [{root: 'D', quality: '7', numeric: 7}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G',
+                        harmony: [{root: 'G', numeric: 3}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C',
+                        harmony: [{root: 'C', numeric: 6}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F#h',
+                        harmony: [{root: 'F', shift: '#', quality: 'h', numeric: 2}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'B7',
+                        harmony: [{root: 'B', quality: '7', numeric: 5}]
+                    },
+                    {
+                        ending: 'N1',
+                        open: '|',
+                        chords: 'E7',
+                        harmony: [{root: 'E', quality: '7', numeric: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'x',
+                        harmony: [{root: 'x'}],
+                        close: '}'
+                    },
+                    {
+                        ending: 'N2',
+                        open: '|',
+                        chords: 'E- B7',
+                        harmony: [
+                            {root: 'E', quality: '-', numeric: 1},
+                            {root: 'B', quality: '7', numeric: 5}
+                        ],
+                        close: ']'
+                    },
+                    {divider: 'Y', close: ']'}
+                ]
+            };
+
+            expect(processLines(segment)).toEqual([
+                [
+                    {
+                        open: '{',
+                        chords: 'E-',
+                        harmony: [{root: 'E', quality: '-', numeric: 1}]
+                    },
+                    {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                    {
+                        open: '|',
+                        chords: 'D7',
+                        harmony: [{root: 'D', quality: '7', numeric: 7}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'x(D7/F#)',
+                        harmony: [{root: 'x'}],
+                        alt: [{root: 'D', quality: '7', inversion: '/F#', numeric: 7}],
+                        close: '|'
+                    }
+                ],
+                [
+                    {
+                        open: '|',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', numeric: 6}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'x(C7/Bb)',
+                        harmony: [{root: 'x'}],
+                        alt: [{root: 'C', quality: '7', inversion: '/Bb', numeric: 6}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'B7',
+                        harmony: [{root: 'B', quality: '7', numeric: 5}]
+                    },
+                    {open: '|', chords: 'x', harmony: [{root: 'x'}], close: '}'}
+                ],
+                [
+                    {
+                        open: '{',
+                        chords: 'A-',
+                        harmony: [{root: 'A', quality: '-', numeric: 4}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D7',
+                        harmony: [{root: 'D', quality: '7', numeric: 7}]
+                    },
+                    {open: '|', chords: 'G', harmony: [{root: 'G', numeric: 3}]},
+                    {
+                        open: '|',
+                        chords: 'C',
+                        harmony: [{root: 'C', numeric: 6}],
+                        close: '|'
+                    }
+                ],
+                [
+                    {
+                        open: '|',
+                        chords: 'F#h',
+                        harmony: [{root: 'F', shift: '#', quality: 'h', numeric: 2}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'B7',
+                        harmony: [{root: 'B', quality: '7', numeric: 5}]
+                    },
+                    {
+                        ending: 'N1',
+                        open: '|',
+                        chords: 'E7',
+                        harmony: [{root: 'E', quality: '7', numeric: 1}]
+                    },
+                    {open: '|', chords: 'x', harmony: [{root: 'x'}], close: '}'}
+                ],
+                [
+                    {empty: true},
+                    {empty: true},
+                    {empty: true},
+                    {
+                        ending: 'N2',
+                        open: '|',
+                        chords: 'E- B7',
+                        harmony: [
+                            {root: 'E', quality: '-', numeric: 1},
+                            {root: 'B', quality: '7', numeric: 5}
+                        ],
+                        close: ']'
+                    }
+                ]
+            ]);
+        });
+        it('should correctly process ending line if previous was shorter than 4', () => {
+            const segment = {
+                name: 'A',
+                data: [
+                    {
+                        timeSignature: '4 / 4',
+                        open: '[',
+                        chords: 'G^9',
+                        harmony: [{root: 'G', quality: '^9', numeric: 6}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Eb-9 Eb-6',
+                        harmony: [
+                            {root: 'E', shift: 'b', quality: '-9', numeric: 4},
+                            {root: 'E', shift: 'b', quality: '-6', numeric: 4}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D-9',
+                        harmony: [{root: 'D', quality: '-9', numeric: 3}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G7#9#5',
+                        harmony: [{root: 'G', quality: '7#9#5', numeric: 6}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C-9',
+                        harmony: [{root: 'C', quality: '-9', numeric: 2}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F13b9',
+                        harmony: [{root: 'F', quality: '13b9', numeric: 5}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb^9 A-7',
+                        harmony: [
+                            {root: 'B', shift: 'b', quality: '^9', numeric: 1},
+                            {root: 'A', quality: '-7', numeric: 7}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G-9 G-7/F',
+                        harmony: [
+                            {root: 'G', quality: '-9', numeric: 6},
+                            {root: 'G', quality: '-7', inversion: '/F', numeric: 6}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'E-9',
+                        harmony: [{root: 'E', quality: '-9', numeric: 4}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A7b9b5',
+                        harmony: [{root: 'A', quality: '7b9b5', numeric: 7}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Eb-9 Ab9',
+                        harmony: [
+                            {root: 'E', shift: 'b', quality: '-9', numeric: 4},
+                            {root: 'A', shift: 'b', quality: '9', numeric: 7}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Db-9 Gb9',
+                        harmony: [
+                            {root: 'D', shift: 'b', quality: '-9', numeric: 3},
+                            {root: 'G', shift: 'b', quality: '9', numeric: 6}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C-9 F7b9',
+                        harmony: [
+                            {root: 'C', quality: '-9', numeric: 2},
+                            {root: 'F', quality: '7b9', numeric: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb^9',
+                        harmony: [{root: 'B', shift: 'b', quality: '^9', numeric: 1}]
+                    },
+                    {
+                        ending: 'N1',
+                        open: '|',
+                        chords: 'D9sus',
+                        harmony: [{root: 'D', quality: '9sus', numeric: 3}],
+                        close: '}'
+                    },
+                    {
+                        ending: 'N2',
+                        open: '|',
+                        chords: 'B7#9',
+                        harmony: [{root: 'B', quality: '7#9', numeric: 1}],
+                        close: ']'
+                    }
+                ]
+            };
+
+            expect(processLines(segment)).toEqual([
+                [
+                    {
+                        timeSignature: '4 / 4',
+                        open: '[',
+                        chords: 'G^9',
+                        harmony: [{root: 'G', quality: '^9', numeric: 6}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Eb-9 Eb-6',
+                        harmony: [
+                            {root: 'E', shift: 'b', quality: '-9', numeric: 4},
+                            {root: 'E', shift: 'b', quality: '-6', numeric: 4}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D-9',
+                        harmony: [{root: 'D', quality: '-9', numeric: 3}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G7#9#5',
+                        harmony: [{root: 'G', quality: '7#9#5', numeric: 6}],
+                        close: '|'
+                    }
+                ],
+                [
+                    {
+                        open: '|',
+                        chords: 'C-9',
+                        harmony: [{root: 'C', quality: '-9', numeric: 2}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F13b9',
+                        harmony: [{root: 'F', quality: '13b9', numeric: 5}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb^9 A-7',
+                        harmony: [
+                            {root: 'B', shift: 'b', quality: '^9', numeric: 1},
+                            {root: 'A', quality: '-7', numeric: 7}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G-9 G-7/F',
+                        harmony: [
+                            {root: 'G', quality: '-9', numeric: 6},
+                            {root: 'G', quality: '-7', inversion: '/F', numeric: 6}
+                        ],
+                        close: '|'
+                    }
+                ],
+                [
+                    {
+                        open: '|',
+                        chords: 'E-9',
+                        harmony: [{root: 'E', quality: '-9', numeric: 4}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A7b9b5',
+                        harmony: [{root: 'A', quality: '7b9b5', numeric: 7}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Eb-9 Ab9',
+                        harmony: [
+                            {root: 'E', shift: 'b', quality: '-9', numeric: 4},
+                            {root: 'A', shift: 'b', quality: '9', numeric: 7}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Db-9 Gb9',
+                        harmony: [
+                            {root: 'D', shift: 'b', quality: '-9', numeric: 3},
+                            {root: 'G', shift: 'b', quality: '9', numeric: 6}
+                        ],
+                        close: '|'
+                    }
+                ],
+                [
+                    {
+                        open: '|',
+                        chords: 'C-9 F7b9',
+                        harmony: [
+                            {root: 'C', quality: '-9', numeric: 2},
+                            {root: 'F', quality: '7b9', numeric: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb^9',
+                        harmony: [{root: 'B', shift: 'b', quality: '^9', numeric: 1}]
+                    },
+                    {
+                        ending: 'N1',
+                        open: '|',
+                        chords: 'D9sus',
+                        harmony: [{root: 'D', quality: '9sus', numeric: 3}],
+                        close: '}'
+                    }
+                ],
+                [
+                    {empty: true},
+                    {empty: true},
+                    {
+                        ending: 'N2',
+                        open: '|',
+                        chords: 'B7#9',
+                        harmony: [{root: 'B', quality: '7#9', numeric: 1}],
+                        close: ']'
+                    }
                 ]
             ]);
         });

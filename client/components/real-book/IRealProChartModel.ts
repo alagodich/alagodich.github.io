@@ -37,6 +37,7 @@ export default class IRealProChartModel {
     public key = '';
     public chordString = '';
     public segments: IIRealProChartSegment[] = [];
+    public errors: string[] = [];
 
     constructor(props: IIRealProChartModelProps) {
         if (!props) {
@@ -91,11 +92,11 @@ export default class IRealProChartModel {
         }
 
         // Process segment data string to form final chord collection
-        // eslint-disable-next-line complexity
+        // eslint-disable-next-line complexity,max-statements
         segmentByBars.forEach(rawBarDataString => {
             let barString = rawBarDataString;
 
-            // Process repeat sign (r)
+            // Process double bar repeat sign (r)
             if (barString.includes('r') && barString !== 'r') {
                 // Split measure with (r), cut r from it and process the remains as usual
                 const rSplitMatch = barString.match(/([^r]*)(r)([^r]*)/);
@@ -107,9 +108,28 @@ export default class IRealProChartModel {
                     return _omit(newBar, 'timeSignature');
                 });
 
-                if (!rSplitMatch || last2Bars.length !== 2) {
+                if (!rSplitMatch) {
                     throw new Error(`Song: ${this.title}. Cannot repeat last 2 bars ${rawBarDataString}`);
                 }
+
+                /**
+                 * If we need to repeat something that does not exist
+                 * If segment length is less than 2 we are going to fill it with empty bars
+                 * before repeating them, this should not happen but nothing else to do here
+                 */
+                if (last2Bars.length < 2) {
+                    if (last2Bars.length < 1) {
+                        last2Bars.push(this.parseBar('[x'));
+                        last2Bars[0].error = 'Repeating empty bars';
+                    }
+                    if (last2Bars.length < 2) {
+                        last2Bars.push(this.parseBar('|x'));
+                        last2Bars[1].error = 'Repeating empty bars';
+                    }
+                    segment.push(...last2Bars);
+                    this.errors.push(`Repeating empty bars ${rawBarDataString}`);
+                }
+
                 /**
                  * If last of the cloned bar has special closing bar line, keep it only on cloned pair
                  * but remove from the last segment
@@ -135,12 +155,18 @@ export default class IRealProChartModel {
             // Merge some parts together, for example closing bar line with the previous bar
             if (bar.close && Object.getOwnPropertyNames(bar).length === 1) {
                 if (!segment[segment.length - 1]) {
-                    throw new Error(`Song: ${this.title}. Closing bar as a first part: ${segmentString}.`);
+                    const emptyBar = {empty: true, error: 'Bar has no content', open: '[', close: ']'};
+
+                    segment.push(emptyBar);
+                    this.errors.push(`Closing bar as a first part: ${segmentString}.`);
                 }
                 segment[segment.length - 1].close = bar.close;
             } else if (bar.open && closingBarLines[bar.open]) {
-                // If bar opening line is actually closing bar line, move it to the previous bar
-                if (segment[segment.length - 1].close) {
+                /**
+                 * If bar opening line is actually closing bar line, move it to the previous bar
+                 * If previous bar has special closing bar, throw
+                 */
+                if (segment[segment.length - 1].close && segment[segment.length - 1].close !== '|') {
                     throw new Error(
                         `Song: ${this.title} trying to move closing bar to the previous bar ${segmentString}.`
                     );

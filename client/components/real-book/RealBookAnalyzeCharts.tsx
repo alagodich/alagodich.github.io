@@ -10,7 +10,7 @@ interface IChartSeriesItem {
     children?: IChartSeriesItem[];
 }
 
-export const RealBookAnalyzeCharts = (): ReactElement => {
+export const RealBookAnalyzeCharts = React.memo((): ReactElement => {
     const {songs} = useSelector((state: RootState) => state.library);
 
     function getStyleToKeysSeries(): IChartSeriesItem[] {
@@ -58,5 +58,4 @@ export const RealBookAnalyzeCharts = (): ReactElement => {
             {renderSeries()}
         </Segment>
     );
-};
-
+});

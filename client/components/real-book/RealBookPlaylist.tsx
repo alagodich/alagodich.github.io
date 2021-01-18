@@ -11,7 +11,7 @@ interface IRealBookPlaylist {
 
 const maxSize = 50;
 
-export const RealBookPlaylist = (props: IRealBookPlaylist): ReactElement => {
+export const RealBookPlaylist = React.memo((props: IRealBookPlaylist): ReactElement => {
     const {name} = props;
     const dispatch = useDispatch();
     const {
@@ -61,4 +61,4 @@ export const RealBookPlaylist = (props: IRealBookPlaylist): ReactElement => {
         : error
             ? <div>{`Can't load playlist: ${error}`}</div>
             : chartList;
-};
+});

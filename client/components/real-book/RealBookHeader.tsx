@@ -3,6 +3,7 @@ import {Header, Icon, Input, Menu} from 'semantic-ui-react';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from './store/reducer';
 import {toggleAnalyzeSegment, setSearchFilter} from './store/library-slice';
+import {toggleNotation} from './store/chart-slice';
 import {Link} from 'react-router-dom';
 
 interface IRealBookHeader {
@@ -10,7 +11,7 @@ interface IRealBookHeader {
     header: string;
 }
 
-export const RealBookHeader = (props: IRealBookHeader): ReactElement => {
+export const RealBookHeader = React.memo((props: IRealBookHeader): ReactElement => {
     const {
         songs,
         activePlaylist,
@@ -18,6 +19,7 @@ export const RealBookHeader = (props: IRealBookHeader): ReactElement => {
         searchFilter,
         showAnalyzeSegment
     } = useSelector((state: RootState) => state.library);
+    const {notation} = useSelector((state: RootState) => state.chart);
     const dispatch = useDispatch();
 
     function handleToggleAnalyzeCharts() {
@@ -28,6 +30,9 @@ export const RealBookHeader = (props: IRealBookHeader): ReactElement => {
     }
     function handleSearchFilterChange(event: React.ChangeEvent, {value}: {value: string}) {
         dispatch(setSearchFilter(value));
+    }
+    function handleChartNotationToggle() {
+        dispatch(toggleNotation());
     }
 
     const rightMenu = props.displayType === 'chart' && (activeSong || activeSong === 0)
@@ -93,7 +98,17 @@ export const RealBookHeader = (props: IRealBookHeader): ReactElement => {
             </Menu.Menu>
         );
     const leftHeader = props.displayType === 'chart'
-        ? null
+        ? (
+            <Menu.Item>
+                <Icon
+                    name={notation === 'symbolic' ? 'font' : 'subscript'}
+                    style={{cursor: 'pointer'}}
+                    title="Notation"
+                    onClick={handleChartNotationToggle}
+                    color={'blue'}
+                />
+            </Menu.Item>
+        )
         : (
             <Header as="h2" style={{marginBottom: 0}}>
                 <Header.Content>{props.header}</Header.Content>
@@ -106,4 +121,4 @@ export const RealBookHeader = (props: IRealBookHeader): ReactElement => {
             {rightMenu}
         </Menu>
     );
-};
+});

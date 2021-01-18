@@ -1,6 +1,6 @@
 import React, {ReactElement, useEffect} from 'react';
-import {Table} from 'semantic-ui-react';
-import Chord from './Chord';
+import {Table, Segment} from 'semantic-ui-react';
+import {Chord} from './Chord';
 import {RouteComponentProps, Link, useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {loadSong} from './store/library-slice';
@@ -11,6 +11,22 @@ import {RootState} from './store/reducer';
 interface IChartProps {
     playlist: string;
     songId: string;
+}
+
+/**
+ * If the ending line is less than 4 bars, fill it to the size of 4
+ *
+ * @param line
+ * @param lineLength
+ */
+function fillEndingLineToSize4WithEmptyBars(line: IIRealProChartBar[], lineLength = 4) {
+    if (line.length < lineLength && line[0].ending) {
+        const filler = new Array(lineLength - line.length).fill({empty: true});
+
+        return [...filler, ...line];
+    }
+
+    return line;
 }
 
 export function processLines(segment: IIRealProChartSegment): IIRealProChartBar[][] {
@@ -24,8 +40,12 @@ export function processLines(segment: IIRealProChartSegment): IIRealProChartBar[
     segment.data.forEach(barData => {
         const bar = Object.assign({}, barData);
 
-        // Not rendering dividers for now
+        // Not rendering dividers for now, but it should break the line
         if (bar.divider || !lines) {
+            if (line.length) {
+                lines.push(fillEndingLineToSize4WithEmptyBars(line, lines[lines.length - 1]?.length));
+                line = [];
+            }
             return;
         }
 
@@ -48,20 +68,16 @@ export function processLines(segment: IIRealProChartSegment): IIRealProChartBar[
             line = [bar];
         }
     });
+
     if (line.length) {
         // If the last line is less than 4 bars and it is an ending line, fill it to the size of 4
-        if (line.length < 4 && line[0].ending) {
-            const filler = new Array(4 - line.length).fill({empty: true});
-
-            line = [...filler, ...line];
-        }
-        lines.push(line);
+        lines.push(fillEndingLineToSize4WithEmptyBars(line, lines[lines.length - 1]?.length));
     }
 
     return lines;
 }
 
-export const Chart = (props: RouteComponentProps<IChartProps>): ReactElement | null => {
+export const Chart = React.memo((props: RouteComponentProps<IChartProps>): ReactElement | null => {
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -73,6 +89,7 @@ export const Chart = (props: RouteComponentProps<IChartProps>): ReactElement | n
         error,
         displayType
     } = useSelector((state: RootState) => state.library);
+    const {notation} = useSelector((state: RootState) => state.chart);
 
     useEffect(() => {
         dispatch(loadSong(playlist, parseInt(songId, 10)));
@@ -85,7 +102,7 @@ export const Chart = (props: RouteComponentProps<IChartProps>): ReactElement | n
                 return;
             }
 
-            if (event.key === 'Escape' || event.key === 'c') {
+            if (event.key === 'Escape' || event.key === 'q') {
                 history.push(`/${activePlaylist}`);
             } else if (event.key === 'ArrowLeft') {
                 if (songs[activeSong - 1]) {
@@ -132,32 +149,40 @@ export const Chart = (props: RouteComponentProps<IChartProps>): ReactElement | n
                 tableRows.push(
                     <Table.Row key={`${segmentKey}-${key}`} className="chart__bar-line">
                         {key === 0 ? headerCell : <Table.Cell className="chart__bar" width={1} />}
-                        {line.map((bar, barKey) => <Chord key={barKey} {...bar} />)}
+                        {line.map((bar, barKey) => <Chord key={barKey} {...bar} notation={notation} />)}
                     </Table.Row>
                 );
             });
         });
 
         return (
-            <Table
-                basic="very"
-                singleLine
-                fixed
-                columns={5}
-                className="chart"
-                unstackable
-                attached="top"
-            >
-                <Table.Body>
-                    {tableRows}
-                </Table.Body>
-            </Table>
+            <>
+                {model.errors.length
+                    ? model.errors.map((modelError: string, key) => (
+                        <Segment basic inverted key={key}>{`Error: ${modelError}`}</Segment>
+                    ))
+                    : null
+                }
+                <Table
+                    basic="very"
+                    singleLine
+                    fixed
+                    columns={5}
+                    className="chart"
+                    unstackable
+                    attached="top"
+                >
+                    <Table.Body>
+                        {tableRows}
+                    </Table.Body>
+                </Table>
+            </>
         );
     }
 
     return error
         ? <div>{error} <Link to={`/${playlist}`}>{'Back to playlist'}</Link></div>
         : (activeSong || activeSong === 0) ? renderChart() : null;
-};
+});
 
 export default Chart;

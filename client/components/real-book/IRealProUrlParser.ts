@@ -34,7 +34,7 @@ export default class IRealProUrlParser {
      * 6 – Chord Progression (This is the main part of this url and will be explained in detail below)
      */
     private parseUrl(url: string): IIRealProChartModelProps[] {
-        const decodedUrl = unescape(url);
+        const decodedUrl = decodeURIComponent(url);
         const rawData = decodedUrl.split('://')[1];
 
         if (!rawData) {
