@@ -34,7 +34,8 @@ export function createModel(): TensorFlow.LayersModel {
 
     // units: number of weights
     model.add(TensorFlow.layers.dense({inputShape: [1], units: 1, useBias: true}));
-    // model.add(TensorFlow.layers.dense({units: 50, activation: 'relu', kernelInitializer: 'heUniform'}));
+    // leCunUniform or heUniform
+    model.add(TensorFlow.layers.dense({units: 50, activation: 'relu', kernelInitializer: 'heUniform'}));
     model.add(TensorFlow.layers.dense({units: 1}));
 
     return model;

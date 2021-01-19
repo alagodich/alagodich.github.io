@@ -30,16 +30,7 @@ const path = require('path'),
                 {
                     test: /\.tsx?$/,
                     loader: 'ts-loader',
-                    options: {
-                        configFile: 'tsconfig.json',
-                        compilerOptions: {
-                            // strict: false
-                            // skipLibCheck: true,
-                            // onlyCompileBundledFiles: true,
-                            // allowTsInNodeModules: false
-                        }
-                    }
-                    // exclude: /node_modules/
+                    exclude: /node_modules/
                 },
                 {test: /\.(css|less)$/i, use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']},
                 {test: /\.(woff(2)?|ttf|png|eot|svg)(\?v=\d+\.\d+\.\d+)?$/, use: ['file-loader']},
