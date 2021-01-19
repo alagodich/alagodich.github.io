@@ -22,10 +22,29 @@ layout: compress
 </head>
 <body>
     {% if jekyll.environment != "development" %}
-        {% include {{page.googletag}} %}
+    <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-K4V6VG"
+                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-K4V6VG');</script>
+    <!-- End Google Tag Manager -->
     {% endif %}
     <div class="ui container">
-        {% include navigation.html %}
+        <div class="component--menu"
+             id="react--component--menu"
+             data-items='[
+                {"url": "/index.html", "title": "Лента"},
+                {"url": "/posts.html", "title": "Список постов"},
+                {"url": "/metronome.html", "title": "Метроном"},
+                {"url": "/realbook.html", "title": "Песенник"},
+                {"url": "/experiments/", "title": "Эмбер", "external": true},
+                {"url": "/about.html", "title": "О блоге"}
+            ]'
+             data-current="{{ page.url }}"
+        ></div>
     </div>
 
     <div class="ui main container">

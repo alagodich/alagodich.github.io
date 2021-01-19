@@ -1,8 +1,0 @@
-{% if include.tags != empty %}
-<div>
-    <i class="tags icon"></i>
-    {% for tag in include.tags %}
-        <a href="/posts.html#{{ tag | slugify }}">#{{ tag }}</a>
-    {% endfor %}
-</div>
-{% endif %}

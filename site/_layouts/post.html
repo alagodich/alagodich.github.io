@@ -26,7 +26,14 @@ layout: semantic
         </div>
     </h2>
     {{ content }}
-    {% include tagcloud.html tags=page.tags %}
+    {% if page.tags != empty %}
+    <div>
+        <i class="tags icon"></i>
+        {% for tag in page.tags %}
+        <a href="/posts.html#{{ tag | slugify }}">#{{ tag }}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
     <div class="ui divider"></div>
     <!-- Pagination -->
     <div class="pagination--big">
