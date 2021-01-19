@@ -40,12 +40,14 @@ const librarySlice = createSlice({
     reducers: {
         startLoading(state) {
             state.isLoading = true;
+            state.searchFilter = '';
         },
         setPlaylist(state, action: PayloadAction<ILibraryLoadPayload>) {
             state.activePlaylist = action.payload.playlist;
             state.songs = action.payload.songs;
             state.filteredSongs = action.payload.songs;
             state.isLoading = false;
+            state.searchFilter = '';
         },
         setError(state, action: PayloadAction<string>) {
             state.error = action.payload;

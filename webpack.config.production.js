@@ -1,5 +1,5 @@
-const config = require('./webpack.config'),
-    CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const config = require('./webpack.config');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 config.mode = 'production';
 

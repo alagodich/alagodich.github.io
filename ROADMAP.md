@@ -1,6 +1,5 @@
 ### TODO
-* Add https://github.com/GoogleChrome/web-vitals
-* Add reporting performance to Google Analytics
+* Split code, put react and semantic-ui-react to vendors bundle
 
 #### Map
 * Rework, try highcharts, am4 charts are too heavy
