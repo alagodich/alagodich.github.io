@@ -1,5 +1,4 @@
 exclude: []
-source: "docs"
 plugins: ["jekyll-paginate", "jekyll-sitemap"]
 paginate: 5
 defaults:
