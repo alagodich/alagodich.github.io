@@ -12,7 +12,7 @@ const path = require('path'),
         },
         output: {
             publicPath: '/public/',
-            path: path.resolve('site/public'),
+            path: path.resolve('docs/public'),
             filename: '[name].js',
             chunkFilename: '[name].js'
         },

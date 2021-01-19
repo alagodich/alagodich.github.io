@@ -30,7 +30,7 @@ module.exports = {
     coveragePathIgnorePatterns: [
         '/node_modules/',
         '/_site/',
-        '/site/',
+        '/docs/',
         '/experiments/',
         '/semantic/'
     ],
