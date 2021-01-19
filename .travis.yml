@@ -17,7 +17,7 @@ script:
   - npm run fomantic
   - npm run build
 
-  - bundle exec jekyll build
+  - cd docs && bundle exec jekyll build
 
 # Currently sing default github pages deployment, so this Travis build is only for testing purposes
 # All assets generated above should be committed to repo

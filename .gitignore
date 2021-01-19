@@ -1,4 +1,5 @@
 /_site
+docs/_site
 .jekyll-metadata
 .jekyll
 vendor
@@ -29,4 +30,5 @@ dump.rdb
 chromedriver.log
 tests_output
 coverage/
+client/coverage
 semantic/

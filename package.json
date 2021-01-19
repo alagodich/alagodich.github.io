@@ -4,7 +4,7 @@
   "description": "Personal blog.",
   "main": "index.html",
   "scripts": {
-    "start": "JEKYLL_ENV=development bundle exec jekyll serve --draft",
+    "start": "(cd docs && JEKYLL_ENV=development bundle exec jekyll serve --draft)",
     "lint": "eslint --config ./.eslintrc.json --ext .js,.jsx,.ts,tsx client",
     "test": "jest --errorOnDeprecated --logHeapUsage --verbose",
     "test:watch": "npm run test -- --watch",
@@ -12,7 +12,7 @@
     "build:watch": "rm -rf ./docs/public && webpack --config webpack.config.dev.js",
     "fomantic": "gulp build-fomantic",
     "build:all": "npm run fomantic && npm run lint && npm run test && npm run build",
-    "browser-sync": "browser-sync start --proxy localhost:4000 --files _site/**",
+    "browser-sync": "browser-sync start --proxy localhost:4000 --files docs/_site/**",
     "cypress": "cypress open",
     "postinstall": "rm -f node_modules/preact/*/preact.d.ts"
   },

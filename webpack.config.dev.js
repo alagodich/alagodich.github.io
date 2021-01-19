@@ -8,6 +8,6 @@ config.optimization = {
 config.devtool = 'eval-cheap-source-map';
 config.watch = true;
 config.mode = 'development';
-config.plugins.push(new BundleAnalyzerPlugin({analyzerMode: 'static'}));
+config.plugins.push(new BundleAnalyzerPlugin({analyzerMode: 'static', openAnalyzer: false}));
 
 module.exports = config;
