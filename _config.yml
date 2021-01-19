@@ -1,7 +1,7 @@
 exclude: []
-source: "site"
-layouts_dir: "site/_layouts"
-includes_dir: "/_includes"
+source: "./site"
+layouts_dir: "./site/_layouts"
+includes_dir: "./_includes"
 plugins: ["jekyll-paginate", "jekyll-sitemap"]
 paginate: 5
 defaults:
