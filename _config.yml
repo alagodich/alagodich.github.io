@@ -1,6 +1,6 @@
 exclude: []
 source: "./docs"
-destination: "./_docs"
+destination: "./_site"
 layouts_dir: "./docs/_layouts"
 plugins: ["jekyll-paginate", "jekyll-sitemap"]
 paginate: 5
