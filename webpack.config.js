@@ -7,11 +7,12 @@ const path = require('path'),
             metronomeworker: path.resolve('client/components/metronome/metronomeworker.js'),
             realbook: path.resolve('client/realbook.tsx'),
             map: path.resolve('client/map.tsx'),
-            csound: path.resolve('client/csound.tsx')
+            csound: path.resolve('client/csound.tsx'),
+            tensorflow: path.resolve('client/tensorflow.tsx')
         },
         output: {
             publicPath: '/public/',
-            path: path.resolve('public'),
+            path: path.resolve('site/public'),
             filename: '[name].js',
             chunkFilename: '[name].js'
         },
@@ -26,7 +27,20 @@ const path = require('path'),
         },
         module: {
             rules: [
-                {test: /\.tsx?$/, loader: 'ts-loader'},
+                {
+                    test: /\.tsx?$/,
+                    loader: 'ts-loader',
+                    options: {
+                        configFile: 'tsconfig.json',
+                        compilerOptions: {
+                            // strict: false
+                            // skipLibCheck: true,
+                            // onlyCompileBundledFiles: true,
+                            // allowTsInNodeModules: false
+                        }
+                    }
+                    // exclude: /node_modules/
+                },
                 {test: /\.(css|less)$/i, use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']},
                 {test: /\.(woff(2)?|ttf|png|eot|svg)(\?v=\d+\.\d+\.\d+)?$/, use: ['file-loader']},
                 {

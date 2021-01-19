@@ -1,34 +1,6 @@
-exclude: [
-    "bower_components",
-    "client",
-    "node_modules",
-    "bower.json",
-    "Gemfile*",
-    "package.json",
-    "package-lock.json",
-    "babel.config.js",
-    "gulpfile.js",
-    "script",
-    "app/*",
-    "tmp",
-    "vendor",
-    "README.md",
-    "semantic.json",
-    "webpack.config.js",
-    "tinify.js",
-    "alagodich.sublime-project",
-    "alagodich.sublime-workspace",
-    "/semantic/",
-    "irealb_parser.js",
-    "yarn.lock",
-    "webpack.config.*",
-    "cypress",
-    "cypress.json",
-    "jest.config.js",
-    "ROADMAP.md",
-    "tsconfig.json",
-    "coverage"
-]
+exclude: []
+source: "site"
+layouts_dir: "site/_layouts"
 plugins: ["jekyll-paginate", "jekyll-sitemap"]
 paginate: 5
 defaults:

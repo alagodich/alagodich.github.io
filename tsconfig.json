@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./public",
+    "outDir": "./site/public",
     "target": "es5",
     "sourceMap": true,
     "noImplicitAny": true,
