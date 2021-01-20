@@ -14,8 +14,8 @@ Some components created with [React](https://facebook.github.io/react/)
 * Install [ruby, jekyll and bundler installed](https://help.github.com/articles/using-jekyll-with-pages/)
 * `npm install`
 * `bundle install --path vendor/bundle`
-* to run locally `bundle exec jekyll serve --draft`
-* to watch and compile /client/ files `npm run build` 
+* to run locally `(cd docs bundle exec jekyll serve --draft)` or `npm start`
+* to watch and compile /client/ files `npm run build` | `npm run build:watch`
 
 ### Styles
 Using [semantic-ui](http://semantic-ui.com/)    
@@ -37,4 +37,5 @@ To rebuild semantic assets run `npm run fomantic`
 * Stop ember-cli server
 * Copy dist to /experiments/
 
-
+### Server side
+* To run scripts `npm run node <path>`
