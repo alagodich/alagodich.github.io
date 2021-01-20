@@ -17,9 +17,10 @@
  */
 
 import * as tf from '@tensorflow/tfjs';
+import {Tensor2D} from '@tensorflow/tfjs-core';
+import {IMAGE_HEIGHT, IMAGE_WIDTH, NUM_CLASSES} from '../models/handwritten-digits';
 
-const IMAGE_SIZE = 784;
-const NUM_CLASSES = 10;
+const IMAGE_SIZE = IMAGE_WIDTH * IMAGE_HEIGHT;
 const NUM_DATASET_ELEMENTS = 65000;
 
 const TRAIN_TEST_RATIO = 5 / 6;
@@ -27,10 +28,13 @@ const TRAIN_TEST_RATIO = 5 / 6;
 const NUM_TRAIN_ELEMENTS = Math.floor(TRAIN_TEST_RATIO * NUM_DATASET_ELEMENTS);
 const NUM_TEST_ELEMENTS = NUM_DATASET_ELEMENTS - NUM_TRAIN_ELEMENTS;
 
-const MNIST_IMAGES_SPRITE_PATH =
-    'https://storage.googleapis.com/learnjs-data/model-builder/mnist_images.png';
-const MNIST_LABELS_PATH =
-    'https://storage.googleapis.com/learnjs-data/model-builder/mnist_labels_uint8';
+const MNIST_IMAGES_SPRITE_PATH = 'https://storage.googleapis.com/learnjs-data/model-builder/mnist_images.png';
+const MNIST_LABELS_PATH = 'https://storage.googleapis.com/learnjs-data/model-builder/mnist_labels_uint8';
+
+interface ITensorSet {
+    xs: Tensor2D;
+    labels: Tensor2D;
+}
 
 /**
  * A class that fetches the sprited MNIST dataset and returns shuffled batches.
@@ -59,7 +63,7 @@ export class MnistData {
         // Make a request for the MNIST sprited image.
         const img = new Image();
         const canvas = document.createElement('canvas');
-        const ctx: any = canvas.getContext('2d');
+        const ctx: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRenderingContext2D;
         const imgRequest = new Promise(resolve => {
             img.crossOrigin = '';
             img.onload = () => {
@@ -74,8 +78,10 @@ export class MnistData {
 
                 for (let i = 0; i < NUM_DATASET_ELEMENTS / chunkSize; i++) {
                     const datasetBytesView = new Float32Array(
-                        datasetBytesBuffer, i * IMAGE_SIZE * chunkSize * 4,
-                        IMAGE_SIZE * chunkSize);
+                        datasetBytesBuffer,
+                        i * IMAGE_SIZE * chunkSize * 4,
+                        IMAGE_SIZE * chunkSize
+                    );
 
                     ctx.drawImage(
                         img, 0, i * chunkSize, img.width, chunkSize, 0, 0, img.width,
@@ -97,8 +103,10 @@ export class MnistData {
         });
 
         const labelsRequest = fetch(MNIST_LABELS_PATH);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const [imgResponse, labelsResponse] = await Promise.all([imgRequest, labelsRequest]);
+
+        // imgRequest returns void, we just wait for it to be rendered on canvas
+        const responses = await Promise.all([imgRequest, labelsRequest]);
+        const labelsResponse = responses[1];
 
         this.datasetLabels = new Uint8Array(await labelsResponse.arrayBuffer());
 
@@ -114,31 +122,35 @@ export class MnistData {
         this.testLabels = this.datasetLabels.slice(NUM_CLASSES * NUM_TRAIN_ELEMENTS);
     }
 
-    public nextTrainBatch(batchSize: number): any {
+    public nextTrainBatch(batchSize: number): ITensorSet {
         return this.nextBatch(
-            batchSize, [this.trainImages, this.trainLabels], () => {
-                this.shuffledTrainIndex =
-                    (this.shuffledTrainIndex + 1) % this.trainIndices.length;
+            batchSize,
+            [this.trainImages, this.trainLabels],
+            () => {
+                this.shuffledTrainIndex = (this.shuffledTrainIndex + 1) % this.trainIndices.length;
                 return this.trainIndices[this.shuffledTrainIndex];
-            });
+            }
+        );
     }
 
-    public nextTestBatch(batchSize: number): any {
-        return this.nextBatch(batchSize, [this.testImages, this.testLabels], () => {
-            this.shuffledTestIndex =
-                (this.shuffledTestIndex + 1) % this.testIndices.length;
-            return this.testIndices[this.shuffledTestIndex];
-        });
+    public nextTestBatch(batchSize: number): ITensorSet {
+        return this.nextBatch(
+            batchSize,
+            [this.testImages, this.testLabels],
+            () => {
+                this.shuffledTestIndex = (this.shuffledTestIndex + 1) % this.testIndices.length;
+                return this.testIndices[this.shuffledTestIndex];
+            }
+        );
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    public nextBatch(batchSize: any, data: any, index: any): any {
+    public nextBatch(batchSize: number, data: any, index: () => number): ITensorSet {
         const batchImagesArray = new Float32Array(batchSize * IMAGE_SIZE);
         const batchLabelsArray = new Uint8Array(batchSize * NUM_CLASSES);
 
         for (let i = 0; i < batchSize; i++) {
             const idx = index();
-
             const image = data[0].slice(idx * IMAGE_SIZE, idx * IMAGE_SIZE + IMAGE_SIZE);
 
             batchImagesArray.set(image, i * IMAGE_SIZE);

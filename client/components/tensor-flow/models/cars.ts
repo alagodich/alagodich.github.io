@@ -1,6 +1,8 @@
+/* eslint no-sync: 0 */
 import * as TensorFlow from '@tensorflow/tfjs';
 import {Tensor2D} from '@tensorflow/tfjs-core';
 import carsData from '../data/cars-data.json';
+import {IFitCallbackHandlers} from '../TensorFlowComponent';
 
 export interface ICarData {
     Acceleration: number;
@@ -29,14 +31,22 @@ export interface ITensorContainerObject {
  * ('constant'|'glorotNormal'|'glorotUniform'|'heNormal'|'heUniform'|'identity'| 'leCunNormal'|'leCunUniform'|'ones'
  * |'orthogonal'|'randomNormal'| 'randomUniform'|'truncatedNormal'|'varianceScaling'|'zeros'|string|
  */
-export function createModel(): TensorFlow.LayersModel {
+export function createModel(): TensorFlow.Sequential {
     const model = TensorFlow.sequential();
 
-    // units: number of weights
+    // Each input is a single digit, first layer will produce 1 output
     model.add(TensorFlow.layers.dense({inputShape: [1], units: 1, useBias: true}));
-    // leCunUniform or heUniform
-    model.add(TensorFlow.layers.dense({units: 50, activation: 'relu', kernelInitializer: 'heUniform'}));
+    // This layer will produce 50 variants to the given input using Rectified linear activation function.
+    // Variants will be generated with heUniform initializer, these two give good results leCunUniform or heUniform
+    model.add(TensorFlow.layers.dense({units: 100, activation: 'relu', kernelInitializer: 'heUniform'}));
+    // Back to 1 output from 50
     model.add(TensorFlow.layers.dense({units: 1}));
+
+    model.compile({
+        optimizer: TensorFlow.train.adam(),
+        loss: TensorFlow.losses.meanSquaredError,
+        metrics: ['mse']
+    });
 
     return model;
 }
@@ -74,18 +84,12 @@ export function convertToTensor(data: ICarData[]): ITensorContainerObject {
 }
 
 export function trainModel(
-    model: TensorFlow.LayersModel,
+    model: TensorFlow.Sequential,
     inputs: Tensor2D,
     labels: Tensor2D,
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    callbacks: any
-): Promise<any> {
-    model.compile({
-        optimizer: TensorFlow.train.adam(),
-        loss: TensorFlow.losses.meanSquaredError,
-        metrics: ['mse']
-    });
-
+    callbacks: IFitCallbackHandlers
+): Promise<TensorFlow.History> {
     const batchSize = 32;
     const epochs = 50;
 
@@ -93,34 +97,38 @@ export function trainModel(
         batchSize,
         epochs,
         callbacks
+        // validationData: [inputs, labels]
     });
 }
 
-export async function testModel(
-    model: TensorFlow.LayersModel,
+export function testModel(
+    model: TensorFlow.Sequential,
     originalInputData: ICarData[],
     normalizationData: ITensorContainerObject
-): Promise<any> {
-    const {inputMax, inputMin, labelMax, labelMin} = normalizationData;
-    const minHorsepower: number = (carsData as ICarData[]).reduce((accumulator, car) => {
-        if (!accumulator || car.Horsepower < accumulator) {
-            return car.Horsepower;
-        }
-        return accumulator;
-    }, 0);
+): any {
+    const [xs, ys] = TensorFlow.tidy(() => {
+        const {inputMax, inputMin, labelMax, labelMin} = normalizationData;
+        const minHorsepower: number = (carsData as ICarData[]).reduce((accumulator, car) => {
+            if (!accumulator || car.Horsepower < accumulator) {
+                return car.Horsepower;
+            }
+            return accumulator;
+        }, 0);
 
-    const inputMaxValue = await inputMax.array() as number;
-    const generatedTestedXs = TensorFlow.linspace(minHorsepower, inputMaxValue, 100);
-    const normalizedTestXs = generatedTestedXs.sub(inputMin).div(inputMax.sub(inputMin));
-    const predictions = model.predict(normalizedTestXs.reshape([100, 1]));
+        // eslint-disable-next-line no-sync
+        const inputMaxValue = inputMax.arraySync() as number;
+        const generatedTestedXs = TensorFlow.linspace(minHorsepower, inputMaxValue, 100);
+        const normalizedTestXs = generatedTestedXs.sub(inputMin).div(inputMax.sub(inputMin));
+        const predictions = model.predict(normalizedTestXs.reshape([100, 1]));
 
-    const unNormalizedXs = normalizedTestXs.mul(inputMax.sub(inputMin)).add(inputMin);
-    const unNormalizedPredictions = (predictions as any).mul(labelMax.sub(labelMin)).add(labelMin);
+        const unNormalizedXs = normalizedTestXs.mul(inputMax.sub(inputMin)).add(inputMin);
+        const unNormalizedPredictions = (predictions as any).mul(labelMax.sub(labelMin)).add(labelMin);
 
-    const unNormalizedXsData = await unNormalizedXs.data();
-    const unNormalizedPredictionsData = await unNormalizedPredictions.data();
+        const unNormalizedXsData = unNormalizedXs.dataSync();
+        const unNormalizedPredictionsData = unNormalizedPredictions.dataSync();
 
-    const [xs, ys] = TensorFlow.tidy(() => [unNormalizedXsData as any, unNormalizedPredictionsData]);
+        return [unNormalizedXsData as any, unNormalizedPredictionsData];
+    });
 
     const predictedPoints = [...xs].map((value, index) => ({
         x: value, y: ys[index]
