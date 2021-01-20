@@ -23,3 +23,6 @@
 #### Fluff
 * Check out Bulma https://bulma.io/
 * Check out https://svelte.dev/
+
+#### Tensor flow
+* Add drawn picture recognition from svg canvas

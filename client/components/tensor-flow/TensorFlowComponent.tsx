@@ -40,6 +40,7 @@ export const TensorFlowComponent: React.FunctionComponent = (): ReactElement => 
     const digitsTrainRef = useRef(null);
     const digitsAccuracyRef = useRef(null);
     const digitsConfusionRef = useRef(null);
+    const digitsExamplesRef = useRef(null);
     const [digitsLoading, setDigitsLoading] = useState(true);
     const [digitsTrained, setDigitsTrained] = useState(false);
 
@@ -107,10 +108,6 @@ export const TensorFlowComponent: React.FunctionComponent = (): ReactElement => 
     function loadAndDisplayDigitsModel() {
         mnistData.load().then(() => {
             setDigitsLoading(false);
-            const surface = TensorFlowVis.visor().surface({
-                name: 'Input data example',
-                tab: 'Input data'
-            });
             const examples = mnistData.nextTestBatch(20);
             const numExamples = examples.xs.shape[0];
 
@@ -130,7 +127,7 @@ export const TensorFlowComponent: React.FunctionComponent = (): ReactElement => 
                 canvas.height = IMAGE_HEIGHT;
                 canvas.style.cssText = 'margin: 4px;';
                 TensorFlow.browser.toPixels(imageTensor, canvas).then(() => {
-                    surface.drawArea.appendChild(canvas);
+                    (digitsExamplesRef.current as any).appendChild(canvas);
                 });
 
                 imageTensor.dispose();
@@ -233,6 +230,7 @@ export const TensorFlowComponent: React.FunctionComponent = (): ReactElement => 
             <div ref={digitsAccuracyRef}>{digitsTrained ? '' : 'model not trained'}</div>
             <Divider />
             <div ref={digitsConfusionRef} />
+            <div ref={digitsExamplesRef} />
         </React.Fragment>
     );
 };
