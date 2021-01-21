@@ -28,7 +28,7 @@ export interface IIRealProChartBar {
 }
 
 export interface IIRealProChord {
-    root: string;
+    root?: string;
     shift?: string;
     quality?: string;
     numeric?: number;
@@ -36,7 +36,7 @@ export interface IIRealProChord {
     alt?: IIRealProChord;
 }
 
-export const chordsStringExpresion = /([A-GxnpW]?)([b#]?)([+\-^\dhob#sualt]*)(\/[A-G][#b]?)?(\(.*)?/;
+export const chordsStringExpresion = /([A-GxnpW]?)([b#]?)([+\-^\dhob#suadlt]*)(\/[A-G][#b]?)?(\(.*)?/;
 
 export const closingBarLines: { [index: string]: string } = {
     ']': '[',
@@ -114,7 +114,11 @@ export const qualities = [
     '9sus',
     '13sus',
     '7b13sus',
-    '11'
+    '11',
+
+    // Additional qualities
+    '6b5',
+    '6#9'
 ];
 
 export const barLines = [

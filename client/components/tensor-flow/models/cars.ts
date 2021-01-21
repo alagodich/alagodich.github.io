@@ -69,9 +69,6 @@ export function convertToTensor(data: ICarData[]): ITensorContainerObject {
         const normalizedInputs = inputTensor.sub(inputMin).div(inputMax.sub(inputMin));
         const normalizedLabels = labelTensor.sub(labelMin).div(labelMax.sub(labelMin));
 
-        inputTensor.dispose();
-        labelTensor.dispose();
-
         return {
             inputs: normalizedInputs,
             labels: normalizedLabels,

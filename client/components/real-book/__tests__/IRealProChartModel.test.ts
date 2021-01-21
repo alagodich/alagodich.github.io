@@ -2,10 +2,7 @@
 
 import IRealProChartModel from '../IRealProChartModel';
 import {IIRealProChartModelProps} from '../types';
-import util from 'util';
-
-// eslint-disable-next-line no-console,@typescript-eslint/no-unused-vars,no-unused-vars
-const varDump = (object: any) => console.log(util.inspect(object, {depth: null}));
+import {varDump} from '../../../../server/utils';
 
 const emptyRealProChartProps: IIRealProChartModelProps = {
     title: '',
@@ -4702,31 +4699,43 @@ describe('IRealProChartModel', () => {
                     timeSignature: '4 / 4',
                     open: '[',
                     chords: 'C6',
-                    harmony: [{root: 'C', quality: '6', numeric: 2}]
+                    harmony: [{root: 'C', quality: '6', numeric: 1}]
                 },
                 {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                 {
                     open: '|',
                     chords: 'C6',
-                    harmony: [{root: 'C', quality: '6', numeric: 2}]
+                    harmony: [{root: 'C', quality: '6', numeric: 1}]
                 },
                 {open: '|', chords: 'x', harmony: [{root: 'x'}], close: '|'},
                 {
                     open: '|',
                     chords: 'C6',
-                    harmony: [{root: 'C', quality: '6', numeric: 2}]
+                    harmony: [{root: 'C', quality: '6', numeric: 1}]
                 },
                 {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                 {
                     open: '|',
                     chords: 'C6',
-                    harmony: [{root: 'C', quality: '6', numeric: 2}]
+                    harmony: [{root: 'C', quality: '6', numeric: 1}]
                 },
                 {open: '|', chords: 'x', harmony: [{root: 'x'}], close: ']'}
             ]);
         });
     });
+    describe('parseHarmony', () => {
+        it('should parse add9 quality', () => {
+            const harmonyString = 'Dbadd9 Ab';
 
+            expect(IRealProChartModel.prototype.parseHarmony(harmonyString)).toEqual([
+                [
+                    {root: 'D', shift: 'b', quality: 'add9', numeric: 2},
+                    {root: 'A', shift: 'b', numeric: 6}
+                ],
+                []
+            ]);
+        });
+    });
     describe('parseBar', () => {
         it('should handle simple bar with Alternate Chords', () => {
             const barString = '|C^7(C#-7) (F#7)';
@@ -4734,10 +4743,10 @@ describe('IRealProChartModel', () => {
             expect(IRealProChartModel.prototype.parseBar(barString)).toEqual({
                 open: '|',
                 chords: 'C^7(C#-7) (F#7)',
-                harmony: [{root: 'C', quality: '^7', numeric: 2}],
+                harmony: [{root: 'C', quality: '^7', numeric: 1}],
                 alt: [
-                    {root: 'C', shift: '#', quality: '-7', numeric: 2},
-                    {root: 'F', shift: '#', quality: '7', numeric: 5}
+                    {root: 'C', shift: '#', quality: '-7', numeric: 1},
+                    {root: 'F', shift: '#', quality: '7', numeric: 4}
                 ]
             });
         });
@@ -4749,8 +4758,8 @@ describe('IRealProChartModel', () => {
                 open: '{',
                 chords: 'C C/E',
                 harmony: [
-                    {root: 'C', numeric: 2},
-                    {root: 'C', inversion: '/E', numeric: 2}
+                    {root: 'C', numeric: 1},
+                    {root: 'C', inversion: '/E', numeric: 1}
                 ]
             });
         });

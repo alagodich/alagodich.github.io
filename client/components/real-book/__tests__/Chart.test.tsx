@@ -16,10 +16,7 @@ jest.mock('react-router-dom', () => ({
 import Chart, {processLines} from '../Chart';
 import React from 'react';
 import {create} from 'react-test-renderer';
-import util from 'util';
-
-// eslint-disable-next-line no-console,@typescript-eslint/no-unused-vars,no-unused-vars
-const varDump = (object: any) => console.log(util.inspect(object, {depth: null}));
+// import {varDump} from '../../../../server/utils';
 
 const emptyBootstrapProps = {match: {params: {playlist: 'jazz', songId: 2}}, history: {}, location: {}} as any;
 

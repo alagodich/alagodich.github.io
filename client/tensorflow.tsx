@@ -1,8 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {TensorFlowComponent} from './components/tensor-flow/TensorFlowComponent';
+import {TensorFlowHarmonyComponent} from './components/tensor-flow/TensorFlowHarmonyComponent';
 const tensorFlowContainer = document.getElementById('tensorFlowContainer');
 
 if (tensorFlowContainer) {
-    render(<TensorFlowComponent />, tensorFlowContainer);
+    render(<TensorFlowHarmonyComponent />, tensorFlowContainer);
 }

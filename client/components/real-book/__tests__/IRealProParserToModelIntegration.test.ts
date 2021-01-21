@@ -2,13 +2,10 @@ import IRealProUrlParser from '../IRealProUrlParser';
 import IRealProChartModel from '../IRealProChartModel';
 import allJazzSongsUrls from '../playlists/jazz';
 import allLatinSongsUrls from '../playlists/latin';
-import util from 'util';
 import {IIRealProChartModelProps} from '../types';
 import fs from 'fs';
 import path from 'path';
-
-// eslint-disable-next-line no-console,@typescript-eslint/no-unused-vars,no-unused-vars
-const varDump = (object: any) => console.log(util.inspect(object, {depth: null}));
+// import {varDump} from '../../../../server/utils';
 
 describe('UrlParser and ChartModel integration', () => {
     it('should be able to parse and create model for all jazz songs part 1', () => {

@@ -1,6 +1,5 @@
 /* eslint camelcase: 0 */
 import path from 'path';
-// const TensorFlow = require('@tensorflow/tfjs');
 import * as TensorFlow from '@tensorflow/tfjs';
 import {Tensor} from '@tensorflow/tfjs-core';
 // https://storage.googleapis.com/mlb-pitch-data/pitch_type_training_data.csv

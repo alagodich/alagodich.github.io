@@ -8,27 +8,9 @@ import {
     IIRealProChord,
     timeSignatures,
     endings,
-    roots
+    roots,
+    qualities
 } from './types';
-
-function fillChord(chordParts: RegExpMatchArray, tuneKeyShift: number): IIRealProChord {
-    let chordNumericIndex = roots.indexOf(chordParts[1]) + 1;
-
-    if (chordNumericIndex) {
-        chordNumericIndex -= tuneKeyShift;
-        if (chordNumericIndex <= 0) {
-            chordNumericIndex += 7;
-        }
-    }
-
-    return {
-        root: chordParts[1],
-        ...(chordParts[2] ? {shift: chordParts[2]} : null),
-        ...(chordParts[3] && chordParts[3] !== '' ? {quality: chordParts[3]} : null),
-        ...(chordParts[4] ? {inversion: chordParts[4]} : null),
-        ...(chordNumericIndex ? {numeric: chordNumericIndex} : null)
-    };
-}
 
 export default class IRealProChartModel {
     public title = '';
@@ -313,19 +295,18 @@ export default class IRealProChartModel {
         const tuneKeyRoot = this.key?.match(/[A-G]/);
         const tuneKeyShift = roots.indexOf(tuneKeyRoot ? tuneKeyRoot[0] : '');
 
-        // if (tuneKeyShift === -1) {
-        //     throw new Error(`Song: ${this.title}. Key not recognized ${this.key}.`);
-        // }
-
         const main: IIRealProChord[] = [];
         const alt: IIRealProChord[] = [];
 
         // eslint-disable-next-line complexity
         harmonyString.split(' ').forEach((chordString: string) => {
-            const chordParts = chordString.match(chordsStringExpresion);
+            const chordParts = fixMisspelledChordQuality(chordString).match(chordsStringExpresion);
 
             if (!chordParts) {
                 throw new Error(`Song: ${this.title}. Chord not recognized ${harmonyString}.`);
+            }
+            if (chordParts[3] && chordParts[3] !== '' && !qualities.includes(chordParts[3])) {
+                throw new Error(`Song: ${this.title}. Unrecognized chord quality ${chordString}`);
             }
             if (['x', 'n', 'p'].includes(chordParts[1])) {
                 main.push({root: chordParts[1]});
@@ -351,4 +332,38 @@ export default class IRealProChartModel {
 
         return [main, alt];
     }
+}
+
+function fixMisspelledChordQuality(chordString: string): string {
+    return chordString
+        .replace('-3', '-')
+        .replace('-b5', '-7b5')
+        .replace('+7', '+')
+        .replace('7+', '+');
+}
+
+/**
+ * Parse chord parts and assign numeric value
+ * If tune has no key, we assume C
+ *
+ * @param chordParts
+ * @param tuneKeyShift
+ */
+function fillChord(chordParts: RegExpMatchArray, tuneKeyShift: number): IIRealProChord {
+    let chordNumericIndex = roots.indexOf(chordParts[1]) + 1;
+
+    if (chordNumericIndex && tuneKeyShift !== -1) {
+        chordNumericIndex -= tuneKeyShift;
+        if (chordNumericIndex <= 0) {
+            chordNumericIndex += 7;
+        }
+    }
+
+    return {
+        root: chordParts[1],
+        ...(chordParts[2] ? {shift: chordParts[2]} : null),
+        ...(chordParts[3] && chordParts[3] !== '' ? {quality: chordParts[3]} : null),
+        ...(chordParts[4] ? {inversion: chordParts[4]} : null),
+        ...(chordNumericIndex ? {numeric: chordNumericIndex} : null)
+    };
 }

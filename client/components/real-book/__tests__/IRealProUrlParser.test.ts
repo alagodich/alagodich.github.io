@@ -2,10 +2,7 @@
 /* eslint max-statements: 0 */
 
 import IRealProUrlParser from '../IRealProUrlParser';
-import util from 'util';
-
-// eslint-disable-next-line no-console,@typescript-eslint/no-unused-vars,no-unused-vars
-const varDump = (object: any) => console.log(util.inspect(object, {depth: null}));
+// import {varDump} from '../../../../server/utils';
 
 describe('IRealProUrlParser', () => {
     describe('parse', () => {
