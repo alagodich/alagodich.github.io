@@ -4,7 +4,7 @@ import {
     convertChordToDigit,
     convertDigitToChord
 } from '../data';
-import {varDump} from '../../../utils';
+// import {varDump} from '../../../utils';
 
 describe('prepareData', () => {
     it('should correctly flatten song segments', () => {

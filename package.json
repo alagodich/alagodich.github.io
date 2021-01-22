@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "start": "(cd docs && JEKYLL_ENV=development bundle exec jekyll serve --draft)",
-    "lint": "eslint --config ./.eslintrc.json --ext .js,.jsx,.ts,tsx client",
+    "lint": "eslint --config ./.eslintrc.json --ext .js,.jsx,.ts,.tsx client/ server/",
     "test": "jest --errorOnDeprecated --logHeapUsage --verbose",
     "test:watch": "npm run test -- --watch",
     "build": "rm -rf ./docs/public && webpack --config webpack.config.production.js",

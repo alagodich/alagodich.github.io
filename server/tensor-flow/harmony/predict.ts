@@ -39,19 +39,18 @@ async function predict() {
     const tensor = convertToTensor(flatData);
     const randomIndex = parseInt((Math.random() * flatData.length).toString(), 10);
     let testSlice = tensor.from.slice([randomIndex], [1]);
-console.log(randomIndex);
+
     await printSliceAsChordString(testSlice);
     const model = await TensorFlow.loadLayersModel(`file://${modelSavePath}/model.json`) as TensorFlow.Sequential;
 
     for (let i = 0; i < numberOfPredictions; i++) {
-        const predicted: TensorFlow.Tensor = model.predict(testSlice) as TensorFlow.Tensor;
+        testSlice = model.predict(testSlice) as TensorFlow.Tensor;
 
-        testSlice = predicted;
-
-        // console.log('TEST SLICE', await testSlice.array());
         // eslint-disable-next-line no-await-in-loop
         await printSliceAsChordString(testSlice);
     }
+
+    // eslint-disable-next-line no-console
     console.log(predictedChords.join(' -> '));
 }
 

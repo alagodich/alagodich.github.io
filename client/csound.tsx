@@ -6,7 +6,3 @@ const cSoundContainer = document.getElementById('cSoundContainer');
 if (cSoundContainer) {
     render(<React.StrictMode><CSoundComponent /></React.StrictMode>, cSoundContainer);
 }
-
-// eslint-disable-next-line no-console
-console.log('csound disabled for now');
-
