@@ -7,36 +7,25 @@ import {default as CSound} from '@kunstmusik/csound';
 import {
     prepareData,
     flattenData,
-    maxChord,
-    convertDigitToChord,
-    chordToPrintString
+    maxChordNumeric
 } from '../../../server/tensor-flow/harmony/data';
-import {convertToTensor} from '../../../server/tensor-flow/harmony/tensor';
+import {convertToClassificationTensor} from '../../../server/tensor-flow/harmony/tensor';
 import CsdGenerator from '../csound/CsdGenerator';
-import {IIRealProChord} from '../real-book/types';
 
 const rawData = prepareData();
-const flatData = flattenData(rawData);
-const tensor = convertToTensor(flatData);
-
-async function printSliceAsChordString(testSlice: TensorFlow.Tensor) {
-    const testSliceUnNormalized = testSlice.mul(maxChord);
-    const testSliceUnNormalizedArray = await testSliceUnNormalized.array() as number[][];
-    const chord = convertDigitToChord(testSliceUnNormalizedArray[0][0]);
-
-    return [chordToPrintString(chord), chord];
-}
+const flatData = flattenData(rawData, ['numeric']);
+const tensor = convertToClassificationTensor(flatData, maxChordNumeric);
 
 interface IPredictedStep {
-    x: string;
-    y: string;
+    chord: number;
+    probabilities: number[];
 }
 
 export const TensorFlowHarmonyComponent: React.FunctionComponent = (): ReactElement => {
     const trainRef = useRef(null);
     const [modelStatus, setModelStatus] = useState(null as string | null);
-    const [predictedSteps, setPredictedSteps] = useState([] as IPredictedStep[]);
-    const [predictedChords, setPredictedChords] = useState([] as IIRealProChord[]);
+    // const [predictedSteps, setPredictedSteps] = useState([] as IPredictedStep[]);
+    const [predictedChords, setPredictedChords] = useState([] as IPredictedStep[]);
     const [cSoundMessages, setCSoundMessages] = useState([] as string[]);
     const [cSoundStatus, setCsoundStatus] = useState(null as string | null);
     const [cSound, setCsound] = useState(null as any);
@@ -101,12 +90,20 @@ export const TensorFlowHarmonyComponent: React.FunctionComponent = (): ReactElem
 
         const randomIndex = parseInt((Math.random() * flatData.length).toString(), 10);
         const testSlice = tensor.from.slice([randomIndex], [1]);
-        const [x, testChord] = await printSliceAsChordString(testSlice);
-        const predicted: TensorFlow.Tensor = model.predict(testSlice) as TensorFlow.Tensor;
-        const [y, predictedChord] = await printSliceAsChordString(predicted);
+        const prediction: TensorFlow.Tensor = model.predict(testSlice) as TensorFlow.Tensor;
 
-        setPredictedSteps([{x: x as string, y: y as string}, ...predictedSteps]);
-        setPredictedChords([...[testChord as IIRealProChord, predictedChord as IIRealProChord], ...predictedChords]);
+        const unNormalizedTestSliceFloat = testSlice.mul(maxChordNumeric);
+        const unNormalizedTestSliceInt = TensorFlow.cast(unNormalizedTestSliceFloat, 'int32');
+        const unNormalizedTestSliceIntArray = await unNormalizedTestSliceInt.array();
+        // console.log(unNormalizedTestSliceIntArray);
+        const testChordNumeric = Math.max(1, unNormalizedTestSliceIntArray[0][0] as number);
+        const predictionPercent = TensorFlow.cast(prediction.mul(100), 'int32');
+        const predictionPercentArray = await predictionPercent.array() as number[];
+
+        // console.log(testChordNumeric);
+        // console.log(predictionPercentArray);
+
+        setPredictedChords([{chord: testChordNumeric, probabilities: predictionPercentArray}, ...predictedChords]);
     }
 
     function handleGenerateOrchestra() {
@@ -116,14 +113,14 @@ export const TensorFlowHarmonyComponent: React.FunctionComponent = (): ReactElem
         csdGenerator.setIsMajor(true);
         csdGenerator.useDefaultInstruments();
 
-        predictedChords.forEach((chord, key) => {
-            csdGenerator.addChord(chord, key, 1);
-        });
+        // predictedChords.forEach((chord, key) => {
+        // csdGenerator.addChord(chord, key, 1);
+        // });
 
-        const orchestra = csdGenerator.compile();
+        // const orchestra = csdGenerator.compile();
 
-        handleCSoundMessage(orchestra);
-        cSound.compileCSD(orchestra);
+        // handleCSoundMessage(orchestra);
+        // cSound.compileCSD(orchestra);
     }
 
     function handleUnloadOrchestra() {
@@ -182,8 +179,10 @@ export const TensorFlowHarmonyComponent: React.FunctionComponent = (): ReactElem
             <Divider />
             <Grid columns={2}>
                 <Grid.Column>
-                    <List>{predictedSteps.map((step: IPredictedStep, key: number) =>
-                        <List.Item key={key}>{`${step.x} -> ${step.y}`}</List.Item>)
+                    <List>{predictedChords.map((step: IPredictedStep, key: number) =>
+                        <List.Item key={key}>
+                            {`${step.chord} -> ${JSON.stringify(step.probabilities)}`}
+                        </List.Item>)
                     }</List>
                 </Grid.Column>
                 <Grid.Column>

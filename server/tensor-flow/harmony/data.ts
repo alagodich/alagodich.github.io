@@ -11,6 +11,9 @@ export interface IFlatHarmonyData {
 }
 
 export const maxChord = 7999;
+export const minChord = 1000;
+export const maxChordNumeric = 7;
+export const maxChordNumericShift = 72;
 
 // TODO check number of unique chords,
 // TODO unify qualities, some of them are the same
@@ -69,17 +72,21 @@ export function prepareData(): IIRealProChord[][] {
  *
  * TODO for now we skip transitions between segments, probably we should not
  */
-export function flattenData(preparedData: IIRealProChord[][]): IFlatHarmonyData[] {
+export function flattenData(preparedData: IIRealProChord[][], fields: string[] = []): IFlatHarmonyData[] {
     const harmonyData: IFlatHarmonyData[] = [];
 
     preparedData.forEach(segment => {
         segment.forEach((chord: IIRealProChord, index: number) => {
             if (segment[index + 1]) {
                 harmonyData.push({
-                    x: convertChordToDigit(chord),
-                    y: convertChordToDigit(segment[index + 1])
+                    x: convertChordToDigit(chord, fields),
+                    y: convertChordToDigit(segment[index + 1], fields)
                 });
-
+            } else {
+                harmonyData.push({
+                    x: convertChordToDigit(chord, fields),
+                    y: convertChordToDigit(segment[0], fields)
+                });
             }
         });
     });
@@ -87,52 +94,76 @@ export function flattenData(preparedData: IIRealProChord[][]): IFlatHarmonyData[
     return harmonyData;
 }
 
+export function getChordsEnum(flatData: IFlatHarmonyData[]): number[] {
+    const chordsEnum: number[] = [];
+
+    flatData.forEach((change: IFlatHarmonyData) => {
+        if (!chordsEnum.includes(change.x)) {
+            chordsEnum.push(change.x);
+        }
+        if (!chordsEnum.includes(change.y)) {
+            chordsEnum.push(change.y);
+        }
+    });
+
+    return chordsEnum;
+}
+
 /**
  * Chord coverts to 4 digit number
  * 1 - digit is a numeric value
  * 2 - shift b = 1, # = 2, '' = 0
  * 3 - quality index number from qualities array
- *
- * @param chord
  */
-export function convertChordToDigit(chord: IIRealProChord): number {
+export function convertChordToDigit(proChord: IIRealProChord, fields: string[] = []): number {
+    if (!proChord.numeric || (fields.length && !fields.includes('numeric'))) {
+        throw new Error(`Numeric notation required ${JSON.stringify(proChord)}`);
+    }
+    const chord = fields.length
+        ? _pick(proChord, fields)
+        : proChord;
+
     let chordNumberString: string = chord.numeric
         ? chord.numeric.toString()
         : '';
 
-    switch (chord.shift) {
-        case '': {
-            chordNumberString += '0';
-            break;
-        }
-        case undefined: {
-            chordNumberString += '0';
-            break;
-        }
-        case 'b': {
-            chordNumberString += '1';
-            break;
-        }
-        case '#': {
-            chordNumberString += '2';
-            break;
-        }
-        default: {
-            throw new Error(`Unrecognized shift ${chord.shift}`);
+    if (!fields.length || fields.includes('shift')) {
+        switch (chord.shift) {
+            case '': {
+                chordNumberString += '0';
+                break;
+            }
+            case undefined: {
+                chordNumberString += '0';
+                break;
+            }
+            case 'b': {
+                chordNumberString += '1';
+                break;
+            }
+            case '#': {
+                chordNumberString += '2';
+                break;
+            }
+            default: {
+                throw new Error(`Unrecognized shift ${chord.shift}`);
+            }
         }
     }
 
-    if (!chord.quality || chord.quality === '') {
-        chordNumberString += '00';
-    } else {
-        const qualityIndex = qualities.indexOf(chord.quality as string) + 1;
+    if (!fields.length || fields.includes('quality')) {
+        if (!chord.quality || chord.quality === '') {
+            chordNumberString += '00';
+        } else {
+            const qualityIndex = qualities.indexOf(chord.quality as string) + 1;
 
-        if (qualityIndex === 0) {
-            throw new Error(`Unrecognized chord quality ${chord.quality}`);
-        } else if (qualityIndex < 10) {
-            chordNumberString += '0';
+            if (qualityIndex === 0) {
+                throw new Error(`Unrecognized chord quality ${chord.quality}`);
+            } else if (qualityIndex < 10) {
+                chordNumberString += '0';
+            }
+            chordNumberString += qualityIndex.toString();
         }
-        chordNumberString += qualityIndex.toString();
     }
 
     return parseInt(chordNumberString, 10);
