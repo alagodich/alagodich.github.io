@@ -224,7 +224,8 @@ export const rectifiedQualitiesMap: {[name: string]: string[]} = {
         '7b13',
         '13b9',
         '7#9',
-        '6#9'
+        '6#9',
+        '13#9'
     ]
 };
 

@@ -1,4 +1,4 @@
-import {IIRealProChord, rectifiedQualitiesMap, majorScale, minorScale} from '../real-book/types';
+import {IIRealProChord, qualityStepsMap, majorScale, minorScale} from '../real-book/types';
 
 type IChordPitchList = number[];
 
@@ -37,9 +37,9 @@ export default class CsdGenerator {
         const quality = chord.quality;
 
         if (!quality) {
-            pitches = rectifiedQualitiesMap['^'];
-        } else if (rectifiedQualitiesMap[quality]) {
-            pitches = rectifiedQualitiesMap[quality];
+            pitches = qualityStepsMap['^'];
+        } else if (qualityStepsMap[quality]) {
+            pitches = qualityStepsMap[quality];
         } else {
             throw new Error(`Don't know pitches for ${quality}`);
         }

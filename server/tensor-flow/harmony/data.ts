@@ -2,21 +2,30 @@
 import jazzRawData from '../../../client/components/real-book/playlists/jazz';
 import IRealProUrlParser from '../../../client/components/real-book/IRealProUrlParser';
 import IRealProChartModel from '../../../client/components/real-book/IRealProChartModel';
-import {IIRealProChord, qualities, roots} from '../../../client/components/real-book/types';
+import {IIRealProChord, rectifiedQualitiesMap, roots} from '../../../client/components/real-book/types';
 import {default as _pick} from 'lodash/pick';
 
 export interface IFlatHarmonyData {
-    x: number;
-    y: number;
+    x: number[];
+    y: number[];
 }
 
 export const maxChord = 7999;
 export const minChord = 1000;
 export const maxChordNumeric = 7;
-export const maxChordNumericShift = 72;
 
-// TODO check number of unique chords,
-// TODO unify qualities, some of them are the same
+// The biggest feature is a chord quality
+export const maxFeatureDepth = 14;
+
+const invertedRectifiedQualitiesMap: {[quality: string]: string} = {};
+const rectifiedQualityList = Object.getOwnPropertyNames(rectifiedQualitiesMap).map(quality => quality).sort();
+
+Object.getOwnPropertyNames(rectifiedQualitiesMap).forEach((quality: string) => {
+    invertedRectifiedQualitiesMap[quality] = quality;
+    rectifiedQualitiesMap[quality].forEach((substitution: string) => {
+        invertedRectifiedQualitiesMap[substitution] = quality;
+    });
+});
 
 export function prepareData(): IIRealProChord[][] {
     const parser = new IRealProUrlParser();
@@ -35,9 +44,9 @@ export function prepareData(): IIRealProChord[][] {
                     row.harmony?.forEach(chord => {
                         let chordProps: IIRealProChord;
 
-                        // it it is a bar repeat or the same chord with alteration we jsut use the previous chord
                         if (['x', 'W'].includes(chord.root as string)
                             && segmentProgression[segmentProgression.length - 1]) {
+                            // Should staying on the same chord be taken into account?
                             chordProps = segmentProgression[segmentProgression.length - 1];
                         } else if (roots.includes(chord.root as string)) {
                             chordProps = chord;
@@ -98,11 +107,14 @@ export function getChordsEnum(flatData: IFlatHarmonyData[]): number[] {
     const chordsEnum: number[] = [];
 
     flatData.forEach((change: IFlatHarmonyData) => {
-        if (!chordsEnum.includes(change.x)) {
-            chordsEnum.push(change.x);
+        const numericValueX = parseInt(change.x.map(value => value.toString()).join(''), 10);
+        const numericValueY = parseInt(change.y.map(value => value.toString()).join(''), 10);
+
+        if (!chordsEnum.includes(numericValueX)) {
+            chordsEnum.push(numericValueX);
         }
-        if (!chordsEnum.includes(change.y)) {
-            chordsEnum.push(change.y);
+        if (!chordsEnum.includes(numericValueY)) {
+            chordsEnum.push(numericValueY);
         }
     });
 
@@ -115,7 +127,7 @@ export function getChordsEnum(flatData: IFlatHarmonyData[]): number[] {
  * 2 - shift b = 1, # = 2, '' = 0
  * 3 - quality index number from qualities array
  */
-export function convertChordToDigit(proChord: IIRealProChord, fields: string[] = []): number {
+export function convertChordToDigit(proChord: IIRealProChord, fields: string[] = []): number[] {
     if (!proChord.numeric || (fields.length && !fields.includes('numeric'))) {
         throw new Error(`Numeric notation required ${JSON.stringify(proChord)}`);
     }
@@ -123,26 +135,24 @@ export function convertChordToDigit(proChord: IIRealProChord, fields: string[] =
         ? _pick(proChord, fields)
         : proChord;
 
-    let chordNumberString: string = chord.numeric
-        ? chord.numeric.toString()
-        : '';
+    const chordInDigits: number[] = [chord.numeric as number];
 
     if (!fields.length || fields.includes('shift')) {
         switch (chord.shift) {
             case '': {
-                chordNumberString += '0';
+                chordInDigits.push(0);
                 break;
             }
             case undefined: {
-                chordNumberString += '0';
+                chordInDigits.push(0);
                 break;
             }
             case 'b': {
-                chordNumberString += '1';
+                chordInDigits.push(1);
                 break;
             }
             case '#': {
-                chordNumberString += '2';
+                chordInDigits.push(2);
                 break;
             }
             default: {
@@ -153,37 +163,37 @@ export function convertChordToDigit(proChord: IIRealProChord, fields: string[] =
 
     if (!fields.length || fields.includes('quality')) {
         if (!chord.quality || chord.quality === '') {
-            chordNumberString += '00';
+            chordInDigits.push(0);
         } else {
-            const qualityIndex = qualities.indexOf(chord.quality as string) + 1;
+            const rectifiedIndex = invertedRectifiedQualitiesMap[chord.quality];
+            // + 1 to reserve 0 index for chord with no quality
+            const qualityIndex = rectifiedQualityList.indexOf(rectifiedIndex) + 1;
 
             if (qualityIndex === 0) {
                 throw new Error(`Unrecognized chord quality ${chord.quality}`);
-            } else if (qualityIndex < 10) {
-                chordNumberString += '0';
             }
-            chordNumberString += qualityIndex.toString();
+
+            chordInDigits.push(qualityIndex);
         }
     }
 
-    return parseInt(chordNumberString, 10);
+    return chordInDigits;
 }
 
-export function convertDigitToChord(digitChord: number): IIRealProChord {
-    const chordNumberString = digitChord.toString();
+export function convertDigitToChord(digitChord: number[]): IIRealProChord {
     const chord: IIRealProChord = {
-        numeric: parseInt(chordNumberString[0], 10)
+        numeric: digitChord[0]
     };
 
-    if (chordNumberString[1] === '1') {
+    if (digitChord[1] === 1) {
         chord.shift = 'b';
-    } else if (chordNumberString[1] === '2') {
+    } else if (digitChord[1] === 2) {
         chord.shift = '#';
     }
-    const qualityIndex = parseInt(chordNumberString.substring(2), 10);
+    const qualityIndex = digitChord[2];
 
-    if (qualityIndex !== 0 && qualities[qualityIndex - 1]) {
-        chord.quality = qualities[qualityIndex - 1];
+    if (qualityIndex !== 0 && rectifiedQualityList[qualityIndex - 1]) {
+        chord.quality = rectifiedQualityList[qualityIndex - 1];
     }
     return chord;
 }

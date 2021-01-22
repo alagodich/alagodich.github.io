@@ -2,7 +2,7 @@
 
 import '@tensorflow/tfjs-node';
 import * as TensorFlow from '@tensorflow/tfjs';
-import {prepareData, flattenData, maxChord, maxChordNumeric} from './data';
+import {prepareData, flattenData, maxChord, maxFeatureDepth} from './data';
 import {convertToClassificationTensor, convertToTensor} from './tensor';
 import {createModel, createClassificationModel} from './model';
 import path from 'path';
@@ -24,8 +24,8 @@ async function train() {
 async function trainClassificationModel() {
     const model = createClassificationModel();
     const rawData = prepareData();
-    const flatData = flattenData(rawData, ['numeric']);
-    const tensor = convertToClassificationTensor(flatData, maxChordNumeric);
+    const flatData = flattenData(rawData);
+    const tensor = convertToClassificationTensor(flatData, maxFeatureDepth);
 
     for (let i = 0; i < 10; i++) {
         // eslint-disable-next-line no-await-in-loop
@@ -35,7 +35,7 @@ async function trainClassificationModel() {
         const testSlice = tensor.from.slice([randomIndex], [10]);
         const prediction = model.predict(testSlice) as TensorFlow.Tensor;
 
-        testSlice.mul(maxChordNumeric).print();
+        testSlice.mul(maxFeatureDepth).print();
         prediction.mul(100).print();
     }
 

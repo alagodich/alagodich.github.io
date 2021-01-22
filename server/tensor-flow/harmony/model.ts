@@ -1,5 +1,9 @@
 import * as TensorFlow from '@tensorflow/tfjs';
 
+/**
+ * @deprecated
+ * Not going to work it seems
+ */
 export function createModel(): TensorFlow.Sequential {
     // TODO find proper setup
     const model = TensorFlow.sequential();
@@ -20,10 +24,7 @@ export function createModel(): TensorFlow.Sequential {
 export function createClassificationModel(): TensorFlow.Sequential {
     const model = TensorFlow.sequential();
 
-    model.add(TensorFlow.layers.dense({
-        inputShape: [1],
-        units: 1
-    }));
+    model.add(TensorFlow.layers.dense({inputShape: [1], units: 1}));
     model.add(TensorFlow.layers.dense({units: 100, activation: 'relu'}));
     model.add(TensorFlow.layers.dense({
         units: 7,
