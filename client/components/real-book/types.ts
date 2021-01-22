@@ -1,3 +1,5 @@
+/* eslint quote-props: 0 */
+
 export interface IIRealProChartModelProps {
     id?: number;
     title: string;
@@ -124,11 +126,8 @@ export const qualities = [
 export const majorScale: number[] = [7.0, 7.02, 7.04, 7.05, 7.07, 7.09, 7.11];
 export const minorScale: number[] = [7.0, 7.02, 7.03, 7.05, 7.07, 7.08, 7.10];
 
-/* eslint quote-props: 0 */
-export const rectifiedQualitiesMap: {[name: string]: number[]} = {
-    // ?
+export const qualityStepsMap: {[name: string]: number[]} = {
     '5': [7.0, 7.04, 7.07],
-    // ?
     '2': [7.0, 7.02, 7.04, 7.05],
     'add9': [7.0, 7.04, 7.07, 7.14],
     '+': [7.0, 7.04, 7.08],
@@ -178,7 +177,6 @@ export const rectifiedQualitiesMap: {[name: string]: number[]} = {
     '7b9#5': [7.0, 7.04, 7.08, 7.13],
     '7b9#9': [7.0, 7.04, 7.07, 7.13, 7.15],
     '7b9b13': [7.0, 7.04, 7.07, 7.13, 7.20],
-    // Can be any 5 and 9 alteration from above
     '7alt': [7.0, 7.04, 7.06, 7.13],
     '13': [7.0, 7.04, 7.07, 7.21],
     '13#11': [7.0, 7.04, 7.07, 7.17, 7.21],
@@ -194,6 +192,40 @@ export const rectifiedQualitiesMap: {[name: string]: number[]} = {
     // Additional qualities
     '6b5': [7.0, 7.04, 7.06, 7.09],
     '6#9': [7.0, 7.04, 7.07, 7.15]
+};
+
+/**
+ * Some chord qualities can be written differently
+ */
+export const rectifiedQualitiesMap: {[name: string]: string[]} = {
+    '^': ['^7', '5', '2', 'add9', '^9', '6', '13', '^13', '69', '9', '11'],
+    '-7': ['-', '-6', '-69', '-9', '-11', '-b6'],
+    '7': ['7susadd3'],
+    '+': ['^7#5', '7#5', '9#5'],
+    '7b5': [],
+    '-#5': [],
+    'o': ['o7'],
+    'h': ['h7', 'h9', '-7b5', '7#11', '9#11', '9b5'],
+    'sus': ['7sus', '9sus', '13sus'],
+    '^7#11': ['^9#11', '13#11', '6b5'],
+    '-^7': ['-^9'],
+    '7b9sus': [],
+    '7b13sus': [],
+    '7alt': [
+        '7#9#5',
+        '7#9b5',
+        '7b9b5',
+        '7b9#5',
+        '7#9#11',
+        '7b9#11',
+        '7b9#9',
+        '7b9b13',
+        '7b9',
+        '7b13',
+        '13b9',
+        '7#9',
+        '6#9'
+    ]
 };
 
 export const barLines = [
