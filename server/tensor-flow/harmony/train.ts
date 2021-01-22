@@ -1,4 +1,4 @@
-import '@tensorflow/tfjs';
+import '@tensorflow/tfjs-node-gpu';
 import {prepareData, flattenData} from './data';
 import {convertToTensor} from './tensor';
 import {createModel} from './model';

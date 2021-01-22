@@ -1,5 +1,5 @@
 import fs from 'fs';
-import * as TensorFlow from '@tensorflow/tfjs';
+import * as TensorFlow from '@tensorflow/tfjs-node-gpu';
 import {flattenData, prepareData, convertDigitToChord, maxChord, chordToPrintString} from './data';
 import {convertToTensor} from './tensor';
 import path from 'path';

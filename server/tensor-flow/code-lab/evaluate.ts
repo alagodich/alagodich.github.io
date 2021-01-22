@@ -2,7 +2,7 @@
 /* eslint no-console: 0 */
 
 import fs from 'fs';
-import * as TensorFlow from '@tensorflow/tfjs-node';
+import * as TensorFlow from '@tensorflow/tfjs-node-gpu';
 import {
     // trainingData,
     evaluate,

@@ -2,7 +2,7 @@
 
 import IRealProChartModel from '../IRealProChartModel';
 import {IIRealProChartModelProps} from '../types';
-import {varDump} from '../../../../server/utils';
+// import {varDump} from '../../../../server/utils';
 
 const emptyRealProChartProps: IIRealProChartModelProps = {
     title: '',
