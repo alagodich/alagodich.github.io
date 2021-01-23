@@ -50,7 +50,7 @@ async function trainClassificationModel() {
         prediction.mul(100).print();
     }
 
-    await model.save(`file://${modelSavePath}`);
+    // await model.save(`file://${modelSavePath}`);
 }
 
 /**
@@ -81,7 +81,7 @@ async function trainClassificationEmbeddingModel() {
         prediction.forEach(ysTensor => ysTensor.print());
     }
 
-    await model.save(`file://${modelSavePath}--embedding`);
+    // await model.save(`file://${modelSavePath}--embedding`);
 }
 
-trainClassificationEmbeddingModel();
+trainClassificationModel();

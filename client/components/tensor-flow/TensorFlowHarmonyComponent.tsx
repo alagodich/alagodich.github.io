@@ -3,28 +3,28 @@ import * as TensorFlow from '@tensorflow/tfjs';
 import * as TensorFlowVis from '@tensorflow/tfjs-vis';
 import {Menu, Divider, List, Grid} from 'semantic-ui-react';
 import {default as CSound} from '@kunstmusik/csound';
+import {chordToString} from '../real-book/IRealProChartModel';
 
 import {
-    prepareData,
-    flattenData,
-    maxChordNumeric
-} from '../../../server/tensor-flow/harmony/data';
-import {convertToClassificationTensor} from '../../../server/tensor-flow/harmony/tensor';
+    convertEmbeddingXsTensorToChord,
+    convertEmbeddingYsTensorToPredictionObject, IEmbeddingPrediction
+} from '../../../server/tensor-flow/harmony/tensor';
 import CsdGenerator from '../csound/CsdGenerator';
+import {ChordPredictionComponent} from './ChordPredictionComponent';
+import {IIRealProChord} from '../real-book/types';
 
-const rawData = prepareData();
-const flatData = flattenData(rawData, ['numeric']);
-const tensor = convertToClassificationTensor(flatData, maxChordNumeric);
-
-interface IPredictedStep {
-    chord: number;
-    probabilities: number[];
+export interface IPredictedStep {
+    chordString: string;
+    chord: IIRealProChord;
+    digits: number[];
+    probabilities: IEmbeddingPrediction;
 }
 
+const predictionPull = 8;
+
 export const TensorFlowHarmonyComponent: React.FunctionComponent = (): ReactElement => {
-    const trainRef = useRef(null);
+    const modelSummaryRef = useRef(null);
     const [modelStatus, setModelStatus] = useState(null as string | null);
-    // const [predictedSteps, setPredictedSteps] = useState([] as IPredictedStep[]);
     const [predictedChords, setPredictedChords] = useState([] as IPredictedStep[]);
     const [cSoundMessages, setCSoundMessages] = useState([] as string[]);
     const [cSoundStatus, setCsoundStatus] = useState(null as string | null);
@@ -40,7 +40,7 @@ export const TensorFlowHarmonyComponent: React.FunctionComponent = (): ReactElem
         if (model) {
             setModelStatus('loaded');
 
-            TensorFlowVis.show.modelSummary(trainRef.current as any, model);
+            TensorFlowVis.show.modelSummary(modelSummaryRef.current as any, model);
         }
     }, [model]);
 
@@ -53,10 +53,10 @@ export const TensorFlowHarmonyComponent: React.FunctionComponent = (): ReactElem
 
     function loadAndDisplayModel() {
         if (!model && modelStatus === null) {
+            const modelUrl = `http://${window.location.host}/assets/harmony-model/model.json`;
+
             setModelStatus('loading');
-            TensorFlow.loadLayersModel('http://localhost:3000/assets/harmony-model/model.json').then(modelInstance => {
-                setModel(modelInstance);
-            });
+            TensorFlow.loadLayersModel(modelUrl).then(modelInstance => setModel(modelInstance));
         }
     }
 
@@ -83,27 +83,65 @@ export const TensorFlowHarmonyComponent: React.FunctionComponent = (): ReactElem
         cSound?.destroy();
     }
 
+    function makeTestTensor(chord: number[]): Array<TensorFlow.Tensor<TensorFlow.Rank>> {
+        return [
+            TensorFlow.tensor2d([[chord[0]]]),
+            TensorFlow.tensor2d([[chord[1]]]),
+            TensorFlow.tensor2d([[chord[2]]])
+        ];
+    }
+
+    function getNextProbablePredictedChord(random: boolean): number[] {
+        if (predictedChords.length) {
+            const lastChord = predictedChords[0];
+
+            // Get random predicted chords from the first 3
+            if (random) {
+                const randomIndex = () => Math.floor(Math.random() * Math.floor(3));
+
+                return [
+                    lastChord.probabilities.numeric[randomIndex()].index,
+                    lastChord.probabilities.shift[0].index,
+                    lastChord.probabilities.quality[0].index
+                ];
+            }
+
+            // Get random not the same chord
+            const numeric = lastChord.digits[0] === lastChord.probabilities.numeric[0].index
+                ? lastChord.probabilities.numeric[1].index
+                : lastChord.probabilities.numeric[0].index;
+
+            return [
+                numeric,
+                lastChord.probabilities.shift[0].index,
+                lastChord.probabilities.quality[0].index
+            ];
+        }
+
+        // Get first stem major
+        return [1, 0, 10];
+    }
+
     async function handleTest() {
         if (!model || modelStatus !== 'loaded') {
             return;
         }
 
-        const randomIndex = parseInt((Math.random() * flatData.length).toString(), 10);
-        const testSlice = tensor.from.slice([randomIndex], [1]);
-        const prediction: TensorFlow.Tensor = model.predict(testSlice) as TensorFlow.Tensor;
+        const nextTestChord = getNextProbablePredictedChord(false);
+        const testTensor = makeTestTensor(nextTestChord);
+        const predictionTensorSet = model.predict(testTensor) as TensorFlow.Tensor[];
+        const testChord = await convertEmbeddingXsTensorToChord(testTensor);
+        const prediction = await convertEmbeddingYsTensorToPredictionObject(predictionTensorSet);
 
-        const unNormalizedTestSliceFloat = testSlice.mul(maxChordNumeric);
-        const unNormalizedTestSliceInt = TensorFlow.cast(unNormalizedTestSliceFloat, 'int32');
-        const unNormalizedTestSliceIntArray = await unNormalizedTestSliceInt.array();
-        // console.log(unNormalizedTestSliceIntArray);
-        const testChordNumeric = Math.max(1, unNormalizedTestSliceIntArray[0][0] as number);
-        const predictionPercent = TensorFlow.cast(prediction.mul(100), 'int32');
-        const predictionPercentArray = await predictionPercent.array() as number[];
-
-        // console.log(testChordNumeric);
-        // console.log(predictionPercentArray);
-
-        setPredictedChords([{chord: testChordNumeric, probabilities: predictionPercentArray}, ...predictedChords]);
+        setPredictedChords([
+            {
+                chordString: chordToString(testChord.chord),
+                chord: testChord.chord,
+                digits: testChord.digits,
+                probabilities: prediction
+            },
+            ...predictedChords.slice(0, predictionPull)
+        ]);
     }
 
     function handleGenerateOrchestra() {
@@ -113,14 +151,14 @@ export const TensorFlowHarmonyComponent: React.FunctionComponent = (): ReactElem
         csdGenerator.setIsMajor(true);
         csdGenerator.useDefaultInstruments();
 
-        // predictedChords.forEach((chord, key) => {
-        // csdGenerator.addChord(chord, key, 1);
-        // });
+        predictedChords.reverse().forEach((prediction, key) => {
+            csdGenerator.addChord(prediction.chord, key, 1);
+        });
 
-        // const orchestra = csdGenerator.compile();
+        const orchestra = csdGenerator.compile();
 
-        // handleCSoundMessage(orchestra);
-        // cSound.compileCSD(orchestra);
+        handleCSoundMessage(orchestra);
+        cSound.compileCSD(orchestra);
     }
 
     function handleUnloadOrchestra() {
@@ -175,15 +213,9 @@ export const TensorFlowHarmonyComponent: React.FunctionComponent = (): ReactElem
                     onClick={handleCSoundStop}
                 />
             </Menu>
-            <div ref={trainRef} />
-            <Divider />
             <Grid columns={2}>
                 <Grid.Column>
-                    <List>{predictedChords.map((step: IPredictedStep, key: number) =>
-                        <List.Item key={key}>
-                            {`${step.chord} -> ${JSON.stringify(step.probabilities)}`}
-                        </List.Item>)
-                    }</List>
+                    <ChordPredictionComponent predictions={predictedChords} />
                 </Grid.Column>
                 <Grid.Column>
                     <List>{cSoundMessages.map((message: string, key) =>
@@ -191,7 +223,8 @@ export const TensorFlowHarmonyComponent: React.FunctionComponent = (): ReactElem
                     }</List>
                 </Grid.Column>
             </Grid>
-
+            <Divider />
+            <div ref={modelSummaryRef} />
         </React.Fragment>
     );
 };

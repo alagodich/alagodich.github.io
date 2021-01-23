@@ -17,8 +17,10 @@ export const maxChordNumeric = 7;
 // The biggest feature is a chord quality
 export const maxFeatureDepth = 14;
 
+export const rectifiedQualityList = Object.getOwnPropertyNames(rectifiedQualitiesMap)
+    .map(quality => quality).sort();
+
 const invertedRectifiedQualitiesMap: {[quality: string]: string} = {};
-const rectifiedQualityList = Object.getOwnPropertyNames(rectifiedQualitiesMap).map(quality => quality).sort();
 
 Object.getOwnPropertyNames(rectifiedQualitiesMap).forEach((quality: string) => {
     invertedRectifiedQualitiesMap[quality] = quality;
@@ -135,7 +137,11 @@ export function convertChordToDigit(proChord: IIRealProChord, fields: string[] =
         ? _pick(proChord, fields)
         : proChord;
 
-    const chordInDigits: number[] = [chord.numeric as number];
+    if (!chord.numeric || chord.numeric > 7 || chord.numeric < 1) {
+        throw new Error(`Impossible numeric ${JSON.stringify(chord)}`);
+    }
+
+    const chordInDigits: number[] = [chord.numeric - 1 as number];
 
     if (!fields.length || fields.includes('shift')) {
         switch (chord.shift) {
@@ -181,8 +187,12 @@ export function convertChordToDigit(proChord: IIRealProChord, fields: string[] =
 }
 
 export function convertDigitToChord(digitChord: number[]): IIRealProChord {
+    if (digitChord[0] > 6 || digitChord[0] < 0) {
+        throw new Error(`Impossible numeric ${JSON.stringify(digitChord)}`);
+    }
+
     const chord: IIRealProChord = {
-        numeric: digitChord[0]
+        numeric: digitChord[0] + 1
     };
 
     if (digitChord[1] === 1) {

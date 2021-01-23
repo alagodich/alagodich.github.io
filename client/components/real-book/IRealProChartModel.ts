@@ -367,3 +367,7 @@ function fillChord(chordParts: RegExpMatchArray, tuneKeyShift: number): IIRealPr
         ...(chordNumericIndex ? {numeric: chordNumericIndex} : null)
     };
 }
+
+export function chordToString(chord: IIRealProChord): string {
+    return [chord.numeric, chord.shift, chord.quality, chord.inversion, chord.alt].join('');
+}

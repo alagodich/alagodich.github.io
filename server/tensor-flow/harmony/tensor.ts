@@ -1,5 +1,6 @@
 import * as TensorFlow from '@tensorflow/tfjs';
-import {IFlatHarmonyData} from './data';
+import {IFlatHarmonyData, convertDigitToChord, rectifiedQualityList} from './data';
+import {IIRealProChord} from '../../../client/components/real-book/types';
 
 export interface ITensorContainerObject {
     xs: TensorFlow.Tensor<TensorFlow.Rank>;
@@ -9,6 +10,18 @@ export interface ITensorContainerObject {
 export interface IEmbeddingTensorContainerObject {
     xs: Array<TensorFlow.Tensor<TensorFlow.Rank>>;
     ys: Array<TensorFlow.Tensor<TensorFlow.Rank>>;
+}
+
+export interface IEmbeddingPrediction {
+    numeric: IChordFeatureProbability[];
+    shift: IChordFeatureProbability[];
+    quality: IChordFeatureProbability[];
+}
+
+export interface IChordFeatureProbability {
+    label: string;
+    probability: number;
+    index: number;
 }
 
 export const oneHotTensorLabelLength = 25;
@@ -189,4 +202,97 @@ export function convertToEmbeddingTensor(flatData: IFlatHarmonyData[]): IEmbeddi
     ];
 
     return {xs, ys};
+}
+
+export function convertEmbeddingXsTensorToChord(
+    tensorSet: Array<TensorFlow.Tensor<TensorFlow.Rank>>
+): Promise<{chord: IIRealProChord; digits: number[]}> {
+    return new Promise(resolve => {
+        Promise.all(tensorSet.map(tensor => tensor.array() as Promise<number[][]>))
+            .then(dataSet => resolve({
+                chord: convertDigitToChord(dataSet.map(feature => feature[0][0])),
+                digits: dataSet.map(feature => feature[0][0])
+            }));
+    });
+}
+
+export function convertEmbeddingYsTensorToPredictionObject(
+    tensorSet: Array<TensorFlow.Tensor<TensorFlow.Rank>>
+): Promise<IEmbeddingPrediction> {
+    const formatPrecisionValue = (probabilityValue: number) =>
+        parseFloat((probabilityValue).toFixed(2));
+    const desc = (a: IChordFeatureProbability, b: IChordFeatureProbability) => {
+        if (a.probability > b.probability) {
+            return -1;
+        } else if (b.probability < a.probability) {
+            return 1;
+        }
+        return 0;
+    };
+
+    return new Promise(resolve => {
+        Promise.all(tensorSet.map(tensor => tensor.array() as Promise<number[][]>))
+            .then(predictionData => {
+                const numeric: IChordFeatureProbability[] = [];
+                const shift: IChordFeatureProbability[] = [];
+                const quality: IChordFeatureProbability[] = [];
+
+                predictionData[0][0].forEach((probability: number, index) => {
+                    numeric.push({
+                        label: (index + 1).toString(),
+                        probability: formatPrecisionValue(probability),
+                        index
+                    });
+                });
+                predictionData[1][0].forEach((probability: number, index) => {
+                    let shiftLabel: string;
+
+                    switch (index) {
+                        case 0: {
+                            shiftLabel = '_';
+                            break;
+                        }
+                        case 1: {
+                            shiftLabel = 'b';
+                            break;
+                        }
+                        case 2: {
+                            shiftLabel = '#';
+                            break;
+                        }
+                        default: {
+                            throw new Error('Unexpected shift label');
+                        }
+                    }
+                    shift.push({
+                        label: shiftLabel,
+                        probability: formatPrecisionValue(probability),
+                        index
+                    });
+                });
+                predictionData[2][0].forEach((probability: number, index) => {
+                    if (index > 0) {
+                        const qualityValue = rectifiedQualityList[index - 1];
+
+                        quality.push({
+                            label: qualityValue,
+                            probability: formatPrecisionValue(probability),
+                            index
+                        });
+                    } else {
+                        quality.push({
+                            label: '',
+                            probability: formatPrecisionValue(probability),
+                            index
+                        });
+                    }
+                });
+
+                return resolve({
+                    numeric: numeric.sort(desc),
+                    shift: shift.sort(desc),
+                    quality: quality.sort(desc)
+                });
+            });
+    });
 }
