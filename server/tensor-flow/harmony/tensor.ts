@@ -40,10 +40,10 @@ export function convertToSingleNumberTensor(flatData: IFlatHarmonyData[], maxCho
 }
 
 /**
- * From tensor is a 2d tensor with [length, features.length] shape
+ * Xs tensor is a 2d tensor with [length, features.length] shape
  * Where features can be 1 to 3: [7], [7, 2], [7, 2, 14]
  *
- * To Tensor is a 25 OneHot
+ * Ys Tensor is a 25 OneHot
  * @see createOneHotLabelTensor
  *
  * @param flatData
@@ -66,7 +66,7 @@ export function convertToClassificationTensor(
 }
 
 /**
- * Each labels is a 25 depth OneHot tensor
+ * Each label is a 25 depth OneHot tensor
  * Which is a sum of (0-6) numeric + (0 - 2) shift + (0 - 14) quality
  * [7, 2, 14] chord will be transformed to:
  *
