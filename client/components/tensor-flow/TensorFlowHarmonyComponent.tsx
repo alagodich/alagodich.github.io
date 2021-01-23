@@ -53,7 +53,7 @@ export const TensorFlowHarmonyComponent: React.FunctionComponent = (): ReactElem
 
     function loadAndDisplayModel() {
         if (!model && modelStatus === null) {
-            const modelUrl = `http://${window.location.host}/assets/harmony-model/model.json`;
+            const modelUrl = `${window.location.protocol}//${window.location.host}/assets/harmony-model/model.json`;
 
             setModelStatus('loading');
             TensorFlow.loadLayersModel(modelUrl).then(modelInstance => setModel(modelInstance));
