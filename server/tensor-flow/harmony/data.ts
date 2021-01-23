@@ -198,8 +198,4 @@ export function convertDigitToChord(digitChord: number[]): IIRealProChord {
     return chord;
 }
 
-export function chordToPrintString(chord: IIRealProChord): string {
-    return [chord.numeric, chord.shift, chord.quality].join('');
-}
-
 prepareData();
