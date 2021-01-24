@@ -1,7 +1,7 @@
 import {IPredictedStep} from './TensorFlowHarmonyComponent';
 import {List} from 'semantic-ui-react';
 import React, {ReactElement} from 'react';
-import {IChordFeatureProbability} from '../../../server/tensor-flow/harmony/tensor';
+import {IChordFeatureProbability} from '../../../server/tensor-flow/harmony/embedding/tensor';
 
 interface IChordPredictionProps {
     predictions: IPredictedStep[];

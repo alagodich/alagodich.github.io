@@ -2,7 +2,7 @@
 import jazzRawData from '../../../client/components/real-book/playlists/jazz';
 import IRealProUrlParser from '../../../client/components/real-book/IRealProUrlParser';
 import IRealProChartModel from '../../../client/components/real-book/IRealProChartModel';
-import {IIRealProChord, rectifiedQualitiesMap, roots} from '../../../client/components/real-book/types';
+import {IIRealProChord, rectifiedQualitiesMap, roots, binaryChordMap} from '../../../client/components/real-book/types';
 import {default as _pick} from 'lodash/pick';
 
 export interface IFlatHarmonyData {
@@ -10,12 +10,11 @@ export interface IFlatHarmonyData {
     y: number[];
 }
 
-export const maxChord = 7999;
-export const minChord = 1000;
-export const maxChordNumeric = 7;
-
-// The biggest feature is a chord quality
-export const maxFeatureDepth = 14;
+export type TChordWithBinaryQuality = [number, number, number[]];
+export interface IFlatHarmonyDataWithBinaryChords {
+    x: TChordWithBinaryQuality;
+    y: TChordWithBinaryQuality;
+}
 
 export const rectifiedQualityList = Object.getOwnPropertyNames(rectifiedQualitiesMap)
     .map(quality => quality).sort();
@@ -70,41 +69,6 @@ export function prepareData(): IIRealProChord[][] {
     return harmonies;
 }
 
-/**
- * From all chord properties: root, shift, quality, numeric, inversion, alt
- * we take only numeric, shift, quality
- * and represent each chord as a number:
- * numeric 1-7 (1 digit)
- * shift 0-2 (1 digit)
- * quality index in the qualities list 0-63 (2 digits)
- *
- * so each chord will be 4 digits
- * and normalized will look like (chord / maxChord)
- *
- * TODO for now we skip transitions between segments, probably we should not
- */
-export function flattenData(preparedData: IIRealProChord[][], fields: string[] = []): IFlatHarmonyData[] {
-    const harmonyData: IFlatHarmonyData[] = [];
-
-    preparedData.forEach(segment => {
-        segment.forEach((chord: IIRealProChord, index: number) => {
-            if (segment[index + 1]) {
-                harmonyData.push({
-                    x: convertChordToDigit(chord, fields),
-                    y: convertChordToDigit(segment[index + 1], fields)
-                });
-            } else {
-                harmonyData.push({
-                    x: convertChordToDigit(chord, fields),
-                    y: convertChordToDigit(segment[0], fields)
-                });
-            }
-        });
-    });
-
-    return harmonyData;
-}
-
 export function getChordsEnum(flatData: IFlatHarmonyData[]): number[] {
     const chordsEnum: number[] = [];
 
@@ -124,18 +88,47 @@ export function getChordsEnum(flatData: IFlatHarmonyData[]): number[] {
 }
 
 /**
+ * From all chord properties: root, shift, quality, numeric, inversion, alt
+ * we take only numeric, shift, quality
+ * and represent each chord as a number:
+ * numeric 1-7 (1 digit)
+ * shift 0-2 (1 digit)
+ * quality index in the qualities list 0-63 (2 digits)
+ *
+ * TODO for now we skip transitions between segments, probably we should not
+ */
+export function flattenData(preparedData: IIRealProChord[][]): IFlatHarmonyData[] {
+    const harmonyData: IFlatHarmonyData[] = [];
+
+    preparedData.forEach(segment => {
+        segment.forEach((chord: IIRealProChord, index: number) => {
+            if (segment[index + 1]) {
+                harmonyData.push({
+                    x: convertChordToDigit(chord),
+                    y: convertChordToDigit(segment[index + 1])
+                });
+            } else {
+                harmonyData.push({
+                    x: convertChordToDigit(chord),
+                    y: convertChordToDigit(segment[0])
+                });
+            }
+        });
+    });
+
+    return harmonyData;
+}
+
+/**
  * Chord coverts to 4 digit number
  * 1 - digit is a numeric value
  * 2 - shift b = 1, # = 2, '' = 0
  * 3 - quality index number from qualities array
  */
-export function convertChordToDigit(proChord: IIRealProChord, fields: string[] = []): number[] {
-    if (!proChord.numeric || (fields.length && !fields.includes('numeric'))) {
-        throw new Error(`Numeric notation required ${JSON.stringify(proChord)}`);
+export function convertChordToDigit(chord: IIRealProChord): number[] {
+    if (!chord.numeric) {
+        throw new Error(`Numeric notation required ${JSON.stringify(chord)}`);
     }
-    const chord = fields.length
-        ? _pick(proChord, fields)
-        : proChord;
 
     if (!chord.numeric || chord.numeric > 7 || chord.numeric < 1) {
         throw new Error(`Impossible numeric ${JSON.stringify(chord)}`);
@@ -143,44 +136,40 @@ export function convertChordToDigit(proChord: IIRealProChord, fields: string[] =
 
     const chordInDigits: number[] = [chord.numeric - 1 as number];
 
-    if (!fields.length || fields.includes('shift')) {
-        switch (chord.shift) {
-            case '': {
-                chordInDigits.push(0);
-                break;
-            }
-            case undefined: {
-                chordInDigits.push(0);
-                break;
-            }
-            case 'b': {
-                chordInDigits.push(1);
-                break;
-            }
-            case '#': {
-                chordInDigits.push(2);
-                break;
-            }
-            default: {
-                throw new Error(`Unrecognized shift ${chord.shift}`);
-            }
+    switch (chord.shift) {
+        case '': {
+            chordInDigits.push(0);
+            break;
+        }
+        case undefined: {
+            chordInDigits.push(0);
+            break;
+        }
+        case 'b': {
+            chordInDigits.push(1);
+            break;
+        }
+        case '#': {
+            chordInDigits.push(2);
+            break;
+        }
+        default: {
+            throw new Error(`Unrecognized shift ${chord.shift}`);
         }
     }
 
-    if (!fields.length || fields.includes('quality')) {
-        if (!chord.quality || chord.quality === '') {
-            chordInDigits.push(0);
-        } else {
-            const rectifiedIndex = invertedRectifiedQualitiesMap[chord.quality];
-            // + 1 to reserve 0 index for chord with no quality
-            const qualityIndex = rectifiedQualityList.indexOf(rectifiedIndex) + 1;
+    if (!chord.quality || chord.quality === '') {
+        chordInDigits.push(0);
+    } else {
+        const rectifiedIndex = invertedRectifiedQualitiesMap[chord.quality];
+        // + 1 to reserve 0 index for chord with no quality
+        const qualityIndex = rectifiedQualityList.indexOf(rectifiedIndex) + 1;
 
-            if (qualityIndex === 0) {
-                throw new Error(`Unrecognized chord quality ${chord.quality}`);
-            }
-
-            chordInDigits.push(qualityIndex);
+        if (qualityIndex === 0) {
+            throw new Error(`Unrecognized chord quality ${chord.quality}`);
         }
+
+        chordInDigits.push(qualityIndex);
     }
 
     return chordInDigits;
@@ -208,4 +197,100 @@ export function convertDigitToChord(digitChord: number[]): IIRealProChord {
     return chord;
 }
 
-prepareData();
+export function flattenDataWithBinaryChords(preparedData: IIRealProChord[][]): IFlatHarmonyDataWithBinaryChords[] {
+    const harmonyData: IFlatHarmonyDataWithBinaryChords[] = [];
+
+    preparedData.forEach(segment => {
+        segment.forEach((chord: IIRealProChord, index: number) => {
+            if (segment[index + 1]) {
+                harmonyData.push({
+                    x: convertChordToDigitWithBinaryQuality(chord),
+                    y: convertChordToDigitWithBinaryQuality(segment[index + 1])
+                });
+            } else {
+                harmonyData.push({
+                    x: convertChordToDigitWithBinaryQuality(chord),
+                    y: convertChordToDigitWithBinaryQuality(segment[0])
+                });
+            }
+        });
+    });
+
+    return harmonyData;
+}
+
+export function convertChordToDigitWithBinaryQuality(chord: IIRealProChord): TChordWithBinaryQuality {
+    if (!chord.numeric) {
+        throw new Error(`Numeric notation required ${JSON.stringify(chord)}`);
+    }
+
+    if (!chord.numeric || chord.numeric > 7 || chord.numeric < 1) {
+        throw new Error(`Impossible numeric ${JSON.stringify(chord)}`);
+    }
+
+    const numeric = chord.numeric - 1;
+    let shift: number;
+    let quality: number[];
+
+    switch (chord.shift) {
+        case '': {
+            shift = 0;
+            break;
+        }
+        case undefined: {
+            shift = 0;
+            break;
+        }
+        case 'b': {
+            shift = 1;
+            break;
+        }
+        case '#': {
+            shift = 2;
+            break;
+        }
+        default: {
+            throw new Error(`Unrecognized shift ${chord.shift}`);
+        }
+    }
+
+    if (!chord.quality || chord.quality === '') {
+        // If quality not set, pick default 5 chord, major triad
+        quality = binaryChordMap['5'];
+    } else {
+        const binaryQuality = binaryChordMap[chord.quality];
+
+        if (!binaryQuality) {
+            throw new Error(`Unrecognized chord binary quality ${chord.quality}`);
+        }
+        quality = binaryQuality;
+    }
+
+    return [numeric, shift, quality];
+}
+
+export function convertDigitWithBinaryQualityToChord(digitChord: TChordWithBinaryQuality): IIRealProChord {
+    if (digitChord[0] > 6 || digitChord[0] < 0) {
+        throw new Error(`Impossible numeric ${JSON.stringify(digitChord)}`);
+    }
+
+    const chord: IIRealProChord = {
+        numeric: digitChord[0] + 1
+    };
+
+    if (digitChord[1] === 1) {
+        chord.shift = 'b';
+    } else if (digitChord[1] === 2) {
+        chord.shift = '#';
+    }
+
+    Object.getOwnPropertyNames(binaryChordMap).some((qualityKey: string) => {
+        if (binaryChordMap[qualityKey].join('') === digitChord[2].join('')) {
+            chord.quality = qualityKey;
+            return true;
+        }
+        return false;
+    });
+
+    return chord;
+}

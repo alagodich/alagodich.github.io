@@ -1,7 +1,7 @@
 /* eslint no-await-in-loop: 0 */
 /* eslint no-console: 0 */
 
-import '@tensorflow/tfjs-node';
+import '@tensorflow/tfjs-node-gpu';
 import path from 'path';
 import {
     createModel,

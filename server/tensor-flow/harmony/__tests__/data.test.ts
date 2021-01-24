@@ -3,9 +3,10 @@ import {
     flattenData,
     convertChordToDigit,
     convertDigitToChord,
+    convertChordToDigitWithBinaryQuality,
+    convertDigitWithBinaryQualityToChord,
     getChordsEnum
 } from '../data';
-// import {varDump} from '../../../utils';
 
 describe('prepareData', () => {
     it('should correctly flatten song segments', () => {
@@ -76,100 +77,6 @@ describe('flattenData', () => {
             {x: [2, 1, 4], y: [0, 0, 6]}
         ]);
     });
-    it('can pick only numeric roots from chord', () => {
-        expect(flattenData([
-            [
-                {quality: '^7', numeric: 1},
-                {shift: 'b', quality: '7', numeric: 3},
-                {shift: 'b', quality: '^7', numeric: 6},
-                {shift: 'b', quality: '^7', numeric: 4},
-                {shift: 'b', quality: '7', numeric: 6},
-                {shift: 'b', quality: '^7', numeric: 2}
-            ],
-            [
-                {quality: '^7', numeric: 1},
-                {shift: 'b', quality: '7', numeric: 3},
-                {shift: 'b', quality: '^7', numeric: 6},
-                {quality: '7', numeric: 7},
-                {quality: '^7', numeric: 3},
-                {quality: '7', numeric: 5}
-            ]
-        ], ['numeric'])).toEqual([
-            {x: [0], y: [2]},
-            {x: [2], y: [5]},
-            {x: [5], y: [3]},
-            {x: [3], y: [5]},
-            {x: [5], y: [1]},
-            {x: [1], y: [0]},
-
-            {x: [0], y: [2]},
-            {x: [2], y: [5]},
-            {x: [5], y: [6]},
-            {x: [6], y: [2]},
-            {x: [2], y: [4]},
-            {x: [4], y: [0]}
-        ]);
-    });
-    it('can pick numeric roots and shift from chord', () => {
-        expect(flattenData([
-            [
-                {quality: '^7', numeric: 1},
-                {shift: 'b', quality: '7', numeric: 3},
-                {shift: 'b', quality: '^7', numeric: 6},
-                {shift: 'b', quality: '^7', numeric: 4},
-                {shift: 'b', quality: '7', numeric: 6},
-                {shift: 'b', quality: '^7', numeric: 2}
-            ],
-            [
-                {quality: '^7', numeric: 1},
-                {shift: 'b', quality: '7', numeric: 3},
-                {shift: 'b', quality: '^7', numeric: 6},
-                {quality: '7', numeric: 7},
-                {quality: '^7', numeric: 3},
-                {quality: '7', numeric: 5}
-            ]
-        ], ['numeric', 'shift'])).toEqual([
-            {x: [0, 0], y: [2, 1]},
-            {x: [2, 1], y: [5, 1]},
-            {x: [5, 1], y: [3, 1]},
-            {x: [3, 1], y: [5, 1]},
-            {x: [5, 1], y: [1, 1]},
-            {x: [1, 1], y: [0, 0]},
-
-            {x: [0, 0], y: [2, 1]},
-            {x: [2, 1], y: [5, 1]},
-            {x: [5, 1], y: [6, 0]},
-            {x: [6, 0], y: [2, 0]},
-            {x: [2, 0], y: [4, 0]},
-            {x: [4, 0], y: [0, 0]}
-        ]);
-    });
-});
-describe('getChordsEnum', () => {
-    it('should make enum out of a data sample', () => {
-        expect(getChordsEnum([
-            {x: [1, 0, 10], y: [3, 1, 12]},
-            {x: [3, 1, 12], y: [6, 1, 10]},
-            {x: [6, 1, 10], y: [4, 1, 10]},
-            {x: [4, 1, 10], y: [6, 1, 12]},
-            {x: [6, 1, 12], y: [2, 1, 10]},
-            {x: [1, 0, 10], y: [3, 1, 12]},
-            {x: [3, 1, 12], y: [6, 1, 10]},
-            {x: [6, 1, 10], y: [7, 0, 12]},
-            {x: [7, 0, 12], y: [3, 0, 10]},
-            {x: [3, 0, 10], y: [5, 0, 12]}
-        ])).toEqual([
-            1010, 3112, 6110,
-            4110, 6112, 2110,
-            7012, 3010, 5012
-        ]);
-    });
-    it('should make enum out of all data', () => {
-        const data = prepareData();
-        const flatData = flattenData(data);
-
-        expect(getChordsEnum(flatData).length).toBe(226);
-    });
 });
 describe('chord to digit conversion', () => {
     describe('convertChordToDigit', () => {
@@ -215,5 +122,84 @@ describe('chord to digit conversion', () => {
             expect(convertDigitToChord([5, 0, 0]))
                 .toEqual({numeric: 6});
         });
+    });
+    describe('convertChordToDigitWithBinaryQuality', () => {
+        it('should transform valid chord with 2 binary quality', () => {
+            expect(convertChordToDigitWithBinaryQuality({numeric: 7, shift: 'b', quality: '^'}))
+                .toEqual([6, 1, [
+                    1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                ]]);
+            expect(convertChordToDigitWithBinaryQuality({numeric: 1, shift: '#', quality: '-69'}))
+                .toEqual([0, 2, [
+                    1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0,
+                    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                ]]);
+            expect(convertChordToDigitWithBinaryQuality({numeric: 2, shift: ''}))
+                .toEqual([1, 0, [
+                    1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                ]]);
+            expect(convertChordToDigitWithBinaryQuality({numeric: 1, quality: '7'}))
+                .toEqual([0, 0, [
+                    1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                ]]);
+            expect(convertChordToDigitWithBinaryQuality({numeric: 5}))
+                .toEqual([4, 0, [
+                    1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                ]]);
+        });
+    });
+    describe('convertDigitWithBinaryQualityToChord', () => {
+        it('should transform chords back to object form', () => {
+            expect(convertDigitWithBinaryQualityToChord([6, 1, [
+                1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]])).toEqual({numeric: 7, shift: 'b', quality: '^'});
+            expect(convertDigitWithBinaryQualityToChord([0, 2, [
+                1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0,
+                0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]])).toEqual({numeric: 1, shift: '#', quality: '-69'});
+            expect(convertDigitWithBinaryQualityToChord([1, 0, [
+                1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]])).toEqual({numeric: 2, quality: '2'});
+            expect(convertDigitWithBinaryQualityToChord([0, 0, [
+                1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]])).toEqual({numeric: 1, quality: '7'});
+            expect(convertDigitWithBinaryQualityToChord([4, 0, [
+                1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]])).toEqual({numeric: 5, quality: '2'});
+        });
+    });
+});
+describe('getChordsEnum', () => {
+    it('should make enum out of a data sample', () => {
+        expect(getChordsEnum([
+            {x: [1, 0, 10], y: [3, 1, 12]},
+            {x: [3, 1, 12], y: [6, 1, 10]},
+            {x: [6, 1, 10], y: [4, 1, 10]},
+            {x: [4, 1, 10], y: [6, 1, 12]},
+            {x: [6, 1, 12], y: [2, 1, 10]},
+            {x: [1, 0, 10], y: [3, 1, 12]},
+            {x: [3, 1, 12], y: [6, 1, 10]},
+            {x: [6, 1, 10], y: [7, 0, 12]},
+            {x: [7, 0, 12], y: [3, 0, 10]},
+            {x: [3, 0, 10], y: [5, 0, 12]}
+        ])).toEqual([
+            1010, 3112, 6110,
+            4110, 6112, 2110,
+            7012, 3010, 5012
+        ]);
+    });
+    it('should make enum out of all data', () => {
+        const data = prepareData();
+        const flatData = flattenData(data);
+
+        expect(getChordsEnum(flatData).length).toBe(226);
     });
 });

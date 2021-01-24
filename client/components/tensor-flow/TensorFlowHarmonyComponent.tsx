@@ -7,8 +7,9 @@ import {chordToString} from '../real-book/IRealProChartModel';
 
 import {
     convertEmbeddingXsTensorToChord,
-    convertEmbeddingYsTensorToPredictionObject, IEmbeddingPrediction
-} from '../../../server/tensor-flow/harmony/tensor';
+    convertEmbeddingYsTensorToPredictionObject,
+    IEmbeddingPrediction
+} from '../../../server/tensor-flow/harmony/embedding/tensor';
 import CsdGenerator from '../csound/CsdGenerator';
 import {ChordPredictionComponent} from './ChordPredictionComponent';
 import {IIRealProChord} from '../real-book/types';
@@ -127,7 +128,7 @@ export const TensorFlowHarmonyComponent: React.FunctionComponent = (): ReactElem
             return;
         }
 
-        const nextTestChord = getNextProbablePredictedChord(false);
+        const nextTestChord = getNextProbablePredictedChord(true);
         const testTensor = makeTestTensor(nextTestChord);
         const predictionTensorSet = model.predict(testTensor) as TensorFlow.Tensor[];
         const testChord = await convertEmbeddingXsTensorToChord(testTensor);
