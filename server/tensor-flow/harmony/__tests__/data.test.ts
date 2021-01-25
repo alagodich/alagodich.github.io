@@ -7,6 +7,8 @@ import {
     convertDigitWithBinaryQualityToChord,
     getChordsEnum
 } from '../data';
+import fs from 'fs';
+import path from 'path';
 
 describe('prepareData', () => {
     it('should correctly flatten song segments', () => {
@@ -76,6 +78,14 @@ describe('flattenData', () => {
             {x: [0, 0, 6], y: [2, 1, 4]},
             {x: [2, 1, 4], y: [0, 0, 6]}
         ]);
+    });
+    xit('should export flatten data', done => {
+        fs.writeFile(
+            path.join(__dirname, '../../../../all-jazz-flatten-harmony.json'),
+            JSON.stringify(flattenData(prepareData())),
+            'utf8',
+            () => done()
+        );
     });
 });
 describe('chord to digit conversion', () => {
