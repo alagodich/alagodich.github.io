@@ -102,7 +102,14 @@ export const loadSong = (playlist: string, songId: number): AppThunk => (dispatc
 export const fetchPlaylist = (name: string, songId?: number): AppThunk => dispatch => {
     dispatch(startLoading());
     // eslint-disable-next-line no-inline-comments
-    import(/* webpackChunkName: "[request]" */ `../playlists/${name}.ts`)
+    import(
+        /* webpackChunkName: "[request]" */
+        /* webpackMode: "lazy" */
+        /* webpackPrefetch: true */
+        /* webpackPreload: true */
+        // TODO set module: ESNext in tsconfig for this to work
+        `./../playlists/${name}`
+    )
         .then(data => {
             const parser = new IRealProUrlParser();
             const songs: IIRealProChartModelProps[] = [];

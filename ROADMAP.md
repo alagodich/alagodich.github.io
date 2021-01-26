@@ -5,6 +5,7 @@
 * Rework, try highcharts, am4 charts are too heavy
 
 #### Real Book
+* For hot module loading set module: ESNext in tsconfig
 * Add Keyboard shortcuts available
 * Mobile Layout
 * SVG chord bars Handle too many chords in bar, decrease font size, Display repeat ending top borders properly, maybe SVG entire bar
