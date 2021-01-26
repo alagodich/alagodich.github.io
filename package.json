@@ -12,6 +12,7 @@
     "build:watch": "rm -rf ./docs/public && webpack --config webpack.config.dev.js",
     "fomantic": "gulp build-fomantic",
     "build:all": "npm run fomantic && npm run lint && npm run test && npm run build",
+    "all": "npm outdated && npm run lint && npm run test && npm run build",
     "browser-sync": "browser-sync start --proxy localhost:4000 --files docs/_site/**",
     "cypress": "cypress open",
     "postinstall": "rm -f node_modules/preact/*/preact.d.ts",
@@ -28,7 +29,7 @@
     "@kunstmusik/csound": "^6.15.0",
     "@reduxjs/toolkit": "^1.5.0",
     "@svgdotjs/svg.js": "^3.0.16",
-    "@tensorflow/tfjs": "^2.8.5",
+    "@tensorflow/tfjs": "^3.0.0",
     "@tensorflow/tfjs-vis": "^1.4.3",
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.168",
@@ -41,9 +42,9 @@
     "@types/react-test-renderer": "^17.0.0",
     "@types/slick-carousel": "^1.6.34",
     "@types/webpack": "^4.41.26",
-    "@typescript-eslint/eslint-plugin": "^4.14.0",
-    "@typescript-eslint/parser": "^4.14.0",
-    "browser-sync": "^2.26.13",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
+    "browser-sync": "^2.26.14",
     "css-loader": "^5.0.1",
     "css-minimizer-webpack-plugin": "^1.2.0",
     "cypress": "^6.3.0",
@@ -67,7 +68,7 @@
     "react-redux": "^7.2.2",
     "react-responsive": "^8.2.0",
     "react-router-dom": "^5.2.0",
-    "react-slick": "^0.27.14",
+    "react-slick": "^0.28.0",
     "react-test-renderer": "^17.0.1",
     "semantic-ui-react": "^2.0.3",
     "slick-carousel": "^1.8.1",
@@ -83,8 +84,8 @@
     "webpack-cli": "^4.4.0"
   },
   "dependencies": {
-    "@tensorflow/tfjs-node": "^2.8.5",
-    "@tensorflow/tfjs-node-gpu": "^2.8.5",
+    "@tensorflow/tfjs-node": "^3.0.0",
+    "@tensorflow/tfjs-node-gpu": "^3.0.0",
     "ts-node": "^9.1.1"
   }
 }

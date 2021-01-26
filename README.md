@@ -32,6 +32,7 @@ To rebuild semantic assets run `npm run fomantic`
 * Execute watch task `ember server`
 * App will be accessible on http://localhost:4200/  
 * Livereload server on http://localhost:49152
+* preact was added as sub dependency by some package, have to remove it's type in post install
 
 ### Deployment
 * Stop ember-cli server
