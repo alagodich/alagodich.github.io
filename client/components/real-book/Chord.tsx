@@ -26,9 +26,12 @@ export const Chord = React.memo((props: IChordComponent): ReactElement | null =>
             </span>
         );
     } else if (props.harmony.root || props.harmony.shift || props.harmony.quality || props.harmony.inversion) {
+        const root = props.notation === 'numeric' ? props.harmony.numeric : props.harmony.root;
+        const shift = props.notation === 'numeric' ? null : props.harmony.shift ?? null;
+
         return (
             <span className="ui big text">
-                {props.notation === 'numeric' ? props.harmony.numeric : props.harmony.root}{props.harmony.shift ?? null}
+                {root}{shift}
                 {props.harmony.quality ? <span className="ui small text">{props.harmony.quality}</span> : null}
                 {props.harmony.inversion ? <span className="ui small text">{props.harmony.inversion}</span> : null}
             </span>
