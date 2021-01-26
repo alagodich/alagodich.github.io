@@ -120,7 +120,8 @@ export const qualities = [
 
     // Additional qualities
     '6b5',
-    '6#9'
+    '6#9',
+    'sus4'
 ];
 
 export const majorScale: number[] = [7.0, 7.02, 7.04, 7.05, 7.07, 7.09, 7.11];
@@ -471,7 +472,7 @@ export const rectifiedQualitiesMap: {[name: string]: string[]} = {
     '-#5': [],
     'o': ['o7'],
     'h': ['h7', 'h9', '-7b5', '7#11', '9#11', '9b5'],
-    'sus': ['7sus', '9sus', '13sus'],
+    'sus': ['7sus', '9sus', '13sus', 'sus4'],
     '^7#11': ['^9#11', '13#11', '6b5'],
     '-^7': ['-^9'],
     '7b9sus': [],

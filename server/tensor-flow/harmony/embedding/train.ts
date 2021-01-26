@@ -27,7 +27,8 @@ async function train() {
         await model.fit(tensor.xs, tensor.ys, {
             verbose: 2,
             epochs,
-            shuffle: true
+            shuffle: true,
+            validationSplit: 0
         });
 
         const randomIndex = parseInt((Math.random() * flatData.length).toString(), 10);

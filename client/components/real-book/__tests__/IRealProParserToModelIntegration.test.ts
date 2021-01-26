@@ -2,6 +2,8 @@ import IRealProUrlParser from '../IRealProUrlParser';
 import IRealProChartModel from '../IRealProChartModel';
 import allJazzSongsUrls from '../playlists/jazz';
 import allLatinSongsUrls from '../playlists/latin';
+import allPopSongsUrls from '../playlists/pop';
+// import allDixieSongsUrls from '../playlists/dixie';
 import {IIRealProChartModelProps} from '../types';
 import fs from 'fs';
 import path from 'path';
@@ -163,6 +165,68 @@ describe('UrlParser and ChartModel integration', () => {
             }
         ]);
     });
+
+    it('should be able to parse and create model for all pop songs', () => {
+        const parser = new IRealProUrlParser();
+        const errors: Array<{ playlist: string; title: string; errors: string[] }> = [];
+
+        allPopSongsUrls.forEach(playlist => {
+
+            expect(() => {
+                parser.parse(playlist.url).forEach(songProps => {
+                    const model = new IRealProChartModel(songProps);
+
+                    expect(model.title.length).not.toBe(0);
+                    expect(model.author.length).not.toBe(0);
+                    expect(model.style.length).not.toBe(0);
+                    expect(model.key.length).not.toBe(0);
+                    expect(model.chordString.length).not.toBe(0);
+                    expect(model.segments.length).not.toBe(0);
+
+                    if (model.errors.length > 0) {
+                        errors.push({playlist: playlist.title, title: model.title, errors: model.errors});
+                    }
+                });
+            }).not.toThrow();
+
+        });
+
+        expect(errors).toEqual([
+            {
+                playlist: 'Pop',
+                title: "Ain't Nobody",
+                errors: ['Repeating empty bars |r']
+            }
+        ]);
+    });
+
+    // xit('// TODO this throws. Should be able to parse and create model for all dixieland jazz songs', () => {
+    //     const parser = new IRealProUrlParser();
+    //     const errors: Array<{ playlist: string; title: string; errors: string[] }> = [];
+    //
+    //     allDixieSongsUrls.forEach(playlist => {
+    //
+    //         expect(() => {
+    //             parser.parse(playlist.url).forEach(songProps => {
+    //                 const model = new IRealProChartModel(songProps);
+    //
+    //                 expect(model.title.length).not.toBe(0);
+    //                 expect(model.author.length).not.toBe(0);
+    //                 expect(model.style.length).not.toBe(0);
+    //                 expect(model.key.length).not.toBe(0);
+    //                 expect(model.chordString.length).not.toBe(0);
+    //                 expect(model.segments.length).not.toBe(0);
+    //
+    //                 if (model.errors.length > 0) {
+    //                     errors.push({playlist: playlist.title, title: model.title, errors: model.errors});
+    //                 }
+    //             });
+    //         }).not.toThrow();
+    //
+    //     });
+    //
+    //     expect(errors.length).toBe(0);
+    // });
 
     xit('should export', done => {
         const parser = new IRealProUrlParser();

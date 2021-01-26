@@ -4688,7 +4688,7 @@ describe('IRealProChartModel', () => {
 
     it.skip('// TODO Alvarà Jorge Aragão also errored', () => {
     });
-    it.skip('//TODO should properly recognize and handle chords inside double repeat bvvars', () => {
+    it.skip('// TODO should properly recognize and handle chords inside double repeat bvvars', () => {
     });
     describe('parseSegment', () => {
         it('should handle multiple repeats (r)', () => {
@@ -4720,6 +4720,64 @@ describe('IRealProChartModel', () => {
                     harmony: [{root: 'C', quality: '6', numeric: 1}]
                 },
                 {open: '|', chords: 'x', harmony: [{root: 'x'}], close: ']'}
+            ]);
+        });
+        it('should handle Y in the segment as in Another Day pop song', () => {
+            const segmentString = '{T34 E- |E-7 |C^7 |C^9 |A2/C# |Y |C^7 |E- |N1E-7 }|N2E- n';
+
+            expect(IRealProChartModel.prototype.parseSegment(segmentString)).toEqual([
+                {
+                    timeSignature: '3 / 4',
+                    open: '{',
+                    chords: 'E-',
+                    harmony: [{root: 'E', quality: '-', numeric: 3}]
+                },
+                {
+                    open: '|',
+                    chords: 'E-7',
+                    harmony: [{root: 'E', quality: '-7', numeric: 3}]
+                },
+                {
+                    open: '|',
+                    chords: 'C^7',
+                    harmony: [{root: 'C', quality: '^7', numeric: 1}]
+                },
+                {
+                    open: '|',
+                    chords: 'C^9',
+                    harmony: [{root: 'C', quality: '^9', numeric: 1}]
+                },
+                {
+                    open: '|',
+                    close: '|',
+                    chords: 'A2/C#',
+                    harmony: [{root: 'A', quality: '2', inversion: '/C#', numeric: 6}]
+                },
+                {divider: 'Y'},
+                {
+                    open: '|',
+                    chords: 'C^7',
+                    harmony: [{root: 'C', quality: '^7', numeric: 1}]
+                },
+                {
+                    open: '|',
+                    chords: 'E-',
+                    harmony: [{root: 'E', quality: '-', numeric: 3}]
+                },
+                {
+                    ending: 'N1',
+                    open: '|',
+                    chords: 'E-7',
+                    harmony: [{root: 'E', quality: '-7', numeric: 3}],
+                    close: '}'
+                },
+                {
+                    ending: 'N2',
+                    open: '|',
+                    chords: 'E- n',
+                    harmony: [{root: 'E', quality: '-', numeric: 3}, {root: 'n'}],
+                    close: ']'
+                }
             ]);
         });
     });

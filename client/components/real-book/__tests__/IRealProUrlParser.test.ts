@@ -508,7 +508,20 @@ describe('IRealProUrlParser', () => {
                 }
             ]);
         });
+        it('should handle Let\'s Get It On', () => {
+            const songWithRepeats = 'irealb://Let\'s%20Get%20It%20On%3DGaye%20Marvin%3D%3DSoul%3DEb%3D%3D1r34LbKcu7bE%2CB*4Eb%2C%20bB%20%2CbAZL%2C-G%20%2CbZEL%2C7bB%20%2CbAZL%2C-G7%20%7D%7B%2C4Ti*%7BZL%2C-GLZAb%2C*A*%7B%7D%20%2C7bB%20%2CbALZ%2C-G%20%2CbEZL%2C7bB%20AEb%2C%20%2C-G%20%2CZL%20lcb7%2CLZ7bA%2CC*%2C%7B%7D%20%3Ex4%3Cb7B%20%2CbAZL%2C-G%20%2CbE%2CXyQKB%20%2CbAX%2C7bB-%2CLZA7F%7CQyX%2C7bA%2CD*%2C%7D%5B%20%3Ex330*%3C7bB%20%2Cb%2CXyQ%7CG%20%2CbE*%3C7bB%20%20%5D%7B%2CL%2C-G%20%2CbEZL%2C7bB%2C%20bAZL%2C-G%20%2CbE%2CB*ZAb%2C%20lcKQy%7D%20%3Ex3%20%7D%7B%2C*bB%20%2CbAZL%2C-G%20%2CbZEL%20lcKQyX%2C7bA%2CC7%3C*03%3Ex430B%20%2CbAAb7%2CX%20%2CbEA*%7B%5D%20%20lcKQXy%2C7bB%7CQyX%2C7F%7CQyG-%2CLZ%2CD*%2C%5Bb7%2CLZEb%2C%20%3CXyQ%20%20Vamp%20and%20Fade%3EG-%2CLZAb%2C%20Bb7%20%7D%20%3DPop-Soul%3D87%3D1%3D%3D%3D';
+            const parser = new IRealProUrlParser();
 
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: "Let's Get It On",
+                    author: 'Marvin Gaye',
+                    style: 'Soul',
+                    key: 'Eb',
+                    chordString: '*i{T44Eb G- |Ab Bb7 |Eb G- |Ab Bb7 }*B{  Eb G- |Ab Bb7 |Eb G- |Ab Bb7 }*A{Eb G- |Ab Bb7 |Eb G- |Ab Bb7 }*C{  Ab7 |x |Eb G- |Ab Bb7 }*D[  Ab7 |F7 |Bb7 |x ]*B{  Eb G- |Ab Bb7 |Eb G- |Ab Bb7 }*C{  Ab7 |x |Eb G- |Ab Bb7 }*D[  Ab7 |F7 |Bb7 |x ]*A{Eb G- |Ab Bb7 |Eb G- |Ab Bb7 }'
+                }
+            ]);
+        });
 
         it.skip('should handle song with misplaced prefix, transposed?', () => {});
         it.skip('should handle song without prefix', () => {});
@@ -564,7 +577,7 @@ describe('IRealProUrlParser', () => {
             const decryptedString = 'G7LZ|K|clC-7YYY   |<comment>   G7XyQ|F^,YY C-7Y';
             const parser = new IRealProUrlParser();
 
-            expect(parser.beautifyChordString(decryptedString)).toBe('G7||xC-7Y | G7 |F^ Y C-7Y');
+            expect(parser.beautifyChordString(decryptedString)).toBe('G7||xC-7Y | G7 |F^ Y |C-7Y');
         });
     });
 });

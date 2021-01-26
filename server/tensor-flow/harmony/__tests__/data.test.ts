@@ -14,7 +14,7 @@ describe('prepareData', () => {
     it('should correctly flatten song segments', () => {
         const preparedData = prepareData();
 
-        expect(preparedData.length).toBe(3658);
+        expect(preparedData.length).toBe(3840);
         expect(preparedData[0]).toEqual([
             {quality: '^7', numeric: 1},
             {shift: 'b', quality: '7', numeric: 3},
@@ -210,6 +210,6 @@ describe('getChordsEnum', () => {
         const data = prepareData();
         const flatData = flattenData(data);
 
-        expect(getChordsEnum(flatData).length).toBe(226);
+        expect(getChordsEnum(flatData).length).toBe(228);
     });
 });

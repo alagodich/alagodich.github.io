@@ -8,7 +8,7 @@ import {RealBookPlaylist} from './RealBookPlaylist';
 import Chart from './Chart';
 import {RealBookAnalyzeCharts} from './RealBookAnalyzeCharts';
 
-const playlists = ['jazz', 'latin'];
+const playlists = ['jazz', 'latin', 'pop'];
 
 const RealBook: React.FunctionComponent = React.memo(() => {
     const {

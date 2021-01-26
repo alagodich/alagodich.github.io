@@ -5,6 +5,7 @@
 * Rework, try highcharts, am4 charts are too heavy
 
 #### Real Book
+* Add Keyboard shortcuts available
 * Mobile Layout
 * SVG chord bars Handle too many chords in bar, decrease font size, Display repeat ending top borders properly, maybe SVG entire bar
 * Render W symbol as a space (Butterfly), Coda, Segno and Fermata symbols (Always And Forever)

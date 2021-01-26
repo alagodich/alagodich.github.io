@@ -120,7 +120,7 @@ export const TensorFlowHarmonyComponent: React.FunctionComponent = (): ReactElem
         }
 
         // Get first stem major
-        return [1, 0, 10];
+        return [0, 0, 10];
     }
 
     async function handleTest() {

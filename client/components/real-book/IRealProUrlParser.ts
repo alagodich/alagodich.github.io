@@ -177,6 +177,8 @@ export default class IRealProUrlParser {
             .replace(/([}\]])[\s]*(\*[\w])(?![\s]*[[{|])/, '$1[$2')
             // Replace (*) if it is not a part of segment name, only acceptable segment names listed in rehearsalMarks
             .replace(/\*(?=[^ABCDiV]+)/g, '')
+            // Dedupe repeating segment names in the row for example: *A*A
+            .replace(/(\*[ABCDiV]){2}/g, '$1')
             /**
              * In some cases segment name *A, *B may be inside bar lines, in some outside,
              * we will put them always outside
@@ -188,9 +190,11 @@ export default class IRealProUrlParser {
             .replace(/(T\d{2})([\s*ABCDiV]*)([{[|Y])/g, '$2$3$1')
             // Each ending should have opening bar line
             .replace(/}[\s]*N/g, '}|N')
-            // Move segment name like *A outside the bar for consistency
+            // Move Q inside bar
             .replace(/([\]|}Y])[\s]*(Q)[\s]*([{[|Y])/g, '$1$3$2')
-            // Remove duplicate sequential double opening and cloding braces
+            // Add missing bar separator to the right of divider (Y)
+            .replace(/([Y][\s]*)([^{}[\]|ZY*\s]+)/g, '$1|$2')
+            // Remove duplicate sequential double opening and closing braces
             .replace(/([[{}\]])\1+/g, '$1')
 
             .trim();
