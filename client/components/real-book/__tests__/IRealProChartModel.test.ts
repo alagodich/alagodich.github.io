@@ -12,6 +12,22 @@ const emptyRealProChartProps: IIRealProChartModelProps = {
     chordString: ''
 };
 
+function restoreIRealProChartModelPrototype() {
+    IRealProChartModel.prototype.key = '';
+    IRealProChartModel.prototype.tuneKeyRootBase = null;
+    IRealProChartModel.prototype.tuneKeyRelativeToCShift = null;
+    IRealProChartModel.prototype.tuneKeyIntervalRelativeToC = null;
+    IRealProChartModel.prototype.tuneAdjective = null;
+}
+
+function setDefaultIRealProChartModelPrototype() {
+    IRealProChartModel.prototype.key = 'C';
+    IRealProChartModel.prototype.tuneKeyRootBase = 'C';
+    IRealProChartModel.prototype.tuneKeyRelativeToCShift = 0;
+    IRealProChartModel.prototype.tuneKeyIntervalRelativeToC = 0;
+    IRealProChartModel.prototype.tuneAdjective = 'major';
+}
+
 describe('IRealProChartModel', () => {
     it('should init with empty props', () => {
         expect(() => {
@@ -33,7 +49,13 @@ describe('IRealProChartModel', () => {
         expect(model.errors).toEqual([]);
         expect(model.author).toBe('Lewis John');
         expect(model.style).toBe('Medium Swing');
+
         expect(model.key).toBe('C');
+        expect(model.tuneKeyRootBase).toBe('C');
+        expect(model.tuneKeyRelativeToCShift).toBe(0);
+        expect(model.tuneKeyIntervalRelativeToC).toBe(0);
+        expect(model.tuneAdjective).toBe('major');
+
         expect(model.chordString.length).toBe(191);
         expect(model.segments).toEqual([
             {
@@ -43,54 +65,82 @@ describe('IRealProChartModel', () => {
                         timeSignature: '4 / 4',
                         open: '{',
                         chords: 'C^7',
-                        harmony: [{root: 'C', quality: '^7', numeric: 1}]
+                        harmony: [{root: 'C', quality: '^7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'C-7 F7',
                         harmony: [
-                            {root: 'C', quality: '-7', numeric: 1},
-                            {root: 'F', quality: '7', numeric: 4}
+                            {root: 'C', quality: '-7', degree: 1},
+                            {root: 'F', quality: '7', degree: 4}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Bb^7',
-                        harmony: [{root: 'B', quality: '^7', shift: 'b', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Bb-7 Eb7',
                         harmony: [
-                            {root: 'B', quality: '-7', shift: 'b', numeric: 7},
-                            {root: 'E', quality: '7', shift: 'b', numeric: 3}
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 7,
+                                degreeShift: -1
+                            },
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 3,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Ab^7',
-                        harmony: [{root: 'A', quality: '^7', shift: 'b', numeric: 6}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 6,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'D-7 G7#9',
                         harmony: [
-                            {root: 'D', quality: '-7', numeric: 2},
-                            {root: 'G', quality: '7#9', numeric: 5}
+                            {root: 'D', quality: '-7', degree: 2},
+                            {root: 'G', quality: '7#9', degree: 5}
                         ]
                     },
                     {
                         ending: 'N1',
                         open: '|',
                         chords: 'C^7',
-                        harmony: [{root: 'C', quality: '^7', numeric: 1}]
+                        harmony: [{root: 'C', quality: '^7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'D-7 G7',
                         harmony: [
-                            {root: 'D', quality: '-7', numeric: 2},
-                            {root: 'G', quality: '7', numeric: 5}
+                            {root: 'D', quality: '-7', degree: 2},
+                            {root: 'G', quality: '7', degree: 5}
                         ],
                         close: '}'
                     },
@@ -98,7 +148,7 @@ describe('IRealProChartModel', () => {
                         ending: 'N2',
                         open: '|',
                         chords: 'C^7',
-                        harmony: [{root: 'C', quality: '^7', numeric: 1}]
+                        harmony: [{root: 'C', quality: '^7', degree: 1}]
                     },
                     {
                         open: '|',
@@ -114,57 +164,53 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'D-7',
-                        harmony: [{root: 'D', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'D', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'G7',
-                        harmony: [{root: 'G', quality: '7', numeric: 5}]
+                        harmony: [{root: 'G', quality: '7', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'C^7/E',
-                        harmony: [{root: 'C', quality: '^7', inversion: '/E', numeric: 1}]
+                        harmony: [{root: 'C', quality: '^7', inversion: '/E', degree: 1, inversionDegree: 3}]
                     },
                     {
                         open: '|',
                         chords: 'A7',
-                        harmony: [{root: 'A', quality: '7', numeric: 6}],
+                        harmony: [{root: 'A', quality: '7', degree: 6}],
                         close: '|'
                     },
                     {divider: 'Y'},
                     {
                         open: '|',
                         chords: 'D-7',
-                        harmony: [{root: 'D', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'D', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'G7',
-                        harmony: [{root: 'G', quality: '7', numeric: 5}]
+                        harmony: [{root: 'G', quality: '7', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'C^7(C#-7) (F#7)',
-                        harmony: [
-                            {
-                                root: 'C',
-                                quality: '^7',
-                                numeric: 1
-                            }
-                        ],
+                        harmony: [{root: 'C', quality: '^7', degree: 1}],
                         alt: [
                             {
                                 root: 'C',
                                 shift: '#',
                                 quality: '-7',
-                                numeric: 1
+                                degree: 1,
+                                degreeShift: 1
                             },
                             {
                                 root: 'F',
                                 shift: '#',
                                 quality: '7',
-                                numeric: 4
+                                degree: 4,
+                                degreeShift: 1
                             }
                         ]
                     },
@@ -172,8 +218,8 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'D-7 G7',
                         harmony: [
-                            {root: 'D', quality: '-7', numeric: 2},
-                            {root: 'G', quality: '7', numeric: 5}
+                            {root: 'D', quality: '-7', degree: 2},
+                            {root: 'G', quality: '7', degree: 5}
                         ],
                         close: ']'
                     }
@@ -185,53 +231,81 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'C^7',
-                        harmony: [{root: 'C', quality: '^7', numeric: 1}]
+                        harmony: [{root: 'C', quality: '^7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'C-7 F7',
                         harmony: [
-                            {root: 'C', quality: '-7', numeric: 1},
-                            {root: 'F', quality: '7', numeric: 4}
+                            {root: 'C', quality: '-7', degree: 1},
+                            {root: 'F', quality: '7', degree: 4}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Bb^7',
-                        harmony: [{root: 'B', quality: '^7', shift: 'b', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Bb-7 Eb7',
                         harmony: [
-                            {root: 'B', quality: '-7', shift: 'b', numeric: 7},
-                            {root: 'E', quality: '7', shift: 'b', numeric: 3}
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 7,
+                                degreeShift: -1
+                            },
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 3,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Ab^7',
-                        harmony: [{root: 'A', quality: '^7', shift: 'b', numeric: 6}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 6,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'D-7 G7#9',
                         harmony: [
-                            {root: 'D', quality: '-7', numeric: 2},
-                            {root: 'G', quality: '7#9', numeric: 5}
+                            {root: 'D', quality: '-7', degree: 2},
+                            {root: 'G', quality: '7#9', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'C^7',
-                        harmony: [{root: 'C', quality: '^7', numeric: 1}]
+                        harmony: [{root: 'C', quality: '^7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'D-7 G7',
                         harmony: [
-                            {root: 'D', quality: '-7', numeric: 2},
-                            {root: 'G', quality: '7', numeric: 5}
+                            {root: 'D', quality: '-7', degree: 2},
+                            {root: 'G', quality: '7', degree: 5}
                         ],
                         close: 'Z'
                     }
@@ -253,9 +327,14 @@ describe('IRealProChartModel', () => {
         expect(model.errors).toEqual([]);
         expect(model.author).toBe('Corea Chick');
         expect(model.style).toBe('Bossa Nova');
-        expect(model.key).toBe('E-');
-        expect(model.chordString.length).toBe(104);
 
+        expect(model.key).toBe('E-');
+        expect(model.tuneKeyRootBase).toBe('E');
+        expect(model.tuneKeyRelativeToCShift).toBe(2);
+        expect(model.tuneKeyIntervalRelativeToC).toBe(4);
+        expect(model.tuneAdjective).toBe('minor');
+
+        expect(model.chordString.length).toBe(104);
         expect(model.segments).toEqual([
             {
                 name: '',
@@ -264,47 +343,55 @@ describe('IRealProChartModel', () => {
                         timeSignature: '4 / 4',
                         open: '[',
                         chords: 'E-7',
-                        harmony: [{root: 'E', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'E', quality: '-7', degree: 1}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'G-7',
-                        harmony: [{root: 'G', quality: '-7', numeric: 3}]
+                        harmony: [{root: 'G', quality: '-7', degree: 3}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Bb^7',
-                        harmony: [{root: 'B', shift: 'b', quality: '^7', numeric: 5}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 5,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Bh7',
-                        harmony: [{root: 'B', quality: 'h7', numeric: 5}]
+                        harmony: [{root: 'B', quality: 'h7', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'E7#9',
-                        harmony: [{root: 'E', quality: '7#9', numeric: 1}]
+                        harmony: [{root: 'E', quality: '7#9', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 4}]
+                        harmony: [{root: 'A', quality: '-7', degree: 4}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'F#h7',
-                        harmony: [{root: 'F', shift: '#', quality: 'h7', numeric: 2}]
+                        harmony: [{root: 'F', shift: '#', quality: 'h7', degree: 2}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'F-7',
-                        harmony: [{root: 'F', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'F', quality: '-7', degree: 2, degreeShift: -1}]
                     },
                     {
                         coda: true,
@@ -315,13 +402,13 @@ describe('IRealProChartModel', () => {
                     {
                         open: '|',
                         chords: 'C-7',
-                        harmony: [{root: 'C', quality: '-7', numeric: 6}]
+                        harmony: [{root: 'C', quality: '-7', degree: 6}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'B7#9',
-                        harmony: [{root: 'B', quality: '7#9', numeric: 5}]
+                        harmony: [{root: 'B', quality: '7#9', degree: 5}]
                     },
                     {
                         open: '|',
@@ -334,13 +421,21 @@ describe('IRealProChartModel', () => {
                         coda: true,
                         open: '{',
                         chords: 'C-7',
-                        harmony: [{root: 'C', quality: '-7', numeric: 6}]
+                        harmony: [{root: 'C', quality: '-7', degree: 6}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Ab^7',
-                        harmony: [{root: 'A', shift: 'b', quality: '^7', numeric: 4}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
@@ -352,7 +447,7 @@ describe('IRealProChartModel', () => {
             }
         ]);
     });
-    it('should handle string with segment name inside and outside the bar lines, A Night In Tunisia', () => {
+    it('handles string with segment name inside and outside the bar lines, A Night In Tunisia', () => {
         const propsWithSegmentsInsideBars = {
             title: 'A Night In Tunisia',
             key: 'D-',
@@ -363,6 +458,12 @@ describe('IRealProChartModel', () => {
 
         expect(model.chordString.length).toBe(219);
 
+        expect(model.key).toBe('D-');
+        expect(model.tuneKeyRootBase).toBe('D');
+        expect(model.tuneKeyRelativeToCShift).toBe(1);
+        expect(model.tuneKeyIntervalRelativeToC).toBe(2);
+        expect(model.tuneAdjective).toBe('minor');
+
         expect(model.segments).toEqual([
             {
                 name: 'A',
@@ -371,45 +472,69 @@ describe('IRealProChartModel', () => {
                         timeSignature: '4 / 4',
                         open: '{',
                         chords: 'Eb7',
-                        harmony: [{root: 'E', shift: 'b', quality: '7', numeric: 2}]
-                    },
-                    {
-                        open: '|',
-                        chords: 'D-',
-                        harmony: [{root: 'D', quality: '-', numeric: 1}]
-                    },
-                    {
-                        open: '|',
-                        chords: 'Eb7',
-                        harmony: [{root: 'E', shift: 'b', quality: '7', numeric: 2}]
-                    },
-                    {
-                        open: '|',
-                        chords: 'D-',
-                        harmony: [{root: 'D', quality: '-', numeric: 1}]
-                    },
-                    {
-                        open: '|',
-                        chords: 'Eb7',
-                        harmony: [{root: 'E', shift: 'b', quality: '7', numeric: 2}]
-                    },
-                    {
-                        open: '|',
-                        chords: 'D-',
-                        harmony: [{root: 'D', quality: '-', numeric: 1}]
-                    },
-                    {
-                        open: '|',
-                        chords: 'Eh7 A7b9',
                         harmony: [
-                            {root: 'E', quality: 'h7', numeric: 2},
-                            {root: 'A', quality: '7b9', numeric: 5}
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 2,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D-',
-                        harmony: [{root: 'D', quality: '-', numeric: 1}],
+                        harmony: [{root: 'D', quality: '-', degree: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Eb7',
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 2,
+                                degreeShift: -1
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D-',
+                        harmony: [{root: 'D', quality: '-', degree: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Eb7',
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 2,
+                                degreeShift: -1
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D-',
+                        harmony: [{root: 'D', quality: '-', degree: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Eh7 A7b9',
+                        harmony: [
+                            {root: 'E', quality: 'h7', degree: 2},
+                            {root: 'A', quality: '7b9', degree: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D-',
+                        harmony: [{root: 'D', quality: '-', degree: 1}],
                         close: '}'
                     }
                 ]
@@ -420,40 +545,40 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'Ah7',
-                        harmony: [{root: 'A', quality: 'h7', numeric: 5}]
+                        harmony: [{root: 'A', quality: 'h7', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'D7b9',
-                        harmony: [{root: 'D', quality: '7b9', numeric: 1}]
+                        harmony: [{root: 'D', quality: '7b9', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'G-7',
-                        harmony: [{root: 'G', quality: '-7', numeric: 4}]
+                        harmony: [{root: 'G', quality: '-7', degree: 4}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Gh7',
-                        harmony: [{root: 'G', quality: 'h7', numeric: 4}]
+                        harmony: [{root: 'G', quality: 'h7', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'C7b9',
-                        harmony: [{root: 'C', quality: '7b9', numeric: 7}]
+                        harmony: [{root: 'C', quality: '7b9', degree: 7}]
                     },
                     {
                         open: '|',
                         chords: 'F^7',
-                        harmony: [{root: 'F', quality: '^7', numeric: 3}]
+                        harmony: [{root: 'F', quality: '^7', degree: 3}]
                     },
                     {
                         open: '|',
                         chords: 'Eh7 A7b9',
                         harmony: [
-                            {root: 'E', quality: 'h7', numeric: 2},
-                            {root: 'A', quality: '7b9', numeric: 5}
+                            {root: 'E', quality: 'h7', degree: 2},
+                            {root: 'A', quality: '7b9', degree: 5}
                         ],
                         close: ']'
                     }
@@ -465,46 +590,70 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'Eb7',
-                        harmony: [{root: 'E', shift: 'b', quality: '7', numeric: 2}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 2,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'D-',
-                        harmony: [{root: 'D', quality: '-', numeric: 1}]
+                        harmony: [{root: 'D', quality: '-', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Eb7',
-                        harmony: [{root: 'E', shift: 'b', quality: '7', numeric: 2}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 2,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'D-',
-                        harmony: [{root: 'D', quality: '-', numeric: 1}]
+                        harmony: [{root: 'D', quality: '-', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Eb7',
-                        harmony: [{root: 'E', shift: 'b', quality: '7', numeric: 2}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 2,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'D-',
-                        harmony: [{root: 'D', quality: '-', numeric: 1}]
+                        harmony: [{root: 'D', quality: '-', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Eh7 A7b9',
                         harmony: [
-                            {root: 'E', quality: 'h7', numeric: 2},
-                            {root: 'A', quality: '7b9', numeric: 5}
+                            {root: 'E', quality: 'h7', degree: 2},
+                            {root: 'A', quality: '7b9', degree: 5}
                         ]
                     },
                     {
                         coda: true,
                         open: '|',
                         chords: 'D-',
-                        harmony: [{root: 'D', quality: '-', numeric: 1}],
+                        harmony: [{root: 'D', quality: '-', degree: 1}],
                         close: 'Z'
                     },
                     {divider: 'Y'},
@@ -512,65 +661,81 @@ describe('IRealProChartModel', () => {
                         coda: true,
                         open: '[',
                         chords: 'Eh7',
-                        harmony: [{root: 'E', quality: 'h7', numeric: 2}]
+                        harmony: [{root: 'E', quality: 'h7', degree: 2}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Eb7#11',
-                        harmony: [{root: 'E', shift: 'b', quality: '7#11', numeric: 2}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '7#11',
+                                degree: 2,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'D-7',
-                        harmony: [{root: 'D', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'D', quality: '-7', degree: 1}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'G7#11',
-                        harmony: [{root: 'G', quality: '7#11', numeric: 4}]
+                        harmony: [{root: 'G', quality: '7#11', degree: 4}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'G-^7',
-                        harmony: [{root: 'G', quality: '-^7', numeric: 4}]
+                        harmony: [{root: 'G', quality: '-^7', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'G-7',
-                        harmony: [{root: 'G', quality: '-7', numeric: 4}]
+                        harmony: [{root: 'G', quality: '-7', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'Gb7#9',
-                        harmony: [{root: 'G', shift: 'b', quality: '7#9', numeric: 4}]
+                        harmony: [
+                            {
+                                root: 'G',
+                                shift: 'b',
+                                quality: '7#9',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'F^7',
-                        harmony: [{root: 'F', quality: '^7', numeric: 3}]
+                        harmony: [{root: 'F', quality: '^7', degree: 3}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Eh7',
-                        harmony: [{root: 'E', quality: 'h7', numeric: 2}]
+                        harmony: [{root: 'E', quality: 'h7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'A7b9',
-                        harmony: [{root: 'A', quality: '7b9', numeric: 5}],
+                        harmony: [{root: 'A', quality: '7b9', degree: 5}],
                         close: 'Z'
                     }
                 ]
             }
         ]);
     });
-    it('should handle 2 bars repeats (r) like in The African Queen', () => {
+    it('handles 2 bars repeats (r) like in The African Queen', () => {
         const props = {
             title: 'The African Queen',
             key: 'C-',
@@ -581,7 +746,6 @@ describe('IRealProChartModel', () => {
         expect(model.title).toBe('The African Queen');
         expect(model.errors).toEqual([]);
         expect(model.chordString.length).toBe(102);
-
         expect(model.segments).toEqual([
             {
                 name: 'A',
@@ -591,8 +755,14 @@ describe('IRealProChartModel', () => {
                         open: '[',
                         chords: 'C-9 Db9',
                         harmony: [
-                            {root: 'C', quality: '-9', numeric: 1},
-                            {root: 'D', shift: 'b', quality: '9', numeric: 2}
+                            {root: 'C', quality: '-9', degree: 1},
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '9',
+                                degree: 2,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
@@ -600,8 +770,14 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'C-9 Db9',
                         harmony: [
-                            {root: 'C', quality: '-9', numeric: 1},
-                            {root: 'D', shift: 'b', quality: '9', numeric: 2}
+                            {root: 'C', quality: '-9', degree: 1},
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '9',
+                                degree: 2,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
@@ -614,8 +790,14 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'C-9 Db9',
                         harmony: [
-                            {root: 'C', quality: '-9', numeric: 1},
-                            {root: 'D', shift: 'b', quality: '9', numeric: 2}
+                            {root: 'C', quality: '-9', degree: 1},
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '9',
+                                degree: 2,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
@@ -623,8 +805,14 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'C-9 Db9',
                         harmony: [
-                            {root: 'C', quality: '-9', numeric: 1},
-                            {root: 'D', shift: 'b', quality: '9', numeric: 2}
+                            {root: 'C', quality: '-9', degree: 1},
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '9',
+                                degree: 2,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
@@ -642,8 +830,14 @@ describe('IRealProChartModel', () => {
                         open: '[',
                         chords: 'C-9 Db9',
                         harmony: [
-                            {root: 'C', quality: '-9', numeric: 1},
-                            {root: 'D', shift: 'b', quality: '9', numeric: 2}
+                            {root: 'C', quality: '-9', degree: 1},
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '9',
+                                degree: 2,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
@@ -651,8 +845,14 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'C-9 Db9',
                         harmony: [
-                            {root: 'C', quality: '-9', numeric: 1},
-                            {root: 'D', shift: 'b', quality: '9', numeric: 2}
+                            {root: 'C', quality: '-9', degree: 1},
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '9',
+                                degree: 2,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
@@ -665,8 +865,14 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'C-9 Db9',
                         harmony: [
-                            {root: 'C', quality: '-9', numeric: 1},
-                            {root: 'D', shift: 'b', quality: '9', numeric: 2}
+                            {root: 'C', quality: '-9', degree: 1},
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '9',
+                                degree: 2,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
@@ -674,8 +880,14 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'C-9 Db9',
                         harmony: [
-                            {root: 'C', quality: '-9', numeric: 1},
-                            {root: 'D', shift: 'b', quality: '9', numeric: 2}
+                            {root: 'C', quality: '-9', degree: 1},
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '9',
+                                degree: 2,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
@@ -693,24 +905,30 @@ describe('IRealProChartModel', () => {
                         open: '[',
                         chords: 'Bb7 A7',
                         harmony: [
-                            {root: 'B', shift: 'b', quality: '7', numeric: 7},
-                            {root: 'A', quality: '7', numeric: 6}
+                            {root: 'B', shift: 'b', quality: '7', degree: 7},
+                            {root: 'A', quality: '7', degree: 6, degreeShift: 1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Ab7 G7',
                         harmony: [
-                            {root: 'A', shift: 'b', quality: '7', numeric: 6},
-                            {root: 'G', quality: '7', numeric: 5}
+                            {root: 'A', shift: 'b', quality: '7', degree: 6},
+                            {root: 'G', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'C-9 Db9',
                         harmony: [
-                            {root: 'C', quality: '-9', numeric: 1},
-                            {root: 'D', shift: 'b', quality: '9', numeric: 2}
+                            {root: 'C', quality: '-9', degree: 1},
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '9',
+                                degree: 2,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
@@ -718,8 +936,14 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'C-9 Db9',
                         harmony: [
-                            {root: 'C', quality: '-9', numeric: 1},
-                            {root: 'D', shift: 'b', quality: '9', numeric: 2}
+                            {root: 'C', quality: '-9', degree: 1},
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '9',
+                                degree: 2,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
@@ -732,7 +956,7 @@ describe('IRealProChartModel', () => {
             }
         ]);
     });
-    it('should handle unclosed section like in Ahmid-6', () => {
+    it('handles unclosed section like in Ahmid-6', () => {
         const props = {
             title: 'Ahmid-6',
             key: 'C',
@@ -743,7 +967,6 @@ describe('IRealProChartModel', () => {
 
         expect(model.title).toBe('Ahmid-6');
         expect(model.errors).toEqual([]);
-
         expect(model.segments).toEqual([
             {
                 name: 'A',
@@ -752,178 +975,264 @@ describe('IRealProChartModel', () => {
                         timeSignature: '4 / 4',
                         open: '[',
                         chords: 'D-7',
-                        harmony: [{root: 'D', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'D', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'C#-7',
-                        harmony: [{root: 'C', shift: '#', quality: '-7', numeric: 1}]
+                        harmony: [
+                            {
+                                root: 'C',
+                                shift: '#',
+                                quality: '-7',
+                                degree: 1,
+                                degreeShift: 1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'D-7',
-                        harmony: [{root: 'D', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'D', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'C#-7',
-                        harmony: [{root: 'C', shift: '#', quality: '-7', numeric: 1}],
+                        harmony: [
+                            {
+                                root: 'C',
+                                shift: '#',
+                                quality: '-7',
+                                degree: 1,
+                                degreeShift: 1
+                            }
+                        ],
                         close: '|'
                     },
                     {
                         open: '|',
                         chords: 'F#-7 B7',
                         harmony: [
-                            {root: 'F', shift: '#', quality: '-7', numeric: 4},
-                            {root: 'B', quality: '7', numeric: 7}
+                            {
+                                root: 'F',
+                                shift: '#',
+                                quality: '-7',
+                                degree: 4,
+                                degreeShift: 1
+                            },
+                            {root: 'B', quality: '7', degree: 7}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E-7 A7',
                         harmony: [
-                            {root: 'E', quality: '-7', numeric: 3},
-                            {root: 'A', quality: '7', numeric: 6}
+                            {root: 'E', quality: '-7', degree: 3},
+                            {root: 'A', quality: '7', degree: 6}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G F',
-                        harmony: [{root: 'G', numeric: 5}, {root: 'F', numeric: 4}]
+                        harmony: [{root: 'G', degree: 5}, {root: 'F', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'E- D-7',
                         harmony: [
-                            {root: 'E', quality: '-', numeric: 3},
-                            {root: 'D', quality: '-7', numeric: 2}
+                            {root: 'E', quality: '-', degree: 3},
+                            {root: 'D', quality: '-7', degree: 2}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'C^7',
-                        harmony: [{root: 'C', quality: '^7', numeric: 1}]
+                        harmony: [{root: 'C', quality: '^7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'B7',
-                        harmony: [{root: 'B', quality: '7', numeric: 7}]
+                        harmony: [{root: 'B', quality: '7', degree: 7}]
                     },
                     {
                         open: '|',
                         chords: 'Bb^7#11',
-                        harmony: [{root: 'B', shift: 'b', quality: '^7#11', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '^7#11',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Ah7 D7b9',
                         harmony: [
-                            {root: 'A', quality: 'h7', numeric: 6},
-                            {root: 'D', quality: '7b9', numeric: 2}
+                            {root: 'A', quality: 'h7', degree: 6},
+                            {root: 'D', quality: '7b9', degree: 2}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F#h7 B7b9',
                         harmony: [
-                            {root: 'F', shift: '#', quality: 'h7', numeric: 4},
-                            {root: 'B', quality: '7b9', numeric: 7}
+                            {
+                                root: 'F',
+                                shift: '#',
+                                quality: 'h7',
+                                degree: 4,
+                                degreeShift: 1
+                            },
+                            {root: 'B', quality: '7b9', degree: 7}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Eh7 A7b9',
                         harmony: [
-                            {root: 'E', quality: 'h7', numeric: 3},
-                            {root: 'A', quality: '7b9', numeric: 6}
+                            {root: 'E', quality: 'h7', degree: 3},
+                            {root: 'A', quality: '7b9', degree: 6}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D-7 E-7',
                         harmony: [
-                            {root: 'D', quality: '-7', numeric: 2},
-                            {root: 'E', quality: '-7', numeric: 3}
+                            {root: 'D', quality: '-7', degree: 2},
+                            {root: 'E', quality: '-7', degree: 3}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F-7 Bb7',
                         harmony: [
-                            {root: 'F', quality: '-7', numeric: 4},
-                            {root: 'B', shift: 'b', quality: '7', numeric: 7}
+                            {root: 'F', quality: '-7', degree: 4},
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Eb9sus',
-                        harmony: [{root: 'E', shift: 'b', quality: '9sus', numeric: 3}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '9sus',
+                                degree: 3,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Ab^9',
-                        harmony: [{root: 'A', shift: 'b', quality: '^9', numeric: 6}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '^9',
+                                degree: 6,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Ab7sus',
-                        harmony: [{root: 'A', shift: 'b', quality: '7sus', numeric: 6}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '7sus',
+                                degree: 6,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Db^13',
-                        harmony: [{root: 'D', shift: 'b', quality: '^13', numeric: 2}]
+                        harmony: [
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '^13',
+                                degree: 2,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Dh7 G7b9',
                         harmony: [
-                            {root: 'D', quality: 'h7', numeric: 2},
-                            {root: 'G', quality: '7b9', numeric: 5}
+                            {root: 'D', quality: 'h7', degree: 2},
+                            {root: 'G', quality: '7b9', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'C-7 F7',
                         harmony: [
-                            {root: 'C', quality: '-7', numeric: 1},
-                            {root: 'F', quality: '7', numeric: 4}
+                            {root: 'C', quality: '-7', degree: 1},
+                            {root: 'F', quality: '7', degree: 4}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F-7 Bb7',
                         harmony: [
-                            {root: 'F', quality: '-7', numeric: 4},
-                            {root: 'B', shift: 'b', quality: '7', numeric: 7}
+                            {root: 'F', quality: '-7', degree: 4},
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Gh7 C7#9',
                         harmony: [
-                            {root: 'G', quality: 'h7', numeric: 5},
-                            {root: 'C', quality: '7#9', numeric: 1}
+                            {root: 'G', quality: 'h7', degree: 5},
+                            {root: 'C', quality: '7#9', degree: 1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F-7 F#-7',
                         harmony: [
-                            {root: 'F', quality: '-7', numeric: 4},
-                            {root: 'F', shift: '#', quality: '-7', numeric: 4}
+                            {root: 'F', quality: '-7', degree: 4},
+                            {
+                                root: 'F',
+                                shift: '#',
+                                quality: '-7',
+                                degree: 4,
+                                degreeShift: 1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G-7 C-7',
                         harmony: [
-                            {root: 'G', quality: '-7', numeric: 5},
-                            {root: 'C', quality: '-7', numeric: 1}
+                            {root: 'G', quality: '-7', degree: 5},
+                            {root: 'C', quality: '-7', degree: 1}
                         ]
                     },
                     {
@@ -931,29 +1240,35 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'F#-7 B7',
                         harmony: [
-                            {root: 'F', shift: '#', quality: '-7', numeric: 4},
-                            {root: 'B', quality: '7', numeric: 7}
+                            {
+                                root: 'F',
+                                shift: '#',
+                                quality: '-7',
+                                degree: 4,
+                                degreeShift: 1
+                            },
+                            {root: 'B', quality: '7', degree: 7}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E-7 A7sus',
                         harmony: [
-                            {root: 'E', quality: '-7', numeric: 3},
-                            {root: 'A', quality: '7sus', numeric: 6}
+                            {root: 'E', quality: '-7', degree: 3},
+                            {root: 'A', quality: '7sus', degree: 6}
                         ]
                     },
                     {
                         timeSignature: '2 / 4',
                         open: '|',
                         chords: 'A7sus',
-                        harmony: [{root: 'A', quality: '7sus', numeric: 6}]
+                        harmony: [{root: 'A', quality: '7sus', degree: 6}]
                     },
                     {
                         timeSignature: '4 / 4',
                         open: '|',
                         chords: 'A7sus',
-                        harmony: [{root: 'A', quality: '7sus', numeric: 6}]
+                        harmony: [{root: 'A', quality: '7sus', degree: 6}]
                     },
                     {
                         open: '|',
@@ -969,43 +1284,65 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'D-7',
-                        harmony: [{root: 'D', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'D', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'C#-7',
-                        harmony: [{root: 'C', shift: '#', quality: '-7', numeric: 1}]
+                        harmony: [
+                            {
+                                root: 'C',
+                                shift: '#',
+                                quality: '-7',
+                                degree: 1,
+                                degreeShift: 1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'D-7',
-                        harmony: [{root: 'D', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'D', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'C#-7',
-                        harmony: [{root: 'C', shift: '#', quality: '-7', numeric: 1}]
+                        harmony: [
+                            {
+                                root: 'C',
+                                shift: '#',
+                                quality: '-7',
+                                degree: 1,
+                                degreeShift: 1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'F#-7 B7',
                         harmony: [
-                            {root: 'F', shift: '#', quality: '-7', numeric: 4},
-                            {root: 'B', quality: '7', numeric: 7}
+                            {
+                                root: 'F',
+                                shift: '#',
+                                quality: '-7',
+                                degree: 4,
+                                degreeShift: 1
+                            },
+                            {root: 'B', quality: '7', degree: 7}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E-7 A7',
                         harmony: [
-                            {root: 'E', quality: '-7', numeric: 3},
-                            {root: 'A', quality: '7', numeric: 6}
+                            {root: 'E', quality: '-7', degree: 3},
+                            {root: 'A', quality: '7', degree: 6}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 6}]
+                        harmony: [{root: 'A', quality: '-7', degree: 6}]
                     },
                     {
                         open: '|',
@@ -1013,79 +1350,103 @@ describe('IRealProChartModel', () => {
                         harmony: [
                             {root: 'p'},
                             {root: 'p'},
-                            {root: 'D', quality: '7', numeric: 2}
+                            {root: 'D', quality: '7', degree: 2}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G^7 Bb7',
                         harmony: [
-                            {root: 'G', quality: '^7', numeric: 5},
-                            {root: 'B', shift: 'b', quality: '7', numeric: 7}
+                            {root: 'G', quality: '^7', degree: 5},
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Eb^7 B7',
                         harmony: [
-                            {root: 'E', shift: 'b', quality: '^7', numeric: 3},
-                            {root: 'B', quality: '7', numeric: 7}
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 3,
+                                degreeShift: -1
+                            },
+                            {root: 'B', quality: '7', degree: 7}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E^7 G7',
                         harmony: [
-                            {root: 'E', quality: '^7', numeric: 3},
-                            {root: 'G', quality: '7', numeric: 5}
+                            {root: 'E', quality: '^7', degree: 3},
+                            {root: 'G', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'C^7 Ab7',
                         harmony: [
-                            {root: 'C', quality: '^7', numeric: 1},
-                            {root: 'A', shift: 'b', quality: '7', numeric: 6}
+                            {root: 'C', quality: '^7', degree: 1},
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 6,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Db^7 E7',
                         harmony: [
-                            {root: 'D', shift: 'b', quality: '^7', numeric: 2},
-                            {root: 'E', quality: '7', numeric: 3}
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 2,
+                                degreeShift: -1
+                            },
+                            {root: 'E', quality: '7', degree: 3}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'A^7 C7',
                         harmony: [
-                            {root: 'A', quality: '^7', numeric: 6},
-                            {root: 'C', quality: '7', numeric: 1}
+                            {root: 'A', quality: '^7', degree: 6},
+                            {root: 'C', quality: '7', degree: 1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F^7',
-                        harmony: [{root: 'F', quality: '^7', numeric: 4}]
+                        harmony: [{root: 'F', quality: '^7', degree: 4}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'E-7',
-                        harmony: [{root: 'E', quality: '-7', numeric: 3}]
+                        harmony: [{root: 'E', quality: '-7', degree: 3}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'F^7',
-                        harmony: [{root: 'F', quality: '^7', numeric: 4}]
+                        harmony: [{root: 'F', quality: '^7', degree: 4}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'E-7',
-                        harmony: [{root: 'E', quality: '-7', numeric: 3}]
+                        harmony: [{root: 'E', quality: '-7', degree: 3}]
                     },
                     {
                         open: '|',
@@ -1097,7 +1458,7 @@ describe('IRealProChartModel', () => {
             }
         ]);
     });
-    it('should handle Airmail Special with Segno symbol (s) and 4 double repeats', () => {
+    it('handles Airmail Special with Segno symbol (s) and 4 double repeats', () => {
         const props = {
             title: 'Airmail Special',
             key: 'C',
@@ -1108,6 +1469,7 @@ describe('IRealProChartModel', () => {
 
         expect(model.title).toBe('Airmail Special');
         expect(model.errors).toEqual([]);
+
         expect(model.segments).toEqual([
             {
                 name: 'i',
@@ -1116,13 +1478,13 @@ describe('IRealProChartModel', () => {
                         timeSignature: '4 / 4',
                         open: '[',
                         chords: 'C6',
-                        harmony: [{root: 'C', quality: '6', numeric: 1}]
+                        harmony: [{root: 'C', quality: '6', degree: 1}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'C6',
-                        harmony: [{root: 'C', quality: '6', numeric: 1}]
+                        harmony: [{root: 'C', quality: '6', degree: 1}]
                     },
                     {
                         open: '|',
@@ -1133,13 +1495,13 @@ describe('IRealProChartModel', () => {
                     {
                         open: '|',
                         chords: 'C6',
-                        harmony: [{root: 'C', quality: '6', numeric: 1}]
+                        harmony: [{root: 'C', quality: '6', degree: 1}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'C6',
-                        harmony: [{root: 'C', quality: '6', numeric: 1}]
+                        harmony: [{root: 'C', quality: '6', degree: 1}]
                     },
                     {
                         open: '|',
@@ -1150,13 +1512,13 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'Co7',
-                        harmony: [{root: 'C', quality: 'o7', numeric: 1}]
+                        harmony: [{root: 'C', quality: 'o7', degree: 1}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Co7',
-                        harmony: [{root: 'C', quality: 'o7', numeric: 1}]
+                        harmony: [{root: 'C', quality: 'o7', degree: 1}]
                     },
                     {
                         open: '|',
@@ -1168,24 +1530,40 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'Co7 Bo7',
                         harmony: [
-                            {root: 'C', quality: 'o7', numeric: 1},
-                            {root: 'B', quality: 'o7', numeric: 7}
+                            {root: 'C', quality: 'o7', degree: 1},
+                            {root: 'B', quality: 'o7', degree: 7}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Bbo7',
-                        harmony: [{root: 'B', shift: 'b', quality: 'o7', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: 'o7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Ab7',
-                        harmony: [{root: 'A', shift: 'b', quality: '7', numeric: 6}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 6,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'G7',
-                        harmony: [{root: 'G', quality: '7', numeric: 5}],
+                        harmony: [{root: 'G', quality: '7', degree: 5}],
                         close: ']'
                     }
                 ]
@@ -1198,53 +1576,61 @@ describe('IRealProChartModel', () => {
                         open: '{',
                         chords: 'C C/E',
                         harmony: [
-                            {root: 'C', numeric: 1},
-                            {root: 'C', inversion: '/E', numeric: 1}
+                            {root: 'C', degree: 1},
+                            {root: 'C', degree: 1, inversion: '/E', inversionDegree: 3}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F G',
-                        harmony: [{root: 'F', numeric: 4}, {root: 'G', numeric: 5}]
+                        harmony: [{root: 'F', degree: 4}, {root: 'G', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'C C/E',
                         harmony: [
-                            {root: 'C', numeric: 1},
-                            {root: 'C', inversion: '/E', numeric: 1}
+                            {root: 'C', degree: 1},
+                            {root: 'C', degree: 1, inversion: '/E', inversionDegree: 3}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F G',
-                        harmony: [{root: 'F', numeric: 4}, {root: 'G', numeric: 5}]
+                        harmony: [{root: 'F', degree: 4}, {root: 'G', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'C C7',
                         harmony: [
-                            {root: 'C', numeric: 1},
-                            {root: 'C', quality: '7', numeric: 1}
+                            {root: 'C', degree: 1},
+                            {root: 'C', quality: '7', degree: 1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F F#o7',
                         harmony: [
-                            {root: 'F', numeric: 4},
-                            {root: 'F', shift: '#', quality: 'o7', numeric: 4}
+                            {root: 'F', degree: 4},
+                            {
+                                root: 'F',
+                                shift: '#',
+                                quality: 'o7',
+                                degree: 4,
+                                degreeShift: 1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'C/G',
-                        harmony: [{root: 'C', inversion: '/G', numeric: 1}]
+                        harmony: [
+                            {root: 'C', degree: 1, inversion: '/G', inversionDegree: 5}
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'C',
-                        harmony: [{root: 'C', numeric: 1}],
+                        harmony: [{root: 'C', degree: 1}],
                         close: '}'
                     }
                 ]
@@ -1255,13 +1641,13 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'Co7',
-                        harmony: [{root: 'C', quality: 'o7', numeric: 1}]
+                        harmony: [{root: 'C', quality: 'o7', degree: 1}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Co7',
-                        harmony: [{root: 'C', quality: 'o7', numeric: 1}]
+                        harmony: [{root: 'C', quality: 'o7', degree: 1}]
                     },
                     {
                         open: '|',
@@ -1273,31 +1659,47 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'Co7 Bo7',
                         harmony: [
-                            {root: 'C', quality: 'o7', numeric: 1},
-                            {root: 'B', quality: 'o7', numeric: 7}
+                            {root: 'C', quality: 'o7', degree: 1},
+                            {root: 'B', quality: 'o7', degree: 7}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Bbo7',
-                        harmony: [{root: 'B', shift: 'b', quality: 'o7', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: 'o7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Ab7',
-                        harmony: [{root: 'A', shift: 'b', quality: '7', numeric: 6}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 6,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'G7',
-                        harmony: [{root: 'G', quality: '7', numeric: 5}],
+                        harmony: [{root: 'G', quality: '7', degree: 5}],
                         close: 'Z'
                     }
                 ]
             }
         ]);
     });
-    it('should handle Alone Together with two endings on one line', () => {
+    it('handles Alone Together with two endings on one line', () => {
         const props = {
             title: 'Alone Together',
             key: 'D-',
@@ -1308,6 +1710,7 @@ describe('IRealProChartModel', () => {
 
         expect(model.title).toBe('Alone Together');
         expect(model.errors).toEqual([]);
+
         expect(model.segments).toEqual([
             {
                 name: 'A',
@@ -1316,90 +1719,90 @@ describe('IRealProChartModel', () => {
                         timeSignature: '4 / 4',
                         open: '{',
                         chords: 'D-6',
-                        harmony: [{root: 'D', quality: '-6', numeric: 1}]
+                        harmony: [{root: 'D', quality: '-6', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Eh7 A7b9',
                         harmony: [
-                            {root: 'E', quality: 'h7', numeric: 2},
-                            {root: 'A', quality: '7b9', numeric: 5}
+                            {root: 'E', quality: 'h7', degree: 2},
+                            {root: 'A', quality: '7b9', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D-6',
-                        harmony: [{root: 'D', quality: '-6', numeric: 1}]
+                        harmony: [{root: 'D', quality: '-6', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Eh7 A7b9',
                         harmony: [
-                            {root: 'E', quality: 'h7', numeric: 2},
-                            {root: 'A', quality: '7b9', numeric: 5}
+                            {root: 'E', quality: 'h7', degree: 2},
+                            {root: 'A', quality: '7b9', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D-6',
-                        harmony: [{root: 'D', quality: '-6', numeric: 1}]
+                        harmony: [{root: 'D', quality: '-6', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Ah7 D7b9',
                         harmony: [
-                            {root: 'A', quality: 'h7', numeric: 5},
-                            {root: 'D', quality: '7b9', numeric: 1}
+                            {root: 'A', quality: 'h7', degree: 5},
+                            {root: 'D', quality: '7b9', degree: 1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G-7',
-                        harmony: [{root: 'G', quality: '-7', numeric: 4}]
+                        harmony: [{root: 'G', quality: '-7', degree: 4}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'B-7 E7',
                         harmony: [
-                            {root: 'B', quality: '-7', numeric: 6},
-                            {root: 'E', quality: '7', numeric: 2}
+                            {root: 'B', quality: '-7', degree: 6, degreeShift: 1},
+                            {root: 'E', quality: '7', degree: 2}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G-7 C7',
                         harmony: [
-                            {root: 'G', quality: '-7', numeric: 4},
-                            {root: 'C', quality: '7', numeric: 7}
+                            {root: 'G', quality: '-7', degree: 4},
+                            {root: 'C', quality: '7', degree: 7}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F^7',
-                        harmony: [{root: 'F', quality: '^7', numeric: 3}]
+                        harmony: [{root: 'F', quality: '^7', degree: 3}]
                     },
                     {
                         open: '|',
                         chords: 'Eh7 A7b9',
                         harmony: [
-                            {root: 'E', quality: 'h7', numeric: 2},
-                            {root: 'A', quality: '7b9', numeric: 5}
+                            {root: 'E', quality: 'h7', degree: 2},
+                            {root: 'A', quality: '7b9', degree: 5}
                         ]
                     },
                     {
                         ending: 'N1',
                         open: '|',
                         chords: 'D^7',
-                        harmony: [{root: 'D', quality: '^7', numeric: 1}]
+                        harmony: [{root: 'D', quality: '^7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: '(Eh7) x (A7b9)',
                         harmony: [{root: 'x'}],
                         alt: [
-                            {root: 'E', quality: 'h7', numeric: 2},
-                            {root: 'A', quality: '7b9', numeric: 5}
+                            {root: 'E', quality: 'h7', degree: 2},
+                            {root: 'A', quality: '7b9', degree: 5}
                         ],
                         close: '}'
                     },
@@ -1407,7 +1810,7 @@ describe('IRealProChartModel', () => {
                         ending: 'N2',
                         open: '|',
                         chords: 'D^7',
-                        harmony: [{root: 'D', quality: '^7', numeric: 1}]
+                        harmony: [{root: 'D', quality: '^7', degree: 1}]
                     },
                     {
                         open: '|',
@@ -1423,40 +1826,40 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'Ah7',
-                        harmony: [{root: 'A', quality: 'h7', numeric: 5}]
+                        harmony: [{root: 'A', quality: 'h7', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'D7b9',
-                        harmony: [{root: 'D', quality: '7b9', numeric: 1}]
+                        harmony: [{root: 'D', quality: '7b9', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'G-6',
-                        harmony: [{root: 'G', quality: '-6', numeric: 4}]
+                        harmony: [{root: 'G', quality: '-6', degree: 4}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Gh7',
-                        harmony: [{root: 'G', quality: 'h7', numeric: 4}]
+                        harmony: [{root: 'G', quality: 'h7', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'C7b9',
-                        harmony: [{root: 'C', quality: '7b9', numeric: 7}]
+                        harmony: [{root: 'C', quality: '7b9', degree: 7}]
                     },
                     {
                         open: '|',
                         chords: 'F^7',
-                        harmony: [{root: 'F', quality: '^7', numeric: 3}]
+                        harmony: [{root: 'F', quality: '^7', degree: 3}]
                     },
                     {
                         open: '|',
                         chords: 'Eh7 A7b9',
                         harmony: [
-                            {root: 'E', quality: 'h7', numeric: 2},
-                            {root: 'A', quality: '7b9', numeric: 5}
+                            {root: 'E', quality: 'h7', degree: 2},
+                            {root: 'A', quality: '7b9', degree: 5}
                         ],
                         close: ']'
                     }
@@ -1468,56 +1871,56 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'D-6',
-                        harmony: [{root: 'D', quality: '-6', numeric: 1}]
+                        harmony: [{root: 'D', quality: '-6', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Eh7 A7b9',
                         harmony: [
-                            {root: 'E', quality: 'h7', numeric: 2},
-                            {root: 'A', quality: '7b9', numeric: 5}
+                            {root: 'E', quality: 'h7', degree: 2},
+                            {root: 'A', quality: '7b9', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D-6',
-                        harmony: [{root: 'D', quality: '-6', numeric: 1}]
+                        harmony: [{root: 'D', quality: '-6', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Eh7 A7b9',
                         harmony: [
-                            {root: 'E', quality: 'h7', numeric: 2},
-                            {root: 'A', quality: '7b9', numeric: 5}
+                            {root: 'E', quality: 'h7', degree: 2},
+                            {root: 'A', quality: '7b9', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D-6 Bh7',
                         harmony: [
-                            {root: 'D', quality: '-6', numeric: 1},
-                            {root: 'B', quality: 'h7', numeric: 6}
+                            {root: 'D', quality: '-6', degree: 1},
+                            {root: 'B', quality: 'h7', degree: 6, degreeShift: 1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Bb7 A7b9',
                         harmony: [
-                            {root: 'B', shift: 'b', quality: '7', numeric: 6},
-                            {root: 'A', quality: '7b9', numeric: 5}
+                            {root: 'B', shift: 'b', quality: '7', degree: 6},
+                            {root: 'A', quality: '7b9', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D-6',
-                        harmony: [{root: 'D', quality: '-6', numeric: 1}]
+                        harmony: [{root: 'D', quality: '-6', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Eh7 A7b9',
                         harmony: [
-                            {root: 'E', quality: 'h7', numeric: 2},
-                            {root: 'A', quality: '7b9', numeric: 5}
+                            {root: 'E', quality: 'h7', degree: 2},
+                            {root: 'A', quality: '7b9', degree: 5}
                         ],
                         close: 'Z'
                     }
@@ -1525,7 +1928,7 @@ describe('IRealProChartModel', () => {
             }
         ]);
     });
-    it('should handle Ana Maria with 2 bar repeat at the end of segment', () => {
+    it('handles Ana Maria with 2 bar repeat at the end of segment', () => {
         const props = {
             title: 'Ana Maria',
             key: 'G',
@@ -1537,6 +1940,12 @@ describe('IRealProChartModel', () => {
         expect(model.errors).toEqual([]);
         expect(model.chordString.length).toBe(314);
 
+        expect(model.key).toBe('G');
+        expect(model.tuneKeyRootBase).toBe('G');
+        expect(model.tuneKeyRelativeToCShift).toBe(4);
+        expect(model.tuneKeyIntervalRelativeToC).toBe(7);
+        expect(model.tuneAdjective).toBe('major');
+
         expect(model.segments).toEqual([
             {
                 name: 'A',
@@ -1545,7 +1954,7 @@ describe('IRealProChartModel', () => {
                         timeSignature: '4 / 4',
                         open: '[',
                         chords: 'G^7',
-                        harmony: [{root: 'G', quality: '^7', numeric: 1}]
+                        harmony: [{root: 'G', quality: '^7', degree: 1}]
                     },
                     {
                         open: '|',
@@ -1555,15 +1964,17 @@ describe('IRealProChartModel', () => {
                                 root: 'E',
                                 shift: 'b',
                                 quality: '^7',
+                                degree: 6,
+                                degreeShift: -1,
                                 inversion: '/G',
-                                numeric: 6
+                                inversionDegree: 1
                             }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G7sus',
-                        harmony: [{root: 'G', quality: '7sus', numeric: 1}]
+                        harmony: [{root: 'G', quality: '7sus', degree: 1}]
                     },
                     {
                         open: '|',
@@ -1573,8 +1984,10 @@ describe('IRealProChartModel', () => {
                                 root: 'E',
                                 shift: 'b',
                                 quality: '^7',
+                                degree: 6,
+                                degreeShift: -1,
                                 inversion: '/G',
-                                numeric: 6
+                                inversionDegree: 1
                             }
                         ]
                     },
@@ -1586,63 +1999,117 @@ describe('IRealProChartModel', () => {
                                 root: 'D',
                                 shift: 'b',
                                 quality: '^7',
+                                degree: 5,
+                                degreeShift: -1,
                                 inversion: '/F',
-                                numeric: 5
+                                inversionDegree: 7,
+                                inversionDegreeShift: -1
                             }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Gb^7#11',
-                        harmony: [{root: 'G', shift: 'b', quality: '^7#11', numeric: 1}]
+                        harmony: [
+                            {
+                                root: 'G',
+                                shift: 'b',
+                                quality: '^7#11',
+                                degree: 1,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Ab-7',
-                        harmony: [{root: 'A', shift: 'b', quality: '-7', numeric: 2}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 2,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Bb/Ab',
-                        harmony: [{root: 'B', shift: 'b', inversion: '/Ab', numeric: 3}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                degree: 3,
+                                degreeShift: -1,
+                                inversion: '/Ab',
+                                inversionDegree: 2,
+                                inversionDegreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'G-7',
-                        harmony: [{root: 'G', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'G', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'C7sus',
-                        harmony: [{root: 'C', quality: '7sus', numeric: 4}]
+                        harmony: [{root: 'C', quality: '7sus', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'D/C',
-                        harmony: [{root: 'D', inversion: '/C', numeric: 5}]
+                        harmony: [
+                            {root: 'D', degree: 5, inversion: '/C', inversionDegree: 4}
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'C7sus',
-                        harmony: [{root: 'C', quality: '7sus', numeric: 4}]
+                        harmony: [{root: 'C', quality: '7sus', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'Ab/C Bb/C',
                         harmony: [
-                            {root: 'A', shift: 'b', inversion: '/C', numeric: 2},
-                            {root: 'B', shift: 'b', inversion: '/C', numeric: 3}
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                degree: 2,
+                                degreeShift: -1,
+                                inversion: '/C',
+                                inversionDegree: 4
+                            },
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                degree: 3,
+                                degreeShift: -1,
+                                inversion: '/C',
+                                inversionDegree: 4
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Ab/C',
-                        harmony: [{root: 'A', shift: 'b', inversion: '/C', numeric: 2}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                degree: 2,
+                                degreeShift: -1,
+                                inversion: '/C',
+                                inversionDegree: 4
+                            }
+                        ]
                     },
                     {
                         open: '{',
                         chords: 'G7b9sus',
-                        harmony: [{root: 'G', quality: '7b9sus', numeric: 1}]
+                        harmony: [{root: 'G', quality: '7b9sus', degree: 1}]
                     },
                     {
                         open: '|',
@@ -1652,8 +2119,10 @@ describe('IRealProChartModel', () => {
                                 root: 'E',
                                 shift: 'b',
                                 quality: '^7',
+                                degree: 6,
+                                degreeShift: -1,
                                 inversion: '/G',
-                                numeric: 6
+                                inversionDegree: 1
                             }
                         ],
                         close: '}'
@@ -1666,82 +2135,146 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'G^7',
-                        harmony: [{root: 'G', quality: '^7', numeric: 1}]
+                        harmony: [{root: 'G', quality: '^7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'G7sus',
-                        harmony: [{root: 'G', quality: '7sus', numeric: 1}]
+                        harmony: [{root: 'G', quality: '7sus', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Eb/F E7alt',
                         harmony: [
-                            {root: 'E', shift: 'b', inversion: '/F', numeric: 6},
-                            {root: 'E', quality: '7alt', numeric: 6}
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                degree: 6,
+                                degreeShift: -1,
+                                inversion: '/F',
+                                inversionDegree: 7,
+                                inversionDegreeShift: -1
+                            },
+                            {root: 'E', quality: '7alt', degree: 6}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Eb7sus',
-                        harmony: [{root: 'E', shift: 'b', quality: '7sus', numeric: 6}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '7sus',
+                                degree: 6,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'D^7 F7#5',
                         harmony: [
-                            {root: 'D', quality: '^7', numeric: 5},
-                            {root: 'F', quality: '7#5', numeric: 7}
+                            {root: 'D', quality: '^7', degree: 5},
+                            {root: 'F', quality: '7#5', degree: 7, degreeShift: -1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Bb-7',
-                        harmony: [{root: 'B', shift: 'b', quality: '-7', numeric: 3}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 3,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Ab-7',
-                        harmony: [{root: 'A', shift: 'b', quality: '-7', numeric: 2}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 2,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Bb/Ab',
-                        harmony: [{root: 'B', shift: 'b', inversion: '/Ab', numeric: 3}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                degree: 3,
+                                degreeShift: -1,
+                                inversion: '/Ab',
+                                inversionDegree: 2,
+                                inversionDegreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'G-7',
-                        harmony: [{root: 'G', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'G', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'C7sus',
-                        harmony: [{root: 'C', quality: '7sus', numeric: 4}]
+                        harmony: [{root: 'C', quality: '7sus', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'Bb^7 A-7',
                         harmony: [
-                            {root: 'B', shift: 'b', quality: '^7', numeric: 3},
-                            {root: 'A', quality: '-7', numeric: 2}
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 3,
+                                degreeShift: -1
+                            },
+                            {root: 'A', quality: '-7', degree: 2}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F-7',
-                        harmony: [{root: 'F', quality: '-7', numeric: 7}]
+                        harmony: [{root: 'F', quality: '-7', degree: 7, degreeShift: -1}]
                     },
                     {
                         open: '|',
                         chords: 'Bb7sus',
-                        harmony: [{root: 'B', shift: 'b', quality: '7sus', numeric: 3}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '7sus',
+                                degree: 3,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Db7sus',
-                        harmony: [{root: 'D', shift: 'b', quality: '7sus', numeric: 5}]
+                        harmony: [
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '7sus',
+                                degree: 5,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
@@ -1757,68 +2290,108 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'B-7',
-                        harmony: [{root: 'B', quality: '-7', numeric: 3}]
+                        harmony: [{root: 'B', quality: '-7', degree: 3}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Eb-7',
-                        harmony: [{root: 'E', shift: 'b', quality: '-7', numeric: 6}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 6,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'D^7 F7#5',
                         harmony: [
-                            {root: 'D', quality: '^7', numeric: 5},
-                            {root: 'F', quality: '7#5', numeric: 7}
+                            {root: 'D', quality: '^7', degree: 5},
+                            {root: 'F', quality: '7#5', degree: 7, degreeShift: -1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Bb-7',
-                        harmony: [{root: 'B', shift: 'b', quality: '-7', numeric: 3}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 3,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Ab-7',
-                        harmony: [{root: 'A', shift: 'b', quality: '-7', numeric: 2}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 2,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Bb/Ab',
-                        harmony: [{root: 'B', shift: 'b', inversion: '/Ab', numeric: 3}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                degree: 3,
+                                degreeShift: -1,
+                                inversion: '/Ab',
+                                inversionDegree: 2,
+                                inversionDegreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'G-7',
-                        harmony: [{root: 'G', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'G', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'C7sus',
-                        harmony: [{root: 'C', quality: '7sus', numeric: 4}]
+                        harmony: [{root: 'C', quality: '7sus', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'Bb^7 A-7',
                         harmony: [
-                            {root: 'B', shift: 'b', quality: '^7', numeric: 3},
-                            {root: 'A', quality: '-7', numeric: 2}
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 3,
+                                degreeShift: -1
+                            },
+                            {root: 'A', quality: '-7', degree: 2}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F-7 E-7',
                         harmony: [
-                            {root: 'F', quality: '-7', numeric: 7},
-                            {root: 'E', quality: '-7', numeric: 6}
+                            {root: 'F', quality: '-7', degree: 7, degreeShift: -1},
+                            {root: 'E', quality: '-7', degree: 6}
                         ]
                     },
                     {
                         open: '{',
                         chords: 'G7b9sus',
-                        harmony: [{root: 'G', quality: '7b9sus', numeric: 1}]
+                        harmony: [{root: 'G', quality: '7b9sus', degree: 1}]
                     },
                     {
                         open: '|',
@@ -1828,8 +2401,10 @@ describe('IRealProChartModel', () => {
                                 root: 'E',
                                 shift: 'b',
                                 quality: '^7',
+                                degree: 6,
+                                degreeShift: -1,
                                 inversion: '/G',
-                                numeric: 6
+                                inversionDegree: 1
                             }
                         ],
                         close: '}'
@@ -1838,7 +2413,7 @@ describe('IRealProChartModel', () => {
             }
         ]);
     });
-    it('should handle Armando\'s Rhumba where segment name is inside and has a left whitespace', () => {
+    it('handles Armando\'s Rhumba where segment name is inside and has a left whitespace', () => {
         const props = {
             title: 'Armando\'s Rhumba',
             key: 'C-',
@@ -1848,6 +2423,7 @@ describe('IRealProChartModel', () => {
 
         expect(model.title).toBe('Armando\'s Rhumba');
         expect(model.errors).toEqual([]);
+
         expect(model.segments).toEqual([
             {
                 name: 'A',
@@ -1856,42 +2432,42 @@ describe('IRealProChartModel', () => {
                         timeSignature: '4 / 4',
                         open: '[',
                         chords: 'C-7',
-                        harmony: [{root: 'C', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'C', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'D7b9',
-                        harmony: [{root: 'D', quality: '7b9', numeric: 2}]
+                        harmony: [{root: 'D', quality: '7b9', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'G7b13',
-                        harmony: [{root: 'G', quality: '7b13', numeric: 5}]
+                        harmony: [{root: 'G', quality: '7b13', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'C-7',
-                        harmony: [{root: 'C', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'C', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'C-7',
-                        harmony: [{root: 'C', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'C', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'D7b9',
-                        harmony: [{root: 'D', quality: '7b9', numeric: 2}]
+                        harmony: [{root: 'D', quality: '7b9', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'G7b13',
-                        harmony: [{root: 'G', quality: '7b13', numeric: 5}]
+                        harmony: [{root: 'G', quality: '7b13', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'C-7',
-                        harmony: [{root: 'C', quality: '-7', numeric: 1}],
+                        harmony: [{root: 'C', quality: '-7', degree: 1}],
                         close: ']'
                     }
                 ]
@@ -1902,71 +2478,89 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'C7b9',
-                        harmony: [{root: 'C', quality: '7b9', numeric: 1}]
+                        harmony: [{root: 'C', quality: '7b9', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'F-7',
-                        harmony: [{root: 'F', quality: '-7', numeric: 4}]
+                        harmony: [{root: 'F', quality: '-7', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'D7b9/F#',
-                        harmony: [{root: 'D', quality: '7b9', inversion: '/F#', numeric: 2}]
+                        harmony: [
+                            {
+                                root: 'D',
+                                quality: '7b9',
+                                degree: 2,
+                                inversion: '/F#',
+                                inversionDegree: 4,
+                                inversionDegreeShift: 1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'G-7',
-                        harmony: [{root: 'G', quality: '-7', numeric: 5}]
+                        harmony: [{root: 'G', quality: '-7', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'Abo7',
-                        harmony: [{root: 'A', shift: 'b', quality: 'o7', numeric: 6}]
+                        harmony: [{root: 'A', shift: 'b', quality: 'o7', degree: 6}]
                     },
                     {
                         open: '|',
                         chords: 'D7b9/A',
-                        harmony: [{root: 'D', quality: '7b9', inversion: '/A', numeric: 2}]
+                        harmony: [
+                            {
+                                root: 'D',
+                                quality: '7b9',
+                                degree: 2,
+                                inversion: '/A',
+                                inversionDegree: 6,
+                                inversionDegreeShift: 1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Bb7sus',
-                        harmony: [{root: 'B', shift: 'b', quality: '7sus', numeric: 7}]
+                        harmony: [{root: 'B', shift: 'b', quality: '7sus', degree: 7}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Bb7b9sus',
-                        harmony: [{root: 'B', shift: 'b', quality: '7b9sus', numeric: 7}]
+                        harmony: [{root: 'B', shift: 'b', quality: '7b9sus', degree: 7}]
                     },
                     {
                         open: '|',
                         chords: 'x (E7#9)',
                         harmony: [{root: 'x'}],
-                        alt: [{root: 'E', quality: '7#9', numeric: 3}]
+                        alt: [{root: 'E', quality: '7#9', degree: 3, degreeShift: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Eb6 (E) (F) (F#)',
-                        harmony: [{root: 'E', shift: 'b', quality: '6', numeric: 3}],
+                        harmony: [{root: 'E', shift: 'b', quality: '6', degree: 3}],
                         alt: [
-                            {root: 'E', numeric: 3},
-                            {root: 'F', numeric: 4},
-                            {root: 'F', shift: '#', numeric: 4}
+                            {root: 'E', degree: 3, degreeShift: 1},
+                            {root: 'F', degree: 4},
+                            {root: 'F', shift: '#', degree: 4, degreeShift: 1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G7b13',
-                        harmony: [{root: 'G', quality: '7b13', numeric: 5}],
+                        harmony: [{root: 'G', quality: '7b13', degree: 5}],
                         close: 'Z'
                     }
                 ]
             }
         ]);
     });
-    it('should handle Alone Too Long with double pause (pp)', () => {
+    it('handles Alone Too Long with double pause (pp)', () => {
         const props = {
             title: 'Alone Too Long',
             key: 'G',
@@ -1984,7 +2578,7 @@ describe('IRealProChartModel', () => {
                         timeSignature: '4 / 4',
                         open: '{',
                         chords: 'G6',
-                        harmony: [{root: 'G', quality: '6', numeric: 1}]
+                        harmony: [{root: 'G', quality: '6', degree: 1}]
                     },
                     {
                         open: '|',
@@ -1992,43 +2586,49 @@ describe('IRealProChartModel', () => {
                         harmony: [
                             {root: 'p'},
                             {root: 'p'},
-                            {root: 'G', shift: '#', quality: 'o7', numeric: 1}
+                            {
+                                root: 'G',
+                                shift: '#',
+                                quality: 'o7',
+                                degree: 1,
+                                degreeShift: 1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'A-7 D7',
                         harmony: [
-                            {root: 'A', quality: '-7', numeric: 2},
-                            {root: 'D', quality: '7', numeric: 5}
+                            {root: 'A', quality: '-7', degree: 2},
+                            {root: 'D', quality: '7', degree: 5}
                         ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'A', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'D7',
-                        harmony: [{root: 'D', quality: '7', numeric: 5}]
+                        harmony: [{root: 'D', quality: '7', degree: 5}]
                     },
                     {
                         ending: 'N1',
                         open: '|',
                         chords: 'G6 E-7',
                         harmony: [
-                            {root: 'G', quality: '6', numeric: 1},
-                            {root: 'E', quality: '-7', numeric: 6}
+                            {root: 'G', quality: '6', degree: 1},
+                            {root: 'E', quality: '-7', degree: 6}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'A-7 D7',
                         harmony: [
-                            {root: 'A', quality: '-7', numeric: 2},
-                            {root: 'D', quality: '7', numeric: 5}
+                            {root: 'A', quality: '-7', degree: 2},
+                            {root: 'D', quality: '7', degree: 5}
                         ],
                         close: '}'
                     },
@@ -2036,14 +2636,14 @@ describe('IRealProChartModel', () => {
                         ending: 'N2',
                         open: '|',
                         chords: 'G6',
-                        harmony: [{root: 'G', quality: '6', numeric: 1}]
+                        harmony: [{root: 'G', quality: '6', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'F#h7 B7b9',
                         harmony: [
-                            {root: 'F', shift: '#', quality: 'h7', numeric: 7},
-                            {root: 'B', quality: '7b9', numeric: 3}
+                            {root: 'F', shift: '#', quality: 'h7', degree: 7},
+                            {root: 'B', quality: '7b9', degree: 3}
                         ],
                         close: ']'
                     }
@@ -2056,48 +2656,67 @@ describe('IRealProChartModel', () => {
                         open: '[',
                         chords: 'E- E-/D',
                         harmony: [
-                            {root: 'E', quality: '-', numeric: 6},
-                            {root: 'E', quality: '-', inversion: '/D', numeric: 6}
+                            {root: 'E', quality: '-', degree: 6},
+                            {
+                                root: 'E',
+                                quality: '-',
+                                inversion: '/D',
+                                degree: 6,
+                                inversionDegree: 5
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E-/C# p C7 B7',
                         harmony: [
-                            {root: 'E', quality: '-', inversion: '/C#', numeric: 6},
+                            {
+                                root: 'E',
+                                quality: '-',
+                                inversion: '/C#',
+                                degree: 6,
+                                inversionDegree: 4,
+                                inversionDegreeShift: 1
+                            },
                             {root: 'p'},
-                            {root: 'C', quality: '7', numeric: 4},
-                            {root: 'B', quality: '7', numeric: 3}
+                            {root: 'C', quality: '7', degree: 4},
+                            {root: 'B', quality: '7', degree: 3}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E-6',
-                        harmony: [{root: 'E', quality: '-6', numeric: 6}]
+                        harmony: [{root: 'E', quality: '-6', degree: 6}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'E- E-/D',
                         harmony: [
-                            {root: 'E', quality: '-', numeric: 6},
-                            {root: 'E', quality: '-', inversion: '/D', numeric: 6}
+                            {root: 'E', quality: '-', degree: 6},
+                            {
+                                root: 'E',
+                                quality: '-',
+                                inversion: '/D',
+                                degree: 6,
+                                inversionDegree: 5
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'A7',
-                        harmony: [{root: 'A', quality: '7', numeric: 2}]
+                        harmony: [{root: 'A', quality: '7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'A-11',
-                        harmony: [{root: 'A', quality: '-11', numeric: 2}]
+                        harmony: [{root: 'A', quality: '-11', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'D7',
-                        harmony: [{root: 'D', quality: '7', numeric: 5}],
+                        harmony: [{root: 'D', quality: '7', degree: 5}],
                         close: ']'
                     }
                 ]
@@ -2108,7 +2727,7 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'G6',
-                        harmony: [{root: 'G', quality: '6', numeric: 1}]
+                        harmony: [{root: 'G', quality: '6', degree: 1}]
                     },
                     {
                         open: '|',
@@ -2116,42 +2735,48 @@ describe('IRealProChartModel', () => {
                         harmony: [
                             {root: 'p'},
                             {root: 'p'},
-                            {root: 'G', shift: '#', quality: 'o7', numeric: 1}
+                            {
+                                root: 'G',
+                                shift: '#',
+                                quality: 'o7',
+                                degree: 1,
+                                degreeShift: 1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'A-7 D7',
                         harmony: [
-                            {root: 'A', quality: '-7', numeric: 2},
-                            {root: 'D', quality: '7', numeric: 5}
+                            {root: 'A', quality: '-7', degree: 2},
+                            {root: 'D', quality: '7', degree: 5}
                         ]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'A', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'D7',
-                        harmony: [{root: 'D', quality: '7', numeric: 5}]
+                        harmony: [{root: 'D', quality: '7', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'G6 E-7',
                         harmony: [
-                            {root: 'G', quality: '6', numeric: 1},
-                            {root: 'E', quality: '-7', numeric: 6}
+                            {root: 'G', quality: '6', degree: 1},
+                            {root: 'E', quality: '-7', degree: 6}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'A-7 D7',
                         harmony: [
-                            {root: 'A', quality: '-7', numeric: 2},
-                            {root: 'D', quality: '7', numeric: 5}
+                            {root: 'A', quality: '-7', degree: 2},
+                            {root: 'D', quality: '7', degree: 5}
                         ],
                         close: 'Z'
                     }
@@ -2159,7 +2784,7 @@ describe('IRealProChartModel', () => {
             }
         ]);
     });
-    it('should handle Crosscurrent', () => {
+    it('handles Crosscurrent', () => {
         const props = {
             title: 'Crosscurrent',
             author: 'Lennie Tristano',
@@ -2180,64 +2805,64 @@ describe('IRealProChartModel', () => {
                         open: '[',
                         chords: 'F^7 D7#5',
                         harmony: [
-                            {root: 'F', quality: '^7', numeric: 1},
-                            {root: 'D', quality: '7#5', numeric: 6}
+                            {root: 'F', quality: '^7', degree: 1},
+                            {root: 'D', quality: '7#5', degree: 6}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G-7 C7',
                         harmony: [
-                            {root: 'G', quality: '-7', numeric: 2},
-                            {root: 'C', quality: '7', numeric: 5}
+                            {root: 'G', quality: '-7', degree: 2},
+                            {root: 'C', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'A-7 D7b9',
                         harmony: [
-                            {root: 'A', quality: '-7', numeric: 3},
-                            {root: 'D', quality: '7b9', numeric: 6}
+                            {root: 'A', quality: '-7', degree: 3},
+                            {root: 'D', quality: '7b9', degree: 6}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G-7 C7',
                         harmony: [
-                            {root: 'G', quality: '-7', numeric: 2},
-                            {root: 'C', quality: '7', numeric: 5}
+                            {root: 'G', quality: '-7', degree: 2},
+                            {root: 'C', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F^7 F7',
                         harmony: [
-                            {root: 'F', quality: '^7', numeric: 1},
-                            {root: 'F', quality: '7', numeric: 1}
+                            {root: 'F', quality: '^7', degree: 1},
+                            {root: 'F', quality: '7', degree: 1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Bb^7 Bo7',
                         harmony: [
-                            {root: 'B', shift: 'b', quality: '^7', numeric: 4},
-                            {root: 'B', quality: 'o7', numeric: 4}
+                            {root: 'B', shift: 'b', quality: '^7', degree: 4},
+                            {root: 'B', quality: 'o7', degree: 4, degreeShift: 1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'C7sus C7',
                         harmony: [
-                            {root: 'C', quality: '7sus', numeric: 5},
-                            {root: 'C', quality: '7', numeric: 5}
+                            {root: 'C', quality: '7sus', degree: 5},
+                            {root: 'C', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F^7 C7#11',
                         harmony: [
-                            {root: 'F', quality: '^7', numeric: 1},
-                            {root: 'C', quality: '7#11', numeric: 5}
+                            {root: 'F', quality: '^7', degree: 1},
+                            {root: 'C', quality: '7#11', degree: 5}
                         ],
                         close: ']'
                     }
@@ -2250,49 +2875,55 @@ describe('IRealProChartModel', () => {
                         open: '[',
                         chords: 'F^7 Ab7',
                         harmony: [
-                            {root: 'F', quality: '^7', numeric: 1},
-                            {root: 'A', shift: 'b', quality: '7', numeric: 3}
+                            {root: 'F', quality: '^7', degree: 1},
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 3,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G-7 C7',
                         harmony: [
-                            {root: 'G', quality: '-7', numeric: 2},
-                            {root: 'C', quality: '7', numeric: 5}
+                            {root: 'G', quality: '-7', degree: 2},
+                            {root: 'C', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F6 D7b9',
                         harmony: [
-                            {root: 'F', quality: '6', numeric: 1},
-                            {root: 'D', quality: '7b9', numeric: 6}
+                            {root: 'F', quality: '6', degree: 1},
+                            {root: 'D', quality: '7b9', degree: 6}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G-7 C7',
                         harmony: [
-                            {root: 'G', quality: '-7', numeric: 2},
-                            {root: 'C', quality: '7', numeric: 5}
+                            {root: 'G', quality: '-7', degree: 2},
+                            {root: 'C', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F^7 F7',
                         harmony: [
-                            {root: 'F', quality: '^7', numeric: 1},
-                            {root: 'F', quality: '7', numeric: 1}
+                            {root: 'F', quality: '^7', degree: 1},
+                            {root: 'F', quality: '7', degree: 1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'C7#11(Bb^7) (Bo7)',
-                        harmony: [{root: 'C', quality: '7#11', numeric: 5}],
+                        harmony: [{root: 'C', quality: '7#11', degree: 5}],
                         alt: [
-                            {root: 'B', shift: 'b', quality: '^7', numeric: 4},
-                            {root: 'B', quality: 'o7', numeric: 4}
+                            {root: 'B', shift: 'b', quality: '^7', degree: 4},
+                            {root: 'B', quality: 'o7', degree: 4, degreeShift: 1}
                         ]
                     },
                     {
@@ -2300,14 +2931,14 @@ describe('IRealProChartModel', () => {
                         chords: '(C7) x (C7)',
                         harmony: [{root: 'x'}],
                         alt: [
-                            {root: 'C', quality: '7', numeric: 5},
-                            {root: 'C', quality: '7', numeric: 5}
+                            {root: 'C', quality: '7', degree: 5},
+                            {root: 'C', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F^7#11',
-                        harmony: [{root: 'F', quality: '^7#11', numeric: 1}],
+                        harmony: [{root: 'F', quality: '^7#11', degree: 1}],
                         close: ']'
                     }
                 ]
@@ -2318,45 +2949,61 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'Bb-7',
-                        harmony: [{root: 'B', shift: 'b', quality: '-7', numeric: 4}]
+                        harmony: [{root: 'B', shift: 'b', quality: '-7', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'A^7#11',
-                        harmony: [{root: 'A', quality: '^7#11', numeric: 3}]
+                        harmony: [{root: 'A', quality: '^7#11', degree: 3}]
                     },
                     {
                         open: '|',
                         chords: 'Ab-7',
-                        harmony: [{root: 'A', shift: 'b', quality: '-7', numeric: 3}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 3,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'G^7#11',
-                        harmony: [{root: 'G', quality: '^7#11', numeric: 2}]
+                        harmony: [{root: 'G', quality: '^7#11', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'Gb^7',
-                        harmony: [{root: 'G', shift: 'b', quality: '^7', numeric: 2}]
+                        harmony: [
+                            {
+                                root: 'G',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 2,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'B7 D7',
                         harmony: [
-                            {root: 'B', quality: '7', numeric: 4},
-                            {root: 'D', quality: '7', numeric: 6}
+                            {root: 'B', quality: '7', degree: 4, degreeShift: 1},
+                            {root: 'D', quality: '7', degree: 6}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G-7',
-                        harmony: [{root: 'G', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'G', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'C7#11',
-                        harmony: [{root: 'C', quality: '7#11', numeric: 5}],
+                        harmony: [{root: 'C', quality: '7#11', degree: 5}],
                         close: ']'
                     }
                 ]
@@ -2368,49 +3015,49 @@ describe('IRealProChartModel', () => {
                         open: '[',
                         chords: 'F^7 D7b9',
                         harmony: [
-                            {root: 'F', quality: '^7', numeric: 1},
-                            {root: 'D', quality: '7b9', numeric: 6}
+                            {root: 'F', quality: '^7', degree: 1},
+                            {root: 'D', quality: '7b9', degree: 6}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G-7 C7',
                         harmony: [
-                            {root: 'G', quality: '-7', numeric: 2},
-                            {root: 'C', quality: '7', numeric: 5}
+                            {root: 'G', quality: '-7', degree: 2},
+                            {root: 'C', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'A-7 D7b9',
                         harmony: [
-                            {root: 'A', quality: '-7', numeric: 3},
-                            {root: 'D', quality: '7b9', numeric: 6}
+                            {root: 'A', quality: '-7', degree: 3},
+                            {root: 'D', quality: '7b9', degree: 6}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G-7 C7',
                         harmony: [
-                            {root: 'G', quality: '-7', numeric: 2},
-                            {root: 'C', quality: '7', numeric: 5}
+                            {root: 'G', quality: '-7', degree: 2},
+                            {root: 'C', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F^7 F7',
                         harmony: [
-                            {root: 'F', quality: '^7', numeric: 1},
-                            {root: 'F', quality: '7', numeric: 1}
+                            {root: 'F', quality: '^7', degree: 1},
+                            {root: 'F', quality: '7', degree: 1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'C7#11(Bb^7) (Bo7)',
-                        harmony: [{root: 'C', quality: '7#11', numeric: 5}],
+                        harmony: [{root: 'C', quality: '7#11', degree: 5}],
                         alt: [
-                            {root: 'B', shift: 'b', quality: '^7', numeric: 4},
-                            {root: 'B', quality: 'o7', numeric: 4}
+                            {root: 'B', shift: 'b', quality: '^7', degree: 4},
+                            {root: 'B', quality: 'o7', degree: 4, degreeShift: 1}
                         ]
                     },
                     {
@@ -2418,16 +3065,16 @@ describe('IRealProChartModel', () => {
                         chords: '(C7sus) x (C7)',
                         harmony: [{root: 'x'}],
                         alt: [
-                            {root: 'C', quality: '7sus', numeric: 5},
-                            {root: 'C', quality: '7', numeric: 5}
+                            {root: 'C', quality: '7sus', degree: 5},
+                            {root: 'C', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F^7#11 C7#5',
                         harmony: [
-                            {root: 'F', quality: '^7#11', numeric: 1},
-                            {root: 'C', quality: '7#5', numeric: 5}
+                            {root: 'F', quality: '^7#11', degree: 1},
+                            {root: 'C', quality: '7#5', degree: 5}
                         ],
                         close: ']'
                     }
@@ -2435,7 +3082,7 @@ describe('IRealProChartModel', () => {
             }
         ]);
     });
-    it('should handle Killer Joe', () => {
+    it('handles Killer Joe', () => {
         const props = {
             title: 'Killer Joe',
             key: 'C',
@@ -2453,43 +3100,75 @@ describe('IRealProChartModel', () => {
                         timeSignature: '4 / 4',
                         open: '{',
                         chords: 'C9',
-                        harmony: [{root: 'C', quality: '9', numeric: 1}]
+                        harmony: [{root: 'C', quality: '9', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Bb9#11',
-                        harmony: [{root: 'B', shift: 'b', quality: '9#11', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '9#11',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'C9',
-                        harmony: [{root: 'C', quality: '9', numeric: 1}]
+                        harmony: [{root: 'C', quality: '9', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Bb9#11',
-                        harmony: [{root: 'B', shift: 'b', quality: '9#11', numeric: 7}],
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '9#11',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ],
                         close: '|'
                     },
                     {
                         open: '|',
                         chords: 'C9',
-                        harmony: [{root: 'C', quality: '9', numeric: 1}]
+                        harmony: [{root: 'C', quality: '9', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Bb9#11',
-                        harmony: [{root: 'B', shift: 'b', quality: '9#11', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '9#11',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'C9',
-                        harmony: [{root: 'C', quality: '9', numeric: 1}]
+                        harmony: [{root: 'C', quality: '9', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Bb9#11',
-                        harmony: [{root: 'B', shift: 'b', quality: '9#11', numeric: 7}],
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '9#11',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ],
                         close: '}'
                     }
                 ]
@@ -2500,42 +3179,66 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'Eh7',
-                        harmony: [{root: 'E', quality: 'h7', numeric: 3}]
+                        harmony: [{root: 'E', quality: 'h7', degree: 3}]
                     },
                     {
                         open: '|',
                         chords: 'A7b9',
-                        harmony: [{root: 'A', quality: '7b9', numeric: 6}]
+                        harmony: [{root: 'A', quality: '7b9', degree: 6}]
                     },
                     {
                         open: '|',
                         chords: 'Eb-7',
-                        harmony: [{root: 'E', shift: 'b', quality: '-7', numeric: 3}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 3,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Ab7',
-                        harmony: [{root: 'A', shift: 'b', quality: '7', numeric: 6}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 6,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'A7',
-                        harmony: [{root: 'A', quality: '7', numeric: 6}]
+                        harmony: [{root: 'A', quality: '7', degree: 6}]
                     },
                     {
                         open: '|',
                         chords: 'Ab7',
-                        harmony: [{root: 'A', shift: 'b', quality: '7', numeric: 6}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 6,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'E-7',
-                        harmony: [{root: 'E', quality: '-7', numeric: 3}]
+                        harmony: [{root: 'E', quality: '-7', degree: 3}]
                     },
                     {
                         open: '|',
                         chords: 'A7',
-                        harmony: [{root: 'A', quality: '7', numeric: 6}],
+                        harmony: [{root: 'A', quality: '7', degree: 6}],
                         close: ']'
                     }
                 ]
@@ -2546,50 +3249,82 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'C9',
-                        harmony: [{root: 'C', quality: '9', numeric: 1}]
+                        harmony: [{root: 'C', quality: '9', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Bb9#11',
-                        harmony: [{root: 'B', shift: 'b', quality: '9#11', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '9#11',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'C9',
-                        harmony: [{root: 'C', quality: '9', numeric: 1}]
+                        harmony: [{root: 'C', quality: '9', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Bb9#11',
-                        harmony: [{root: 'B', shift: 'b', quality: '9#11', numeric: 7}],
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '9#11',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ],
                         close: '|'
                     },
                     {
                         open: '|',
                         chords: 'C9',
-                        harmony: [{root: 'C', quality: '9', numeric: 1}]
+                        harmony: [{root: 'C', quality: '9', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Bb9#11',
-                        harmony: [{root: 'B', shift: 'b', quality: '9#11', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '9#11',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'C9',
-                        harmony: [{root: 'C', quality: '9', numeric: 1}]
+                        harmony: [{root: 'C', quality: '9', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Bb9#11',
-                        harmony: [{root: 'B', shift: 'b', quality: '9#11', numeric: 7}],
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '9#11',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ],
                         close: 'Z'
                     }
                 ]
             }
         ]);
     });
-    it('should handle Moanin\'', () => {
+    it('handles Moanin\'', () => {
         const props = {
             title: 'Moanin\'',
             key: 'F-',
@@ -2607,43 +3342,43 @@ describe('IRealProChartModel', () => {
                         timeSignature: '4 / 4',
                         open: '{',
                         chords: 'n Bb',
-                        harmony: [{root: 'n'}, {root: 'B', shift: 'b', numeric: 4}]
+                        harmony: [{root: 'n'}, {root: 'B', shift: 'b', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'F n',
-                        harmony: [{root: 'F', numeric: 1}, {root: 'n'}]
+                        harmony: [{root: 'F', degree: 1}, {root: 'n'}]
                     },
                     {
                         open: '|',
                         chords: 'n Bb',
-                        harmony: [{root: 'n'}, {root: 'B', shift: 'b', numeric: 4}]
+                        harmony: [{root: 'n'}, {root: 'B', shift: 'b', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'F n',
-                        harmony: [{root: 'F', numeric: 1}, {root: 'n'}],
+                        harmony: [{root: 'F', degree: 1}, {root: 'n'}],
                         close: '|'
                     },
                     {
                         open: '|',
                         chords: 'n Bb',
-                        harmony: [{root: 'n'}, {root: 'B', shift: 'b', numeric: 4}]
+                        harmony: [{root: 'n'}, {root: 'B', shift: 'b', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'F n',
-                        harmony: [{root: 'F', numeric: 1}, {root: 'n'}]
+                        harmony: [{root: 'F', degree: 1}, {root: 'n'}]
                     },
                     {
                         open: '|',
                         chords: 'n Bb',
-                        harmony: [{root: 'n'}, {root: 'B', shift: 'b', numeric: 4}]
+                        harmony: [{root: 'n'}, {root: 'B', shift: 'b', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'F n',
-                        harmony: [{root: 'F', numeric: 1}, {root: 'n'}],
+                        harmony: [{root: 'F', degree: 1}, {root: 'n'}],
                         close: '}'
                     }
                 ]
@@ -2655,53 +3390,53 @@ describe('IRealProChartModel', () => {
                         open: '[',
                         chords: 'Bb-7 Ab9',
                         harmony: [
-                            {root: 'B', shift: 'b', quality: '-7', numeric: 4},
-                            {root: 'A', shift: 'b', quality: '9', numeric: 3}
+                            {root: 'B', shift: 'b', quality: '-7', degree: 4},
+                            {root: 'A', shift: 'b', quality: '9', degree: 3}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G7b9 C7#9',
                         harmony: [
-                            {root: 'G', quality: '7b9', numeric: 2},
-                            {root: 'C', quality: '7#9', numeric: 5}
+                            {root: 'G', quality: '7b9', degree: 2},
+                            {root: 'C', quality: '7#9', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F-7',
-                        harmony: [{root: 'F', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'F', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'F7b9 B7',
                         harmony: [
-                            {root: 'F', quality: '7b9', numeric: 1},
-                            {root: 'B', quality: '7', numeric: 4}
+                            {root: 'F', quality: '7b9', degree: 1},
+                            {root: 'B', quality: '7', degree: 4, degreeShift: 1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Bb-7 Ab9',
                         harmony: [
-                            {root: 'B', shift: 'b', quality: '-7', numeric: 4},
-                            {root: 'A', shift: 'b', quality: '9', numeric: 3}
+                            {root: 'B', shift: 'b', quality: '-7', degree: 4},
+                            {root: 'A', shift: 'b', quality: '9', degree: 3}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G7b9',
-                        harmony: [{root: 'G', quality: '7b9', numeric: 2}]
+                        harmony: [{root: 'G', quality: '7b9', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'Gh7',
-                        harmony: [{root: 'G', quality: 'h7', numeric: 2}]
+                        harmony: [{root: 'G', quality: 'h7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'C7b9',
-                        harmony: [{root: 'C', quality: '7b9', numeric: 5}],
+                        harmony: [{root: 'C', quality: '7b9', degree: 5}],
                         close: ']'
                     },
                     {divider: 'Y', close: ']'}
@@ -2715,16 +3450,16 @@ describe('IRealProChartModel', () => {
                         open: '{',
                         chords: 'F-7 Ab7',
                         harmony: [
-                            {root: 'F', quality: '-7', numeric: 1},
-                            {root: 'A', shift: 'b', quality: '7', numeric: 3}
+                            {root: 'F', quality: '-7', degree: 1},
+                            {root: 'A', shift: 'b', quality: '7', degree: 3}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G7 C7b9',
                         harmony: [
-                            {root: 'G', quality: '7', numeric: 2},
-                            {root: 'C', quality: '7b9', numeric: 5}
+                            {root: 'G', quality: '7', degree: 2},
+                            {root: 'C', quality: '7b9', degree: 5}
                         ]
                     },
                     {
@@ -2732,16 +3467,16 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'F-7 Ab7',
                         harmony: [
-                            {root: 'F', quality: '-7', numeric: 1},
-                            {root: 'A', shift: 'b', quality: '7', numeric: 3}
+                            {root: 'F', quality: '-7', degree: 1},
+                            {root: 'A', shift: 'b', quality: '7', degree: 3}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G7 C7b9',
                         harmony: [
-                            {root: 'G', quality: '7', numeric: 2},
-                            {root: 'C', quality: '7b9', numeric: 5}
+                            {root: 'G', quality: '7', degree: 2},
+                            {root: 'C', quality: '7b9', degree: 5}
                         ],
                         close: '|'
                     },
@@ -2750,16 +3485,16 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'F-7 Ab7',
                         harmony: [
-                            {root: 'F', quality: '-7', numeric: 1},
-                            {root: 'A', shift: 'b', quality: '7', numeric: 3}
+                            {root: 'F', quality: '-7', degree: 1},
+                            {root: 'A', shift: 'b', quality: '7', degree: 3}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G7 C7b9',
                         harmony: [
-                            {root: 'G', quality: '7', numeric: 2},
-                            {root: 'C', quality: '7b9', numeric: 5}
+                            {root: 'G', quality: '7', degree: 2},
+                            {root: 'C', quality: '7b9', degree: 5}
                         ]
                     },
                     {
@@ -2767,16 +3502,16 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'F-7 Ab7',
                         harmony: [
-                            {root: 'F', quality: '-7', numeric: 1},
-                            {root: 'A', shift: 'b', quality: '7', numeric: 3}
+                            {root: 'F', quality: '-7', degree: 1},
+                            {root: 'A', shift: 'b', quality: '7', degree: 3}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G7 C7b9',
                         harmony: [
-                            {root: 'G', quality: '7', numeric: 2},
-                            {root: 'C', quality: '7b9', numeric: 5}
+                            {root: 'G', quality: '7', degree: 2},
+                            {root: 'C', quality: '7b9', degree: 5}
                         ],
                         close: '}'
                     }
@@ -2789,60 +3524,60 @@ describe('IRealProChartModel', () => {
                         open: '[',
                         chords: 'Bb-7 Ab9',
                         harmony: [
-                            {root: 'B', shift: 'b', quality: '-7', numeric: 4},
-                            {root: 'A', shift: 'b', quality: '9', numeric: 3}
+                            {root: 'B', shift: 'b', quality: '-7', degree: 4},
+                            {root: 'A', shift: 'b', quality: '9', degree: 3}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G7b9 C7#9',
                         harmony: [
-                            {root: 'G', quality: '7b9', numeric: 2},
-                            {root: 'C', quality: '7#9', numeric: 5}
+                            {root: 'G', quality: '7b9', degree: 2},
+                            {root: 'C', quality: '7#9', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F-7',
-                        harmony: [{root: 'F', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'F', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'F7b9 B7',
                         harmony: [
-                            {root: 'F', quality: '7b9', numeric: 1},
-                            {root: 'B', quality: '7', numeric: 4}
+                            {root: 'F', quality: '7b9', degree: 1},
+                            {root: 'B', quality: '7', degree: 4, degreeShift: 1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Bb-7 Ab9',
                         harmony: [
-                            {root: 'B', shift: 'b', quality: '-7', numeric: 4},
-                            {root: 'A', shift: 'b', quality: '9', numeric: 3}
+                            {root: 'B', shift: 'b', quality: '-7', degree: 4},
+                            {root: 'A', shift: 'b', quality: '9', degree: 3}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G7b9',
-                        harmony: [{root: 'G', quality: '7b9', numeric: 2}]
+                        harmony: [{root: 'G', quality: '7b9', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'Gh7',
-                        harmony: [{root: 'G', quality: 'h7', numeric: 2}]
+                        harmony: [{root: 'G', quality: 'h7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'C7b9',
-                        harmony: [{root: 'C', quality: '7b9', numeric: 5}],
+                        harmony: [{root: 'C', quality: '7b9', degree: 5}],
                         close: ']'
                     }
                 ]
             }
         ]);
     });
-    it('should handle Brazilian Suite', () => {
+    it('handles Brazilian Suite', () => {
         const props = {
             title: 'Brazilian Suite',
             key: 'B-',
@@ -2860,22 +3595,54 @@ describe('IRealProChartModel', () => {
                         timeSignature: '4 / 4',
                         open: '{',
                         chords: 'Ab-7',
-                        harmony: [{root: 'A', shift: 'b', quality: '-7', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Eb-7',
-                        harmony: [{root: 'E', shift: 'b', quality: '-7', numeric: 4}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Ab-7',
-                        harmony: [{root: 'A', shift: 'b', quality: '-7', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Eb-7',
-                        harmony: [{root: 'E', shift: 'b', quality: '-7', numeric: 4}],
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ],
                         close: '}'
                     }
                 ]
@@ -2886,7 +3653,15 @@ describe('IRealProChartModel', () => {
                     {
                         open: '{',
                         chords: 'Ab-7',
-                        harmony: [{root: 'A', shift: 'b', quality: '-7', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
@@ -2896,159 +3671,334 @@ describe('IRealProChartModel', () => {
                                 root: 'A',
                                 shift: 'b',
                                 quality: '-7',
+                                degree: 7,
+                                degreeShift: -1,
                                 inversion: '/Gb',
-                                numeric: 7
+                                inversionDegree: 6,
+                                inversionDegreeShift: -1
                             }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E^7#11',
-                        harmony: [{root: 'E', quality: '^7#11', numeric: 4}]
+                        harmony: [{root: 'E', quality: '^7#11', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'Eb-7',
-                        harmony: [{root: 'E', shift: 'b', quality: '-7', numeric: 4}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Db-7',
-                        harmony: [{root: 'D', shift: 'b', quality: '-7', numeric: 3}]
+                        harmony: [
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 3,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Eb7b9',
-                        harmony: [{root: 'E', shift: 'b', quality: '7b9', numeric: 4}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '7b9',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'D7b5',
-                        harmony: [{root: 'D', quality: '7b5', numeric: 3}]
+                        harmony: [{root: 'D', quality: '7b5', degree: 3}]
                     },
                     {
                         open: '|',
                         chords: 'Db7',
-                        harmony: [{root: 'D', shift: 'b', quality: '7', numeric: 3}]
+                        harmony: [
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 3,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'C^7#5',
-                        harmony: [{root: 'C', quality: '^7#5', numeric: 2}]
+                        harmony: [{root: 'C', quality: '^7#5', degree: 2, degreeShift: -1}]
                     },
                     {
                         open: '|',
                         chords: 'B7',
-                        harmony: [{root: 'B', quality: '7', numeric: 1}]
+                        harmony: [{root: 'B', quality: '7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'Bb7b9',
-                        harmony: [{root: 'B', shift: 'b', quality: '7b9', numeric: 1}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '7b9',
+                                degree: 1,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Eb7#9',
-                        harmony: [{root: 'E', shift: 'b', quality: '7#9', numeric: 4}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '7#9',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Ab-7',
-                        harmony: [{root: 'A', shift: 'b', quality: '-7', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Eb7b9',
-                        harmony: [{root: 'E', shift: 'b', quality: '7b9', numeric: 4}],
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '7b9',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ],
                         close: ']'
                     },
                     {
                         open: '|',
                         chords: 'Ab-7',
-                        harmony: [{root: 'A', shift: 'b', quality: '-7', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'B7/F#',
-                        harmony: [{root: 'B', quality: '7', inversion: '/F#', numeric: 1}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                quality: '7',
+                                degree: 1,
+                                inversion: '/F#',
+                                inversionDegree: 5
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Fh7',
-                        harmony: [{root: 'F', quality: 'h7', numeric: 5}]
+                        harmony: [{root: 'F', quality: 'h7', degree: 5, degreeShift: -1}]
                     },
                     {
                         open: '|',
                         chords: 'Bb7',
-                        harmony: [{root: 'B', shift: 'b', quality: '7', numeric: 1}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 1,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'E-7',
-                        harmony: [{root: 'E', quality: '-7', numeric: 4}]
+                        harmony: [{root: 'E', quality: '-7', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'A7',
-                        harmony: [{root: 'A', quality: '7', numeric: 7}]
+                        harmony: [{root: 'A', quality: '7', degree: 7}]
                     },
                     {
                         open: '|',
                         chords: 'D^7',
-                        harmony: [{root: 'D', quality: '^7', numeric: 3}]
+                        harmony: [{root: 'D', quality: '^7', degree: 3}]
                     },
                     {
                         open: '|',
                         chords: 'Eb-7 Ab7',
                         harmony: [
-                            {root: 'E', shift: 'b', quality: '-7', numeric: 4},
-                            {root: 'A', shift: 'b', quality: '7', numeric: 7}
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 4,
+                                degreeShift: -1
+                            },
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Db^7',
-                        harmony: [{root: 'D', shift: 'b', quality: '^7', numeric: 3}]
+                        harmony: [
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 3,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Bb-7',
-                        harmony: [{root: 'B', shift: 'b', quality: '-7', numeric: 1}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 1,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Eb-7',
-                        harmony: [{root: 'E', shift: 'b', quality: '-7', numeric: 4}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Ab7',
-                        harmony: [{root: 'A', shift: 'b', quality: '7', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Db^7',
-                        harmony: [{root: 'D', shift: 'b', quality: '^7', numeric: 3}]
+                        harmony: [
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 3,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Bb-7',
-                        harmony: [{root: 'B', shift: 'b', quality: '-7', numeric: 1}]
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 1,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Eb^7#11',
-                        harmony: [{root: 'E', shift: 'b', quality: '^7#11', numeric: 4}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '^7#11',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Eb7',
-                        harmony: [{root: 'E', shift: 'b', quality: '7', numeric: 4}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Ab-7',
-                        harmony: [{root: 'A', shift: 'b', quality: '-7', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
@@ -3058,70 +4008,153 @@ describe('IRealProChartModel', () => {
                                 root: 'A',
                                 shift: 'b',
                                 quality: '-7',
+                                degree: 7,
+                                degreeShift: -1,
                                 inversion: '/Gb',
-                                numeric: 7
+                                inversionDegree: 6,
+                                inversionDegreeShift: -1
                             }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Eb^7#11',
-                        harmony: [{root: 'E', shift: 'b', quality: '^7#11', numeric: 4}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '^7#11',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Eb-7',
-                        harmony: [{root: 'E', shift: 'b', quality: '-7', numeric: 4}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Db-7',
-                        harmony: [{root: 'D', shift: 'b', quality: '-7', numeric: 3}]
+                        harmony: [
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 3,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Eb7b9',
-                        harmony: [{root: 'E', shift: 'b', quality: '7b9', numeric: 4}],
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '7b9',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ],
                         close: ']'
                     },
                     {
                         open: '{',
                         chords: 'Ab-7',
-                        harmony: [{root: 'A', shift: 'b', quality: '-7', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Eb-7',
-                        harmony: [{root: 'E', shift: 'b', quality: '-7', numeric: 4}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Ab-7',
-                        harmony: [{root: 'A', shift: 'b', quality: '-7', numeric: 7}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Eb-7',
-                        harmony: [{root: 'E', shift: 'b', quality: '-7', numeric: 4}],
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 4,
+                                degreeShift: -1
+                            }
+                        ],
                         close: '}'
                     },
                     {
                         coda: true,
                         open: '|',
                         chords: 'Db^7',
-                        harmony: [{root: 'D', shift: 'b', quality: '^7', numeric: 3}]
+                        harmony: [
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 3,
+                                degreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Db^7',
-                        harmony: [{root: 'D', shift: 'b', quality: '^7', numeric: 3}],
+                        harmony: [
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 3,
+                                degreeShift: -1
+                            }
+                        ],
                         close: 'Z'
                     }
                 ]
             }
         ]);
     });
-    it('should handle Butterfly', () => {
+    it('handles Butterfly with empty chord W/C', () => {
         const props = {
             title: 'Butterfly',
             key: 'F-',
@@ -3131,6 +4164,7 @@ describe('IRealProChartModel', () => {
 
         expect(model.title).toBe('Butterfly');
         expect(model.errors).toEqual([]);
+
         expect(model.segments).toEqual([
             {
                 name: 'i',
@@ -3139,22 +4173,28 @@ describe('IRealProChartModel', () => {
                         timeSignature: '4 / 4',
                         open: '{',
                         chords: 'F-7',
-                        harmony: [{root: 'F', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'F', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'p A-7',
-                        harmony: [{root: 'p'}, {root: 'A', quality: '-7', numeric: 3}]
+                        harmony: [
+                            {root: 'p'},
+                            {root: 'A', quality: '-7', degree: 3, degreeShift: 1}
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'F-7',
-                        harmony: [{root: 'F', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'F', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'p A-7',
-                        harmony: [{root: 'p'}, {root: 'A', quality: '-7', numeric: 3}],
+                        harmony: [
+                            {root: 'p'},
+                            {root: 'A', quality: '-7', degree: 3, degreeShift: 1}
+                        ],
                         close: '}'
                     }
                 ]
@@ -3166,22 +4206,28 @@ describe('IRealProChartModel', () => {
                         segno: true,
                         open: '{',
                         chords: 'F-11',
-                        harmony: [{root: 'F', quality: '-11', numeric: 1}]
+                        harmony: [{root: 'F', quality: '-11', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'p A-11',
-                        harmony: [{root: 'p'}, {root: 'A', quality: '-11', numeric: 3}]
+                        harmony: [
+                            {root: 'p'},
+                            {root: 'A', quality: '-11', degree: 3, degreeShift: 1}
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'F-11',
-                        harmony: [{root: 'F', quality: '-11', numeric: 1}]
+                        harmony: [{root: 'F', quality: '-11', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'p D-11',
-                        harmony: [{root: 'p'}, {root: 'D', quality: '-11', numeric: 6}],
+                        harmony: [
+                            {root: 'p'},
+                            {root: 'D', quality: '-11', degree: 6, degreeShift: 1}
+                        ],
                         close: '}'
                     }
                 ]
@@ -3194,7 +4240,7 @@ describe('IRealProChartModel', () => {
                         chords: 'n Bb7',
                         harmony: [
                             {root: 'n'},
-                            {root: 'B', shift: 'b', quality: '7', numeric: 4}
+                            {root: 'B', shift: 'b', quality: '7', degree: 4}
                         ]
                     },
                     {open: '|', chords: 'n', harmony: [{root: 'n'}]},
@@ -3202,7 +4248,10 @@ describe('IRealProChartModel', () => {
                     {
                         open: '|',
                         chords: 'n A7#9#5',
-                        harmony: [{root: 'n'}, {root: 'A', quality: '7#9#5', numeric: 3}]
+                        harmony: [
+                            {root: 'n'},
+                            {root: 'A', quality: '7#9#5', degree: 3, degreeShift: 1}
+                        ]
                     },
                     {
                         open: '|',
@@ -3212,8 +4261,9 @@ describe('IRealProChartModel', () => {
                                 root: 'A',
                                 shift: 'b',
                                 quality: '^7',
+                                degree: 3,
                                 inversion: '/Bb',
-                                numeric: 3
+                                inversionDegree: 4
                             }
                         ]
                     },
@@ -3225,8 +4275,9 @@ describe('IRealProChartModel', () => {
                                 root: 'A',
                                 shift: 'b',
                                 quality: '^7#5',
+                                degree: 3,
                                 inversion: '/Bb',
-                                numeric: 3
+                                inversionDegree: 4
                             }
                         ]
                     },
@@ -3238,32 +4289,33 @@ describe('IRealProChartModel', () => {
                                 root: 'A',
                                 shift: 'b',
                                 quality: '^7',
+                                degree: 3,
                                 inversion: '/Bb',
-                                numeric: 3
+                                inversionDegree: 4
                             }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Bb13',
-                        harmony: [{root: 'B', shift: 'b', quality: '13', numeric: 4}]
+                        harmony: [{root: 'B', shift: 'b', quality: '13', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'Eb13sus',
-                        harmony: [{root: 'E', shift: 'b', quality: '13sus', numeric: 7}]
+                        harmony: [{root: 'E', shift: 'b', quality: '13sus', degree: 7}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Eb7#9#5',
-                        harmony: [{root: 'E', shift: 'b', quality: '7#9#5', numeric: 7}]
+                        harmony: [{root: 'E', shift: 'b', quality: '7#9#5', degree: 7}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'Ab13sus',
-                        harmony: [{root: 'A', shift: 'b', quality: '13sus', numeric: 3}]
+                        harmony: [{root: 'A', shift: 'b', quality: '13sus', degree: 3}]
                     },
                     {
                         coda: true,
@@ -3272,30 +4324,43 @@ describe('IRealProChartModel', () => {
                         harmony: [
                             {root: 'p'},
                             {root: 'p'},
-                            {root: 'W', inversion: '/C'},
-                            {root: 'C', quality: '7', inversion: '/E', numeric: 5}
+                            {root: 'W', inversion: '/C', inversionDegree: 5},
+                            {
+                                root: 'C',
+                                quality: '7',
+                                degree: 5,
+                                inversion: '/E',
+                                inversionDegree: 7,
+                                inversionDegreeShift: 1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'n F-7',
-                        harmony: [{root: 'n'}, {root: 'F', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'n'}, {root: 'F', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'p A-7',
-                        harmony: [{root: 'p'}, {root: 'A', quality: '-7', numeric: 3}],
+                        harmony: [
+                            {root: 'p'},
+                            {root: 'A', quality: '-7', degree: 3, degreeShift: 1}
+                        ],
                         close: '|'
                     },
                     {
                         open: '{',
                         chords: 'F-7',
-                        harmony: [{root: 'F', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'F', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'p A-7',
-                        harmony: [{root: 'p'}, {root: 'A', quality: '-7', numeric: 3}],
+                        harmony: [
+                            {root: 'p'},
+                            {root: 'A', quality: '-7', degree: 3, degreeShift: 1}
+                        ],
                         close: '}'
                     },
                     {divider: 'Y'},
@@ -3303,7 +4368,7 @@ describe('IRealProChartModel', () => {
                         coda: true,
                         open: '{',
                         chords: 'F-11',
-                        harmony: [{root: 'F', quality: '-11', numeric: 1}]
+                        harmony: [{root: 'F', quality: '-11', degree: 1}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
@@ -3316,7 +4381,7 @@ describe('IRealProChartModel', () => {
                     {
                         open: '{',
                         chords: 'Bb13',
-                        harmony: [{root: 'B', shift: 'b', quality: '13', numeric: 4}]
+                        harmony: [{root: 'B', shift: 'b', quality: '13', degree: 4}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
@@ -3330,14 +4395,14 @@ describe('IRealProChartModel', () => {
                         fermata: true,
                         open: '|',
                         chords: 'A^7#11',
-                        harmony: [{root: 'A', quality: '^7#11', numeric: 3}],
+                        harmony: [{root: 'A', quality: '^7#11', degree: 3, degreeShift: 1}],
                         close: 'Z'
                     }
                 ]
             }
         ]);
     });
-    it('should handle A. Beleza é Você, Menina with special symbols and uneven lines', () => {
+    it('handles A. Beleza é Você, Menina with special symbols and uneven lines', () => {
         const props = {
             title: 'A. Beleza é Você, Menina',
             author: 'Bebeto',
@@ -3358,49 +4423,49 @@ describe('IRealProChartModel', () => {
                         timeSignature: '4 / 4',
                         open: '[',
                         chords: 'E-7',
-                        harmony: [{root: 'E', quality: '-7', numeric: 5}]
+                        harmony: [{root: 'E', quality: '-7', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'A', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'B-7',
-                        harmony: [{root: 'B', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'B', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'A', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'E-7',
-                        harmony: [{root: 'E', quality: '-7', numeric: 5}],
+                        harmony: [{root: 'E', quality: '-7', degree: 5}],
                         close: ']'
                     },
                     {divider: 'Y'},
                     {
                         open: '{',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'A', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'B-7',
-                        harmony: [{root: 'B', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'B', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'A', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'E-9',
-                        harmony: [{root: 'E', quality: '-9', numeric: 5}],
+                        harmony: [{root: 'E', quality: '-9', degree: 5}],
                         close: '}'
                     },
                     {divider: 'Y', close: ']'}
@@ -3412,58 +4477,58 @@ describe('IRealProChartModel', () => {
                     {
                         open: '{',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'A', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'B-7',
-                        harmony: [{root: 'B', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'B', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'A', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'E-7',
-                        harmony: [{root: 'E', quality: '-7', numeric: 5}],
+                        harmony: [{root: 'E', quality: '-7', degree: 5}],
                         close: '}'
                     },
                     {
                         open: '[',
                         chords: 'C^9',
-                        harmony: [{root: 'C', quality: '^9', numeric: 3}]
+                        harmony: [{root: 'C', quality: '^9', degree: 3}]
                     },
                     {
                         open: '|',
                         chords: 'B-7',
-                        harmony: [{root: 'B', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'B', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'A', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'E-7',
-                        harmony: [{root: 'E', quality: '-7', numeric: 5}]
+                        harmony: [{root: 'E', quality: '-7', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'A', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'B-7',
-                        harmony: [{root: 'B', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'B', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 1}],
+                        harmony: [{root: 'A', quality: '-7', degree: 1}],
                         close: ']'
                     },
                     {divider: 'Y', close: ']'}
@@ -3475,22 +4540,22 @@ describe('IRealProChartModel', () => {
                     {
                         open: '{',
                         chords: 'C^9',
-                        harmony: [{root: 'C', quality: '^9', numeric: 3}]
+                        harmony: [{root: 'C', quality: '^9', degree: 3}]
                     },
                     {
                         open: '|',
                         chords: 'B-7',
-                        harmony: [{root: 'B', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'B', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'A', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'E-7',
-                        harmony: [{root: 'E', quality: '-7', numeric: 5}],
+                        harmony: [{root: 'E', quality: '-7', degree: 5}],
                         close: '}'
                     },
                     {divider: 'Y', close: ']'}
@@ -3502,23 +4567,23 @@ describe('IRealProChartModel', () => {
                     {
                         open: '{',
                         chords: 'C^9(A-7)',
-                        harmony: [{root: 'C', quality: '^9', numeric: 3}],
-                        alt: [{root: 'A', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'C', quality: '^9', degree: 3}],
+                        alt: [{root: 'A', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'B-7',
-                        harmony: [{root: 'B', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'B', quality: '-7', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'A', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'E-7',
-                        harmony: [{root: 'E', quality: '-7', numeric: 5}],
+                        harmony: [{root: 'E', quality: '-7', degree: 5}],
                         close: '}'
                     },
                     {divider: 'Y', close: ']'}
@@ -3530,37 +4595,37 @@ describe('IRealProChartModel', () => {
                     {
                         open: '{',
                         chords: 'C^9',
-                        harmony: [{root: 'C', quality: '^9', numeric: 3}]
+                        harmony: [{root: 'C', quality: '^9', degree: 3}]
                     },
                     {
                         open: '|',
                         chords: 'B-7',
-                        harmony: [{root: 'B', quality: '-7', numeric: 2}]
+                        harmony: [{root: 'B', quality: '-7', degree: 2}]
                     },
                     {
                         ending: 'N1',
                         open: '|',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 1}]
+                        harmony: [{root: 'A', quality: '-7', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'E-7',
-                        harmony: [{root: 'E', quality: '-7', numeric: 5}],
+                        harmony: [{root: 'E', quality: '-7', degree: 5}],
                         close: '}'
                     },
                     {
                         ending: 'N2',
                         open: '|',
                         chords: 'A-7',
-                        harmony: [{root: 'A', quality: '-7', numeric: 1}],
+                        harmony: [{root: 'A', quality: '-7', degree: 1}],
                         close: 'Z'
                     }
                 ]
             }
         ]);
     });
-    it('should handle A.Epopéia de Zumbi - In ABC ABC with special symbols and uneven lines', () => {
+    it('handles A.Epopéia de Zumbi - In ABC ABC with special symbols and uneven lines', () => {
         const props = {
             title: 'A.Epopéia de Zumbi - In ABC ABC',
             author: 'Nei Lopes',
@@ -3572,6 +4637,7 @@ describe('IRealProChartModel', () => {
 
         expect(model.title).toBe('A.Epopéia de Zumbi - In ABC ABC');
         expect(model.errors).toEqual([]);
+
         expect(model.segments).toEqual([
             {
                 name: 'i',
@@ -3581,38 +4647,38 @@ describe('IRealProChartModel', () => {
                         open: '[',
                         chords: 'E- E-^7',
                         harmony: [
-                            {root: 'E', quality: '-', numeric: 1},
-                            {root: 'E', quality: '-^7', numeric: 1}
+                            {root: 'E', quality: '-', degree: 1},
+                            {root: 'E', quality: '-^7', degree: 1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E-7 E-6',
                         harmony: [
-                            {root: 'E', quality: '-7', numeric: 1},
-                            {root: 'E', quality: '-6', numeric: 1}
+                            {root: 'E', quality: '-7', degree: 1},
+                            {root: 'E', quality: '-6', degree: 1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'C7 B7',
                         harmony: [
-                            {root: 'C', quality: '7', numeric: 6},
-                            {root: 'B', quality: '7', numeric: 5}
+                            {root: 'C', quality: '7', degree: 6},
+                            {root: 'B', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E- B7',
                         harmony: [
-                            {root: 'E', quality: '-', numeric: 1},
-                            {root: 'B', quality: '7', numeric: 5}
+                            {root: 'E', quality: '-', degree: 1},
+                            {root: 'B', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E- nB7',
-                        harmony: [{root: 'E', quality: '-', numeric: 1}, {root: 'n'}],
+                        harmony: [{root: 'E', quality: '-', degree: 1}, {root: 'n'}],
                         close: ']'
                     },
                     {divider: 'Y', close: ']'}
@@ -3624,35 +4690,52 @@ describe('IRealProChartModel', () => {
                     {
                         open: '{',
                         chords: 'E-',
-                        harmony: [{root: 'E', quality: '-', numeric: 1}]
+                        harmony: [{root: 'E', quality: '-', degree: 1}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'D7',
-                        harmony: [{root: 'D', quality: '7', numeric: 7}]
+                        harmony: [{root: 'D', quality: '7', degree: 7}]
                     },
                     {
                         open: '|',
                         chords: 'x(D7/F#)',
                         harmony: [{root: 'x'}],
-                        alt: [{root: 'D', quality: '7', inversion: '/F#', numeric: 7}]
+                        alt: [
+                            {
+                                root: 'D',
+                                quality: '7',
+                                degree: 7,
+                                inversion: '/F#',
+                                inversionDegree: 2
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'C7',
-                        harmony: [{root: 'C', quality: '7', numeric: 6}]
+                        harmony: [{root: 'C', quality: '7', degree: 6}]
                     },
                     {
                         open: '|',
                         chords: 'x(C7/Bb)',
                         harmony: [{root: 'x'}],
-                        alt: [{root: 'C', quality: '7', inversion: '/Bb', numeric: 6}]
+                        alt: [
+                            {
+                                root: 'C',
+                                quality: '7',
+                                degree: 6,
+                                inversion: '/Bb',
+                                inversionDegree: 5,
+                                inversionDegreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'B7',
-                        harmony: [{root: 'B', quality: '7', numeric: 5}]
+                        harmony: [{root: 'B', quality: '7', degree: 5}]
                     },
                     {
                         open: '|',
@@ -3664,38 +4747,30 @@ describe('IRealProChartModel', () => {
                     {
                         open: '{',
                         chords: 'A-',
-                        harmony: [{root: 'A', quality: '-', numeric: 4}]
+                        harmony: [{root: 'A', quality: '-', degree: 4}]
                     },
                     {
                         open: '|',
                         chords: 'D7',
-                        harmony: [{root: 'D', quality: '7', numeric: 7}]
+                        harmony: [{root: 'D', quality: '7', degree: 7}]
                     },
-                    {
-                        open: '|',
-                        chords: 'G',
-                        harmony: [{root: 'G', numeric: 3}]
-                    },
-                    {
-                        open: '|',
-                        chords: 'C',
-                        harmony: [{root: 'C', numeric: 6}]
-                    },
+                    {open: '|', chords: 'G', harmony: [{root: 'G', degree: 3}]},
+                    {open: '|', chords: 'C', harmony: [{root: 'C', degree: 6}]},
                     {
                         open: '|',
                         chords: 'F#h',
-                        harmony: [{root: 'F', shift: '#', quality: 'h', numeric: 2}]
+                        harmony: [{root: 'F', shift: '#', quality: 'h', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'B7',
-                        harmony: [{root: 'B', quality: '7', numeric: 5}]
+                        harmony: [{root: 'B', quality: '7', degree: 5}]
                     },
                     {
                         ending: 'N1',
                         open: '|',
                         chords: 'E7',
-                        harmony: [{root: 'E', quality: '7', numeric: 1}]
+                        harmony: [{root: 'E', quality: '7', degree: 1}]
                     },
                     {
                         open: '|',
@@ -3708,8 +4783,8 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'E- B7',
                         harmony: [
-                            {root: 'E', quality: '-', numeric: 1},
-                            {root: 'B', quality: '7', numeric: 5}
+                            {root: 'E', quality: '-', degree: 1},
+                            {root: 'B', quality: '7', degree: 5}
                         ],
                         close: ']'
                     },
@@ -3719,11 +4794,7 @@ describe('IRealProChartModel', () => {
             {
                 name: 'B',
                 data: [
-                    {
-                        open: '[',
-                        chords: 'E',
-                        harmony: [{root: 'E', numeric: 1}]
-                    },
+                    {open: '[', chords: 'E', harmony: [{root: 'E', degree: 1}]},
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
@@ -3731,34 +4802,40 @@ describe('IRealProChartModel', () => {
                         chords: 'x C#7',
                         harmony: [
                             {root: 'x'},
-                            {root: 'C', shift: '#', quality: '7', numeric: 6}
+                            {
+                                root: 'C',
+                                shift: '#',
+                                quality: '7',
+                                degree: 6,
+                                degreeShift: 1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F#- F#-^7',
                         harmony: [
-                            {root: 'F', shift: '#', quality: '-', numeric: 2},
-                            {root: 'F', shift: '#', quality: '-^7', numeric: 2}
+                            {root: 'F', shift: '#', quality: '-', degree: 2},
+                            {root: 'F', shift: '#', quality: '-^7', degree: 2}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F#-',
-                        harmony: [{root: 'F', shift: '#', quality: '-', numeric: 2}]
+                        harmony: [{root: 'F', shift: '#', quality: '-', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'B7',
-                        harmony: [{root: 'B', quality: '7', numeric: 5}]
+                        harmony: [{root: 'B', quality: '7', degree: 5}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'E B7',
                         harmony: [
-                            {root: 'E', numeric: 1},
-                            {root: 'B', quality: '7', numeric: 5}
+                            {root: 'E', degree: 1},
+                            {root: 'B', quality: '7', degree: 5}
                         ]
                     },
                     {divider: 'Y'},
@@ -3766,26 +4843,26 @@ describe('IRealProChartModel', () => {
                         open: '{',
                         chords: 'E Fo',
                         harmony: [
-                            {root: 'E', numeric: 1},
-                            {root: 'F', quality: 'o', numeric: 2}
+                            {root: 'E', degree: 1},
+                            {root: 'F', quality: 'o', degree: 2, degreeShift: -1}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F#-',
-                        harmony: [{root: 'F', shift: '#', quality: '-', numeric: 2}]
+                        harmony: [{root: 'F', shift: '#', quality: '-', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'B7',
-                        harmony: [{root: 'B', quality: '7', numeric: 5}]
+                        harmony: [{root: 'B', quality: '7', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'E B7',
                         harmony: [
-                            {root: 'E', numeric: 1},
-                            {root: 'B', quality: '7', numeric: 5}
+                            {root: 'E', degree: 1},
+                            {root: 'B', quality: '7', degree: 5}
                         ],
                         close: '}'
                     },
@@ -3793,7 +4870,7 @@ describe('IRealProChartModel', () => {
                         ending: 'N0',
                         open: '|',
                         chords: 'E-',
-                        harmony: [{root: 'E', quality: '-', numeric: 1}],
+                        harmony: [{root: 'E', quality: '-', degree: 1}],
                         close: ']'
                     },
                     {divider: 'Y', close: ']'}
@@ -3806,68 +4883,68 @@ describe('IRealProChartModel', () => {
                         open: '[',
                         chords: 'F#h B7',
                         harmony: [
-                            {root: 'F', shift: '#', quality: 'h', numeric: 2},
-                            {root: 'B', quality: '7', numeric: 5}
+                            {root: 'F', shift: '#', quality: 'h', degree: 2},
+                            {root: 'B', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E-',
-                        harmony: [{root: 'E', quality: '-', numeric: 1}]
+                        harmony: [{root: 'E', quality: '-', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'F#h B7',
                         harmony: [
-                            {root: 'F', shift: '#', quality: 'h', numeric: 2},
-                            {root: 'B', quality: '7', numeric: 5}
+                            {root: 'F', shift: '#', quality: 'h', degree: 2},
+                            {root: 'B', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E-',
-                        harmony: [{root: 'E', quality: '-', numeric: 1}],
+                        harmony: [{root: 'E', quality: '-', degree: 1}],
                         close: '|'
                     },
                     {
                         open: '|',
                         chords: 'F#h B7',
                         harmony: [
-                            {root: 'F', shift: '#', quality: 'h', numeric: 2},
-                            {root: 'B', quality: '7', numeric: 5}
+                            {root: 'F', shift: '#', quality: 'h', degree: 2},
+                            {root: 'B', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E-',
-                        harmony: [{root: 'E', quality: '-', numeric: 1}]
+                        harmony: [{root: 'E', quality: '-', degree: 1}]
                     },
                     {
                         open: '|',
                         chords: 'F#h B7',
                         harmony: [
-                            {root: 'F', shift: '#', quality: 'h', numeric: 2},
-                            {root: 'B', quality: '7', numeric: 5}
+                            {root: 'F', shift: '#', quality: 'h', degree: 2},
+                            {root: 'B', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E-',
-                        harmony: [{root: 'E', quality: '-', numeric: 1}],
+                        harmony: [{root: 'E', quality: '-', degree: 1}],
                         close: '|'
                     },
                     {
                         open: '|',
                         chords: 'B7',
-                        harmony: [{root: 'B', quality: '7', numeric: 5}]
+                        harmony: [{root: 'B', quality: '7', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'E- n B7',
                         harmony: [
-                            {root: 'E', quality: '-', numeric: 1},
+                            {root: 'E', quality: '-', degree: 1},
                             {root: 'n'},
-                            {root: 'B', quality: '7', numeric: 5}
+                            {root: 'B', quality: '7', degree: 5}
                         ],
                         close: 'Z'
                     }
@@ -3875,8 +4952,8 @@ describe('IRealProChartModel', () => {
             }
         ]);
     });
-    it('should handle Alguém me Avisou, it has extra chords in double bar repeat and double repeat at the start of the segment', () => {
-        // TODO find out how to handle chords put inside double bar repeats
+    it('handles Alguém me Avisou, it has extra chords in double bar repeat and double repeat at the start of the segment', () => {
+        // TODO find out how to handle chords put inside double bar repeats, maybe treat them as alt chords
         const props = {
             title: 'Alguém me Avisou',
             author: 'Dona Ivone Lara',
@@ -3899,32 +4976,32 @@ describe('IRealProChartModel', () => {
                         open: '[',
                         chords: 'D G7',
                         harmony: [
-                            {root: 'D', numeric: 1},
-                            {root: 'G', quality: '7', numeric: 4}
+                            {root: 'D', degree: 1},
+                            {root: 'G', quality: '7', degree: 4}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D A7',
                         harmony: [
-                            {root: 'D', numeric: 1},
-                            {root: 'A', quality: '7', numeric: 5}
+                            {root: 'D', degree: 1},
+                            {root: 'A', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D G7',
                         harmony: [
-                            {root: 'D', numeric: 1},
-                            {root: 'G', quality: '7', numeric: 4}
+                            {root: 'D', degree: 1},
+                            {root: 'G', quality: '7', degree: 4}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D A7',
                         harmony: [
-                            {root: 'D', numeric: 1},
-                            {root: 'A', quality: '7', numeric: 5}
+                            {root: 'D', degree: 1},
+                            {root: 'A', quality: '7', degree: 5}
                         ],
                         close: '|'
                     },
@@ -3932,76 +5009,88 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'D E-',
                         harmony: [
-                            {root: 'D', numeric: 1},
-                            {root: 'E', quality: '-', numeric: 2}
+                            {root: 'D', degree: 1},
+                            {root: 'E', quality: '-', degree: 2}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F#- G^(E-)',
                         harmony: [
-                            {root: 'F', shift: '#', quality: '-', numeric: 3},
-                            {root: 'G', quality: '^', numeric: 4}
+                            {root: 'F', shift: '#', quality: '-', degree: 3},
+                            {root: 'G', quality: '^', degree: 4}
                         ],
-                        alt: [{root: 'E', quality: '-', numeric: 2}]
+                        alt: [{root: 'E', quality: '-', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'D E-',
                         harmony: [
-                            {root: 'D', numeric: 1},
-                            {root: 'E', quality: '-', numeric: 2}
+                            {root: 'D', degree: 1},
+                            {root: 'E', quality: '-', degree: 2}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F#- G^(E-)',
                         harmony: [
-                            {root: 'F', shift: '#', quality: '-', numeric: 3},
-                            {root: 'G', quality: '^', numeric: 4}
+                            {root: 'F', shift: '#', quality: '-', degree: 3},
+                            {root: 'G', quality: '^', degree: 4}
                         ],
-                        alt: [{root: 'E', quality: '-', numeric: 2}],
+                        alt: [{root: 'E', quality: '-', degree: 2}],
                         close: '|'
                     },
                     {
                         open: '|',
                         chords: '(F#h) B7(B7)',
-                        harmony: [{root: 'B', quality: '7', numeric: 6}],
+                        harmony: [{root: 'B', quality: '7', degree: 6}],
                         alt: [
-                            {root: 'F', shift: '#', quality: 'h', numeric: 3},
-                            {root: 'B', quality: '7', numeric: 6}
+                            {root: 'F', shift: '#', quality: 'h', degree: 3},
+                            {root: 'B', quality: '7', degree: 6}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E- A7',
                         harmony: [
-                            {root: 'E', quality: '-', numeric: 2},
-                            {root: 'A', quality: '7', numeric: 5}
+                            {root: 'E', quality: '-', degree: 2},
+                            {root: 'A', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D D#o',
                         harmony: [
-                            {root: 'D', numeric: 1},
-                            {root: 'D', shift: '#', quality: 'o', numeric: 1}
+                            {root: 'D', degree: 1},
+                            {
+                                root: 'D',
+                                shift: '#',
+                                quality: 'o',
+                                degree: 1,
+                                degreeShift: 1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E- A7',
                         harmony: [
-                            {root: 'E', quality: '-', numeric: 2},
-                            {root: 'A', quality: '7', numeric: 5}
+                            {root: 'E', quality: '-', degree: 2},
+                            {root: 'A', quality: '7', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D D#o',
                         harmony: [
-                            {root: 'D', numeric: 1},
-                            {root: 'D', shift: '#', quality: 'o', numeric: 1}
+                            {root: 'D', degree: 1},
+                            {
+                                root: 'D',
+                                shift: '#',
+                                quality: 'o',
+                                degree: 1,
+                                degreeShift: 1
+                            }
                         ],
                         close: ']'
                     },
@@ -4054,8 +5143,8 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'F#h B7',
                         harmony: [
-                            {root: 'F', shift: '#', quality: 'h', numeric: 3},
-                            {root: 'B', quality: '7', numeric: 6}
+                            {root: 'F', shift: '#', quality: 'h', degree: 3},
+                            {root: 'B', quality: '7', degree: 6}
                         ]
                     },
                     {
@@ -4069,8 +5158,8 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'F#h B7',
                         harmony: [
-                            {root: 'F', shift: '#', quality: 'h', numeric: 3},
-                            {root: 'B', quality: '7', numeric: 6}
+                            {root: 'F', shift: '#', quality: 'h', degree: 3},
+                            {root: 'B', quality: '7', degree: 6}
                         ]
                     },
                     {
@@ -4084,22 +5173,22 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'F#h B7',
                         harmony: [
-                            {root: 'F', shift: '#', quality: 'h', numeric: 3},
-                            {root: 'B', quality: '7', numeric: 6}
+                            {root: 'F', shift: '#', quality: 'h', degree: 3},
+                            {root: 'B', quality: '7', degree: 6}
                         ],
                         close: '|'
                     },
                     {
                         open: '|',
                         chords: 'A7',
-                        harmony: [{root: 'A', quality: '7', numeric: 5}],
+                        harmony: [{root: 'A', quality: '7', degree: 5}],
                         close: 'Z'
                     }
                 ]
             }
         ]);
     });
-    it('should handle Amor e Festança, no chords, only bar separators', () => {
+    it('handles Amor e Festança, no chords, only bar separators', () => {
         const props = {
             title: 'Amor e Festança',
             author: 'Adalto Magalha e Toninho Geraes',
@@ -4129,7 +5218,7 @@ describe('IRealProChartModel', () => {
             }
         ]);
     });
-    it('should handle Jogral, with strange closing bar override', () => {
+    it('handles Jogral, with strange closing bar override', () => {
         const props = {
             title: 'Jogral',
             author: 'Djavan-Neto-Filo',
@@ -4141,7 +5230,6 @@ describe('IRealProChartModel', () => {
 
         expect(model.title).toBe('Jogral');
         expect(model.errors).toEqual([]);
-
         expect(model.segments).toEqual([
             {
                 name: 'A',
@@ -4150,103 +5238,127 @@ describe('IRealProChartModel', () => {
                         timeSignature: '4 / 4',
                         open: '[',
                         chords: 'G^9',
-                        harmony: [{root: 'G', quality: '^9', numeric: 6}]
+                        harmony: [{root: 'G', quality: '^9', degree: 6}]
                     },
                     {
                         open: '|',
                         chords: 'Eb-9 Eb-6',
                         harmony: [
-                            {root: 'E', shift: 'b', quality: '-9', numeric: 4},
-                            {root: 'E', shift: 'b', quality: '-6', numeric: 4}
+                            {root: 'E', shift: 'b', quality: '-9', degree: 4},
+                            {root: 'E', shift: 'b', quality: '-6', degree: 4}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D-9',
-                        harmony: [{root: 'D', quality: '-9', numeric: 3}]
+                        harmony: [{root: 'D', quality: '-9', degree: 3}]
                     },
                     {
                         open: '|',
                         chords: 'G7#9#5',
-                        harmony: [{root: 'G', quality: '7#9#5', numeric: 6}]
+                        harmony: [{root: 'G', quality: '7#9#5', degree: 6}]
                     },
                     {
                         open: '|',
                         chords: 'C-9',
-                        harmony: [{root: 'C', quality: '-9', numeric: 2}]
+                        harmony: [{root: 'C', quality: '-9', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'F13b9',
-                        harmony: [{root: 'F', quality: '13b9', numeric: 5}]
+                        harmony: [{root: 'F', quality: '13b9', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'Bb^9 A-7',
                         harmony: [
-                            {root: 'B', shift: 'b', quality: '^9', numeric: 1},
-                            {root: 'A', quality: '-7', numeric: 7}
+                            {root: 'B', shift: 'b', quality: '^9', degree: 1},
+                            {root: 'A', quality: '-7', degree: 7}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G-9 G-7/F',
                         harmony: [
-                            {root: 'G', quality: '-9', numeric: 6},
-                            {root: 'G', quality: '-7', inversion: '/F', numeric: 6}
+                            {root: 'G', quality: '-9', degree: 6},
+                            {
+                                root: 'G',
+                                quality: '-7',
+                                degree: 6,
+                                inversion: '/F',
+                                inversionDegree: 5
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E-9',
-                        harmony: [{root: 'E', quality: '-9', numeric: 4}]
+                        harmony: [{root: 'E', quality: '-9', degree: 4, degreeShift: 1}]
                     },
                     {
                         open: '|',
                         chords: 'A7b9b5',
-                        harmony: [{root: 'A', quality: '7b9b5', numeric: 7}]
+                        harmony: [{root: 'A', quality: '7b9b5', degree: 7}]
                     },
                     {
                         open: '|',
                         chords: 'Eb-9 Ab9',
                         harmony: [
-                            {root: 'E', shift: 'b', quality: '-9', numeric: 4},
-                            {root: 'A', shift: 'b', quality: '9', numeric: 7}
+                            {root: 'E', shift: 'b', quality: '-9', degree: 4},
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '9',
+                                degree: 7,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Db-9 Gb9',
                         harmony: [
-                            {root: 'D', shift: 'b', quality: '-9', numeric: 3},
-                            {root: 'G', shift: 'b', quality: '9', numeric: 6}
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '-9',
+                                degree: 3,
+                                degreeShift: -1
+                            },
+                            {
+                                root: 'G',
+                                shift: 'b',
+                                quality: '9',
+                                degree: 6,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'C-9 F7b9',
                         harmony: [
-                            {root: 'C', quality: '-9', numeric: 2},
-                            {root: 'F', quality: '7b9', numeric: 5}
+                            {root: 'C', quality: '-9', degree: 2},
+                            {root: 'F', quality: '7b9', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Bb^9',
-                        harmony: [{root: 'B', shift: 'b', quality: '^9', numeric: 1}]
+                        harmony: [{root: 'B', shift: 'b', quality: '^9', degree: 1}]
                     },
                     {
                         ending: 'N1',
                         open: '|',
                         chords: 'D9sus',
-                        harmony: [{root: 'D', quality: '9sus', numeric: 3}],
+                        harmony: [{root: 'D', quality: '9sus', degree: 3}],
                         close: '}'
                     },
                     {
                         ending: 'N2',
                         open: '|',
                         chords: 'B7#9',
-                        harmony: [{root: 'B', quality: '7#9', numeric: 1}],
+                        harmony: [{root: 'B', quality: '7#9', degree: 1, degreeShift: 1}],
                         close: ']'
                     }
                 ]
@@ -4257,51 +5369,51 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'E-9',
-                        harmony: [{root: 'E', quality: '-9', numeric: 4}]
+                        harmony: [{root: 'E', quality: '-9', degree: 4, degreeShift: 1}]
                     },
                     {
                         open: '|',
                         chords: 'A13sus A13',
                         harmony: [
-                            {root: 'A', quality: '13sus', numeric: 7},
-                            {root: 'A', quality: '13', numeric: 7}
+                            {root: 'A', quality: '13sus', degree: 7},
+                            {root: 'A', quality: '13', degree: 7}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D^9',
-                        harmony: [{root: 'D', quality: '^9', numeric: 3}]
+                        harmony: [{root: 'D', quality: '^9', degree: 3}]
                     },
                     {
                         open: '|',
                         chords: 'D9sus D7#9#5',
                         harmony: [
-                            {root: 'D', quality: '9sus', numeric: 3},
-                            {root: 'D', quality: '7#9#5', numeric: 3}
+                            {root: 'D', quality: '9sus', degree: 3},
+                            {root: 'D', quality: '7#9#5', degree: 3}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G-9',
-                        harmony: [{root: 'G', quality: '-9', numeric: 6}]
+                        harmony: [{root: 'G', quality: '-9', degree: 6}]
                     },
                     {
                         open: '|',
                         chords: 'C13sus C13',
                         harmony: [
-                            {root: 'C', quality: '13sus', numeric: 2},
-                            {root: 'C', quality: '13', numeric: 2}
+                            {root: 'C', quality: '13sus', degree: 2},
+                            {root: 'C', quality: '13', degree: 2}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'F^9',
-                        harmony: [{root: 'F', quality: '^9', numeric: 5}]
+                        harmony: [{root: 'F', quality: '^9', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'D9sus',
-                        harmony: [{root: 'D', quality: '9sus', numeric: 3}],
+                        harmony: [{root: 'D', quality: '9sus', degree: 3}],
                         close: ']'
                     }
                 ]
@@ -4312,90 +5424,114 @@ describe('IRealProChartModel', () => {
                     {
                         open: '[',
                         chords: 'G^9',
-                        harmony: [{root: 'G', quality: '^9', numeric: 6}]
+                        harmony: [{root: 'G', quality: '^9', degree: 6}]
                     },
                     {
                         open: '|',
                         chords: 'Eb-9 Eb-6',
                         harmony: [
-                            {root: 'E', shift: 'b', quality: '-9', numeric: 4},
-                            {root: 'E', shift: 'b', quality: '-6', numeric: 4}
+                            {root: 'E', shift: 'b', quality: '-9', degree: 4},
+                            {root: 'E', shift: 'b', quality: '-6', degree: 4}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D-9',
-                        harmony: [{root: 'D', quality: '-9', numeric: 3}]
+                        harmony: [{root: 'D', quality: '-9', degree: 3}]
                     },
                     {
                         open: '|',
                         chords: 'G7#9#5',
-                        harmony: [{root: 'G', quality: '7#9#5', numeric: 6}]
+                        harmony: [{root: 'G', quality: '7#9#5', degree: 6}]
                     },
                     {
                         open: '|',
                         chords: 'C-9',
-                        harmony: [{root: 'C', quality: '-9', numeric: 2}]
+                        harmony: [{root: 'C', quality: '-9', degree: 2}]
                     },
                     {
                         open: '|',
                         chords: 'F13b9',
-                        harmony: [{root: 'F', quality: '13b9', numeric: 5}]
+                        harmony: [{root: 'F', quality: '13b9', degree: 5}]
                     },
                     {
                         open: '|',
                         chords: 'Bb^9 A-7',
                         harmony: [
-                            {root: 'B', shift: 'b', quality: '^9', numeric: 1},
-                            {root: 'A', quality: '-7', numeric: 7}
+                            {root: 'B', shift: 'b', quality: '^9', degree: 1},
+                            {root: 'A', quality: '-7', degree: 7}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'G-9 G-7/F',
                         harmony: [
-                            {root: 'G', quality: '-9', numeric: 6},
-                            {root: 'G', quality: '-7', inversion: '/F', numeric: 6}
+                            {root: 'G', quality: '-9', degree: 6},
+                            {
+                                root: 'G',
+                                quality: '-7',
+                                degree: 6,
+                                inversion: '/F',
+                                inversionDegree: 5
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'E-9',
-                        harmony: [{root: 'E', quality: '-9', numeric: 4}]
+                        harmony: [{root: 'E', quality: '-9', degree: 4, degreeShift: 1}]
                     },
                     {
                         open: '|',
                         chords: 'A7b9b5',
-                        harmony: [{root: 'A', quality: '7b9b5', numeric: 7}]
+                        harmony: [{root: 'A', quality: '7b9b5', degree: 7}]
                     },
                     {
                         open: '|',
                         chords: 'Eb-9 Ab9',
                         harmony: [
-                            {root: 'E', shift: 'b', quality: '-9', numeric: 4},
-                            {root: 'A', shift: 'b', quality: '9', numeric: 7}
+                            {root: 'E', shift: 'b', quality: '-9', degree: 4},
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '9',
+                                degree: 7,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Db-9 Gb9',
                         harmony: [
-                            {root: 'D', shift: 'b', quality: '-9', numeric: 3},
-                            {root: 'G', shift: 'b', quality: '9', numeric: 6}
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '-9',
+                                degree: 3,
+                                degreeShift: -1
+                            },
+                            {
+                                root: 'G',
+                                shift: 'b',
+                                quality: '9',
+                                degree: 6,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'C-9 F7b9',
                         harmony: [
-                            {root: 'C', quality: '-9', numeric: 2},
-                            {root: 'F', quality: '7b9', numeric: 5}
+                            {root: 'C', quality: '-9', degree: 2},
+                            {root: 'F', quality: '7b9', degree: 5}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Bb^9',
-                        harmony: [{root: 'B', shift: 'b', quality: '^9', numeric: 1}]
+                        harmony: [{root: 'B', shift: 'b', quality: '^9', degree: 1}]
                     },
                     {
                         open: '|',
@@ -4411,12 +5547,12 @@ describe('IRealProChartModel', () => {
                     {
                         open: '{',
                         chords: 'D13#11 n',
-                        harmony: [{root: 'D', quality: '13#11', numeric: 3}, {root: 'n'}]
+                        harmony: [{root: 'D', quality: '13#11', degree: 3}, {root: 'n'}]
                     },
                     {
                         open: '|',
                         chords: 'n D13',
-                        harmony: [{root: 'n'}, {root: 'D', quality: '13', numeric: 3}]
+                        harmony: [{root: 'n'}, {root: 'D', quality: '13', degree: 3}]
                     },
                     {
                         open: '|',
@@ -4432,13 +5568,13 @@ describe('IRealProChartModel', () => {
                     {
                         open: '{',
                         chords: 'D13',
-                        harmony: [{root: 'D', quality: '13', numeric: 3}]
+                        harmony: [{root: 'D', quality: '13', degree: 3}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'D13',
-                        harmony: [{root: 'D', quality: '13', numeric: 3}]
+                        harmony: [{root: 'D', quality: '13', degree: 3}]
                     },
                     {
                         open: '|',
@@ -4449,21 +5585,21 @@ describe('IRealProChartModel', () => {
                     {
                         open: '|',
                         chords: 'D13#11',
-                        harmony: [{root: 'D', quality: '13#11', numeric: 3}]
+                        harmony: [{root: 'D', quality: '13#11', degree: 3}]
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {
                         open: '|',
                         chords: 'D9sus',
-                        harmony: [{root: 'D', quality: '9sus', numeric: 3}],
+                        harmony: [{root: 'D', quality: '9sus', degree: 3}],
                         close: 'Z'
                     }
                 ]
             }
         ]);
     });
-    it('should handle The Bat, with unnamed segment along with named', () => {
+    it('handles The Bat, with unnamed segment along with named', () => {
         const props = {
             title: 'Bat, The',
             author: 'Pat Metheny',
@@ -4475,7 +5611,6 @@ describe('IRealProChartModel', () => {
 
         expect(model.title).toBe('Bat, The');
         expect(model.errors).toEqual([]);
-
         expect(model.segments).toEqual([
             {
                 name: '',
@@ -4485,20 +5620,25 @@ describe('IRealProChartModel', () => {
                         open: '{',
                         chords: 'G D/F# E- A7',
                         harmony: [
-                            {root: 'G', numeric: 1},
-                            {root: 'D', inversion: '/F#', numeric: 5},
-                            {root: 'E', quality: '-', numeric: 6},
-                            {root: 'A', quality: '7', numeric: 2}
+                            {root: 'G', degree: 1},
+                            {
+                                root: 'D',
+                                degree: 5,
+                                inversion: '/F#',
+                                inversionDegree: 7
+                            },
+                            {root: 'E', quality: '-', degree: 6},
+                            {root: 'A', quality: '7', degree: 2}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'D p A-7 D7',
                         harmony: [
-                            {root: 'D', numeric: 5},
+                            {root: 'D', degree: 5},
                             {root: 'p'},
-                            {root: 'A', quality: '-7', numeric: 2},
-                            {root: 'D', quality: '7', numeric: 5}
+                            {root: 'A', quality: '-7', degree: 2},
+                            {root: 'D', quality: '7', degree: 5}
                         ],
                         close: '|'
                     },
@@ -4507,10 +5647,15 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'G D/F# E- A7',
                         harmony: [
-                            {root: 'G', numeric: 1},
-                            {root: 'D', inversion: '/F#', numeric: 5},
-                            {root: 'E', quality: '-', numeric: 6},
-                            {root: 'A', quality: '7', numeric: 2}
+                            {root: 'G', degree: 1},
+                            {
+                                root: 'D',
+                                degree: 5,
+                                inversion: '/F#',
+                                inversionDegree: 7
+                            },
+                            {root: 'E', quality: '-', degree: 6},
+                            {root: 'A', quality: '7', degree: 2}
                         ]
                     },
                     {
@@ -4518,18 +5663,32 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'D p A-',
                         harmony: [
-                            {root: 'D', numeric: 5},
+                            {root: 'D', degree: 5},
                             {root: 'p'},
-                            {root: 'A', quality: '-', numeric: 2}
+                            {root: 'A', quality: '-', degree: 2}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Db/Cb p Bb13b9',
                         harmony: [
-                            {root: 'D', shift: 'b', inversion: '/Cb', numeric: 5},
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                degree: 5,
+                                degreeShift: -1,
+                                inversion: '/Cb',
+                                inversionDegree: 4,
+                                inversionDegreeShift: 11
+                            },
                             {root: 'p'},
-                            {root: 'B', shift: 'b', quality: '13b9', numeric: 3}
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '13b9',
+                                degree: 3,
+                                degreeShift: -1
+                            }
                         ],
                         close: ']'
                     },
@@ -4544,20 +5703,46 @@ describe('IRealProChartModel', () => {
                         open: '[',
                         chords: 'Eb-7 p C#-7 F#7',
                         harmony: [
-                            {root: 'E', shift: 'b', quality: '-7', numeric: 6},
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 6,
+                                degreeShift: -1
+                            },
                             {root: 'p'},
-                            {root: 'C', shift: '#', quality: '-7', numeric: 4},
-                            {root: 'F', shift: '#', quality: '7', numeric: 7}
+                            {
+                                root: 'C',
+                                shift: '#',
+                                quality: '-7',
+                                degree: 4,
+                                degreeShift: 1
+                            },
+                            {root: 'F', shift: '#', quality: '7', degree: 7}
                         ]
                     },
                     {
                         open: '|',
                         chords: 'Ch7 p Cb^7 Db/Cb',
                         harmony: [
-                            {root: 'C', quality: 'h7', numeric: 4},
+                            {root: 'C', quality: 'h7', degree: 4},
                             {root: 'p'},
-                            {root: 'C', shift: 'b', quality: '^7', numeric: 4},
-                            {root: 'D', shift: 'b', inversion: '/Cb', numeric: 5}
+                            {
+                                root: 'C',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 4,
+                                degreeShift: 11
+                            },
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                degree: 5,
+                                degreeShift: -1,
+                                inversion: '/Cb',
+                                inversionDegree: 4,
+                                inversionDegreeShift: 11
+                            }
                         ],
                         close: '|'
                     },
@@ -4566,18 +5751,38 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'Gb/Bb Eb-7 D13 Db13',
                         harmony: [
-                            {root: 'G', shift: 'b', inversion: '/Bb', numeric: 1},
-                            {root: 'E', shift: 'b', quality: '-7', numeric: 6},
-                            {root: 'D', quality: '13', numeric: 5},
-                            {root: 'D', shift: 'b', quality: '13', numeric: 5}
+                            {
+                                root: 'G',
+                                shift: 'b',
+                                degree: 1,
+                                degreeShift: -1,
+                                inversion: '/Bb',
+                                inversionDegree: 3,
+                                inversionDegreeShift: -1
+                            },
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 6,
+                                degreeShift: -1
+                            },
+                            {root: 'D', quality: '13', degree: 5},
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '13',
+                                degree: 5,
+                                degreeShift: -1
+                            }
                         ]
                     },
                     {
                         open: '|',
                         chords: 'C13b9 F-',
                         harmony: [
-                            {root: 'C', quality: '13b9', numeric: 4},
-                            {root: 'F', quality: '-', numeric: 7}
+                            {root: 'C', quality: '13b9', degree: 4},
+                            {root: 'F', quality: '-', degree: 7, degreeShift: -1}
                         ]
                     },
                     {
@@ -4585,8 +5790,14 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'Fh7 Bb7#5',
                         harmony: [
-                            {root: 'F', quality: 'h7', numeric: 7},
-                            {root: 'B', shift: 'b', quality: '7#5', numeric: 3}
+                            {root: 'F', quality: 'h7', degree: 7, degreeShift: -1},
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '7#5',
+                                degree: 3,
+                                degreeShift: -1
+                            }
                         ],
                         close: ']'
                     },
@@ -4601,9 +5812,22 @@ describe('IRealProChartModel', () => {
                         open: '[',
                         chords: 'Eb^7 p Bb/D p',
                         harmony: [
-                            {root: 'E', shift: 'b', quality: '^7', numeric: 6},
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '^7',
+                                degree: 6,
+                                degreeShift: -1
+                            },
                             {root: 'p'},
-                            {root: 'B', shift: 'b', inversion: '/D', numeric: 3},
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                degree: 3,
+                                degreeShift: -1,
+                                inversion: '/D',
+                                inversionDegree: 5
+                            },
                             {root: 'p'}
                         ]
                     },
@@ -4611,14 +5835,24 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'Ab/C p Ab-/Cb p',
                         harmony: [
-                            {root: 'A', shift: 'b', inversion: '/C', numeric: 2},
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                degree: 2,
+                                degreeShift: -1,
+                                inversion: '/C',
+                                inversionDegree: 4
+                            },
                             {root: 'p'},
                             {
                                 root: 'A',
                                 shift: 'b',
                                 quality: '-',
+                                degree: 2,
+                                degreeShift: -1,
                                 inversion: '/Cb',
-                                numeric: 2
+                                inversionDegree: 4,
+                                inversionDegreeShift: 11
                             },
                             {root: 'p'}
                         ],
@@ -4630,7 +5864,15 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'Eb/Bb p p p',
                         harmony: [
-                            {root: 'E', shift: 'b', inversion: '/Bb', numeric: 6},
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                degree: 6,
+                                degreeShift: -1,
+                                inversion: '/Bb',
+                                inversionDegree: 3,
+                                inversionDegreeShift: -1
+                            },
                             {root: 'p'},
                             {root: 'p'},
                             {root: 'p'}
@@ -4640,10 +5882,18 @@ describe('IRealProChartModel', () => {
                         open: '|',
                         chords: 'Ab/Bb p Ah7 D7',
                         harmony: [
-                            {root: 'A', shift: 'b', inversion: '/Bb', numeric: 2},
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                degree: 2,
+                                degreeShift: -1,
+                                inversion: '/Bb',
+                                inversionDegree: 3,
+                                inversionDegreeShift: -1
+                            },
                             {root: 'p'},
-                            {root: 'A', quality: 'h7', numeric: 2},
-                            {root: 'D', quality: '7', numeric: 5}
+                            {root: 'A', quality: 'h7', degree: 2},
+                            {root: 'D', quality: '7', degree: 5}
                         ],
                         close: '}'
                     },
@@ -4652,33 +5902,368 @@ describe('IRealProChartModel', () => {
                         coda: true,
                         open: '[',
                         chords: 'Ab/Bb',
-                        harmony: [{root: 'A', shift: 'b', inversion: '/Bb', numeric: 2}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                degree: 2,
+                                degreeShift: -1,
+                                inversion: '/Bb',
+                                inversionDegree: 3,
+                                inversionDegreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Eb/Bb',
-                        harmony: [{root: 'E', shift: 'b', inversion: '/Bb', numeric: 6}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                degree: 6,
+                                degreeShift: -1,
+                                inversion: '/Bb',
+                                inversionDegree: 3,
+                                inversionDegreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Ab/Bb',
-                        harmony: [{root: 'A', shift: 'b', inversion: '/Bb', numeric: 2}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                degree: 2,
+                                degreeShift: -1,
+                                inversion: '/Bb',
+                                inversionDegree: 3,
+                                inversionDegreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Eb/Bb',
-                        harmony: [{root: 'E', shift: 'b', inversion: '/Bb', numeric: 6}]
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                degree: 6,
+                                degreeShift: -1,
+                                inversion: '/Bb',
+                                inversionDegree: 3,
+                                inversionDegreeShift: -1
+                            }
+                        ]
                     },
                     {
                         open: '|',
                         chords: 'Ab/Bb',
-                        harmony: [{root: 'A', shift: 'b', inversion: '/Bb', numeric: 2}]
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                degree: 2,
+                                degreeShift: -1,
+                                inversion: '/Bb',
+                                inversionDegree: 3,
+                                inversionDegreeShift: -1
+                            }
+                        ]
                     },
                     {
                         fermata: true,
                         open: '|',
                         chords: 'Eb',
-                        harmony: [{root: 'E', shift: 'b', numeric: 6}],
+                        harmony: [{root: 'E', shift: 'b', degree: 6, degreeShift: -1}],
+                        close: 'Z'
+                    }
+                ]
+            }
+        ]);
+    });
+    it('handles Alfie\'s Theme with shifted degree values 6 and 6#', () => {
+        const props = {
+            title: "Alfie's Theme",
+            author: 'Sonny Rollins',
+            style: 'Medium Swing',
+            key: 'Bb-',
+            chordString: '*A{T44Bb-7 Bb-7/Ab|Gh7 Gb^7|Bb-7/F Gh7|Ch7 F7b9|Bb-7 Bb-7/Ab|Gh7 Gb^7|Bb-7/F Gh7|Ch F7 Bb-7 }*B[ Bb-7 Ab7|Gb7 F7b9|Bb-7 Ab7|Gb7 F7b9|Bb-7 Ab7|Gb7 F7b9|Bb-7 Ab7|Gb7 F7b9 ]*A[Bb-7 Bb-7/Ab|Gh7 Gb^7|Bb-7/F Gh7|Ch7 F7b9|Bb-7 Bb-7/Ab|Gh7 Gb^7|Bb-7/F Gh7|Ch F7 Bb-7 Z'
+        } as IIRealProChartModelProps;
+        const model = new IRealProChartModel(props);
+
+        expect(model.title).toBe('Alfie\'s Theme');
+        expect(model.errors).toEqual([]);
+
+        expect(model.segments).toEqual([
+            {
+                name: 'A',
+                data: [
+                    {
+                        timeSignature: '4 / 4',
+                        open: '{',
+                        chords: 'Bb-7 Bb-7/Ab',
+                        harmony: [
+                            {root: 'B', shift: 'b', quality: '-7', degree: 1},
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 1,
+                                inversion: '/Ab',
+                                inversionDegree: 7
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Gh7 Gb^7',
+                        harmony: [
+                            {root: 'G', quality: 'h7', degree: 6, degreeShift: 1},
+                            {root: 'G', shift: 'b', quality: '^7', degree: 6}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb-7/F Gh7',
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 1,
+                                inversion: '/F',
+                                inversionDegree: 5
+                            },
+                            {root: 'G', quality: 'h7', degree: 6, degreeShift: 1}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Ch7 F7b9',
+                        harmony: [
+                            {root: 'C', quality: 'h7', degree: 2},
+                            {root: 'F', quality: '7b9', degree: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb-7 Bb-7/Ab',
+                        harmony: [
+                            {root: 'B', shift: 'b', quality: '-7', degree: 1},
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 1,
+                                inversion: '/Ab',
+                                inversionDegree: 7
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Gh7 Gb^7',
+                        harmony: [
+                            {root: 'G', quality: 'h7', degree: 6, degreeShift: 1},
+                            {root: 'G', shift: 'b', quality: '^7', degree: 6}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb-7/F Gh7',
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 1,
+                                inversion: '/F',
+                                inversionDegree: 5
+                            },
+                            {root: 'G', quality: 'h7', degree: 6, degreeShift: 1}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Ch F7 Bb-7',
+                        harmony: [
+                            {root: 'C', quality: 'h', degree: 2},
+                            {root: 'F', quality: '7', degree: 5},
+                            {root: 'B', shift: 'b', quality: '-7', degree: 1}
+                        ],
+                        close: '}'
+                    }
+                ]
+            },
+            {
+                name: 'B',
+                data: [
+                    {
+                        open: '[',
+                        chords: 'Bb-7 Ab7',
+                        harmony: [
+                            {root: 'B', shift: 'b', quality: '-7', degree: 1},
+                            {root: 'A', shift: 'b', quality: '7', degree: 7}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Gb7 F7b9',
+                        harmony: [
+                            {root: 'G', shift: 'b', quality: '7', degree: 6},
+                            {root: 'F', quality: '7b9', degree: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb-7 Ab7',
+                        harmony: [
+                            {root: 'B', shift: 'b', quality: '-7', degree: 1},
+                            {root: 'A', shift: 'b', quality: '7', degree: 7}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Gb7 F7b9',
+                        harmony: [
+                            {root: 'G', shift: 'b', quality: '7', degree: 6},
+                            {root: 'F', quality: '7b9', degree: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb-7 Ab7',
+                        harmony: [
+                            {root: 'B', shift: 'b', quality: '-7', degree: 1},
+                            {root: 'A', shift: 'b', quality: '7', degree: 7}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Gb7 F7b9',
+                        harmony: [
+                            {root: 'G', shift: 'b', quality: '7', degree: 6},
+                            {root: 'F', quality: '7b9', degree: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb-7 Ab7',
+                        harmony: [
+                            {root: 'B', shift: 'b', quality: '-7', degree: 1},
+                            {root: 'A', shift: 'b', quality: '7', degree: 7}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Gb7 F7b9',
+                        harmony: [
+                            {root: 'G', shift: 'b', quality: '7', degree: 6},
+                            {root: 'F', quality: '7b9', degree: 5}
+                        ],
+                        close: ']'
+                    }
+                ]
+            },
+            {
+                name: 'A',
+                data: [
+                    {
+                        open: '[',
+                        chords: 'Bb-7 Bb-7/Ab',
+                        harmony: [
+                            {root: 'B', shift: 'b', quality: '-7', degree: 1},
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 1,
+                                inversion: '/Ab',
+                                inversionDegree: 7
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Gh7 Gb^7',
+                        harmony: [
+                            {root: 'G', quality: 'h7', degree: 6, degreeShift: 1},
+                            {root: 'G', shift: 'b', quality: '^7', degree: 6}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb-7/F Gh7',
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 1,
+                                inversion: '/F',
+                                inversionDegree: 5
+                            },
+                            {root: 'G', quality: 'h7', degree: 6, degreeShift: 1}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Ch7 F7b9',
+                        harmony: [
+                            {root: 'C', quality: 'h7', degree: 2},
+                            {root: 'F', quality: '7b9', degree: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb-7 Bb-7/Ab',
+                        harmony: [
+                            {root: 'B', shift: 'b', quality: '-7', degree: 1},
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 1,
+                                inversion: '/Ab',
+                                inversionDegree: 7
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Gh7 Gb^7',
+                        harmony: [
+                            {root: 'G', quality: 'h7', degree: 6, degreeShift: 1},
+                            {root: 'G', shift: 'b', quality: '^7', degree: 6}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb-7/F Gh7',
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 1,
+                                inversion: '/F',
+                                inversionDegree: 5
+                            },
+                            {root: 'G', quality: 'h7', degree: 6, degreeShift: 1}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Ch F7 Bb-7',
+                        harmony: [
+                            {root: 'C', quality: 'h', degree: 2},
+                            {root: 'F', quality: '7', degree: 5},
+                            {root: 'B', shift: 'b', quality: '-7', degree: 1}
+                        ],
                         close: 'Z'
                     }
                 ]
@@ -4686,11 +6271,15 @@ describe('IRealProChartModel', () => {
         ]);
     });
 
-    it.skip('// TODO Alvarà Jorge Aragão also errored', () => {
+    it.skip('// TODO Alvarà Jorge Aragão errored', () => {
     });
-    it.skip('// TODO should properly recognize and handle chords inside double repeat bvvars', () => {
+    it.skip('// TODO should properly recognize and handle chords inside double repeat bars', () => {
     });
+
     describe('parseSegment', () => {
+        beforeEach(() => setDefaultIRealProChartModelPrototype());
+        afterEach(() => restoreIRealProChartModelPrototype());
+
         it('should handle multiple repeats (r)', () => {
             const segmentString = '[T44C6 |x |r|r|r|]';
 
@@ -4699,25 +6288,25 @@ describe('IRealProChartModel', () => {
                     timeSignature: '4 / 4',
                     open: '[',
                     chords: 'C6',
-                    harmony: [{root: 'C', quality: '6', numeric: 1}]
+                    harmony: [{root: 'C', quality: '6', degree: 1}]
                 },
                 {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                 {
                     open: '|',
                     chords: 'C6',
-                    harmony: [{root: 'C', quality: '6', numeric: 1}]
+                    harmony: [{root: 'C', quality: '6', degree: 1}]
                 },
                 {open: '|', chords: 'x', harmony: [{root: 'x'}], close: '|'},
                 {
                     open: '|',
                     chords: 'C6',
-                    harmony: [{root: 'C', quality: '6', numeric: 1}]
+                    harmony: [{root: 'C', quality: '6', degree: 1}]
                 },
                 {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                 {
                     open: '|',
                     chords: 'C6',
-                    harmony: [{root: 'C', quality: '6', numeric: 1}]
+                    harmony: [{root: 'C', quality: '6', degree: 1}]
                 },
                 {open: '|', chords: 'x', harmony: [{root: 'x'}], close: ']'}
             ]);
@@ -4730,81 +6319,93 @@ describe('IRealProChartModel', () => {
                     timeSignature: '3 / 4',
                     open: '{',
                     chords: 'E-',
-                    harmony: [{root: 'E', quality: '-', numeric: 3}]
+                    harmony: [{root: 'E', quality: '-', degree: 3}]
                 },
                 {
                     open: '|',
                     chords: 'E-7',
-                    harmony: [{root: 'E', quality: '-7', numeric: 3}]
+                    harmony: [{root: 'E', quality: '-7', degree: 3}]
                 },
                 {
                     open: '|',
                     chords: 'C^7',
-                    harmony: [{root: 'C', quality: '^7', numeric: 1}]
+                    harmony: [{root: 'C', quality: '^7', degree: 1}]
                 },
                 {
                     open: '|',
                     chords: 'C^9',
-                    harmony: [{root: 'C', quality: '^9', numeric: 1}]
+                    harmony: [{root: 'C', quality: '^9', degree: 1}]
                 },
                 {
                     open: '|',
                     close: '|',
                     chords: 'A2/C#',
-                    harmony: [{root: 'A', quality: '2', inversion: '/C#', numeric: 6}]
+                    harmony: [{
+                        root: 'A',
+                        quality: '2',
+                        inversion: '/C#',
+                        degree: 6,
+                        inversionDegree: 1,
+                        inversionDegreeShift: 1
+                    }]
                 },
                 {divider: 'Y'},
                 {
                     open: '|',
                     chords: 'C^7',
-                    harmony: [{root: 'C', quality: '^7', numeric: 1}]
+                    harmony: [{root: 'C', quality: '^7', degree: 1}]
                 },
                 {
                     open: '|',
                     chords: 'E-',
-                    harmony: [{root: 'E', quality: '-', numeric: 3}]
+                    harmony: [{root: 'E', quality: '-', degree: 3}]
                 },
                 {
                     ending: 'N1',
                     open: '|',
                     chords: 'E-7',
-                    harmony: [{root: 'E', quality: '-7', numeric: 3}],
+                    harmony: [{root: 'E', quality: '-7', degree: 3}],
                     close: '}'
                 },
                 {
                     ending: 'N2',
                     open: '|',
                     chords: 'E- n',
-                    harmony: [{root: 'E', quality: '-', numeric: 3}, {root: 'n'}],
+                    harmony: [{root: 'E', quality: '-', degree: 3}, {root: 'n'}],
                     close: ']'
                 }
             ]);
         });
     });
     describe('parseHarmony', () => {
+        beforeEach(() => setDefaultIRealProChartModelPrototype());
+        afterEach(() => restoreIRealProChartModelPrototype());
         it('should parse add9 quality', () => {
             const harmonyString = 'Dbadd9 Ab';
 
             expect(IRealProChartModel.prototype.parseHarmony(harmonyString)).toEqual([
                 [
-                    {root: 'D', shift: 'b', quality: 'add9', numeric: 2},
-                    {root: 'A', shift: 'b', numeric: 6}
+                    {root: 'D', shift: 'b', quality: 'add9', degree: 2, degreeShift: -1},
+                    {root: 'A', shift: 'b', degree: 6, degreeShift: -1}
                 ],
                 []
             ]);
         });
     });
     describe('parseBar', () => {
+        beforeEach(() => setDefaultIRealProChartModelPrototype());
+        afterEach(() => restoreIRealProChartModelPrototype());
+
         it('should handle simple bar with Alternate Chords', () => {
             const barString = '|C^7(C#-7) (F#7)';
 
             expect(IRealProChartModel.prototype.parseBar(barString)).toEqual({
                 open: '|',
                 chords: 'C^7(C#-7) (F#7)',
-                harmony: [{root: 'C', quality: '^7', numeric: 1}],
+                harmony: [{root: 'C', quality: '^7', degree: 1}],
                 alt: [
-                    {root: 'C', shift: '#', quality: '-7', numeric: 1},
-                    {root: 'F', shift: '#', quality: '7', numeric: 4}
+                    {root: 'C', shift: '#', quality: '-7', degree: 1, degreeShift: 1},
+                    {root: 'F', shift: '#', quality: '7', degree: 4, degreeShift: 1}
                 ]
             });
         });
@@ -4816,10 +6417,480 @@ describe('IRealProChartModel', () => {
                 open: '{',
                 chords: 'C C/E',
                 harmony: [
-                    {root: 'C', numeric: 1},
-                    {root: 'C', inversion: '/E', numeric: 1}
+                    {root: 'C', degree: 1},
+                    {root: 'C', inversion: '/E', degree: 1, inversionDegree: 3}
                 ]
             });
+        });
+    });
+    describe('fillChord', () => {
+        afterEach(() => restoreIRealProChartModelPrototype());
+        it('should throw on C^ if tune key is not set', () => {
+            expect(() => {
+                IRealProChartModel.prototype.fillChord([null, 'C', '', '^'] as RegExpMatchArray);
+            }).toThrowError();
+        });
+        it('should handle C^, Bb, Bb/Ab in C', () => {
+            IRealProChartModel.prototype.key = 'C';
+            IRealProChartModel.prototype.tuneKeyRootBase = 'C';
+            IRealProChartModel.prototype.tuneKeyRelativeToCShift = 0;
+            IRealProChartModel.prototype.tuneKeyIntervalRelativeToC = 0;
+            IRealProChartModel.prototype.tuneAdjective = 'major';
+            expect(IRealProChartModel.prototype.fillChord([null, 'C', '', '^'] as RegExpMatchArray)).toEqual({
+                degree: 1,
+                root: 'C',
+                quality: '^'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'B', 'b', ''] as RegExpMatchArray)).toEqual({
+                degree: 7,
+                degreeShift: -1,
+                root: 'B',
+                shift: 'b'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'B', 'b', '', '/Ab'] as RegExpMatchArray)).toEqual({
+                degree: 7,
+                degreeShift: -1,
+                root: 'B',
+                shift: 'b',
+                inversion: '/Ab',
+                inversionDegree: 6,
+                inversionDegreeShift: -1
+            });
+        });
+        it('should handle C7 in D-', () => {
+            IRealProChartModel.prototype.key = 'D-';
+            IRealProChartModel.prototype.tuneKeyRootBase = 'D';
+            IRealProChartModel.prototype.tuneKeyRelativeToCShift = 1;
+            IRealProChartModel.prototype.tuneKeyIntervalRelativeToC = 2;
+            IRealProChartModel.prototype.tuneAdjective = 'minor';
+            expect(IRealProChartModel.prototype.fillChord([null, 'C', '', '7'] as RegExpMatchArray)).toEqual({
+                degree: 7,
+                root: 'C',
+                quality: '7'
+            });
+        });
+        it('should handle C7 in D', () => {
+            IRealProChartModel.prototype.key = 'D';
+            IRealProChartModel.prototype.tuneKeyRootBase = 'D';
+            IRealProChartModel.prototype.tuneKeyRelativeToCShift = 1;
+            IRealProChartModel.prototype.tuneKeyIntervalRelativeToC = 2;
+            IRealProChartModel.prototype.tuneAdjective = 'major';
+            expect(IRealProChartModel.prototype.fillChord([null, 'C', '', '7'] as RegExpMatchArray)).toEqual({
+                degree: 7,
+                degreeShift: -1,
+                root: 'C',
+                quality: '7'
+            });
+        });
+        it('should handle Db in Bb', () => {
+            IRealProChartModel.prototype.key = 'Bb';
+            IRealProChartModel.prototype.tuneKeyRootBase = 'B';
+            IRealProChartModel.prototype.tuneKeyRelativeToCShift = 6;
+            IRealProChartModel.prototype.tuneKeyIntervalRelativeToC = 10;
+            IRealProChartModel.prototype.tuneAdjective = 'major';
+            expect(IRealProChartModel.prototype.fillChord([null, 'D', 'b', ''] as RegExpMatchArray)).toEqual({
+                degree: 3,
+                degreeShift: -1,
+                root: 'D',
+                shift: 'b'
+            });
+        });
+        it('should handle Gb, G, Db in Bb-', () => {
+            IRealProChartModel.prototype.key = 'Bb-';
+            IRealProChartModel.prototype.tuneKeyRootBase = 'B';
+            IRealProChartModel.prototype.tuneKeyRelativeToCShift = 6;
+            IRealProChartModel.prototype.tuneKeyIntervalRelativeToC = 10;
+            IRealProChartModel.prototype.tuneAdjective = 'minor';
+            expect(IRealProChartModel.prototype.fillChord([null, 'G', 'b', ''] as RegExpMatchArray)).toEqual({
+                degree: 6,
+                root: 'G',
+                shift: 'b'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'G', '', ''] as RegExpMatchArray)).toEqual({
+                degree: 6,
+                degreeShift: 1,
+                root: 'G'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'D', 'b', ''] as RegExpMatchArray)).toEqual({
+                degree: 3,
+                root: 'D',
+                shift: 'b'
+            });
+        });
+        it('should handle B, C#h, A, A#, F, E, E#, B#, B#/Gb in F#', () => {
+            IRealProChartModel.prototype.key = 'F#';
+            IRealProChartModel.prototype.tuneKeyRootBase = 'F';
+            IRealProChartModel.prototype.tuneKeyRelativeToCShift = 3;
+            IRealProChartModel.prototype.tuneKeyIntervalRelativeToC = 18;
+            IRealProChartModel.prototype.tuneAdjective = 'major';
+            expect(IRealProChartModel.prototype.fillChord([null, 'B', '', ''] as RegExpMatchArray)).toEqual({
+                degree: 4,
+                root: 'B'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'C', '#', 'h'] as RegExpMatchArray)).toEqual({
+                degree: 5,
+                root: 'C',
+                shift: '#',
+                quality: 'h'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'A', '', ''] as RegExpMatchArray)).toEqual({
+                degree: 3,
+                degreeShift: -1,
+                root: 'A'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'A', '#', ''] as RegExpMatchArray)).toEqual({
+                degree: 3,
+                root: 'A',
+                shift: '#'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'F', '', ''] as RegExpMatchArray)).toEqual({
+                degree: 1,
+                degreeShift: -1,
+                root: 'F'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'E', '', ''] as RegExpMatchArray)).toEqual({
+                degree: 7,
+                degreeShift: -1,
+                root: 'E'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'E', '#', ''] as RegExpMatchArray)).toEqual({
+                degree: 7,
+                root: 'E',
+                shift: '#'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'B', '#', ''] as RegExpMatchArray)).toEqual({
+                degree: 4,
+                degreeShift: 1,
+                root: 'B',
+                shift: '#'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'B', '#', '', '/Gb'] as RegExpMatchArray)).toEqual({
+                root: 'B',
+                shift: '#',
+                inversion: '/Gb',
+                degree: 4,
+                degreeShift: 1,
+                inversionDegree: 2,
+                inversionDegreeShift: -2
+            });
+        });
+        it('should handle A, A#, F, E, E#, B# in F#-', () => {
+            IRealProChartModel.prototype.key = 'F#';
+            IRealProChartModel.prototype.tuneKeyRootBase = 'F';
+            IRealProChartModel.prototype.tuneKeyRelativeToCShift = 3;
+            IRealProChartModel.prototype.tuneKeyIntervalRelativeToC = 18;
+            IRealProChartModel.prototype.tuneAdjective = 'minor';
+            expect(IRealProChartModel.prototype.fillChord([null, 'A', '', ''] as RegExpMatchArray)).toEqual({
+                degree: 3,
+                root: 'A'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'A', '#', ''] as RegExpMatchArray)).toEqual({
+                degree: 3,
+                degreeShift: 1,
+                root: 'A',
+                shift: '#'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'F', '', ''] as RegExpMatchArray)).toEqual({
+                degree: 1,
+                degreeShift: -1,
+                root: 'F'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'E', '', ''] as RegExpMatchArray)).toEqual({
+                degree: 7,
+                root: 'E'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'E', '#', ''] as RegExpMatchArray)).toEqual({
+                degree: 7,
+                degreeShift: 1,
+                root: 'E',
+                shift: '#'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'B', '#', ''] as RegExpMatchArray)).toEqual({
+                degree: 4,
+                degreeShift: 1,
+                root: 'B',
+                shift: '#'
+            });
+            expect(IRealProChartModel.prototype.fillChord([null, 'B', 'b', ''] as RegExpMatchArray)).toEqual({
+                degree: 4,
+                degreeShift: -1,
+                root: 'B',
+                shift: 'b'
+            });
+        });
+        it('should handle chord with inversion E-/C# in G', () => {
+            IRealProChartModel.prototype.key = 'G';
+            IRealProChartModel.prototype.tuneKeyRootBase = 'G';
+            IRealProChartModel.prototype.tuneKeyRelativeToCShift = 4;
+            IRealProChartModel.prototype.tuneKeyIntervalRelativeToC = 7;
+            IRealProChartModel.prototype.tuneAdjective = 'major';
+            expect(IRealProChartModel.prototype.fillChord([null, 'E', '', '-', '/C#'] as RegExpMatchArray)).toEqual({
+                root: 'E',
+                quality: '-',
+                degree: 6,
+                inversion: '/C#',
+                inversionDegree: 4,
+                inversionDegreeShift: 1
+            });
+        });
+    });
+
+    describe('changeTuneAdjective', () => {
+        fit('should update chord degrees if adjective set to major for minor tune. Berklee style', () => {
+            const props = {
+                title: '500 Miles High',
+                author: 'Corea Chick',
+                style: 'Bossa Nova',
+                key: 'E-',
+                chordString: '[T44E-7 |x |G-7 |x |Bb^7 |x |Bh7 |E7#9 |A-7 |x |F#h7 |x |F-7 |x Q|C-7 |x |B7#9 |x Z Y{QC-7 |x |Ab^7 |x }'
+            };
+            const model = new IRealProChartModel(props);
+            const harmonyRelativeToMinor = [
+                {
+                    name: '',
+                    data: [
+                        {
+                            timeSignature: '4 / 4',
+                            open: '[',
+                            chords: 'E-7',
+                            harmony: [{root: 'E', quality: '-7', degree: 1}]
+                        },
+                        {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                        {
+                            open: '|',
+                            chords: 'G-7',
+                            harmony: [{root: 'G', quality: '-7', degree: 3}]
+                        },
+                        {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                        {
+                            open: '|',
+                            chords: 'Bb^7',
+                            harmony: [
+                                {
+                                    root: 'B',
+                                    shift: 'b',
+                                    quality: '^7',
+                                    degree: 5,
+                                    degreeShift: -1
+                                }
+                            ]
+                        },
+                        {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                        {
+                            open: '|',
+                            chords: 'Bh7',
+                            harmony: [{root: 'B', quality: 'h7', degree: 5}]
+                        },
+                        {
+                            open: '|',
+                            chords: 'E7#9',
+                            harmony: [{root: 'E', quality: '7#9', degree: 1}]
+                        },
+                        {
+                            open: '|',
+                            chords: 'A-7',
+                            harmony: [{root: 'A', quality: '-7', degree: 4}]
+                        },
+                        {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                        {
+                            open: '|',
+                            chords: 'F#h7',
+                            harmony: [{root: 'F', shift: '#', quality: 'h7', degree: 2}]
+                        },
+                        {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                        {
+                            open: '|',
+                            chords: 'F-7',
+                            harmony: [{root: 'F', quality: '-7', degree: 2, degreeShift: -1}]
+                        },
+                        {
+                            coda: true,
+                            open: '|',
+                            chords: 'x',
+                            harmony: [{root: 'x'}]
+                        },
+                        {
+                            open: '|',
+                            chords: 'C-7',
+                            harmony: [{root: 'C', quality: '-7', degree: 6}]
+                        },
+                        {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                        {
+                            open: '|',
+                            chords: 'B7#9',
+                            harmony: [{root: 'B', quality: '7#9', degree: 5}]
+                        },
+                        {
+                            open: '|',
+                            chords: 'x',
+                            harmony: [{root: 'x'}],
+                            close: 'Z'
+                        },
+                        {divider: 'Y'},
+                        {
+                            coda: true,
+                            open: '{',
+                            chords: 'C-7',
+                            harmony: [{root: 'C', quality: '-7', degree: 6}]
+                        },
+                        {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                        {
+                            open: '|',
+                            chords: 'Ab^7',
+                            harmony: [
+                                {
+                                    root: 'A',
+                                    shift: 'b',
+                                    quality: '^7',
+                                    degree: 4,
+                                    degreeShift: -1
+                                }
+                            ]
+                        },
+                        {
+                            open: '|',
+                            chords: 'x',
+                            harmony: [{root: 'x'}],
+                            close: '}'
+                        }
+                    ]
+                }
+            ];
+            const harmonyRelativeToMajor = [
+                {
+                    name: '',
+                    data: [
+                        {
+                            timeSignature: '4 / 4',
+                            open: '[',
+                            chords: 'E-7',
+                            harmony: [{root: 'E', quality: '-7', degree: 1}]
+                        },
+                        {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                        {
+                            open: '|',
+                            chords: 'G-7',
+                            harmony: [{root: 'G', quality: '-7', degree: 3, degreeShift: -1}]
+                        },
+                        {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                        {
+                            open: '|',
+                            chords: 'Bb^7',
+                            harmony: [
+                                {
+                                    root: 'B',
+                                    shift: 'b',
+                                    quality: '^7',
+                                    degree: 5,
+                                    degreeShift: -1
+                                }
+                            ]
+                        },
+                        {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                        {
+                            open: '|',
+                            chords: 'Bh7',
+                            harmony: [{root: 'B', quality: 'h7', degree: 5}]
+                        },
+                        {
+                            open: '|',
+                            chords: 'E7#9',
+                            harmony: [{root: 'E', quality: '7#9', degree: 1}]
+                        },
+                        {
+                            open: '|',
+                            chords: 'A-7',
+                            harmony: [{root: 'A', quality: '-7', degree: 4}]
+                        },
+                        {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                        {
+                            open: '|',
+                            chords: 'F#h7',
+                            harmony: [{root: 'F', shift: '#', quality: 'h7', degree: 2}]
+                        },
+                        {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                        {
+                            open: '|',
+                            chords: 'F-7',
+                            harmony: [{root: 'F', quality: '-7', degree: 2, degreeShift: -1}]
+                        },
+                        {
+                            coda: true,
+                            open: '|',
+                            chords: 'x',
+                            harmony: [{root: 'x'}]
+                        },
+                        {
+                            open: '|',
+                            chords: 'C-7',
+                            harmony: [{root: 'C', quality: '-7', degree: 6, degreeShift: -1}]
+                        },
+                        {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                        {
+                            open: '|',
+                            chords: 'B7#9',
+                            harmony: [{root: 'B', quality: '7#9', degree: 5}]
+                        },
+                        {
+                            open: '|',
+                            chords: 'x',
+                            harmony: [{root: 'x'}],
+                            close: 'Z'
+                        },
+                        {divider: 'Y'},
+                        {
+                            coda: true,
+                            open: '{',
+                            chords: 'C-7',
+                            harmony: [{root: 'C', quality: '-7', degree: 6, degreeShift: -1}]
+                        },
+                        {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                        {
+                            open: '|',
+                            chords: 'Ab^7',
+                            harmony: [
+                                {
+                                    root: 'A',
+                                    shift: 'b',
+                                    quality: '^7',
+                                    degree: 4,
+                                    degreeShift: -1
+                                }
+                            ]
+                        },
+                        {
+                            open: '|',
+                            chords: 'x',
+                            harmony: [{root: 'x'}],
+                            close: '}'
+                        }
+                    ]
+                }
+            ];
+
+            expect(model.title).toBe('500 Miles High');
+            expect(model.errors).toEqual([]);
+            expect(model.author).toBe('Corea Chick');
+            expect(model.style).toBe('Bossa Nova');
+
+            expect(model.key).toBe('E-');
+            expect(model.tuneKeyRootBase).toBe('E');
+            expect(model.tuneKeyRelativeToCShift).toBe(2);
+            expect(model.tuneKeyIntervalRelativeToC).toBe(4);
+            expect(model.tuneAdjective).toBe('minor');
+
+            expect(model.chordString.length).toBe(104);
+            expect(model.segments).toEqual(harmonyRelativeToMinor);
+
+            model.changeTuneAdjective('major');
+            expect(model.tuneAdjective).toBe('major');
+
+            expect(model.segments).toEqual(harmonyRelativeToMajor);
+
+            model.changeTuneAdjective(null);
+            expect(model.tuneAdjective).toBe('minor');
+
+            expect(model.segments).toEqual(harmonyRelativeToMinor);
         });
     });
 });

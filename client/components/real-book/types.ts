@@ -33,7 +33,8 @@ export interface IIRealProChord {
     root?: string;
     shift?: string;
     quality?: string;
-    numeric?: number;
+    degree?: number;
+    degreeShift?: number;
     inversion?: string;
     alt?: IIRealProChord;
 }
@@ -53,6 +54,22 @@ export const roots = [
     'G',
     'A',
     'B'
+];
+
+export type TRoot = 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B';
+
+export const majorDegreesIndices: number[] = [
+    //  C  _  D  _  E  F  _  G  _  A  _  B
+    1, 0, 2, 0, 3, 4, 0, 5, 0, 6, 0, 7
+];
+export const minorDegreesIndices: number[] = [
+    //  C  _  D  Eb _  F  _  G  Ab _  Bb _
+    1, 0, 2, 3, 0, 4, 0, 5, 6, 0, 7, 0
+];
+export const keysIntervalList = [
+    'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B',
+    'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B',
+    'B#', '_', '_', '_', 'Fb', 'E#', '_', '_', '_', '_', '_', 'Cb'
 ];
 
 export const qualities = [
@@ -120,8 +137,7 @@ export const qualities = [
 
     // Additional qualities
     '6b5',
-    '6#9',
-    'sus4'
+    '6#9'
 ];
 
 export const majorScale: number[] = [7.0, 7.02, 7.04, 7.05, 7.07, 7.09, 7.11];
@@ -472,7 +488,7 @@ export const rectifiedQualitiesMap: {[name: string]: string[]} = {
     '-#5': [],
     'o': ['o7'],
     'h': ['h7', 'h9', '-7b5', '7#11', '9#11', '9b5'],
-    'sus': ['7sus', '9sus', '13sus', 'sus4'],
+    'sus': ['7sus', '9sus', '13sus'],
     '^7#11': ['^9#11', '13#11', '6b5'],
     '-^7': ['-^9'],
     '7b9sus': [],
@@ -593,4 +609,5 @@ export const otherSymbols = [
 
 // Probably iReal Pro url format version token
 export const iRealProUrlFormatVersionPrefix = '1r34LbKcu7';
-export type IChordNotation = 'symbolic' | 'numeric';
+export type TChordNotation = 'symbolic' | 'numeric' | 'berklee';
+export type TTuneAdjective = 'major' | 'minor';

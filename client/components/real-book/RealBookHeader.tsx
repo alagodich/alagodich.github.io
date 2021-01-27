@@ -3,9 +3,10 @@ import {Header, Icon, Input, Menu} from 'semantic-ui-react';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from './store/reducer';
 import {toggleAnalyzeSegment, setSearchFilter} from './store/library-slice';
-import {toggleNotation} from './store/chart-slice';
+import {setNotation} from './store/chart-slice';
 import {Link} from 'react-router-dom';
 import {useMediaQuery} from 'react-responsive';
+import {TChordNotation} from './types';
 
 interface IRealBookHeader {
     displayType: 'playlist' | 'chart';
@@ -34,8 +35,13 @@ export const RealBookHeader = React.memo((props: IRealBookHeader): ReactElement 
     function handleSearchFilterChange(event: React.ChangeEvent, {value}: {value: string}) {
         dispatch(setSearchFilter(value));
     }
-    function handleChartNotationToggle() {
-        dispatch(toggleNotation());
+    function handleSetNotation(newNotation: TChordNotation) {
+        return () => {
+            if (notation === newNotation) {
+                return;
+            }
+            dispatch(setNotation(newNotation));
+        };
     }
 
     const rightMenu = props.displayType === 'chart' && (activeSong || activeSong === 0)
@@ -104,11 +110,25 @@ export const RealBookHeader = React.memo((props: IRealBookHeader): ReactElement 
         ? (
             <Menu.Item>
                 <Icon
-                    name={notation === 'symbolic' ? 'font' : 'subscript'}
+                    name={'key'}
                     style={{cursor: 'pointer'}}
-                    title="Notation"
-                    onClick={handleChartNotationToggle}
-                    color={'blue'}
+                    title="Normal"
+                    onClick={handleSetNotation('symbolic')}
+                    color={notation === 'symbolic' ? 'blue' : 'grey'}
+                />
+                <Icon
+                    name={'subscript'}
+                    style={{cursor: 'pointer'}}
+                    title="Nashville Number System"
+                    onClick={handleSetNotation('numeric')}
+                    color={notation === 'numeric' ? 'blue' : 'grey'}
+                />
+                <Icon
+                    name={'bold'}
+                    style={{cursor: 'pointer'}}
+                    title="Berklee"
+                    onClick={handleSetNotation('berklee')}
+                    color={notation === 'berklee' ? 'blue' : 'grey'}
                 />
             </Menu.Item>
         )

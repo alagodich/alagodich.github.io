@@ -5,13 +5,13 @@ import * as TensorFlow from '@tensorflow/tfjs';
  * 3 one hot outputs
  */
 export function createModel(): TensorFlow.LayersModel {
-    const numericInput = TensorFlow.input({name: 'numericInput', shape: [1]});
-    const numericEmbedding = TensorFlow.layers.embedding({
-        name: 'numericEmbedding',
+    const degreeInput = TensorFlow.input({name: 'degreeInput', shape: [1]});
+    const degreeEmbedding = TensorFlow.layers.embedding({
+        name: 'degreeEmbedding',
         inputDim: 7,
         outputDim: 2,
         inputLength: 1
-    }).apply(numericInput);
+    }).apply(degreeInput);
 
     const shiftInput = TensorFlow.input({name: 'shiftInput', shape: [1]});
     const shiftEmbedding = TensorFlow.layers.embedding({
@@ -30,13 +30,13 @@ export function createModel(): TensorFlow.LayersModel {
     }).apply(qualityInput);
 
     const inputs = [
-        numericInput,
+        degreeInput,
         shiftInput,
         qualityInput
     ];
 
     const sharedInputLayer = TensorFlow.layers.concatenate().apply([
-        TensorFlow.layers.flatten().apply(numericEmbedding),
+        TensorFlow.layers.flatten().apply(degreeEmbedding),
         TensorFlow.layers.flatten().apply(shiftEmbedding),
         TensorFlow.layers.flatten().apply(qualityEmbedding)
     ] as TensorFlow.SymbolicTensor[]);
@@ -44,7 +44,7 @@ export function createModel(): TensorFlow.LayersModel {
     const sharedHiddenLayer = TensorFlow.layers.dense({units: 200, activation: 'relu'}).apply(sharedInputLayer);
 
     const outputs = [
-        TensorFlow.layers.dense({name: 'numericOutput', units: 7, activation: 'softmax'}).apply(sharedHiddenLayer),
+        TensorFlow.layers.dense({name: 'degreeOutput', units: 7, activation: 'softmax'}).apply(sharedHiddenLayer),
         TensorFlow.layers.dense({name: 'shiftOutput', units: 3, activation: 'softmax'}).apply(sharedHiddenLayer),
         TensorFlow.layers.dense({name: 'qualityOutput', units: 15, activation: 'softmax'}).apply(sharedHiddenLayer)
     ] as TensorFlow.SymbolicTensor[];

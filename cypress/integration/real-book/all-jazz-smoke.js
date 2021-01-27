@@ -39,7 +39,7 @@ describe('All jazz smoke', () => {
         openJazzPages(1003, 1300);
     });
     it('should go through all jazz charts and see no errors, Part 14', () => {
-        openJazzPages(1004, 1350);
+        openJazzPages(1004, 1408);
     });
 });
 

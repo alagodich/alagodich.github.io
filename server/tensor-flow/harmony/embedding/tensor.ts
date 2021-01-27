@@ -8,7 +8,7 @@ export interface IEmbeddingTensorContainerObject {
 }
 
 export interface IEmbeddingPrediction {
-    numeric: IChordFeatureProbability[];
+    degree: IChordFeatureProbability[];
     shift: IChordFeatureProbability[];
     quality: IChordFeatureProbability[];
 }
@@ -39,23 +39,23 @@ export const oneHotTensorLabelLength = 25;
  */
 export function convertToTensor(flatData: IFlatHarmonyData[]): IEmbeddingTensorContainerObject {
     const xsData = flatData.map(item => item.x);
-    const numericXs: number[][] = [];
+    const degreeXs: number[][] = [];
     const shiftXs: number[][] = [];
     const qualityXs: number[][] = [];
 
     xsData.forEach((chord: number[]) => {
-        numericXs.push([chord[0]]);
+        degreeXs.push([chord[0]]);
         shiftXs.push([chord[1]]);
         qualityXs.push([chord[2]]);
     });
     const xs = [
-        TensorFlow.tensor2d(numericXs),
+        TensorFlow.tensor2d(degreeXs),
         TensorFlow.tensor2d(shiftXs),
         TensorFlow.tensor2d(qualityXs)
     ];
 
     const ysData = flatData.map(item => item.y);
-    const numericYs: Uint8Array[] = [];
+    const degreeYs: Uint8Array[] = [];
     const shiftYs: Uint8Array[] = [];
     const qualityYs: Uint8Array[] = [];
 
@@ -66,7 +66,7 @@ export function convertToTensor(flatData: IFlatHarmonyData[]): IEmbeddingTensorC
                     const chordOneHot = new Uint8Array(7);
 
                     chordOneHot.set([1], chordFeature);
-                    numericYs.push(chordOneHot);
+                    degreeYs.push(chordOneHot);
                     break;
                 }
                 case 1: {
@@ -91,7 +91,7 @@ export function convertToTensor(flatData: IFlatHarmonyData[]): IEmbeddingTensorC
     });
 
     const ys = [
-        TensorFlow.tensor2d(numericYs),
+        TensorFlow.tensor2d(degreeYs),
         TensorFlow.tensor2d(shiftYs),
         TensorFlow.tensor2d(qualityYs)
     ];
@@ -128,12 +128,12 @@ export function convertEmbeddingYsTensorToPredictionObject(
     return new Promise(resolve => {
         Promise.all(tensorSet.map(tensor => tensor.array() as Promise<number[][]>))
             .then(predictionData => {
-                const numeric: IChordFeatureProbability[] = [];
+                const degree: IChordFeatureProbability[] = [];
                 const shift: IChordFeatureProbability[] = [];
                 const quality: IChordFeatureProbability[] = [];
 
                 predictionData[0][0].forEach((probability: number, index) => {
-                    numeric.push({
+                    degree.push({
                         label: (index + 1).toString(),
                         probability: formatPrecisionValue(probability),
                         index
@@ -184,7 +184,7 @@ export function convertEmbeddingYsTensorToPredictionObject(
                 });
 
                 return resolve({
-                    numeric: numeric.sort(desc),
+                    degree: degree.sort(desc),
                     shift: shift.sort(desc),
                     quality: quality.sort(desc)
                 });

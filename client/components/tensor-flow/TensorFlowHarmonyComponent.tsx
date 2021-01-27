@@ -101,19 +101,19 @@ export const TensorFlowHarmonyComponent: React.FunctionComponent = (): ReactElem
                 const randomIndex = () => Math.floor(Math.random() * Math.floor(3));
 
                 return [
-                    lastChord.probabilities.numeric[randomIndex()].index,
+                    lastChord.probabilities.degree[randomIndex()].index,
                     lastChord.probabilities.shift[0].index,
                     lastChord.probabilities.quality[0].index
                 ];
             }
 
             // Get random not the same chord
-            const numeric = lastChord.digits[0] === lastChord.probabilities.numeric[0].index
-                ? lastChord.probabilities.numeric[1].index
-                : lastChord.probabilities.numeric[0].index;
+            const degree = lastChord.digits[0] === lastChord.probabilities.degree[0].index
+                ? lastChord.probabilities.degree[1].index
+                : lastChord.probabilities.degree[0].index;
 
             return [
-                numeric,
+                degree,
                 lastChord.probabilities.shift[0].index,
                 lastChord.probabilities.quality[0].index
             ];

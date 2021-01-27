@@ -30,8 +30,8 @@ export default class CsdGenerator {
         // TODO handle #/bCsdGenerator.tsx
         let pitches: IChordPitchList = [];
 
-        if (!chord.numeric) {
-            throw new Error('Need numeric notation to generate a chord pitch.');
+        if (!chord.degree) {
+            throw new Error('Need chord degree to generate a chord pitch.');
         }
 
         const quality = chord.quality;
@@ -45,8 +45,8 @@ export default class CsdGenerator {
         }
 
         const pitchShift = this.isMajor
-            ? parseFloat((majorScale[chord.numeric - 1] - 7).toString()).toPrecision(1)
-            : parseFloat((minorScale[chord.numeric - 1] - 7).toString()).toPrecision(1);
+            ? parseFloat((majorScale[chord.degree - 1] - 7).toString()).toPrecision(1)
+            : parseFloat((minorScale[chord.degree - 1] - 7).toString()).toPrecision(1);
 
         pitches.forEach((pitch: number) => {
             this.addScoreLine(`i 1 ${start} ${length} ${pitch} ${pitchShift}`);

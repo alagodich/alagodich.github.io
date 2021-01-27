@@ -522,6 +522,20 @@ describe('IRealProUrlParser', () => {
                 }
             ]);
         });
+        it('should handle Alfie\'s Theme', () => {
+            const songWithRepeats = 'irealb://%41%6C%66%69%65%27%73%20%54%68%65%6D%65=%52%6F%6C%6C%69%6E%73%20%53%6F%6E%6E%79==%4D%65%64%69%75%6D%20%53%77%69%6E%67=%42%62%2D==%31%72%33%34%4C%62%4B%63%75%37%39%62%37%46%20%41%42%62%2D%37%37%68%47%20%46%2F%37%2D%62%42%5A%4C%37%5E%47%62%20%37%68%47%5A%4C%62%41%2F%37%2D%62%42%20%4C%5A%43%68%37%2A%7B%34%34%54%37%2D%62%42%6C%37%20%42%62%2D%43%73%5A%4C%37%68%47%20%46%2F%37%2D%62%42%4C%5A%37%5E%62%47%20%37%68%47%5A%4C%62%41%2F%37%68%2C%46%37%2C%2D%62%42%5A%4C%2D%62%42%6C%5A%6C%42%62%2D%37%20%37%62%47%5A%4C%37%62%41%20%37%2D%62%42%4C%5A%39%62%37%46%20%37%62%47%5A%4C%37%62%41%20%46%37%62%39%4C%42%2A%5B%7D%20%2F%37%2D%62%42%4C%5A%47%62%37%41%2A%5B%5D%20%39%62%37%46%20%37%62%47%5A%37%4C%62%41%20%37%2D%62%42%5A%4C%39%62%37%46%20%42%62%2D%37%20%37%62%41%20%37%5A%4C%62%41%2F%68%37%20%47%62%37%2D%62%42%5A%4C%39%62%37%46%20%37%68%43%4C%5A%37%68%47%20%46%2F%37%2D%62%42%5A%4C%37%5E%20%42%62%2D%37%47%5A%4C%62%41%47%68%37%20%47%62%5E%37%4C%5A%42%62%2D%37%2F%46%20%47%68%37%4C%5A%73%43%68%2C%46%37%2C%6C%42%62%2D%37%20%5A%20==%30=%30===';
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: "Alfie's Theme",
+                    author: 'Sonny Rollins',
+                    style: 'Medium Swing',
+                    key: 'Bb-',
+                    chordString: '*A{T44Bb-7 Bb-7/Ab|Gh7 Gb^7|Bb-7/F Gh7|Ch7 F7b9|Bb-7 Bb-7/Ab|Gh7 Gb^7|Bb-7/F Gh7|Ch F7 Bb-7 }*B[ Bb-7 Ab7|Gb7 F7b9|Bb-7 Ab7|Gb7 F7b9|Bb-7 Ab7|Gb7 F7b9|Bb-7 Ab7|Gb7 F7b9 ]*A[Bb-7 Bb-7/Ab|Gh7 Gb^7|Bb-7/F Gh7|Ch7 F7b9|Bb-7 Bb-7/Ab|Gh7 Gb^7|Bb-7/F Gh7|Ch F7 Bb-7 Z'
+                }
+            ]);
+        });
 
         it.skip('should handle song with misplaced prefix, transposed?', () => {});
         it.skip('should handle song without prefix', () => {});

@@ -34,7 +34,7 @@ export function convertToTensor(flatData: IFlatHarmonyData[]): ITensorContainerO
 
 /**
  * Each label is a 25 depth OneHot tensor
- * Which is a sum of (0-6) numeric + (0 - 2) shift + (0 - 14) quality
+ * Which is a sum of (0-6) degree + (0 - 2) shift + (0 - 14) quality
  * [7, 2, 14] chord will be transformed to:
  *
  * 0, 0, 0, 0, 0, 0, 1

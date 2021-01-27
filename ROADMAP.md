@@ -5,9 +5,10 @@
 * Rework, try highcharts, am4 charts are too heavy
 
 #### Real Book
+* Properly calculate song numeric notation, for example Alfie's Theme in B- has both 6 and b6
 * For hot module loading set module: ESNext in tsconfig, "target": "esnext", "moduleResolution": "node" https://github.com/webpack/webpack/issues/5703
 * Add Keyboard shortcuts available
-* Mobile Layout
+* Fit chart text, use either https://drafts.csswg.org/css-values/#viewport-relative-lengths or some kind of text fitter. https://stackoverflow.com/questions/16056591/font-scaling-based-on-width-of-container, https://stackoverflow.com/questions/16056591/font-scaling-based-on-width-of-container
 * SVG chord bars Handle too many chords in bar, decrease font size, Display repeat ending top borders properly, maybe SVG entire bar
 * Render W symbol as a space (Butterfly), Coda, Segno and Fermata symbols (Always And Forever)
 * Add playlists and better navigation with global state store and redux

@@ -44,13 +44,13 @@ describe('embedding harmony tensors', () => {
                 TensorFlow.tensor2d([[6]]),
                 TensorFlow.tensor2d([[2]]),
                 TensorFlow.tensor2d([[14]])
-            ])).toEqual({chord: {numeric: 7, shift: '#', quality: 'sus'}, digits: [6, 2, 14]});
+            ])).toEqual({chord: {degree: 7, shift: '#', quality: 'sus'}, digits: [6, 2, 14]});
 
             expect(await convertEmbeddingXsTensorToChord([
                 TensorFlow.tensor2d([[5]]),
                 TensorFlow.tensor2d([[1]]),
                 TensorFlow.tensor2d([[8]])
-            ])).toEqual({chord: {numeric: 6, shift: 'b', quality: '7b5'}, digits: [5, 1, 8]});
+            ])).toEqual({chord: {degree: 6, shift: 'b', quality: '7b5'}, digits: [5, 1, 8]});
 
             done();
         });
@@ -62,7 +62,7 @@ describe('embedding harmony tensors', () => {
             ];
             const chord = await convertEmbeddingXsTensorToChord(xs);
 
-            expect(chord).toEqual({chord: {numeric: 1}, digits: [0, 0, 0]});
+            expect(chord).toEqual({chord: {degree: 1}, digits: [0, 0, 0]});
 
             done();
         });
@@ -105,7 +105,7 @@ describe('embedding harmony tensors', () => {
             const prediction: IEmbeddingPrediction = await convertEmbeddingYsTensorToPredictionObject(ys);
 
             expect(prediction).toEqual({
-                numeric: [
+                degree: [
                     {label: '2', probability: 0.39, index: 1},
                     {label: '5', probability: 0.25, index: 4},
                     {label: '3', probability: 0.12, index: 2},
@@ -158,7 +158,7 @@ describe('embedding harmony tensors', () => {
             const prediction: IEmbeddingPrediction = await convertEmbeddingYsTensorToPredictionObject(ys);
 
             expect(prediction).toEqual({
-                numeric: [
+                degree: [
                     {label: '7', probability: 1, index: 6},
                     {label: '1', probability: 0, index: 0},
                     {label: '2', probability: 0, index: 1},

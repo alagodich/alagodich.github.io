@@ -1,7 +1,7 @@
 import React from 'react';
 import {IIRealProChartBar} from './types';
 import {Table, TableCellProps, Segment} from 'semantic-ui-react';
-import {IChordNotation} from './types';
+import {TChordNotation} from './types';
 import {Chord} from './Chord';
 
 const barlineMap: { [index: string]: string } = {
@@ -19,7 +19,7 @@ const barlineMap: { [index: string]: string } = {
     Z: 'barline--right--light-heavy'
 };
 
-type IChartBarProps = { notation: IChordNotation } & IIRealProChartBar;
+type IChartBarProps = { notation: TChordNotation } & IIRealProChartBar;
 
 // eslint-disable-next-line complexity
 export const ChartBar: React.FC<IChartBarProps> = React.memo((props: IChartBarProps) => {

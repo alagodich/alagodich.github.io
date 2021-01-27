@@ -1,9 +1,9 @@
 import React, {ReactElement} from 'react';
-import {IChordNotation, IIRealProChord} from './types';
+import {TChordNotation, IIRealProChord} from './types';
 
 interface IChordComponent {
     harmony: IIRealProChord;
-    notation: IChordNotation;
+    notation: TChordNotation;
 }
 
 // eslint-disable-next-line complexity
@@ -26,12 +26,22 @@ export const Chord = React.memo((props: IChordComponent): ReactElement | null =>
             </span>
         );
     } else if (props.harmony.root || props.harmony.shift || props.harmony.quality || props.harmony.inversion) {
-        const root = props.notation === 'numeric' ? props.harmony.numeric : props.harmony.root;
-        const shift = props.notation === 'numeric' ? null : props.harmony.shift ?? null;
+        let shift;
+        const root = ['numeric', 'berklee'].includes(props.notation) ? props.harmony.degree : props.harmony.root;
+
+        if (['numeric', 'berklee'].includes(props.notation)) {
+            if (props.harmony.degreeShift && props.harmony.degreeShift < 0) {
+                shift = [...Array(Math.abs(props.harmony.degreeShift))].map(() => 'b').join('');
+            } else if (props.harmony.degreeShift && props.harmony.degreeShift > 0) {
+                shift = [...Array(props.harmony.degreeShift)].map(() => '#').join('');
+            }
+        } else {
+            shift = props.harmony.shift ?? null;
+        }
 
         return (
             <span className="ui big text">
-                {root}{shift}
+                {['numeric', 'berklee'].includes(props.notation) ? [shift, root].join('') : [root, shift].join('')}
                 {props.harmony.quality ? <span className="ui small text">{props.harmony.quality}</span> : null}
                 {props.harmony.inversion ? <span className="ui small text">{props.harmony.inversion}</span> : null}
             </span>

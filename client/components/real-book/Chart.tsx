@@ -128,7 +128,8 @@ export const Chart = React.memo((props: RouteComponentProps<IChartProps>): React
             return null;
         }
 
-        const model = new IRealProChartModel(songs[activeSong]);
+        const shouldSuppressTuneAdjective = notation === 'berklee';
+        const model = new IRealProChartModel(songs[activeSong], shouldSuppressTuneAdjective);
 
         model.segments.forEach((segment, segmentKey) => {
             const headerCell = (

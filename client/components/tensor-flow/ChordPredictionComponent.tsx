@@ -31,7 +31,7 @@ export const ChordPredictionComponent = React.memo((props: IChordPredictionProps
             <List.Item key={key}>
                 <List.Header>{`${step.chordString} -> `}</List.Header>
                 <List.List>
-                    {renderProbabilities(step.probabilities.numeric, 3)}
+                    {renderProbabilities(step.probabilities.degree, 3)}
                     {renderProbabilities(step.probabilities.shift, 3)}
                     {renderProbabilities(step.probabilities.quality, 5)}
                 </List.List>

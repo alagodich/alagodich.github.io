@@ -58,7 +58,7 @@ export function prepareData(): IIRealProChord[][] {
                             throw new Error(`Unhandled root ${chord.root}`);
                         }
 
-                        segmentProgression.push(_pick(chordProps, ['numeric', 'shift', 'quality']));
+                        segmentProgression.push(_pick(chordProps, ['degree', 'shift', 'quality']));
                     });
                 });
                 harmonies.push(segmentProgression);
@@ -73,14 +73,14 @@ export function getChordsEnum(flatData: IFlatHarmonyData[]): number[] {
     const chordsEnum: number[] = [];
 
     flatData.forEach((change: IFlatHarmonyData) => {
-        const numericValueX = parseInt(change.x.map(value => value.toString()).join(''), 10);
-        const numericValueY = parseInt(change.y.map(value => value.toString()).join(''), 10);
+        const degreeValueX = parseInt(change.x.map(value => value.toString()).join(''), 10);
+        const degreeValueY = parseInt(change.y.map(value => value.toString()).join(''), 10);
 
-        if (!chordsEnum.includes(numericValueX)) {
-            chordsEnum.push(numericValueX);
+        if (!chordsEnum.includes(degreeValueX)) {
+            chordsEnum.push(degreeValueX);
         }
-        if (!chordsEnum.includes(numericValueY)) {
-            chordsEnum.push(numericValueY);
+        if (!chordsEnum.includes(degreeValueY)) {
+            chordsEnum.push(degreeValueY);
         }
     });
 
@@ -88,10 +88,10 @@ export function getChordsEnum(flatData: IFlatHarmonyData[]): number[] {
 }
 
 /**
- * From all chord properties: root, shift, quality, numeric, inversion, alt
- * we take only numeric, shift, quality
+ * From all chord properties: root, shift, quality, degree, inversion, alt
+ * we take only degree, shift, quality
  * and represent each chord as a number:
- * numeric 1-7 (1 digit)
+ * degree 1-7 (1 digit)
  * shift 0-2 (1 digit)
  * quality index in the qualities list 0-63 (2 digits)
  *
@@ -121,20 +121,20 @@ export function flattenData(preparedData: IIRealProChord[][]): IFlatHarmonyData[
 
 /**
  * Chord coverts to 4 digit number
- * 1 - digit is a numeric value
+ * 1 - digit is a degree value
  * 2 - shift b = 1, # = 2, '' = 0
  * 3 - quality index number from qualities array
  */
 export function convertChordToDigit(chord: IIRealProChord): number[] {
-    if (!chord.numeric) {
-        throw new Error(`Numeric notation required ${JSON.stringify(chord)}`);
+    if (!chord.degree) {
+        throw new Error(`Degree notation required ${JSON.stringify(chord)}`);
     }
 
-    if (!chord.numeric || chord.numeric > 7 || chord.numeric < 1) {
-        throw new Error(`Impossible numeric ${JSON.stringify(chord)}`);
+    if (!chord.degree || chord.degree > 7 || chord.degree < 1) {
+        throw new Error(`Impossible degree ${JSON.stringify(chord)}`);
     }
 
-    const chordInDigits: number[] = [chord.numeric - 1 as number];
+    const chordInDigits: number[] = [chord.degree - 1 as number];
 
     switch (chord.shift) {
         case '': {
@@ -177,11 +177,11 @@ export function convertChordToDigit(chord: IIRealProChord): number[] {
 
 export function convertDigitToChord(digitChord: number[]): IIRealProChord {
     if (digitChord[0] > 6 || digitChord[0] < 0) {
-        throw new Error(`Impossible numeric ${JSON.stringify(digitChord)}`);
+        throw new Error(`Impossible degree ${JSON.stringify(digitChord)}`);
     }
 
     const chord: IIRealProChord = {
-        numeric: digitChord[0] + 1
+        degree: digitChord[0] + 1
     };
 
     if (digitChord[1] === 1) {
@@ -220,15 +220,15 @@ export function flattenDataWithBinaryChords(preparedData: IIRealProChord[][]): I
 }
 
 export function convertChordToDigitWithBinaryQuality(chord: IIRealProChord): TChordWithBinaryQuality {
-    if (!chord.numeric) {
-        throw new Error(`Numeric notation required ${JSON.stringify(chord)}`);
+    if (!chord.degree) {
+        throw new Error(`Chord Degree required ${JSON.stringify(chord)}`);
     }
 
-    if (!chord.numeric || chord.numeric > 7 || chord.numeric < 1) {
-        throw new Error(`Impossible numeric ${JSON.stringify(chord)}`);
+    if (!chord.degree || chord.degree > 7 || chord.degree < 1) {
+        throw new Error(`Impossible degree ${JSON.stringify(chord)}`);
     }
 
-    const numeric = chord.numeric - 1;
+    const degree = chord.degree - 1;
     let shift: number;
     let quality: number[];
 
@@ -266,16 +266,16 @@ export function convertChordToDigitWithBinaryQuality(chord: IIRealProChord): TCh
         quality = binaryQuality;
     }
 
-    return [numeric, shift, quality];
+    return [degree, shift, quality];
 }
 
 export function convertDigitWithBinaryQualityToChord(digitChord: TChordWithBinaryQuality): IIRealProChord {
     if (digitChord[0] > 6 || digitChord[0] < 0) {
-        throw new Error(`Impossible numeric ${JSON.stringify(digitChord)}`);
+        throw new Error(`Impossible degree ${JSON.stringify(digitChord)}`);
     }
 
     const chord: IIRealProChord = {
-        numeric: digitChord[0] + 1
+        degree: digitChord[0] + 1
     };
 
     if (digitChord[1] === 1) {

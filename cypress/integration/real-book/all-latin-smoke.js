@@ -1,17 +1,17 @@
-describe('All jazz smoke', () => {
+describe('All latin smoke', () => {
     it('should go through all latin charts and see no errors. Part 1', () => {
         openLatinPages(0, 100);
     });
     it('should go through all latin charts and see no errors, Part 2', () => {
         openLatinPages(101, 200);
     });
-    it('should go through all latin charts and see no errors, Part 2', () => {
+    it('should go through all latin charts and see no errors, Part 3', () => {
         openLatinPages(201, 300);
     });
-    it('should go through all latin charts and see no errors, Part 2', () => {
+    it('should go through all latin charts and see no errors, Part 4', () => {
         openLatinPages(301, 400);
     });
-    it('should go through all latin charts and see no errors, Part 2', () => {
+    it('should go through all latin charts and see no errors, Part 5', () => {
         openLatinPages(401, 510);
     });
 });

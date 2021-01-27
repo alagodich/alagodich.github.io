@@ -93,22 +93,22 @@ export default class CSoundComponent extends Component<any, ICSoundComponentStat
         csdGenerator.useDefaultInstruments();
         const C: IIRealProChord = {
             root: 'C',
-            numeric: 1,
+            degree: 1,
             quality: '^'
         };
         const Am: IIRealProChord = {
             root: 'A',
-            numeric: 6,
+            degree: 6,
             quality: '-7'
         };
         const Dm: IIRealProChord = {
             root: 'D',
-            numeric: 2,
+            degree: 2,
             quality: '-7'
         };
         const G7: IIRealProChord = {
             root: 'G',
-            numeric: 5,
+            degree: 5,
             quality: '7'
         };
 
