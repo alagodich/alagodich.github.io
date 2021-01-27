@@ -6636,7 +6636,7 @@ describe('IRealProChartModel', () => {
     });
 
     describe('changeTuneAdjective', () => {
-        fit('should update chord degrees if adjective set to major for minor tune. Berklee style', () => {
+        it('should update chord degrees if adjective set to major for minor tune. Berklee style', () => {
             const props = {
                 title: '500 Miles High',
                 author: 'Corea Chick',

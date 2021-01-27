@@ -8,6 +8,19 @@ interface IChordComponent {
 
 // eslint-disable-next-line complexity
 export const Chord = React.memo((props: IChordComponent): ReactElement | null => {
+
+    function getNumericDegreeString(degree: number, shift: number | undefined) {
+        let shiftString = '';
+
+        if (shift && shift < 0) {
+            shiftString = [...Array(Math.abs(shift))].map(() => 'b').join('');
+        } else if (shift && shift > 0) {
+            shiftString = [...Array(shift)].map(() => '#').join('');
+        }
+
+        return [shiftString, degree].join('');
+    }
+
     if (props.harmony.root === 'x') {
         // Bar repeat
         return <span className="ui big text chord__bar-repeat">{'x'}</span>;
@@ -26,24 +39,28 @@ export const Chord = React.memo((props: IChordComponent): ReactElement | null =>
             </span>
         );
     } else if (props.harmony.root || props.harmony.shift || props.harmony.quality || props.harmony.inversion) {
-        let shift;
-        const root = ['numeric', 'berklee'].includes(props.notation) ? props.harmony.degree : props.harmony.root;
+        let chordBaseString;
+        let inversion;
 
         if (['numeric', 'berklee'].includes(props.notation)) {
-            if (props.harmony.degreeShift && props.harmony.degreeShift < 0) {
-                shift = [...Array(Math.abs(props.harmony.degreeShift))].map(() => 'b').join('');
-            } else if (props.harmony.degreeShift && props.harmony.degreeShift > 0) {
-                shift = [...Array(props.harmony.degreeShift)].map(() => '#').join('');
+            if (props.harmony.inversionDegree) {
+                inversion = getNumericDegreeString(
+                    props.harmony.inversionDegree,
+                    props.harmony.inversionDegreeShift
+                );
+                inversion = ['/', inversion].join('');
             }
+            chordBaseString = getNumericDegreeString(props.harmony.degree as number, props.harmony.degreeShift);
         } else {
-            shift = props.harmony.shift ?? null;
+            inversion = props.harmony.inversion;
+            chordBaseString = [props.harmony.root, props.harmony.shift].join('');
         }
 
         return (
             <span className="ui big text">
-                {['numeric', 'berklee'].includes(props.notation) ? [shift, root].join('') : [root, shift].join('')}
+                {chordBaseString}
                 {props.harmony.quality ? <span className="ui small text">{props.harmony.quality}</span> : null}
-                {props.harmony.inversion ? <span className="ui small text">{props.harmony.inversion}</span> : null}
+                {inversion ? <span className="ui small text">{inversion}</span> : null}
             </span>
         );
     }

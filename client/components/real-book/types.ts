@@ -36,6 +36,8 @@ export interface IIRealProChord {
     degree?: number;
     degreeShift?: number;
     inversion?: string;
+    inversionDegree?: number;
+    inversionDegreeShift?: number;
     alt?: IIRealProChord;
 }
 
