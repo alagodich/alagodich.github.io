@@ -451,6 +451,17 @@ export default class IRealProChartModel {
 
         if (requiredDegreeInterval !== realDegreeInterval) {
             degreeShift = (realDegreeInterval - (requiredDegreeInterval + this.tuneKeyIntervalRelativeToC) % 12) % 12;
+
+            // This is a hack, if calculated shift abs > 2 it's probably just needs rectifying
+            if (degreeShift > 2) {
+                degreeShift -= 12;
+            } else if (degreeShift < -2) {
+                degreeShift += 12;
+            }
+        }
+
+        if (degreeShift && Math.abs(degreeShift) > 2) {
+            throw new Error(`Unexpected large shift ${degreeShift} in ${rootBase}${shiftSign}, Song: ${this.title}.`);
         }
 
         return [degreeIndex, degreeShift];

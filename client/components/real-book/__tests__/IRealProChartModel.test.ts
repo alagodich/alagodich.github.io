@@ -1,4 +1,5 @@
 /* eslint max-len: 0 */
+/* eslint max-statements: 0 */
 
 import IRealProChartModel from '../IRealProChartModel';
 import {IIRealProChartModelProps} from '../types';
@@ -5679,7 +5680,7 @@ describe('IRealProChartModel', () => {
                                 degreeShift: -1,
                                 inversion: '/Cb',
                                 inversionDegree: 4,
-                                inversionDegreeShift: 11
+                                inversionDegreeShift: -1
                             },
                             {root: 'p'},
                             {
@@ -5732,7 +5733,7 @@ describe('IRealProChartModel', () => {
                                 shift: 'b',
                                 quality: '^7',
                                 degree: 4,
-                                degreeShift: 11
+                                degreeShift: -1
                             },
                             {
                                 root: 'D',
@@ -5741,7 +5742,7 @@ describe('IRealProChartModel', () => {
                                 degreeShift: -1,
                                 inversion: '/Cb',
                                 inversionDegree: 4,
-                                inversionDegreeShift: 11
+                                inversionDegreeShift: -1
                             }
                         ],
                         close: '|'
@@ -5852,7 +5853,7 @@ describe('IRealProChartModel', () => {
                                 degreeShift: -1,
                                 inversion: '/Cb',
                                 inversionDegree: 4,
-                                inversionDegreeShift: 11
+                                inversionDegreeShift: -1
                             },
                             {root: 'p'}
                         ],
@@ -6270,6 +6271,317 @@ describe('IRealProChartModel', () => {
             }
         ]);
     });
+    it('handles Black Narcissus with bb2', () => {
+        const props = {
+            title: 'Black Narcissus',
+            author: 'Joe Henderson',
+            style: 'Waltz',
+            key: 'G#-',
+            chordString: '[T34Ab-7 |Bb-7/Ab |Ab-7 |Bb-7/Ab |Ab-7 |Bb-7/Ab |Ab-7 |Cb^7#11 ][F#-7 |G#-7/F# |F#-7 |G#-7/F# |F#-7 |G#-7/F# |F#-7 |A^7#11/F# ][Eb^7#11 |F^7#11 |Bb^7#11 |C^7#11 |Eb^7#11 |F^7#11 Bb^7#11|G^7#11 Ab^7#11|Bb^ C^7#11 Z'
+        } as IIRealProChartModelProps;
+        const model = new IRealProChartModel(props);
+
+        expect(model.title).toBe('Black Narcissus');
+        expect(model.errors).toEqual([]);
+
+        expect(model.key).toBe('G#-');
+        expect(model.tuneKeyRootBase).toBe('G');
+        expect(model.tuneKeyRelativeToCShift).toBe(4);
+        expect(model.tuneKeyIntervalRelativeToC).toBe(20);
+        expect(model.tuneAdjective).toBe('minor');
+
+        expect(model.segments).toEqual([
+            {
+                name: '',
+                data: [
+                    {
+                        timeSignature: '3 / 4',
+                        open: '[',
+                        chords: 'Ab-7',
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 2,
+                                degreeShift: -2
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb-7/Ab',
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 3,
+                                degreeShift: -1,
+                                inversion: '/Ab',
+                                inversionDegree: 2,
+                                inversionDegreeShift: -2
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Ab-7',
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 2,
+                                degreeShift: -2
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb-7/Ab',
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 3,
+                                degreeShift: -1,
+                                inversion: '/Ab',
+                                inversionDegree: 2,
+                                inversionDegreeShift: -2
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Ab-7',
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 2,
+                                degreeShift: -2
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb-7/Ab',
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 3,
+                                degreeShift: -1,
+                                inversion: '/Ab',
+                                inversionDegree: 2,
+                                inversionDegreeShift: -2
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Ab-7',
+                        harmony: [
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '-7',
+                                degree: 2,
+                                degreeShift: -2
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Cb^7#11',
+                        harmony: [
+                            {
+                                root: 'C',
+                                shift: 'b',
+                                quality: '^7#11',
+                                degree: 4,
+                                degreeShift: -2
+                            }
+                        ],
+                        close: ']'
+                    },
+                    {
+                        open: '[',
+                        chords: 'F#-7',
+                        harmony: [{root: 'F', shift: '#', quality: '-7', degree: 7}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G#-7/F#',
+                        harmony: [
+                            {
+                                root: 'G',
+                                shift: '#',
+                                quality: '-7',
+                                degree: 1,
+                                inversion: '/F#',
+                                inversionDegree: 7
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F#-7',
+                        harmony: [{root: 'F', shift: '#', quality: '-7', degree: 7}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G#-7/F#',
+                        harmony: [
+                            {
+                                root: 'G',
+                                shift: '#',
+                                quality: '-7',
+                                degree: 1,
+                                inversion: '/F#',
+                                inversionDegree: 7
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F#-7',
+                        harmony: [{root: 'F', shift: '#', quality: '-7', degree: 7}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G#-7/F#',
+                        harmony: [
+                            {
+                                root: 'G',
+                                shift: '#',
+                                quality: '-7',
+                                degree: 1,
+                                inversion: '/F#',
+                                inversionDegree: 7
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F#-7',
+                        harmony: [{root: 'F', shift: '#', quality: '-7', degree: 7}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A^7#11/F#',
+                        harmony: [
+                            {
+                                root: 'A',
+                                quality: '^7#11',
+                                degree: 2,
+                                degreeShift: -1,
+                                inversion: '/F#',
+                                inversionDegree: 7
+                            }
+                        ],
+                        close: ']'
+                    },
+                    {
+                        open: '[',
+                        chords: 'Eb^7#11',
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '^7#11',
+                                degree: 6,
+                                degreeShift: -1
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F^7#11',
+                        harmony: [{root: 'F', quality: '^7#11', degree: 7, degreeShift: -1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb^7#11',
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '^7#11',
+                                degree: 3,
+                                degreeShift: -1
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C^7#11',
+                        harmony: [{root: 'C', quality: '^7#11', degree: 4, degreeShift: -1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Eb^7#11',
+                        harmony: [
+                            {
+                                root: 'E',
+                                shift: 'b',
+                                quality: '^7#11',
+                                degree: 6,
+                                degreeShift: -1
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F^7#11 Bb^7#11',
+                        harmony: [
+                            {root: 'F', quality: '^7#11', degree: 7, degreeShift: -1},
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '^7#11',
+                                degree: 3,
+                                degreeShift: -1
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G^7#11 Ab^7#11',
+                        harmony: [
+                            {root: 'G', quality: '^7#11', degree: 1, degreeShift: -1},
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '^7#11',
+                                degree: 2,
+                                degreeShift: -2
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb^ C^7#11',
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '^',
+                                degree: 3,
+                                degreeShift: -1
+                            },
+                            {root: 'C', quality: '^7#11', degree: 4, degreeShift: -1}
+                        ],
+                        close: 'Z'
+                    }
+                ]
+            }
+        ]);
+    });
 
     it.skip('// TODO Alvarà Jorge Aragão errored', () => {
     });
@@ -6631,6 +6943,20 @@ describe('IRealProChartModel', () => {
                 inversion: '/C#',
                 inversionDegree: 4,
                 inversionDegreeShift: 1
+            });
+        });
+        it('should handle chord with inversion Cb^7#11 in G#-', () => {
+            IRealProChartModel.prototype.key = 'G#-';
+            IRealProChartModel.prototype.tuneKeyRootBase = 'G';
+            IRealProChartModel.prototype.tuneKeyRelativeToCShift = 4;
+            IRealProChartModel.prototype.tuneKeyIntervalRelativeToC = 20;
+            IRealProChartModel.prototype.tuneAdjective = 'minor';
+            expect(IRealProChartModel.prototype.fillChord([null, 'C', 'b', '^7#11'] as RegExpMatchArray)).toEqual({
+                root: 'C',
+                shift: 'b',
+                quality: '^7#11',
+                degree: 4,
+                degreeShift: -2
             });
         });
     });

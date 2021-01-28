@@ -8,7 +8,6 @@ interface IChordComponent {
 
 // eslint-disable-next-line complexity
 export const Chord = React.memo((props: IChordComponent): ReactElement | null => {
-
     function getNumericDegreeString(degree: number, shift: number | undefined) {
         let shiftString = '';
 

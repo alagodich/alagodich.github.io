@@ -2,7 +2,6 @@
 /* eslint max-statements: 0 */
 
 import IRealProUrlParser from '../IRealProUrlParser';
-// import {varDump} from '../../../../server/utils';
 
 describe('IRealProUrlParser', () => {
     describe('parse', () => {
@@ -533,6 +532,20 @@ describe('IRealProUrlParser', () => {
                     style: 'Medium Swing',
                     key: 'Bb-',
                     chordString: '*A{T44Bb-7 Bb-7/Ab|Gh7 Gb^7|Bb-7/F Gh7|Ch7 F7b9|Bb-7 Bb-7/Ab|Gh7 Gb^7|Bb-7/F Gh7|Ch F7 Bb-7 }*B[ Bb-7 Ab7|Gb7 F7b9|Bb-7 Ab7|Gb7 F7b9|Bb-7 Ab7|Gb7 F7b9|Bb-7 Ab7|Gb7 F7b9 ]*A[Bb-7 Bb-7/Ab|Gh7 Gb^7|Bb-7/F Gh7|Ch7 F7b9|Bb-7 Bb-7/Ab|Gh7 Gb^7|Bb-7/F Gh7|Ch F7 Bb-7 Z'
+                }
+            ]);
+        });
+        it('should handle Black Narcissus', () => {
+            const songWithRepeats = 'irealb://%42%6C%61%63%6B%20%4E%61%72%63%69%73%73%75%73=%48%65%6E%64%65%72%73%6F%6E%20%4A%6F%65==%57%61%6C%74%7A=%47%23%2D==%31%72%33%34%4C%62%4B%63%75%37%7C%51%79%58%37%62%2D%37%58%79%79%58%62%41%2F%37%2D%62%42%7C%51%79%58%37%62%2D%41%7C%51%79%58%62%41%2F%37%2D%62%42%7C%51%51%7C%41%62%2D%41%34%33%54%5B%7C%51%79%58%23%41%62%58%79%51%47%7C%51%79%58%37%2D%23%46%5B%5D%51%79%58%31%31%23%37%5E%62%43%7C%51%79%58%37%2D%62%41%7C%23%2D%37%2F%46%2F%37%2D%62%42%23%37%5E%41%7C%79%51%7C%47%23%23%46%7C%51%79%58%23%46%2F%37%2D%23%47%7C%79%51%58%37%2D%23%46%7C%51%79%58%23%46%2F%37%2D%2D%37%58%79%51%58%37%2D%23%46%79%58%31%31%23%58%79%51%5D%5B%79%58%31%31%23%37%5E%62%42%7C%51%79%58%31%23%31%37%5E%46%7C%51%79%58%31%31%23%37%5E%62%45%51%7C%43%5E%37%23%46%2F%31%31%2C%5E%62%42%73%37%23%31%31%58%37%5E%62%41%20%31%31%23%37%5E%47%5A%4C%31%23%31%37%5E%62%42%20%31%31%23%37%5E%46%7C%51%79%23%31%31%4C%5A%5E%62%45%7C%51%6C%43%5E%37%23%31%31%20%20%5A%20==%30=%30===';
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'Black Narcissus',
+                    author: 'Joe Henderson',
+                    style: 'Waltz',
+                    key: 'G#-',
+                    chordString: '[T34Ab-7 |Bb-7/Ab |Ab-7 |Bb-7/Ab |Ab-7 |Bb-7/Ab |Ab-7 |Cb^7#11 ][F#-7 |G#-7/F# |F#-7 |G#-7/F# |F#-7 |G#-7/F# |F#-7 |A^7#11/F# ][Eb^7#11 |F^7#11 |Bb^7#11 |C^7#11 |Eb^7#11 |F^7#11 Bb^7#11|G^7#11 Ab^7#11|Bb^ C^7#11 Z'
                 }
             ]);
         });

@@ -70,8 +70,7 @@ export const minorDegreesIndices: number[] = [
 ];
 export const keysIntervalList = [
     'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B',
-    'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B',
-    'B#', '_', '_', '_', 'Fb', 'E#', '_', '_', '_', '_', '_', 'Cb'
+    'B#', 'C#', '_', 'D#', 'Fb', 'E#', 'F#', '_', 'G#', '_', 'A#', 'Cb'
 ];
 
 export const qualities = [
