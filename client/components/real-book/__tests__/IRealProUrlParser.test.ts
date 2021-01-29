@@ -549,6 +549,9 @@ describe('IRealProUrlParser', () => {
                 }
             ]);
         });
+        it('should handle Brazil (Aquarela Do Brasil) Ary Barroso', () => {
+            throw new Error('it does not parse A part correctly');
+        });
 
         it.skip('should handle song with misplaced prefix, transposed?', () => {});
         it.skip('should handle song without prefix', () => {});

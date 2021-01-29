@@ -1,6 +1,7 @@
 import React, {ReactElement, useEffect} from 'react';
-import {Table, Segment} from 'semantic-ui-react';
+import {Table, Segment, Grid} from 'semantic-ui-react';
 import {ChartBar} from './ChartBar';
+import {SvgChartBar} from './SvgChartBar';
 import {RouteComponentProps, Link, useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {loadSong} from './store/library-slice';
@@ -123,6 +124,7 @@ export const Chart = React.memo((props: RouteComponentProps<IChartProps>): React
 
     function renderChart(): ReactElement | null {
         const tableRows: ReactElement[] = [];
+        const gridRows: ReactElement[] = [];
 
         if (!activeSong && activeSong !== 0) {
             return null;
@@ -145,14 +147,37 @@ export const Chart = React.memo((props: RouteComponentProps<IChartProps>): React
             if (!lines) {
                 return;
             }
+            const rowProps = {
+                style: {
+                    // resize: 'both',
+                    // overflow: 'hidden',
+                    // margin: 0,
+                    // padding: 0,
+
+                    // height: 60
+                    // height: '2cm',
+                    // height: '120%'
+                }
+            };
 
             lines.forEach((line: IIRealProChartBar[], key) => {
-                tableRows.push(
-                    <Table.Row key={`${segmentKey}-${key}`} className="chart__bar-line">
-                        {key === 0 ? headerCell : <Table.Cell className="chart__bar" width={1} />}
-                        {line.map((bar, barKey) => <ChartBar key={barKey} {...bar} notation={notation} />)}
-                    </Table.Row>
+                gridRows.push(
+                    <Grid.Row key={`${segmentKey}-${key}`}>
+                        {/*<Grid.Column width={1}>{segment.name}</Grid.Column>*/}
+                        {line.map((bar, barKey) => (
+                            <Grid.Column {...rowProps} width={4} key={barKey}>
+                                <SvgChartBar {...bar} notation={notation} />
+                            </Grid.Column>
+                        ))}
+                    </Grid.Row>
                 );
+
+                // tableRows.push(
+                //     <Table.Row key={`${segmentKey}-${key}`} className="chart__bar-line">
+                //         {key === 0 ? headerCell : <Table.Cell className="chart__bar" width={1} />}
+                //         {line.map((bar, barKey) => <SvgChartBar key={barKey} {...bar} notation={notation} />)}
+                //     </Table.Row>
+                // );
             });
         });
 
@@ -164,19 +189,22 @@ export const Chart = React.memo((props: RouteComponentProps<IChartProps>): React
                     ))
                     : null
                 }
-                <Table
-                    basic="very"
-                    singleLine
-                    fixed
-                    columns={5}
-                    className="chart"
-                    unstackable
-                    attached="top"
-                >
-                    <Table.Body>
-                        {tableRows}
-                    </Table.Body>
-                </Table>
+                <Grid columns={4} className="chart">
+                    {gridRows}
+                </Grid>
+                {/*<Table*/}
+                {/*    basic="very"*/}
+                {/*    // singleLine*/}
+                {/*    // fixed*/}
+                {/*    columns={5}*/}
+                {/*    className="chart"*/}
+                {/*    unstackable*/}
+                {/*    // attached="top"*/}
+                {/*>*/}
+                {/*    <Table.Body>*/}
+                {/*        {tableRows}*/}
+                {/*    </Table.Body>*/}
+                {/*</Table>*/}
             </>
         );
     }

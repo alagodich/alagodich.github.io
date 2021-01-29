@@ -21,9 +21,9 @@ const Desktop = ({children}: any) => {
 };
 
 const Mobile = ({children}: any) => {
-    const isDesktop = useMediaQuery({maxWidth: 767});
+    const isMobile = useMediaQuery({maxWidth: 767});
 
-    return isDesktop ? children : null;
+    return isMobile ? children : null;
 };
 
 export const MainMenu = React.memo((props: IMenuProps): ReactElement => {
