@@ -112,8 +112,8 @@ export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | nu
             if (harmony.root === 'x') {
                 const barRepeat: ReactElement[] = [
                     <line x1={viewBox.x / 2 - 20} y1={viewBox.y - 20} x2={viewBox.x / 2 + 20} y2={20} stroke={'black'} strokeWidth={4} key={'bar-repeat-1'} />,
-                    <circle cx={viewBox.x / 2 - 18} cy={viewBox.y / 2 - 10} r={3} stroke={'black'} strokeWidth={2} key={'bar-repeat-2'} />,
-                    <circle cx={viewBox.x / 2 + 18} cy={viewBox.y / 2 + 10} r={3} stroke={'black'} strokeWidth={2} key={'bar-repeat-3'} />,
+                    <circle cx={viewBox.x / 2 - 15} cy={viewBox.y / 2 - 10} r={3} stroke={'black'} strokeWidth={2} key={'bar-repeat-2'} />,
+                    <circle cx={viewBox.x / 2 + 15} cy={viewBox.y / 2 + 10} r={3} stroke={'black'} strokeWidth={2} key={'bar-repeat-3'} />,
                 ];
 
                 // Bar repeat

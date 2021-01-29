@@ -175,6 +175,8 @@ export default class IRealProUrlParser {
             .replace(/p[\s]*/g, 'p ')
             // Each named segment should have opening bar line, it is often omitted
             .replace(/([}\]])[\s]*(\*[\w])(?![\s]*[[{|])/, '$1[$2')
+            // All segment names must be uppercase *v -> *V
+            .replace(/(\*[abcdv])/g, segmentName => segmentName.toUpperCase())
             // Replace (*) if it is not a part of segment name, only acceptable segment names listed in rehearsalMarks
             .replace(/\*(?=[^ABCDiV]+)/g, '')
             // Dedupe repeating segment names in the row for example: *A*A

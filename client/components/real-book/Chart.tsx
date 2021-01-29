@@ -1,6 +1,6 @@
 import React, {ReactElement, useEffect} from 'react';
-import {Table, Segment, Grid} from 'semantic-ui-react';
-import {ChartBar} from './ChartBar';
+import {Segment, Grid} from 'semantic-ui-react';
+// import {ChartBar} from './ChartBar';
 import {SvgChartBar} from './SvgChartBar';
 import {RouteComponentProps, Link, useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
@@ -123,8 +123,8 @@ export const Chart = React.memo((props: RouteComponentProps<IChartProps>): React
     });
 
     function renderChart(): ReactElement | null {
-        const tableRows: ReactElement[] = [];
         const gridRows: ReactElement[] = [];
+        const segments: ReactElement[] = [];
 
         if (!activeSong && activeSong !== 0) {
             return null;
@@ -134,51 +134,36 @@ export const Chart = React.memo((props: RouteComponentProps<IChartProps>): React
         const model = new IRealProChartModel(songs[activeSong], shouldSuppressTuneAdjective);
 
         model.segments.forEach((segment, segmentKey) => {
-            const headerCell = (
-                <Table.Cell
-                    width={1}
-                    className="chart__section-header"
-                >
-                    {segment.name}
-                </Table.Cell>
-            );
             const lines = processLines(segment);
 
             if (!lines) {
                 return;
             }
-            const rowProps = {
-                style: {
-                    // resize: 'both',
-                    // overflow: 'hidden',
-                    // margin: 0,
-                    // padding: 0,
-
-                    // height: 60
-                    // height: '2cm',
-                    // height: '120%'
-                }
-            };
 
             lines.forEach((line: IIRealProChartBar[], key) => {
                 gridRows.push(
                     <Grid.Row key={`${segmentKey}-${key}`}>
-                        {/*<Grid.Column width={1}>{segment.name}</Grid.Column>*/}
                         {line.map((bar, barKey) => (
-                            <Grid.Column {...rowProps} width={4} key={barKey}>
+                            <Grid.Column width={4} key={barKey}>
                                 <SvgChartBar {...bar} notation={notation} />
                             </Grid.Column>
                         ))}
                     </Grid.Row>
                 );
-
-                // tableRows.push(
-                //     <Table.Row key={`${segmentKey}-${key}`} className="chart__bar-line">
-                //         {key === 0 ? headerCell : <Table.Cell className="chart__bar" width={1} />}
-                //         {line.map((bar, barKey) => <SvgChartBar key={barKey} {...bar} notation={notation} />)}
-                //     </Table.Row>
-                // );
             });
+
+            segments.push(
+                <Grid columns={16} className="chart">
+                    <Grid.Column width={1} className="chart__section-header">
+                        {segment.name ?? ' '}
+                    </Grid.Column>
+                    <Grid.Column width={15}>
+                        <Grid columns={4}>
+                            {gridRows}
+                        </Grid>
+                    </Grid.Column>
+                </Grid>
+            );
         });
 
         return (
@@ -189,22 +174,7 @@ export const Chart = React.memo((props: RouteComponentProps<IChartProps>): React
                     ))
                     : null
                 }
-                <Grid columns={4} className="chart">
-                    {gridRows}
-                </Grid>
-                {/*<Table*/}
-                {/*    basic="very"*/}
-                {/*    // singleLine*/}
-                {/*    // fixed*/}
-                {/*    columns={5}*/}
-                {/*    className="chart"*/}
-                {/*    unstackable*/}
-                {/*    // attached="top"*/}
-                {/*>*/}
-                {/*    <Table.Body>*/}
-                {/*        {tableRows}*/}
-                {/*    </Table.Body>*/}
-                {/*</Table>*/}
+                {segments}
             </>
         );
     }

@@ -549,8 +549,19 @@ describe('IRealProUrlParser', () => {
                 }
             ]);
         });
-        it('should handle Brazil (Aquarela Do Brasil) Ary Barroso', () => {
-            throw new Error('it does not parse A part correctly');
+        it('should handle Brazil (Aquarela Do Brasil) Ary Barroso with lowercase segment name *v', () => {
+            const songWithRepeats = 'irealb://%42%72%61%7A%69%6C%20%28%41%71%75%61%72%65%6C%61%20%44%6F%20%42%72%61%73%69%6C%29=%42%61%72%72%6F%73%6F%20%41%72%79==%53%61%6D%62%61=%44==%31%72%33%34%4C%62%4B%63%75%37%31%62%37%42%5A%34%44%36%4C%5A%5A%4C%78%5A%4C%36%44%5A%4C%78%5A%4C%78%5A%78%4C%5A%4C%36%2D%44%5A%4C%78%5A%4C%78%5A%4C%78%78%4C%5A%78%4C%34%54%76%2A%5B%4C%78%5A%4C%37%4C%5A%45%2D%37%41%5A%4C%37%2D%45%5A%4C%37%41%5A%4C%37%2D%5A%45%4C%37%41%5A%4C%37%2D%45%5A%4C%37%41%5A%4C%37%4C%5A%44%5E%78%5A%4C%2C%33%2D%45%5A%4C%78%5A%41%37%4C%5A%78%5A%4C%37%5E%44%41%2A%5B%20%51%79%58%5D%37%20%41%5A%4C%37%2D%45%5A%4C%78%5A%4C%37%5E%44%4C%5A%78%4C%5A%4C%37%2D%45%5A%37%44%20%37%5E%5A%78%4C%5A%78%5A%4C%37%2D%45%5A%4C%78%5A%4C%37%5E%44%5A%78%4C%5A%4C%37%41%5A%4C%78%5A%4C%37%2D%45%5A%4C%41%37%4C%5A%44%4C%78%5A%4C%37%78%5A%4C%78%5A%20%43%37%20%5B%5A%4C%78%5A%4C%78%5A%4C%39%62%37%42%5A%4C%5A%78%4C%78%5A%4C%78%5A%4C%2C%39%62%37%42%42%2A%78%4C%5A%78%4C%37%62%44%5A%4C%46%5A%4C%78%5A%45%2D%2C%4C%5A%78%5A%4C%29%36%2D%47%28%37%2D%45%43%2A%5B%36%20%62%2D%45%5A%4C%36%2D%45%5A%4C%36%62%2D%45%4C%5A%43%37%4C%5A%4C%78%5A%4C%37%41%5A%4C%37%78%4C%5A%42%2D%5A%4C%37%5E%44%44%2A%5B%5D%20%37%41%5A%4C%2D%37%45%5A%4C%78%5A%4C%37%45%5A%4C%78%5A%4C%37%78%4C%5A%45%2D%5A%4C%37%2D%23%4C%5A%44%5E%37%4C%5A%78%4C%5A%45%2D%37%4C%5A%41%37%4C%5A%44%5E%37%4C%5A%78%4C%5A%45%2D%37%4C%5A%41%37%20%5A%20==%30=%30===';
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songWithRepeats)).toEqual([
+                {
+                    title: 'Brazil (Aquarela Do Brasil)',
+                    author: 'Ary Barroso',
+                    style: 'Samba',
+                    key: 'D',
+                    chordString: '*V[T44D6|x|x|x|D-6|x|x|x|D6|x|x|x|B7b13 |x|E-7|A7|E-7|A7|E-7|A7|E-7|A7|D^7|x|E-7|A7|D^7|x|E-7|A7 ] *A[D^7|x|x|x|E-7|x|x|x|E-7|x|A7|x|D^7|x|E-7|A7|D^7 D7|Db7 C7 *B[B7b9 |x|x|x|B7b9|x|x|x|x|x|x|x|E- |E-b6|E-6|E-b6 *C[E-7(G-6)|x|C7|x|F#-7|x|B-7|x|E7|x|E-7|A7 ]*D[D^7|x|E-7|A7|D^7|x|E-7|A7|D^7|x|E-7|A7 Z'
+                }
+            ]);
         });
 
         it.skip('should handle song with misplaced prefix, transposed?', () => {});
