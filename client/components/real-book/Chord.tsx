@@ -1,69 +1,82 @@
+/* eslint react/no-multi-comp: 0 */
 import React, {ReactElement} from 'react';
-import {TChordNotation, IIRealProChord} from './types';
+import {IViewBox} from './SvgChartBar';
 
-interface IChordComponent {
-    harmony: IIRealProChord;
-    notation: TChordNotation;
+interface IDecoratorProps {
+    viewBox: IViewBox;
+    value?: number | string;
+    shouldPushLeft?: boolean;
+    shift?: string;
 }
-console.log('TODO REFACTOR');
-// TODO REFACTOR
-// eslint-disable-next-line complexity
-export const Chord = React.memo((props: IChordComponent): ReactElement | null => {
-    // function getNumericDegreeString(degree: number, shift: number | undefined) {
-    //     let shiftString = '';
-    //
-    //     if (shift && shift < 0) {
-    //         shiftString = [...Array(Math.abs(shift))].map(() => 'b').join('');
-    //     } else if (shift && shift > 0) {
-    //         shiftString = [...Array(shift)].map(() => '#').join('');
-    //     }
-    //
-    //     return [shiftString, degree].join('');
-    // }
-    //
-    // if (props.harmony.root === 'x') {
-    //     // Bar repeat
-    //     return <span className="ui big text chord__bar-repeat">{'x'}</span>;
-    // } else if (props.harmony.root === 'n') {
-    //     // N.C
-    //     return <span className="ui big text chord__no-chord">{'N.C.'}</span>;
-    // } else if (props.harmony.root === 'p') {
-    //     // Pause
-    //     return <span className="ui big text chord__pause">{' / '}</span>;
-    // } else if (props.harmony.root === 'W') {
-    //     return (
-    //         <span className="ui medium text">
-    //             {' '}{props.harmony.shift ?? null}
-    //             {props.harmony.quality ? <span className="ui small text">{props.harmony.quality}</span> : null}
-    //             {props.harmony.inversion ? <span className="ui big text">{props.harmony.inversion}</span> : null}
-    //         </span>
-    //     );
-    // } else if (props.harmony.root || props.harmony.shift || props.harmony.quality || props.harmony.inversion) {
-    //     let chordBaseString;
-    //     let inversion;
-    //
-    //     if (['numeric', 'berklee'].includes(props.notation)) {
-    //         if (props.harmony.inversionDegree) {
-    //             inversion = getNumericDegreeString(
-    //                 props.harmony.inversionDegree,
-    //                 props.harmony.inversionDegreeShift
-    //             );
-    //             inversion = ['/', inversion].join('');
-    //         }
-    //         chordBaseString = getNumericDegreeString(props.harmony.degree as number, props.harmony.degreeShift);
-    //     } else {
-    //         inversion = props.harmony.inversion;
-    //         chordBaseString = [props.harmony.root, props.harmony.shift].join('');
-    //     }
-    //
-    //     return (
-    //         <span className="ui big text">
-    //             {chordBaseString}
-    //             {props.harmony.quality ? <span className="ui small text">{props.harmony.quality}</span> : null}
-    //             {inversion ? <span className="ui small text">{inversion}</span> : null}
-    //         </span>
-    //     );
-    // }
-    //
-    return null;
-});
+
+export const RootDecorator = React.memo((props: IDecoratorProps): ReactElement =>
+    <tspan dx={props.shouldPushLeft ? 15 : 0} y={props.viewBox.y - 10}>{props.value}</tspan>);
+export const QualityDecorator = React.memo((props: IDecoratorProps): ReactElement =>
+    <tspan
+        fontSize={'0.5em'}
+        letterSpacing={-4}
+        dx={props.shift ? -20 : -5}
+        y={props.viewBox.y - 10}
+    >
+        {props.value}
+    </tspan>
+);
+export const NumericQualityDecorator = React.memo((props: IDecoratorProps): ReactElement =>
+    <tspan fontSize={'0.5em'} letterSpacing={-4} dx={-5} y={props.viewBox.y - 10}>{props.value}</tspan>);
+export const ShiftDecorator = React.memo((props: IDecoratorProps): ReactElement =>
+    <tspan fontSize={'0.5em'} dx={-5} y={props.viewBox.y - 40}>{props.value}</tspan>);
+export const NumericShiftDecorator = React.memo((props: IDecoratorProps): ReactElement =>
+    <tspan fontSize={'0.5em'} dx={0} y={props.viewBox.y - 40}>{props.value}</tspan>);
+export const InversionDecorator = React.memo((props: IDecoratorProps): ReactElement =>
+    <tspan
+        fontSize={'0.6em'}
+        letterSpacing={-4}
+        dx={0}
+        y={props.viewBox.y}
+    >
+        {props.value}
+    </tspan>
+);
+
+
+export const AltRootDecorator = React.memo((props: IDecoratorProps): ReactElement =>
+    <tspan dx={props.shouldPushLeft ? props.viewBox.x / 11 : 0}>{props.value}</tspan>);
+export const AltShiftDecorator = React.memo((props: IDecoratorProps): ReactElement =>
+    <tspan fontSize={'0.8em'} dx={0}>{props.value}</tspan>);
+export const AltQualityDecorator = React.memo((props: IDecoratorProps): ReactElement =>
+    <tspan fontSize={'0.8em'} letterSpacing={-2}>{props.value}</tspan>);
+export const AltInversionDecorator = React.memo((props: IDecoratorProps): ReactElement =>
+    <tspan fontSize={'0.6em'} letterSpacing={-2}>{props.value}</tspan>);
+
+export const PauseDecorator = React.memo((): ReactElement =>
+    <tspan fontWeight={100} dx={20}>{'/'}</tspan>);
+export const NoChordDecorator = React.memo((): ReactElement =>
+    <tspan fontSize={'0.7em'} letterSpacing={-10} dx={20}>{' N.C. '}</tspan>);
+export const BarRepeatDecorator = React.memo((props: IDecoratorProps): ReactElement => (
+    <React.Fragment>
+        <line
+            x1={props.viewBox.x / 2 - 20}
+            y1={props.viewBox.y - 27}
+            x2={props.viewBox.x / 2 + 20}
+            y2={27}
+            stroke={'black'}
+            strokeWidth={4}
+            key={'bar-repeat-1'}
+        />
+        <circle
+            cx={props.viewBox.x / 2 - 15}
+            cy={props.viewBox.y / 2 - 10}
+            r={3} stroke={'black'}
+            strokeWidth={2}
+            key={'bar-repeat-2'}
+        />
+        <circle
+            cx={props.viewBox.x / 2 + 15}
+            cy={props.viewBox.y / 2 + 10}
+            r={3}
+            stroke={'black'}
+            strokeWidth={2}
+            key={'bar-repeat-3'}
+        />
+    </React.Fragment>
+));

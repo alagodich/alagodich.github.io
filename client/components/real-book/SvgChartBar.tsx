@@ -1,8 +1,28 @@
 import {IIRealProChartBar, TChordNotation} from './types';
 import React, {ReactElement} from 'react';
+import {
+    RootDecorator,
+    QualityDecorator,
+    NumericQualityDecorator,
+    ShiftDecorator,
+    NumericShiftDecorator,
+    InversionDecorator,
+    PauseDecorator,
+    NoChordDecorator,
+    BarRepeatDecorator,
+
+    AltRootDecorator,
+    AltShiftDecorator,
+    AltQualityDecorator,
+    AltInversionDecorator
+} from './Chord';
 import {useMediaQuery} from 'react-responsive';
 
 type IChartBarProps = { notation: TChordNotation } & IIRealProChartBar;
+export interface IViewBox {
+    x: number;
+    y: number;
+}
 
 // TODO Songs to check:
 // 105 - Alt chords
@@ -12,21 +32,22 @@ type IChartBarProps = { notation: TChordNotation } & IIRealProChartBar;
 export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | null => {
     // const isDesktop = useMediaQuery({minWidth: 768});
     // const isMobile = useMediaQuery({maxWidth: 767});
-    const viewBox = {x: 410, y: 90};
+    const viewBox: IViewBox = {x: 410, y: 90};
+    const otherSigns: ReactElement[] = [];
 
     const openingBarLines: { [index: string]: ReactElement[] } = {
         // single bar line is not participating as it is the same for opening and closing
-        '|': [<line key="|-open" x1={1} y1={0} x2={1} y2={viewBox.y} stroke={'black'} strokeWidth={2} />],
+        '|': [<line key="|-open" x1={16} y1={0} x2={16} y2={viewBox.y} stroke={'black'} strokeWidth={2} />],
         // opening double bar line
         '[': [
-            <line key="[1" x1={1} y1={0} x2={1} y2={viewBox.y} stroke={'black'} strokeWidth={2} />,
-            <line key="[2" x1={6} y1={0} x2={6} y2={viewBox.y} stroke={'black'} strokeWidth={2} />
+            <line key="[1" x1={16} y1={0} x2={16} y2={viewBox.y} stroke={'black'} strokeWidth={2} />,
+            <line key="[2" x1={21} y1={0} x2={21} y2={viewBox.y} stroke={'black'} strokeWidth={2} />
         ],
         // opening repeat bar line
         '{': [
-            <polyline key="{1" points={`15 0, 2 10, 2 ${viewBox.y - 10}, 15 ${viewBox.y}`} stroke={'black'} strokeWidth={6} fill={'none'} />,
-            <circle key="{2" cx={10} cy={viewBox.y / 2 - 5} r={3} stroke={'black'} strokeWidth={2} />,
-            <circle key="{3" cx={10} cy={viewBox.y / 2 + 5} r={3} stroke={'black'} strokeWidth={2} />
+            <polyline key="{1" points={`30 0, 17 10, 17 ${viewBox.y - 10}, 30 ${viewBox.y}`} stroke={'black'} strokeWidth={6} fill={'none'} />,
+            <circle key="{2" cx={22} cy={viewBox.y / 2 - 5} r={3} stroke={'black'} strokeWidth={2} />,
+            <circle key="{3" cx={22} cy={viewBox.y / 2 + 5} r={3} stroke={'black'} strokeWidth={2} />
         ]
     };
     const closingBarLines: { [index: string]: ReactElement[] } = {
@@ -40,8 +61,8 @@ export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | nu
         // closing repeat bar line
         '}': [
             <polyline key="}1" points={`${viewBox.x - 15} 0, ${viewBox.x - 2} 10, ${viewBox.x - 2} ${viewBox.y - 10}, ${viewBox.x - 15} ${viewBox.y}`} stroke={'black'} strokeWidth={6} fill={'none'} />,
-            <circle key="}2" cx={viewBox.x - 10} cy={viewBox.y / 2 - 5} r={3} stroke={'black'} strokeWidth={2} />,
-            <circle key="}3" cx={viewBox.x - 10} cy={viewBox.y / 2 + 5} r={3} stroke={'black'} strokeWidth={2} />
+            <circle key="}2" cx={viewBox.x - 7} cy={viewBox.y / 2 - 5} r={3} stroke={'black'} strokeWidth={2} />,
+            <circle key="}3" cx={viewBox.x - 7} cy={viewBox.y / 2 + 5} r={3} stroke={'black'} strokeWidth={2} />
         ],
         // Final thick double bar line
         Z: [
@@ -51,14 +72,23 @@ export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | nu
     };
     const endings: { [index: string]: ReactElement[] } = {
         N1: [
-            <line key="N11" x1={0} y1={0} x2={viewBox.x / 1.5} y2={0} stroke={'black'} strokeWidth={2} />,
-            <text key="N12" textAnchor={'start'} x={10} y={15}>{'1.'}</text>
+            <line key="N11" x1={15} y1={0} x2={viewBox.x / 1.5} y2={0} stroke={'black'} strokeWidth={2} />,
+            <text key="N12" textAnchor={'start'} x={25} y={15}>{'1.'}</text>
         ],
         N2: [
-            <line key="N21" x1={0} y1={0} x2={viewBox.x / 1.5} y2={0} stroke={'black'} strokeWidth={2} />,
-            <text key="N22" textAnchor={'start'} x={10} y={15}>{'2.'}</text>
+            <line key="N21" x1={15} y1={0} x2={viewBox.x / 1.5} y2={0} stroke={'black'} strokeWidth={2} />,
+            <text key="N22" textAnchor={'start'} x={25} y={15}>{'2.'}</text>
         ]
     };
+    const codaSign: ReactElement[] = [
+        <ellipse cx={viewBox.x - 20} cy={18} rx={8} ry={11} fill={'none'} stroke={'black'} strokeWidth={4} key={'coda-1'} />,
+        <line x1={viewBox.x - 20} y1={1} x2={viewBox.x - 20} y2={35} stroke={'black'} strokeWidth={4} key={'coda-2'} />,
+        <line x1={viewBox.x - 32} y1={18} x2={viewBox.x - 8} y2={18} stroke={'black'} strokeWidth={4} key={'coda-3'} />
+    ];
+    const fermataSign: ReactElement[] = [
+        <path d={'M 30 20 A 15 15 0 0 1 60 20'} stroke={'black'} strokeWidth={4} fill={'none'} key={'fermata-1'}/>,
+        <circle cx={45} cy={16} r={2} stroke={'black'} strokeWidth={2} key="fermata-2" />
+    ];
 
     function getNumericDegreeShiftString(shift: number | undefined) {
         let shiftString = '';
@@ -71,29 +101,61 @@ export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | nu
 
         return shiftString;
     }
-    // console.log(props);
 
-    function getBorders(): ReactElement[][] {
-        const borders: ReactElement[][] = [];
-
-        // if (props.open === '|') {
-        //     borders.push(...barlineMap['|-open'] as any);
-        //     // borders.push([...barlineMap['[']]);
-        // }
-        // if (props.close === '|') {
-        //     borders.push(...barlineMap['|-close'] as any);
-        // }
+    function processOtherSigns(): void {
         if (props.open && openingBarLines[props.open]) {
-            borders.push(...openingBarLines[props.open] as any);
+            otherSigns.push(...openingBarLines[props.open] as any);
         }
         if (props.close && closingBarLines[props.close]) {
-            borders.push(...closingBarLines[props.close] as any);
+            otherSigns.push(...closingBarLines[props.close] as any);
         }
         if (props.ending) {
-            borders.push(...endings[props.ending] as any);
+            otherSigns.push(...endings[props.ending] as any);
         }
 
-        return borders;
+        // Butterfly
+        if (props.coda) {
+            otherSigns.push(codaSign as any);
+        }
+
+        // Butterfly
+        if (props.fermata) {
+            otherSigns.push(fermataSign as any);
+        }
+
+        if (props.timeSignature) {
+            const [beats, division] = props.timeSignature.split(' / ');
+            const timeSignature: any[] = [
+                <text
+                    x={0}
+                    y={30}
+                    fontSize={22}
+                    key={'time-signature-1'}
+                >
+                    {beats}
+                </text>,
+                <text
+                    x={0}
+                    y={70}
+                    fontSize={22}
+                    key={'time-signature-2'}
+                >
+                    {division}
+                </text>,
+                <line
+                    x1={3}
+                    y1={45}
+                    x2={11}
+                    y2={45}
+                    key={'time-signature-3'}
+                    stroke={'black'}
+                    strokeWidth={2}
+                />
+            ];
+
+            otherSigns.push(...timeSignature);
+        }
+
     }
 
     function getHarmony() {
@@ -102,85 +164,231 @@ export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | nu
         }
 
         const harmonyList: Array<string | ReactElement> = [];
-        const otherSigns: ReactElement[] = [];
 
-        // eslint-disable-next-line complexity
+        // eslint-disable-next-line complexity,max-statements
         props.harmony.forEach((harmony, index) => {
-            const shouldPushRight = props.harmony && props.harmony.length <= 2 && index < props.harmony.length - 1;
-            const shouldPushLeft = props.harmony && props.harmony.length > 2 && props.harmony.length <= 4 && index > 0;
+            // Should push right if 2 or less harmony elements in bar
+            const shouldPushRight =
+                (props.harmony && props.harmony.length <= 2 && index < props.harmony.length - 1) as boolean;
+            // Should push left if more than 2 elements in bar
+            const shouldPushLeft =
+                (props.harmony && props.harmony.length > 2 && props.harmony.length <= 4 && index > 0) as boolean;
 
             if (harmony.root === 'x') {
-                const barRepeat: ReactElement[] = [
-                    <line x1={viewBox.x / 2 - 20} y1={viewBox.y - 20} x2={viewBox.x / 2 + 20} y2={20} stroke={'black'} strokeWidth={4} key={'bar-repeat-1'} />,
-                    <circle cx={viewBox.x / 2 - 15} cy={viewBox.y / 2 - 10} r={3} stroke={'black'} strokeWidth={2} key={'bar-repeat-2'} />,
-                    <circle cx={viewBox.x / 2 + 15} cy={viewBox.y / 2 + 10} r={3} stroke={'black'} strokeWidth={2} key={'bar-repeat-3'} />,
-                ];
-
-                // Bar repeat
-                otherSigns.push(...barRepeat as any);
+                otherSigns.push(<BarRepeatDecorator viewBox={viewBox} key={`bar-repeat-${index}`} />);
             } else if (harmony.root === 'n') {
-                // N.C
-                harmonyList.push('N.C.');
+                harmonyList.push(<NoChordDecorator key={`no-chord-${index}`} />);
             } else if (harmony.root === 'p') {
-                // Pause
-                harmonyList.push(' / ');
+                harmonyList.push(<PauseDecorator key={`pause-${index}`} />);
             } else if (harmony.root === 'W') {
-                // TODO fix for numeric
-                harmonyList.push(` ${harmony.inversion}`);
+                harmonyList.push(
+                    <RootDecorator
+                        viewBox={viewBox}
+                        value={' '}
+                        shouldPushLeft={shouldPushLeft}
+                        key={`repeat-root-${index}`}
+                    />
+                );
+                if (['numeric', 'berklee'].includes(props.notation)) {
+                    if (harmony.inversionDegree) {
+                        const inversionDegreeShift = getNumericDegreeShiftString(harmony.inversionDegreeShift);
+
+                        const inversion = ['/', inversionDegreeShift, harmony.inversionDegree].join('');
+
+                        harmonyList.push(
+                            <InversionDecorator
+                                viewBox={viewBox}
+                                value={inversion}
+                                key={`inversion-${index}`}
+                            />
+                        );
+                    }
+                } else {
+                    harmonyList.push(
+                        <InversionDecorator
+                            viewBox={viewBox}
+                            value={harmony.inversion}
+                            key={`inversion-${index}`}
+                        />
+                    );
+                }
             } else if (harmony.root || harmony.shift || harmony.quality || harmony.inversion) {
                 let inversion;
 
                 if (['numeric', 'berklee'].includes(props.notation)) {
                     if (harmony.inversionDegree) {
-                        inversion = getNumericDegreeShiftString(harmony.inversionDegreeShift);
-                        inversion = ['/', inversion].join('');
+                        const inversionDegreeShift = getNumericDegreeShiftString(harmony.inversionDegreeShift);
+
+                        inversion = ['/', inversionDegreeShift, harmony.inversionDegree].join('');
                     }
                     const numericDegreeShiftString = getNumericDegreeShiftString(harmony.degreeShift);
-                    // harmonyList.push([chordBaseString, harmony.quality, inversion].join(''));
 
                     if (numericDegreeShiftString) {
-                        harmonyList.push(<tspan fontSize={'0.5em'} dx={0} y={viewBox.y - 40}>{numericDegreeShiftString}</tspan>);
+                        harmonyList.push(
+                            <NumericShiftDecorator
+                                viewBox={viewBox}
+                                value={numericDegreeShiftString}
+                                key={`shift-${index}`}
+                            />
+                        );
                     }
-                    harmonyList.push(<tspan dx={shouldPushLeft ? 15 : 0} y={viewBox.y - 10}>{harmony.degree}</tspan>);
+                    harmonyList.push(
+                        <RootDecorator
+                            viewBox={viewBox}
+                            value={harmony.degree}
+                            shouldPushLeft={shouldPushLeft}
+                            key={`root-${index}`}
+                        />
+                    );
                     if (harmony.quality) {
-                        harmonyList.push(<tspan fontSize={'0.5em'} dx={-5} y={viewBox.y - 10}>{harmony.quality}</tspan>);
+                        harmonyList.push(
+                            <NumericQualityDecorator
+                                viewBox={viewBox}
+                                value={harmony.quality}
+                                shouldPushLeft={shouldPushLeft}
+                                key={`quality-${index}`}
+                            />
+                        );
                     }
                     if (inversion) {
-                        harmonyList.push(<tspan fontSize={'0.6em'} dx={0} y={viewBox.y - 10}>{inversion}</tspan>);
+                        harmonyList.push(
+                            <InversionDecorator
+                                viewBox={viewBox}
+                                value={inversion}
+                                key={`inversion-${index}`}
+                            />
+                        );
                     }
                 } else {
-                    // chordBaseString = [harmony.root, harmony.shift].join('');
-                    // // harmonyList.push(chordBaseString);
-                    harmonyList.push(<tspan dx={shouldPushLeft ? 15 : 0} y={viewBox.y - 10}>{harmony.root}</tspan>);
+                    harmonyList.push(
+                        <RootDecorator
+                            viewBox={viewBox}
+                            value={harmony.root}
+                            shouldPushLeft={shouldPushLeft}
+                            key={`root-${index}`}
+                        />
+                    );
                     if (harmony.shift) {
-                        harmonyList.push(<tspan fontSize={'0.5em'} dx={-5} y={viewBox.y - 40}>{harmony.shift}</tspan>);
+                        harmonyList.push(
+                            <ShiftDecorator
+                                viewBox={viewBox}
+                                value={harmony.shift}
+                                key={`shift-${index}`}
+                            />
+                        );
                     }
                     if (harmony.quality) {
-                        harmonyList.push(<tspan fontSize={'0.5em'} dx={harmony.shift ? -20 : -5} y={viewBox.y - 10}>{harmony.quality}</tspan>);
+                        harmonyList.push(
+                            <QualityDecorator
+                                viewBox={viewBox}
+                                shift={harmony.shift}
+                                value={harmony.quality}
+                                shouldPushLeft={shouldPushLeft}
+                                key={`quality-${index}`}
+                            />
+                        );
                     }
                     if (harmony.inversion) {
-                        harmonyList.push(<tspan fontSize={'0.6em'} dx={0} y={viewBox.y - 10}>{harmony.inversion}</tspan>);
+                        harmonyList.push(
+                            <InversionDecorator
+                                viewBox={viewBox}
+                                value={harmony.inversion}
+                                key={`inversion-${index}`}
+                            />
+                        );
                     }
                 }
+            } else {
+                throw new Error(`Unexpected harmony value ${harmony}`);
             }
             if (shouldPushRight) {
                 harmonyList.push(' ');
             }
         });
 
-        return [harmonyList, otherSigns];
+        return harmonyList;
     }
 
-    // const cellProps = {
-    //     style: {
-    //         // resize: 'both',
-    //         // overflow: 'hidden',
-    //         margin: 0,
-    //         padding: 0,
-    //         // height: 60,
-    //         height: '2'
-    //     }
-    // };
+    function getAltHarmony() {
+        if (!props.alt) {
+            return [];
+        }
+
+        const altHarmonyList: Array<string | ReactElement> = [];
+
+        // Affirmation - alt.version http://localhost:3000/realbook.html#/jazz/1352
+        props.alt.forEach((harmony, index) => {
+            let inversion;
+
+            if (['numeric', 'berklee'].includes(props.notation)) {
+                if (harmony.inversionDegree) {
+                    const inversionDegreeShift = getNumericDegreeShiftString(harmony.inversionDegreeShift);
+
+                    inversion = ['/', inversionDegreeShift, harmony.inversionDegree].join('');
+                }
+                const numericDegreeShiftString = getNumericDegreeShiftString(harmony.degreeShift);
+
+                if (numericDegreeShiftString) {
+                    altHarmonyList.push(
+                        <AltShiftDecorator
+                            viewBox={viewBox}
+                            value={numericDegreeShiftString}
+                            key={`alt-shift-${index}`}
+                        />
+                    );
+                }
+                altHarmonyList.push(
+                    <AltRootDecorator
+                        viewBox={viewBox}
+                        value={harmony.degree}
+                        key={`alt-root-${index}`}
+                    />
+                );
+            } else {
+                altHarmonyList.push(
+                    <AltRootDecorator
+                        viewBox={viewBox}
+                        value={harmony.root}
+                        shouldPushLeft={index !== 0}
+                        key={`alt-root-${index}`}
+                    />
+                );
+                if (harmony.shift) {
+                    altHarmonyList.push(
+                        <AltShiftDecorator
+                            viewBox={viewBox}
+                            value={harmony.shift}
+                            key={`alt-shift-${index}`}
+                        />
+                    );
+                }
+            }
+            if (harmony.quality) {
+                altHarmonyList.push(
+                    <AltQualityDecorator
+                        viewBox={viewBox}
+                        value={harmony.quality}
+                        key={`alt-quality-${index}`}
+                    />
+                );
+            }
+            if (inversion) {
+                altHarmonyList.push(
+                    <AltInversionDecorator
+                        viewBox={viewBox}
+                        value={inversion}
+                        key={`alt-inversion-${index}`}
+                    />
+                );
+            }
+
+            altHarmonyList.push(' ');
+        });
+
+
+        return altHarmonyList;
+    }
+
     const svgProps = {
         xmlns: 'http://www.w3.org/2000/svg',
         viewBox: `0 0 ${viewBox.x} ${viewBox.y}`,
@@ -199,38 +407,35 @@ export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | nu
         }
     };
 
-    const [harmony, otherSigns] = getHarmony();
+    processOtherSigns();
 
     return (
-        // TODO move table cell to the parent
+        // TODO FIX Street Life http://localhost:3000/realbook.html#/jazz/1380
         <svg {...svgProps}>
-            {/*<rect x={0} y={0} width={viewBox.x} height={viewBox.y} fill={'pink'}/>*/}
-            {getBorders()}
+            {/*<rect*/}
+            {/*    x={0}*/}
+            {/*    y={0}*/}
+            {/*    width={viewBox.x}*/}
+            {/*    height={viewBox.y}*/}
+            {/*    fill={'pink'}*/}
+            {/*/>*/}
+            {otherSigns}
             <text
                 fontSize={viewBox.y - 20}
                 fill="black"
-                x={15}
+                x={25}
                 y={viewBox.y - 10}
             >
-                {harmony}
+                {getHarmony()}
             </text>
-            {otherSigns}
-            {/*<svg*/}
-            {/*    width="5.6537971"*/}
-            {/*    height="15.641341"*/}
-            {/*    viewBox="0 0 0.90800003 2.5119999"*/}
-            {/*>*/}
-            {/*    <path*/}
-            {/*        transform="matrix(0.004,0,0,-0.004,0.108,1.86)"*/}
-            {/*        d="m 27,41 -1,-66 v -11 c 0,-22 1,-44 4,-66 45,38 93,80 93,139 0,33 -14,67 -43,67 C 49,104 28,74 27,41 z m -42,-179 -12,595 c 8,5 18,8 27,8 9,0 19,-3 27,-8 L 20,112 c 25,21 58,34 91,34 52,0 89,-48 89,-102 0,-80 -86,-117 -147,-169 -15,-13 -24,-38 -45,-38 -13,0 -23,11 -23,25 z"*/}
-            {/*        id="path3089"*/}
-            {/*        stroke={'black'}*/}
-            {/*        strokeWidth={2}*/}
-            {/*        fill={'none'}*/}
-            {/*        // style="fill:currentColor"*/}
-            {/*    />*/}
-            {/*    <text fill="black" textAnchor={'start'} x={10} y={90}>{'ALT'}</text>*/}
-            {/*</svg>*/}
+            <text
+                fontSize={viewBox.y - 60}
+                fill="black"
+                x={35}
+                y={viewBox.y - 65}
+            >
+                {getAltHarmony()}
+            </text>
         </svg>
     );
 });

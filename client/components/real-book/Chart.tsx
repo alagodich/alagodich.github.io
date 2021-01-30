@@ -123,18 +123,17 @@ export const Chart = React.memo((props: RouteComponentProps<IChartProps>): React
     });
 
     function renderChart(): ReactElement | null {
-        const gridRows: ReactElement[] = [];
         const segments: ReactElement[] = [];
 
         if (!activeSong && activeSong !== 0) {
             return null;
         }
-
         const shouldSuppressTuneAdjective = notation === 'berklee';
         const model = new IRealProChartModel(songs[activeSong], shouldSuppressTuneAdjective);
 
         model.segments.forEach((segment, segmentKey) => {
             const lines = processLines(segment);
+            const gridRows: ReactElement[] = [];
 
             if (!lines) {
                 return;
@@ -142,7 +141,7 @@ export const Chart = React.memo((props: RouteComponentProps<IChartProps>): React
 
             lines.forEach((line: IIRealProChartBar[], key) => {
                 gridRows.push(
-                    <Grid.Row key={`${segmentKey}-${key}`}>
+                    <Grid.Row key={key}>
                         {line.map((bar, barKey) => (
                             <Grid.Column width={4} key={barKey}>
                                 <SvgChartBar {...bar} notation={notation} />
@@ -153,7 +152,7 @@ export const Chart = React.memo((props: RouteComponentProps<IChartProps>): React
             });
 
             segments.push(
-                <Grid columns={16} className="chart">
+                <Grid columns={16} className="chart" key={segmentKey}>
                     <Grid.Column width={1} className="chart__section-header">
                         {segment.name ?? ' '}
                     </Grid.Column>

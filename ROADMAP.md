@@ -5,6 +5,7 @@
 * Rework, try highcharts, am4 charts are too heavy
 
 #### Real Book
+* Implement Segno sign and it's marks D.S al fine, D.S al coda Dal Segno (Airmail Special)
 * For hot module loading set module: ESNext in tsconfig, "target": "esnext", "moduleResolution": "node" https://github.com/webpack/webpack/issues/5703
 * Add Keyboard shortcuts available
 * Fit chart text, use either https://drafts.csswg.org/css-values/#viewport-relative-lengths or some kind of text fitter. https://stackoverflow.com/questions/16056591/font-scaling-based-on-width-of-container
