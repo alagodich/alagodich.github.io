@@ -7,16 +7,24 @@ import {
     ShiftDecorator,
     NumericShiftDecorator,
     InversionDecorator,
-    PauseDecorator,
-    NoChordDecorator,
-    BarRepeatDecorator,
 
     AltRootDecorator,
     AltShiftDecorator,
     AltQualityDecorator,
-    AltInversionDecorator
-} from './Chord';
-import {useMediaQuery} from 'react-responsive';
+    AltInversionDecorator,
+
+    Pause,
+    NoChord,
+    BarRepeat,
+    Coda,
+    Fermata,
+    TimeSignature,
+    Ending,
+    OpeningLine,
+    ClosingLine
+} from './BarParts';
+// TODO resize for different screen sizes
+// import {useMediaQuery} from 'react-responsive';
 
 type IChartBarProps = { notation: TChordNotation } & IIRealProChartBar;
 export interface IViewBox {
@@ -24,9 +32,17 @@ export interface IViewBox {
     y: number;
 }
 
-// TODO Songs to check:
-// 105 - Alt chords
-// 132 - 4 chords
+function getNumericDegreeShiftString(shift: number | undefined) {
+    let shiftString = '';
+
+    if (shift && shift < 0) {
+        shiftString = [...Array(Math.abs(shift))].map(() => 'b').join('');
+    } else if (shift && shift > 0) {
+        shiftString = [...Array(shift)].map(() => '#').join('');
+    }
+
+    return shiftString;
+}
 
 // eslint-disable-next-line complexity
 export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | null => {
@@ -35,125 +51,29 @@ export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | nu
     const viewBox: IViewBox = {x: 410, y: 90};
     const otherSigns: ReactElement[] = [];
 
-    const openingBarLines: { [index: string]: ReactElement[] } = {
-        // single bar line is not participating as it is the same for opening and closing
-        '|': [<line key="|-open" x1={16} y1={0} x2={16} y2={viewBox.y} stroke={'black'} strokeWidth={2} />],
-        // opening double bar line
-        '[': [
-            <line key="[1" x1={16} y1={0} x2={16} y2={viewBox.y} stroke={'black'} strokeWidth={2} />,
-            <line key="[2" x1={21} y1={0} x2={21} y2={viewBox.y} stroke={'black'} strokeWidth={2} />
-        ],
-        // opening repeat bar line
-        '{': [
-            <polyline key="{1" points={`30 0, 17 10, 17 ${viewBox.y - 10}, 30 ${viewBox.y}`} stroke={'black'} strokeWidth={6} fill={'none'} />,
-            <circle key="{2" cx={22} cy={viewBox.y / 2 - 5} r={3} stroke={'black'} strokeWidth={2} />,
-            <circle key="{3" cx={22} cy={viewBox.y / 2 + 5} r={3} stroke={'black'} strokeWidth={2} />
-        ]
-    };
-    const closingBarLines: { [index: string]: ReactElement[] } = {
-        // single bar line is not participating as it is the same for opening and closing
-        '|': [<line key="|-close" x1={viewBox.x - 2} y1={0} x2={viewBox.x - 2} y2={viewBox.y} stroke={'black'} strokeWidth={2} />],
-        // closing double bar line
-        ']': [
-            <line key="]1" x1={viewBox.x - 2} y1={0} x2={viewBox.x - 2} y2={viewBox.y} stroke={'black'} strokeWidth={2} />,
-            <line key="]2" x1={viewBox.x - 6} y1={0} x2={viewBox.x - 6} y2={viewBox.y} stroke={'black'} strokeWidth={2} />
-        ],
-        // closing repeat bar line
-        '}': [
-            <polyline key="}1" points={`${viewBox.x - 15} 0, ${viewBox.x - 2} 10, ${viewBox.x - 2} ${viewBox.y - 10}, ${viewBox.x - 15} ${viewBox.y}`} stroke={'black'} strokeWidth={6} fill={'none'} />,
-            <circle key="}2" cx={viewBox.x - 7} cy={viewBox.y / 2 - 5} r={3} stroke={'black'} strokeWidth={2} />,
-            <circle key="}3" cx={viewBox.x - 7} cy={viewBox.y / 2 + 5} r={3} stroke={'black'} strokeWidth={2} />
-        ],
-        // Final thick double bar line
-        Z: [
-            <line key="Z1" x1={viewBox.x - 3} y1={0} x2={viewBox.x - 3} y2={viewBox.y} stroke={'black'} strokeWidth={6} />,
-            <line key="Z2" x1={viewBox.x - 9} y1={0} x2={viewBox.x - 9} y2={viewBox.y} stroke={'black'} strokeWidth={2} />
-        ]
-    };
-    const endings: { [index: string]: ReactElement[] } = {
-        N1: [
-            <line key="N11" x1={15} y1={0} x2={viewBox.x / 1.5} y2={0} stroke={'black'} strokeWidth={2} />,
-            <text key="N12" textAnchor={'start'} x={25} y={15}>{'1.'}</text>
-        ],
-        N2: [
-            <line key="N21" x1={15} y1={0} x2={viewBox.x / 1.5} y2={0} stroke={'black'} strokeWidth={2} />,
-            <text key="N22" textAnchor={'start'} x={25} y={15}>{'2.'}</text>
-        ]
-    };
-    const codaSign: ReactElement[] = [
-        <ellipse cx={viewBox.x - 20} cy={18} rx={8} ry={11} fill={'none'} stroke={'black'} strokeWidth={4} key={'coda-1'} />,
-        <line x1={viewBox.x - 20} y1={1} x2={viewBox.x - 20} y2={35} stroke={'black'} strokeWidth={4} key={'coda-2'} />,
-        <line x1={viewBox.x - 32} y1={18} x2={viewBox.x - 8} y2={18} stroke={'black'} strokeWidth={4} key={'coda-3'} />
-    ];
-    const fermataSign: ReactElement[] = [
-        <path d={'M 30 20 A 15 15 0 0 1 60 20'} stroke={'black'} strokeWidth={4} fill={'none'} key={'fermata-1'}/>,
-        <circle cx={45} cy={16} r={2} stroke={'black'} strokeWidth={2} key="fermata-2" />
-    ];
-
-    function getNumericDegreeShiftString(shift: number | undefined) {
-        let shiftString = '';
-
-        if (shift && shift < 0) {
-            shiftString = [...Array(Math.abs(shift))].map(() => 'b').join('');
-        } else if (shift && shift > 0) {
-            shiftString = [...Array(shift)].map(() => '#').join('');
-        }
-
-        return shiftString;
-    }
-
     function processOtherSigns(): void {
-        if (props.open && openingBarLines[props.open]) {
-            otherSigns.push(...openingBarLines[props.open] as any);
+        if (props.open) {
+            otherSigns.push(<OpeningLine viewBox={viewBox} value={props.open} key={'opening-line'} />);
         }
-        if (props.close && closingBarLines[props.close]) {
-            otherSigns.push(...closingBarLines[props.close] as any);
+        if (props.close) {
+            otherSigns.push(<ClosingLine viewBox={viewBox} value={props.close} key={'closing-line'} />);
         }
         if (props.ending) {
-            otherSigns.push(...endings[props.ending] as any);
+            otherSigns.push(<Ending key={'ending'} viewBox={viewBox} value={props.ending} />);
         }
 
         // Butterfly
         if (props.coda) {
-            otherSigns.push(codaSign as any);
+            otherSigns.push(<Coda viewBox={viewBox} key={'coda'} />);
         }
 
         // Butterfly
         if (props.fermata) {
-            otherSigns.push(fermataSign as any);
+            otherSigns.push(<Fermata key={'fermata'} />);
         }
 
         if (props.timeSignature) {
-            const [beats, division] = props.timeSignature.split(' / ');
-            const timeSignature: any[] = [
-                <text
-                    x={0}
-                    y={30}
-                    fontSize={22}
-                    key={'time-signature-1'}
-                >
-                    {beats}
-                </text>,
-                <text
-                    x={0}
-                    y={70}
-                    fontSize={22}
-                    key={'time-signature-2'}
-                >
-                    {division}
-                </text>,
-                <line
-                    x1={3}
-                    y1={45}
-                    x2={11}
-                    y2={45}
-                    key={'time-signature-3'}
-                    stroke={'black'}
-                    strokeWidth={2}
-                />
-            ];
-
-            otherSigns.push(...timeSignature);
+            otherSigns.push(<TimeSignature viewBox={viewBox} value={props.timeSignature} key={'time-signature'} />);
         }
 
     }
@@ -175,11 +95,11 @@ export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | nu
                 (props.harmony && props.harmony.length > 2 && props.harmony.length <= 4 && index > 0) as boolean;
 
             if (harmony.root === 'x') {
-                otherSigns.push(<BarRepeatDecorator viewBox={viewBox} key={`bar-repeat-${index}`} />);
+                otherSigns.push(<BarRepeat viewBox={viewBox} key={`bar-repeat-${index}`} />);
             } else if (harmony.root === 'n') {
-                harmonyList.push(<NoChordDecorator key={`no-chord-${index}`} />);
+                harmonyList.push(<NoChord key={`no-chord-${index}`} />);
             } else if (harmony.root === 'p') {
-                harmonyList.push(<PauseDecorator key={`pause-${index}`} />);
+                harmonyList.push(<Pause key={`pause-${index}`} />);
             } else if (harmony.root === 'W') {
                 harmonyList.push(
                     <RootDecorator
@@ -389,6 +309,18 @@ export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | nu
         return altHarmonyList;
     }
 
+    // function pinkRect() {
+    //     return (
+    //         <rect
+    //             x={0}
+    //             y={0}
+    //             width={viewBox.x}
+    //             height={viewBox.y}
+    //             fill={'pink'}
+    //         />
+    //     );
+    // }
+
     const svgProps = {
         xmlns: 'http://www.w3.org/2000/svg',
         viewBox: `0 0 ${viewBox.x} ${viewBox.y}`,
@@ -396,29 +328,17 @@ export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | nu
         width: '100%',
         height: '100% ',
         style: {
-            // border: '1px solid #EEE',
             margin: 0,
             padding: 0,
             maxHeight: '100%',
             minHeight: '100%'
-            // display: 'block',
-            // width: '100%',
-            // height: '100%'
         }
     };
 
     processOtherSigns();
 
     return (
-        // TODO FIX Street Life http://localhost:3000/realbook.html#/jazz/1380
         <svg {...svgProps}>
-            {/*<rect*/}
-            {/*    x={0}*/}
-            {/*    y={0}*/}
-            {/*    width={viewBox.x}*/}
-            {/*    height={viewBox.y}*/}
-            {/*    fill={'pink'}*/}
-            {/*/>*/}
             {otherSigns}
             <text
                 fontSize={viewBox.y - 20}

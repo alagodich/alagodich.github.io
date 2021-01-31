@@ -171,7 +171,7 @@ export default class IRealProUrlParser {
             .replace(/<.*?>/g, '')
             // Add space before (x)
             .replace(/([^\s|]+)(x)/g, '$1 $2')
-            // Replace p pause with (/ ) symbol
+            // Replace p pause with (/ ) symbol // TODO remove?
             .replace(/p[\s]*/g, 'p ')
             // Each named segment should have opening bar line, it is often omitted
             .replace(/([}\]])[\s]*(\*[\w])(?![\s]*[[{|])/, '$1[$2')
@@ -187,17 +187,23 @@ export default class IRealProUrlParser {
              * Keeping spaces, time signature Tdd and S inside
              */
             // Move segment name like *A outside the bar for consistency
-            .replace(/([{[|Y])([\sT\dS]*)(\*[\w]{1})/g, '$3$1$2')
-            // Move move time signature inside the bar for consistency
+            .replace(/([{[|Y])([\sT\dSQ]*)(\*[\w]{1})/g, '$3$1$2')
+            // Move time signature inside the bar for consistency
             .replace(/(T\d{2})([\s*ABCDiV]*)([{[|Y])/g, '$2$3$1')
+            // Move ending inside the bar for consistency
+            .replace(/([\s*ABCDiV]*)(N\d)([\s*ABCDiV]*)([{[|Y])/g, '$1$3$4$2')
             // Each ending should have opening bar line
             .replace(/}[\s]*N/g, '}|N')
+            // Replace [ and { as opening for ending with regular single bar line |
+            .replace(/([[{]+)[\s]*N/g, '|N')
             // Move Q inside bar
             .replace(/([\]|}Y])[\s]*(Q)[\s]*([{[|Y])/g, '$1$3$2')
             // Add missing bar separator to the right of divider (Y)
             .replace(/([Y][\s]*)([^{}[\]|ZY*\s]+)/g, '$1|$2')
             // Remove duplicate sequential double opening and closing braces
             .replace(/([[{}\]])\1+/g, '$1')
+            // If double bar or repeat opening lines followed by divider, it is a mistake, keep only divider
+            .replace(/([{[])([\s]*)([{[Y])/g, '$3')
 
             .trim();
     }

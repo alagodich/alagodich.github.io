@@ -130,11 +130,6 @@ describe('UrlParser and ChartModel integration', () => {
             },
             {
                 playlist: 'Samba de Roda List',
-                title: 'Alvarà',
-                errors: ['Repeating empty bars |r']
-            },
-            {
-                playlist: 'Samba de Roda List',
                 title: 'Amor e Festança',
                 errors: ['Closing bar as a first part: [ ||||Z.']
             },
@@ -191,13 +186,7 @@ describe('UrlParser and ChartModel integration', () => {
 
         });
 
-        expect(errors).toEqual([
-            {
-                playlist: 'Pop',
-                title: "Ain't Nobody",
-                errors: ['Repeating empty bars |r']
-            }
-        ]);
+        expect(errors).toEqual([]);
     });
 
     // xit('// TODO this throws. Should be able to parse and create model for all dixieland jazz songs', () => {

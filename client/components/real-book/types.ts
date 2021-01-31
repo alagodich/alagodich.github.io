@@ -45,7 +45,8 @@ export const chordsStringExpresion = /([A-GxnpW]?)([b#]?)([+\-^\dhob#suadlt]*)(\
 
 export const closingBarLines: { [index: string]: string } = {
     ']': '[',
-    '}': '{'
+    '}': '{',
+    'Z': '|'
 };
 
 export const roots = [

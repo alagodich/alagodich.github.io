@@ -2,6 +2,7 @@
 /* eslint max-statements: 0 */
 
 import IRealProUrlParser from '../IRealProUrlParser';
+// import {varDump} from '../../../../server/utils';
 
 describe('IRealProUrlParser', () => {
     describe('parse', () => {
@@ -574,6 +575,106 @@ describe('IRealProUrlParser', () => {
                     style: 'Medium Funk',
                     key: 'D',
                     chordString: '*A{T44 E-9(G^9/E) |x |B-7(A6/B) (B-7)|(A6/B) x (B-7)|E-9(G^9/E) |x |B-7(A6/B) (B-7)|(A6/B) x (B-7)Q|B-7(A6/B) (B-7)|A-7 D7|N1G^9 (G69) |x |E9(Dadd9/E) (C#-/E) (D69/E)|(Dadd9/E) x (C#-/E) (D69/E)|A9sus(Gadd9/A) |x }|N2G^9 (G69/E) |C9 |F#-7(Dadd9/F#) |F9(F13) |E-9(G^9/E) |Eb9(Eb9#11) |D^7(D^13) |x ]*B[Bb^7(Bb^9) |x |x |x ]|Bb^7(Bb^9) |x |A9sus(Gadd9/A) |x ]{QB-7 |x | x |x }'
+                }
+            ]);
+        });
+        it('should handle So Nice (Summer Samba) with long multiline 8 bars ending', () => {
+            const songUrl = 'irealb://%53%6F%20%4E%69%63%65%20%28%53%75%6D%6D%65%72%20%53%61%6D%62%61%29=%56%61%6C%6C%65%73%20%4D%61%72%63%6F==%42%6F%73%73%61%20%4E%6F%76%61=%46==%31%72%33%34%4C%62%4B%63%75%37%45%7C%51%79%58%34%46%5E%37%58%79%58%37%5E%62%42%7C%51%79%58%33%31%62%37%7C%45%51%79%58%37%2D%42%5A%4C%20%6C%63%4B%51%79%51%7C%42%62%36%34%54%7B%41%2A%44%5A%4C%33%31%4B%63%6C%20%20%68%45%7C%51%79%58%37%2D%47%7C%51%79%58%39%37%62%44%7C%51%79%58%37%2D%41%31%4E%5B%42%2A%5D%37%20%41%37%62%51%79%58%37%62%37%2D%47%7C%51%7C%47%37%58%79%44%7C%51%79%58%37%2D%41%5B%32%4E%43%2A%7D%37%20%43%20%37%62%44%7C%51%79%58%37%2D%47%7C%51%37%62%39%58%79%51%79%58%37%2D%58%79%51%7C%43%37%62%39%58%79%51%7C%46%5E%37%58%79%51%7C%42%62%37%58%79%51%7C%46%36%58%79%51%7C%47%2D%37%20%43%37%20%5A==%30=%30===';
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songUrl)).toEqual([
+                {
+                    title: 'So Nice (Summer Samba)',
+                    author: 'Marco Valles',
+                    style: 'Bossa Nova',
+                    key: 'F',
+                    chordString: '*A{T44F^7 |x |B-7 |E7b13 |Bb^7 |Bb6 |Eb7 |x ]*B|N1A-7 |D7b9 |G-7 |Eh7 A7b13|D-7 |G7 |G-7 |Db7 C7 }*C|N2A-7 |D7b9 |G-7 |C7b9 |F^7 |Bb7 |F6 |G-7 C7 Z'
+                }
+            ]);
+        });
+        it('should handle Like Someone In Love', () => {
+            const songUrl = 'irealb://%4C%69%6B%65%20%53%6F%6D%65%6F%6E%65%20%49%6E%20%4C%6F%76%65=%56%61%6E%2D%48%65%75%73%65%6E%20%4A%69%6D%6D%79==%4D%65%64%69%75%6D%20%53%77%69%6E%67=%45%62==%31%72%33%34%4C%62%4B%63%75%37%58%37%2D%46%5A%34%45%62%5E%37%2D%47%5A%4C%37%62%41%20%37%68%41%5A%4C%62%2F%42%37%2D%43%20%37%2D%43%5A%4C%44%2F%37%47%20%37%20%43%37%4C%34%54%7B%41%2A%79%58%37%5E%62%37%28%42%62%37%4E%5D%20%37%62%45%20%37%2D%62%42%7C%51%79%29%58%37%5E%62%45%28%37%2D%47%5A%4C%37%44%20%29%31%5B%2A%42%41%2D%41%7C%51%79%51%79%58%35%23%20%47%37%4C%5A%79%58%37%2D%46%7C%51%79%58%37%46%7C%51%79%37%58%2D%43%5A%4C%20%6C%63%4B%51%79%58%37%5E%43%51%7C%42%62%37%37%2D%44%7C%51%42%20%37%2D%46%43%41%62%5E%37%37%2D%47%7C%51%79%58%37%6F%23%46%7C%51%79%37%58%5E%43%5A%4C%37%47%20%37%2D%44%7C%51%79%58%20%43%37%4C%5A%2A%5B%32%4E%7D%62%37%4C%5A%45%62%36%58%79%51%7C%46%2D%37%20%42%62%37%20%5A==%30=%30===';
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songUrl)).toEqual([
+                {
+                    title: 'Like Someone In Love',
+                    author: 'Jimmy Van-Heusen',
+                    style: 'Medium Swing',
+                    key: 'Eb',
+                    chordString: '*A{T44Eb^7 G7/D|C-7 C-7/Bb|Ah7 Ab7|G-7 C7|F-7 |A-7(Bb7) D7|G-7(Eb^7) |Bb-7 Eb7 ]*B|N1Ab^7 |D-7 G7|C^7 |x |C-7 |F7 |F-7 |Bb7#5 }*C|N2Ab^7 |D-7 G7|C^7 |F#o7 |G-7 C7|F-7 Bb7|Eb6 |F-7 Bb7 Z'
+                }
+            ]);
+        });
+        it('should handle Dindi from Latin 150 playlist', () => {
+            const songUrl = 'irealb://Dindi%3DJobim%20Antonio-Carlos%3D%3DBossa%20Nova%3DEb%3D%3D1r34LbKcu7yX9-A4Eb%5E7%5EC%7CQyX7%5EbD%7CQyX%5E7bE%7CQyX7%5EbD%7CQyX7XyQ%7C4T%7Bv*E%207-bXyQ%7CG7%5EbE%7CQyX7%5EbD%7CQXy7%5EbE%7BA*Y%7DQyX31XyQ%7CB9-D%7CQE2NZLb%5E7XyyX%7DQyX7-bB%7CQyXb6E1N%7CQyX7%5E-bA%7CQQXyQ%20AZL7b9b7C%20%7CAh7%206-bE%20-G%7CQyX6-b%7CEQyX-G%5BB*%5D%209b7DLZG-7QyX6b%5EbD%7CQyQ%7CC%23E%5BA*%5D%209b7bB%207-ZFL6-%23C%20-F%7CQyX6-b%5E7XyX-FZL7bD%7CQEb%5E7X%7CQyX7%5E-bA%7CQyX7b%5EAZL7bE%207-bB%7CQyEb6Xy%7CQyX7%20%20%20Z%3DJazz-Bossa%20Nova%3D140%3D3%3D%3D%3D';
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songUrl)).toEqual([
+                {
+                    title: 'Dindi',
+                    author: 'Antonio-Carlos Jobim',
+                    style: 'Bossa Nova',
+                    key: 'Eb',
+                    chordString: '*V{T44Eb^7 |Db^7 |Eb^7 |Db^7 |C^7 |A-9 |D-9 |G13 }*AY{Eb^7 |Db^7 |Eb^7 |Bb-7 Eb7|Ab^7 |Ab-^7 |N1Eb6 |Bb-7 } |N2Eb6 |Ah7 D7b9 ]*B[G- |Eb-6 |G- Eb-6|G-7 C7b9|F- |C#-6 |F- C#-6|F-7 Bb7b9 ]*A[Eb^7 |Db^7 |Eb^7 |Bb-7 Eb7|Ab^7 |Ab-^7 |Eb6 |Db7 Z'
+                }
+            ]);
+        });
+        it('should handle Caramelo from Choro playlist', () => {
+            const songUrl = 'irealb://Caramelo%3DGaroto%3D%3DChoro%3DD-%3D%3D1r34LbKcu7L-D%7C%2CT22sDGZL7EZLAZL-D%7C%2CA7%2C-DZL7AZL-GZL--6%2CA7%2CA*%2C%7B%2CFZL7ALZD-%7B%7D%20Q%2C-D%3EeniF%3CZ7LAZL-DZL-G%7C%2C7D%2C%2C*B%2CCZL-GZ7bB%2CFEb%2CAboGZL7C%7C%2CoG%2C-G%7C7%2CD%2CFZL7CZLbD%7C%2C7%2CC7%2C%7C%7C%2C7bBF%3EadoAb7%2C%7C.C.D%3C%7C%2C7C%2C7bD%7C7%2CD%2CF%7C%2C7C%2C-GZLbD%20al%20C%2CbE%7C%2CL7AZL*C%2CDLL7AZL7EZL7BZL7F%23%7C%2C7A%2C-EZLxZLxZZDLZx%2CQ%7B%7D%20ZDLZBb7LZEbLZA7LZ%3CD.C.%20al%20Fine%3ED%20%7D%20%3DLatin-Brazil:%20Samba%3D120%3D1%3D%3D%3D';
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songUrl)).toEqual([
+                {
+                    title: 'Caramelo',
+                    author: 'Garoto',
+                    style: 'Choro',
+                    key: 'D-',
+                    chordString: '*A{  T22D-|G-|A7|D- A7 |D-|A|E7|G-6 A7 |D-|G-|A|D- D7 |G-|D-|A7|D- Q }*B{  C7|F Bb7 |Eb Ab7 |Db|C7|F D7 |G- Go |C7|Go C7 |F Bb7 |Eb Ab7 |Db|G- C7 |F D7 |Db7 C7 |F }*C{Q  D|x|x|E- A7 |F#7|B7|E7|A7|D|x|A7|D|Bb7|Eb|A7|D }'
+                }
+            ]);
+        });
+        it('should handle A.Oitava Cor - AAB ABA', () => {
+            const songUrl = 'irealb://A.Oitava%20Cor%20-%20AAB%20ABA%3DSombrinha/%20Sombra/%20Luiz%20Carlos%20da%20Vila%3D%3DSamba%3DF%3D%3D1r34LbKcu7um%20%C3%A9%204F%5EXyA*%7BYY%20QyX%5B%20%2C7C-%20GZL7bD%2011-bA%7CQ%3CMais4Ti*%7C6F%20%5EFais..%20-GZL6bG%20%5EbGZLb7D%2011-bA%7CQyX%5EF%3EC7%2CLZm%20oti%2C7C%20-A7LZD7G%7CQyX7D1N%7CQyXBbZL%2C31F%20-C%7CQyX-XyQ%7CG%20hEZLioP%3CBLZN2GyX%5B%20%2C7C%20-bBZL%20.%3E4%20%2096*%3C0N%203N%2C7Q%20Y%5B*QyX%7D%20QyX-bssim%20%20hC%7CQyX7C%7CQyX-%3EF..roma%20osson%20oF7LZBa%20%C3%A9%20sb3%205%20yQ%7CAb*%3C%7CQyX-F%7CZL%2C7Ch%20G%7CQyX7GZL%5EbD%20%5E66%207%20X7bE%7C%2C%5EbD%20C7XyQ7bE%20sus7bE%7CQyXb-B%7CQyX7F%3E366*%3C%7CLZAb%5E%3E7%5E19LZBb-%20C7%2C%20Z%20%3D%3D0%3D0%3D%3D%3D';
+            const parser = new IRealProUrlParser();
+
+            expect(parser.parse(songUrl)).toEqual([
+                {
+                    title: 'A.Oitava Cor - AAB ABA',
+                    author: 'Sombrinha/ Sombra/ Luiz Carlos da Vila',
+                    style: 'Samba',
+                    key: 'F',
+                    chordString: '*i|T44F^ |Ab-11 Db7|G- C7 Y*A{F^ |Ab-11 Db7|Gb^ Gb6|G- C7 |F^ F6|Eh A7|D- |C- F13 |Bb |N1D7 |G7 |G- C7 } |N2G7 N3  |N0Bb- C7 Y*B[F- |C7 |Ch F7|Bb- |Eb7 |Ab^ Db^|G7 |Gh C7 |F- |C7 |F7 |Bb- |Eb7sus Eb7|Ab^ Db^ |Bb- C7 Z'
+                }
+            ]);
+        });
+        it('should handle Papo de Homem e Mulher - iAAB AB⊙ from Samba de Roda List', () => {
+            const songUrl = 'irealb://Papo%20de%20Homem%20e%20Mulher%20-%20iAAB%20AB%E2%8A%99%3DSombrinha%20e%20Franco%3D%3DSamba%3DC%3D%3D1r34LbKcu7p%20meV4F%5EXyY%5DQyX96CZL31G%20-9DZL31b7A%206bB%7CQY%7B*A%3C4Ti*%5ByX31bcar%2C%20bB%2096C%7CQyX31G%7CyQX9-Dl%3E%29..roma%28%5ELZA7if%20arQyXQyXyQ%7CBA%20x%7CQyX9-A%3E%290%28034x0x%3C1NZL7E%207b7%2C%20%7DX9-D%7CQgehc%202%3Cx2xcileF%3CB*%7BY%20QyXQ%5ByX3N%2C9A%3E%292%28522idadeN%7CY%20%20E%20%5EF%7Crriu.-GZL31G%209-DZL9%20A96CZL31G%209-D%3E.%20C7LZos%20%2Coal%20ai%20A7LZE%3CQ%7BYY%7D%20%2C7A%20%3EoapC%20aD%3C-AZL7E%20-D%20lala-AZL7yXQyX..%3ED-%2C7A%20-A1NZL7E%20-ZDL7A%2096CZL31G%209%20%7DXyQ.aialQXyQ%7CN2AXyQ%7C%7BAXyQ%7CxXyQ%7D%20%3D%3D0%3D0%3D%3D%3D';
+            const parser = new IRealProUrlParser();
+
+            // TODO this is parsed wrong, problem with endings
+            expect(parser.parse(songUrl)).toEqual([
+                {
+                    title: 'Papo de Homem e Mulher - iAAB AB⊙',
+                    author: 'Sombrinha e Franco',
+                    style: 'Samba',
+                    key: 'C',
+                    chordString: '*i[T44F^ |Bb6 A7b13|D-9 G13|C69 ]Y*A{ D-9 |G13 |C69 Bb^|A7b13 |D-9 |Bb7 E7|N1A-9 |x A7 } Y|N2A9  |N3 Y*B{D-9 G13|C69 A9|D-9 G13|G- C7|F^ E7|A- A7|D- E7|A- A7 }Y{QD-9 G13|C69 A7|D- E7|N1A- A7 } |A |N2{A |x }'
+                }
+            ]);
+        });
+        it('should handle Pelo Telefone', () => {
+            const songUrl = 'irealb://Pelo%20Telefone%3DDonga%20e%20Mauro%20de%20Almeida%3D%3DSamba%3DA%3D%3D1r34LbKcu7%20%3C%7CQyO%20cheyX7-BZL7%23F%2Cp%2CA.%3E.aicilop%20ad%20efQ%7CE7X%3C44T%7B%7CQyXx7%2C%20%7DX-B%3EurtsnI%3C%5B%5DQyAX0N%7CQyXQyXQyXQy7%20ALZE%20A%3E4EZL%2C7%5BXyQX.sehnapa%20ut%20eu%20qaramoT%3C44T%5BYQy.%3EA%20E%20A42T%C3%B4hniSZ%20%20r%7CiS%20%2Cadnilor%20ahOl%3C%5BY%5D%20%2CA42T%7CQyXnh%C3%B4%2C%20L%2CA%207..%3EDXyQ%7CAXyQ%7CE7XyQ%7CA%20A7%2CLZDXyQ%7CAXyQ%7CE7XyQ%7CAXyQZ%20%3D%3D0%3D0%3D%3D%3D';
+            const parser = new IRealProUrlParser();
+
+            // TODO, this part is strange: {T44A p F#7|B-7 |E7 |A E7 } |N0A ]
+            expect(parser.parse(songUrl)).toEqual([
+                {
+                    title: 'Pelo Telefone',
+                    author: 'Donga e Mauro de Almeida',
+                    style: 'Samba',
+                    key: 'A',
+                    chordString: '{T44A p F#7|B-7 |E7 |A E7 } |N0A ][B-7 A|x |A [T24 Y[T44A E7 |E7 A |r|T24A ]Y[D |A |E7 |A A7 |D |A |E7 |A Z'
                 }
             ]);
         });

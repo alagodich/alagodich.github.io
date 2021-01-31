@@ -42,7 +42,7 @@ export function processLines(segment: IIRealProChartSegment): IIRealProChartBar[
         const bar = Object.assign({}, barData);
 
         // Not rendering dividers for now, but it should break the line
-        if (bar.divider || !lines) {
+        if (bar.divider) {
             if (line.length) {
                 lines.push(fillEndingLineToSize4WithEmptyBars(line, lines[lines.length - 1]?.length));
                 line = [];
@@ -54,15 +54,21 @@ export function processLines(segment: IIRealProChartSegment): IIRealProChartBar[
             // If it is a last bar in line, and has no closing line, add default
             if (line.length === 3 && !bar.close) {
                 bar.close = '|';
-                barData.close = '|';
             }
-
-            line.push(bar);
 
             // If current closing bar line is not regular and current line is not and ending line, break the line
             if (bar.close && bar.close !== '|' && line[0] && !line[0].ending) {
+                // Fix closing bar lines, if it has opening sign for some reason
+                if (bar.close && ['[', '}'].includes(bar.close)) {
+                    bar.close = bar.close === '['
+                        ? ']'
+                        : '}';
+                }
+                line.push(bar);
                 lines.push(line);
                 line = [];
+            } else {
+                line.push(bar);
             }
         } else {
             lines.push(line);

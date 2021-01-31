@@ -3,7 +3,7 @@
 
 import IRealProChartModel from '../IRealProChartModel';
 import {IIRealProChartModelProps} from '../types';
-import {varDump} from '../../../../server/utils';
+// import {varDump} from '../../../../server/utils';
 
 const emptyRealProChartProps: IIRealProChartModelProps = {
     title: '',
@@ -7304,6 +7304,575 @@ describe('IRealProChartModel', () => {
                     },
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
                     {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                    {
+                        open: '|',
+                        chords: 'x',
+                        harmony: [{root: 'x'}],
+                        close: '}'
+                    }
+                ]
+            }
+        ]);
+    });
+    it('handles Caramelo', () => {
+        const props = {
+            title: 'Caramelo',
+            author: 'Garoto',
+            style: 'Choro',
+            key: 'D-',
+            chordString: '*A{  T22D-|G-|A7|D- A7 |D-|A|E7|G-6 A7 |D-|G-|A|D- D7 |G-|D-|A7|D- Q }*B{  C7|F Bb7 |Eb Ab7 |Db|C7|F D7 |G- Go |C7|Go C7 |F Bb7 |Eb Ab7 |Db|G- C7 |F D7 |Db7 C7 |F }*C{Q  D|x|x|E- A7 |F#7|B7|E7|A7|D|x|A7|D|Bb7|Eb|A7|D }'
+        } as IIRealProChartModelProps;
+        const model = new IRealProChartModel(props);
+
+        expect(model.title).toBe('Caramelo');
+        expect(model.errors).toEqual([]);
+
+        expect(model.key).toBe('D-');
+        expect(model.tuneAdjective).toBe('minor');
+
+        expect(model.segments).toEqual([
+            {
+                name: 'A',
+                data: [
+                    {
+                        timeSignature: '2 / 2',
+                        open: '{',
+                        chords: 'D-',
+                        harmony: [{root: 'D', quality: '-', degree: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G-',
+                        harmony: [{root: 'G', quality: '-', degree: 4}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A7',
+                        harmony: [{root: 'A', quality: '7', degree: 5}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D- A7',
+                        harmony: [
+                            {root: 'D', quality: '-', degree: 1},
+                            {root: 'A', quality: '7', degree: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D-',
+                        harmony: [{root: 'D', quality: '-', degree: 1}]
+                    },
+                    {open: '|', chords: 'A', harmony: [{root: 'A', degree: 5}]},
+                    {
+                        open: '|',
+                        chords: 'E7',
+                        harmony: [{root: 'E', quality: '7', degree: 2}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G-6 A7',
+                        harmony: [
+                            {root: 'G', quality: '-6', degree: 4},
+                            {root: 'A', quality: '7', degree: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D-',
+                        harmony: [{root: 'D', quality: '-', degree: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G-',
+                        harmony: [{root: 'G', quality: '-', degree: 4}]
+                    },
+                    {open: '|', chords: 'A', harmony: [{root: 'A', degree: 5}]},
+                    {
+                        open: '|',
+                        chords: 'D- D7',
+                        harmony: [
+                            {root: 'D', quality: '-', degree: 1},
+                            {root: 'D', quality: '7', degree: 1}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G-',
+                        harmony: [{root: 'G', quality: '-', degree: 4}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D-',
+                        harmony: [{root: 'D', quality: '-', degree: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A7',
+                        harmony: [{root: 'A', quality: '7', degree: 5}]
+                    },
+                    {
+                        coda: true,
+                        open: '|',
+                        chords: 'D-',
+                        harmony: [{root: 'D', quality: '-', degree: 1}],
+                        close: '}'
+                    }
+                ]
+            },
+            {
+                name: 'B',
+                data: [
+                    {
+                        open: '{',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', degree: 7}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F Bb7',
+                        harmony: [
+                            {root: 'F', degree: 3},
+                            {root: 'B', shift: 'b', quality: '7', degree: 6}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Eb Ab7',
+                        harmony: [
+                            {root: 'E', shift: 'b', degree: 2, degreeShift: -1},
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 5,
+                                degreeShift: -1
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Db',
+                        harmony: [{root: 'D', shift: 'b', degree: 1, degreeShift: -1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', degree: 7}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F D7',
+                        harmony: [
+                            {root: 'F', degree: 3},
+                            {root: 'D', quality: '7', degree: 1}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G- Go',
+                        harmony: [
+                            {root: 'G', quality: '-', degree: 4},
+                            {root: 'G', quality: 'o', degree: 4}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', degree: 7}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Go C7',
+                        harmony: [
+                            {root: 'G', quality: 'o', degree: 4},
+                            {root: 'C', quality: '7', degree: 7}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F Bb7',
+                        harmony: [
+                            {root: 'F', degree: 3},
+                            {root: 'B', shift: 'b', quality: '7', degree: 6}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Eb Ab7',
+                        harmony: [
+                            {root: 'E', shift: 'b', degree: 2, degreeShift: -1},
+                            {
+                                root: 'A',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 5,
+                                degreeShift: -1
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Db',
+                        harmony: [{root: 'D', shift: 'b', degree: 1, degreeShift: -1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G- C7',
+                        harmony: [
+                            {root: 'G', quality: '-', degree: 4},
+                            {root: 'C', quality: '7', degree: 7}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F D7',
+                        harmony: [
+                            {root: 'F', degree: 3},
+                            {root: 'D', quality: '7', degree: 1}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Db7 C7',
+                        harmony: [
+                            {
+                                root: 'D',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 1,
+                                degreeShift: -1
+                            },
+                            {root: 'C', quality: '7', degree: 7}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F',
+                        harmony: [{root: 'F', degree: 3}],
+                        close: '}'
+                    }
+                ]
+            },
+            {
+                name: 'C',
+                data: [
+                    {
+                        open: '{',
+                        chords: 'D',
+                        harmony: [{root: 'D', degree: 1}],
+                        coda: true
+                    },
+                    {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                    {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                    {
+                        open: '|',
+                        chords: 'E- A7',
+                        harmony: [
+                            {root: 'E', quality: '-', degree: 2},
+                            {root: 'A', quality: '7', degree: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F#7',
+                        harmony: [
+                            {
+                                root: 'F',
+                                shift: '#',
+                                quality: '7',
+                                degree: 3,
+                                degreeShift: 1
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'B7',
+                        harmony: [{root: 'B', quality: '7', degree: 6, degreeShift: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'E7',
+                        harmony: [{root: 'E', quality: '7', degree: 2}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A7',
+                        harmony: [{root: 'A', quality: '7', degree: 5}]
+                    },
+                    {open: '|', chords: 'D', harmony: [{root: 'D', degree: 1}]},
+                    {open: '|', chords: 'x', harmony: [{root: 'x'}]},
+                    {
+                        open: '|',
+                        chords: 'A7',
+                        harmony: [{root: 'A', quality: '7', degree: 5}]
+                    },
+                    {open: '|', chords: 'D', harmony: [{root: 'D', degree: 1}]},
+                    {
+                        open: '|',
+                        chords: 'Bb7',
+                        harmony: [{root: 'B', shift: 'b', quality: '7', degree: 6}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Eb',
+                        harmony: [{root: 'E', shift: 'b', degree: 2, degreeShift: -1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A7',
+                        harmony: [{root: 'A', quality: '7', degree: 5}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D',
+                        harmony: [{root: 'D', degree: 1}],
+                        close: '}'
+                    }
+                ]
+            }
+        ]);
+    });
+    it('handles Papo de Homem e Mulher - iAAB AB⊙', () => {
+        // TODO This is parsed wrong, too many repeats and some misplaced
+        const props = {
+            title: 'Papo de Homem e Mulher - iAAB AB⊙',
+            author: 'Sombrinha e Franco',
+            style: 'Samba',
+            key: 'C',
+            chordString: '*i[T44F^ |Bb6 A7b13|D-9 G13|C69 ]Y*A{ D-9 |G13 |C69 Bb^|A7b13 |D-9 |Bb7 E7|N1A-9 |x A7 } Y|N2A9  |N3 Y*B{D-9 G13|C69 A9|D-9 G13|G- C7|F^ E7|A- A7|D- E7|A- A7 }Y{QD-9 G13|C69 A7|D- E7|N1A- A7 } |A |N2{A |x }'
+        } as IIRealProChartModelProps;
+        const model = new IRealProChartModel(props);
+
+        expect(model.title).toBe('Papo de Homem e Mulher - iAAB AB⊙');
+        expect(model.errors).toEqual([]);
+
+        expect(model.key).toBe('C');
+        expect(model.tuneAdjective).toBe('major');
+
+        expect(model.segments).toEqual([
+            {
+                name: 'i',
+                data: [
+                    {
+                        timeSignature: '4 / 4',
+                        open: '[',
+                        chords: 'F^',
+                        harmony: [{root: 'F', quality: '^', degree: 4}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb6 A7b13',
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '6',
+                                degree: 7,
+                                degreeShift: -1
+                            },
+                            {root: 'A', quality: '7b13', degree: 6}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D-9 G13',
+                        harmony: [
+                            {root: 'D', quality: '-9', degree: 2},
+                            {root: 'G', quality: '13', degree: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C69',
+                        harmony: [{root: 'C', quality: '69', degree: 1}],
+                        close: ']'
+                    },
+                    {divider: 'Y', close: ']'}
+                ]
+            },
+            {
+                name: 'A',
+                data: [
+                    {
+                        open: '{',
+                        chords: 'D-9',
+                        harmony: [{root: 'D', quality: '-9', degree: 2}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G13',
+                        harmony: [{root: 'G', quality: '13', degree: 5}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C69 Bb^',
+                        harmony: [
+                            {root: 'C', quality: '69', degree: 1},
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '^',
+                                degree: 7,
+                                degreeShift: -1
+                            }
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A7b13',
+                        harmony: [{root: 'A', quality: '7b13', degree: 6}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D-9',
+                        harmony: [{root: 'D', quality: '-9', degree: 2}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'Bb7 E7',
+                        harmony: [
+                            {
+                                root: 'B',
+                                shift: 'b',
+                                quality: '7',
+                                degree: 7,
+                                degreeShift: -1
+                            },
+                            {root: 'E', quality: '7', degree: 3}
+                        ]
+                    },
+                    {
+                        ending: 'N1',
+                        open: '|',
+                        chords: 'A-9',
+                        harmony: [{root: 'A', quality: '-9', degree: 6}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'x A7',
+                        harmony: [{root: 'x'}, {root: 'A', quality: '7', degree: 6}],
+                        close: '}'
+                    },
+                    {divider: 'Y'},
+                    {
+                        ending: 'N2',
+                        open: '|',
+                        chords: 'A9',
+                        harmony: [{root: 'A', quality: '9', degree: 6}]
+                    },
+                    {ending: 'N3', close: '|'},
+                    {divider: 'Y', close: ']'}
+                ]
+            },
+            {
+                name: 'B',
+                data: [
+                    {
+                        open: '{',
+                        chords: 'D-9 G13',
+                        harmony: [
+                            {root: 'D', quality: '-9', degree: 2},
+                            {root: 'G', quality: '13', degree: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C69 A9',
+                        harmony: [
+                            {root: 'C', quality: '69', degree: 1},
+                            {root: 'A', quality: '9', degree: 6}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D-9 G13',
+                        harmony: [
+                            {root: 'D', quality: '-9', degree: 2},
+                            {root: 'G', quality: '13', degree: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'G- C7',
+                        harmony: [
+                            {root: 'G', quality: '-', degree: 5},
+                            {root: 'C', quality: '7', degree: 1}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F^ E7',
+                        harmony: [
+                            {root: 'F', quality: '^', degree: 4},
+                            {root: 'E', quality: '7', degree: 3}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A- A7',
+                        harmony: [
+                            {root: 'A', quality: '-', degree: 6},
+                            {root: 'A', quality: '7', degree: 6}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D- E7',
+                        harmony: [
+                            {root: 'D', quality: '-', degree: 2},
+                            {root: 'E', quality: '7', degree: 3}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'A- A7',
+                        harmony: [
+                            {root: 'A', quality: '-', degree: 6},
+                            {root: 'A', quality: '7', degree: 6}
+                        ],
+                        close: '}'
+                    },
+                    {divider: 'Y'},
+                    {
+                        coda: true,
+                        open: '{',
+                        chords: 'D-9 G13',
+                        harmony: [
+                            {root: 'D', quality: '-9', degree: 2},
+                            {root: 'G', quality: '13', degree: 5}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C69 A7',
+                        harmony: [
+                            {root: 'C', quality: '69', degree: 1},
+                            {root: 'A', quality: '7', degree: 6}
+                        ]
+                    },
+                    {
+                        open: '|',
+                        chords: 'D- E7',
+                        harmony: [
+                            {root: 'D', quality: '-', degree: 2},
+                            {root: 'E', quality: '7', degree: 3}
+                        ]
+                    },
+                    {
+                        ending: 'N1',
+                        open: '|',
+                        chords: 'A- A7',
+                        harmony: [
+                            {root: 'A', quality: '-', degree: 6},
+                            {root: 'A', quality: '7', degree: 6}
+                        ],
+                        close: '}'
+                    },
+                    {open: '|', chords: 'A', harmony: [{root: 'A', degree: 6}]},
+                    {ending: 'N2', close: '|'},
+                    {open: '{', chords: 'A', harmony: [{root: 'A', degree: 6}]},
                     {
                         open: '|',
                         chords: 'x',

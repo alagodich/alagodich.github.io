@@ -929,5 +929,222 @@ describe('Chart Component', () => {
                 ]
             ]);
         });
+        it('should correctly process ending line with opening bar line sign, Put It Where You Want It', () => {
+            const segment = {
+                name: 'D',
+                data: [
+                    {
+                        open: '{',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', degree: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F7',
+                        harmony: [{root: 'F', quality: '7', degree: 4}],
+                        close: '}'
+                    },
+                    {
+                        open: '|',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', degree: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', degree: 1}],
+                        close: '['
+                    },
+                    {divider: 'Y'},
+                    {
+                        coda: true,
+                        open: '{',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', degree: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F7',
+                        harmony: [{root: 'F', quality: '7', degree: 4}],
+                        close: '}'
+                    },
+                    {
+                        open: '|',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', degree: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', degree: 1}],
+                        close: 'Z'
+                    }
+                ]
+            };
+
+            expect(processLines(segment)).toEqual([
+                [
+                    {
+                        open: '{',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', degree: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F7',
+                        harmony: [{root: 'F', quality: '7', degree: 4}],
+                        close: '}'
+                    }
+                ],
+                [
+                    {
+                        open: '|',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', degree: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', degree: 1}],
+                        close: ']'
+                    }
+                ],
+                [
+                    {
+                        coda: true,
+                        open: '{',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', degree: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'F7',
+                        harmony: [{root: 'F', quality: '7', degree: 4}],
+                        close: '}'
+                    }
+                ],
+                [
+                    {
+                        open: '|',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', degree: 1}]
+                    },
+                    {
+                        open: '|',
+                        chords: 'C7',
+                        harmony: [{root: 'C', quality: '7', degree: 1}],
+                        close: 'Z'
+                    }
+                ]
+            ]);
+        });
+        // it('should correctly process ending line with opening bar line sign, Put It Where You Want It', () => {
+        //     const segment = {
+        //         name: 'C',
+        //         data: [
+        //             {ending: 'N2', close: '['},
+        //             {
+        //                 open: '[',
+        //                 chords: 'A-7',
+        //                 harmony: [{root: 'A', quality: '-7', degree: 3}]
+        //             },
+        //             {
+        //                 open: '|',
+        //                 chords: 'D7b9',
+        //                 harmony: [{root: 'D', quality: '7b9', degree: 6}]
+        //             },
+        //             {
+        //                 open: '|',
+        //                 chords: 'G-7',
+        //                 harmony: [{root: 'G', quality: '-7', degree: 2}]
+        //             },
+        //             {
+        //                 open: '|',
+        //                 chords: 'C7b9',
+        //                 harmony: [{root: 'C', quality: '7b9', degree: 5}]
+        //             },
+        //             {
+        //                 open: '|',
+        //                 chords: 'F^7',
+        //                 harmony: [{root: 'F', quality: '^7', degree: 1}]
+        //             },
+        //             {
+        //                 open: '|',
+        //                 chords: 'Bb7',
+        //                 harmony: [{root: 'B', shift: 'b', quality: '7', degree: 4}]
+        //             },
+        //             {
+        //                 open: '|',
+        //                 chords: 'F6',
+        //                 harmony: [{root: 'F', quality: '6', degree: 1}]
+        //             },
+        //             {
+        //                 open: '|',
+        //                 chords: 'G-7 C7',
+        //                 harmony: [
+        //                     {root: 'G', quality: '-7', degree: 2},
+        //                     {root: 'C', quality: '7', degree: 5}
+        //                 ],
+        //                 close: 'Z'
+        //             }
+        //         ]
+        //     };
+        //
+        //     expect(processLines(segment)).toEqual([
+        //         [
+        //             {ending: 'N2', close: '['},
+        //             {
+        //                 open: '[',
+        //                 chords: 'A-7',
+        //                 harmony: [{root: 'A', quality: '-7', degree: 3}]
+        //             },
+        //             {
+        //                 open: '|',
+        //                 chords: 'D7b9',
+        //                 harmony: [{root: 'D', quality: '7b9', degree: 6}]
+        //             },
+        //             {
+        //                 open: '|',
+        //                 chords: 'G-7',
+        //                 harmony: [{root: 'G', quality: '-7', degree: 2}],
+        //                 close: '|'
+        //             }
+        //         ],
+        //         [
+        //             {
+        //                 open: '|',
+        //                 chords: 'C7b9',
+        //                 harmony: [{root: 'C', quality: '7b9', degree: 5}]
+        //             },
+        //             {
+        //                 open: '|',
+        //                 chords: 'F^7',
+        //                 harmony: [{root: 'F', quality: '^7', degree: 1}]
+        //             },
+        //             {
+        //                 open: '|',
+        //                 chords: 'Bb7',
+        //                 harmony: [{root: 'B', shift: 'b', quality: '7', degree: 4}]
+        //             },
+        //             {
+        //                 open: '|',
+        //                 chords: 'F6',
+        //                 harmony: [{root: 'F', quality: '6', degree: 1}],
+        //                 close: '|'
+        //             }
+        //         ],
+        //         [
+        //             {
+        //                 open: '|',
+        //                 chords: 'G-7 C7',
+        //                 harmony: [
+        //                     {root: 'G', quality: '-7', degree: 2},
+        //                     {root: 'C', quality: '7', degree: 5}
+        //                 ],
+        //                 close: 'Z'
+        //             }
+        //         ]
+        //     ]);
+        // });
     });
 });
