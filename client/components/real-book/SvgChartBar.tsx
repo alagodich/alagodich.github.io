@@ -93,6 +93,11 @@ export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | nu
             // Should push left if more than 2 elements in bar
             const shouldPushLeft =
                 (props.harmony && props.harmony.length > 2 && props.harmony.length <= 4 && index > 0) as boolean;
+            let horizontalRootPosition;
+
+            if (props.harmony && props.harmony.length === 2 && index === 1) {
+                horizontalRootPosition = viewBox.x / 2;
+            }
 
             if (harmony.root === 'x') {
                 otherSigns.push(<BarRepeat viewBox={viewBox} key={`bar-repeat-${index}`} />);
@@ -157,6 +162,7 @@ export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | nu
                             viewBox={viewBox}
                             value={harmony.degree}
                             shouldPushLeft={shouldPushLeft}
+                            horizontalRootPosition={horizontalRootPosition}
                             key={`root-${index}`}
                         />
                     );
@@ -185,6 +191,7 @@ export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | nu
                             viewBox={viewBox}
                             value={harmony.root}
                             shouldPushLeft={shouldPushLeft}
+                            horizontalRootPosition={horizontalRootPosition}
                             key={`root-${index}`}
                         />
                     );
@@ -343,7 +350,7 @@ export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | nu
             <text
                 fontSize={viewBox.y - 20}
                 fill="black"
-                x={25}
+                x={20}
                 y={viewBox.y - 10}
             >
                 {getHarmony()}
@@ -351,7 +358,7 @@ export const SvgChartBar = React.memo((props: IChartBarProps): ReactElement | nu
             <text
                 fontSize={viewBox.y - 60}
                 fill="black"
-                x={35}
+                x={30}
                 y={viewBox.y - 65}
             >
                 {getAltHarmony()}

@@ -7,6 +7,7 @@ interface IDecoratorProps {
     value?: number | string;
     shouldPushLeft?: boolean;
     shift?: string;
+    horizontalRootPosition?: number;
 }
 
 interface IOtherSignProps {
@@ -15,8 +16,22 @@ interface IOtherSignProps {
 }
 
 // Chord parts
-export const RootDecorator = React.memo((props: IDecoratorProps): ReactElement =>
-    <tspan dx={props.shouldPushLeft ? 15 : 0} y={props.viewBox.y - 10}>{props.value}</tspan>);
+export const RootDecorator = React.memo((props: IDecoratorProps): ReactElement => {
+    const textProps: React.SVGProps<SVGTSpanElement> = {
+        dx: props.shouldPushLeft ? 15 : 0,
+        y: props.viewBox.y - 10
+    };
+
+    if (props.horizontalRootPosition) {
+        textProps.x = props.horizontalRootPosition;
+    }
+
+    return (
+        <tspan {...textProps}>
+            {props.value}
+        </tspan>
+    );
+});
 export const QualityDecorator = React.memo((props: IDecoratorProps): ReactElement =>
     <tspan
         fontSize={'0.5em'}
@@ -143,16 +158,16 @@ export const TimeSignature = React.memo((props: IOtherSignProps): ReactElement =
 
     return (
         <React.Fragment>
-            <text x={0} y={props.viewBox.y / 2 - (fontSize / 2)} fontSize={fontSize}>
+            <text x={8} y={props.viewBox.y / 2 - (fontSize / 2)} fontSize={fontSize}>
                 {beats}
             </text>
-            <text x={0} y={props.viewBox.y - fontSize + 5} fontSize={fontSize}>
+            <text x={8} y={props.viewBox.y - fontSize + 5} fontSize={fontSize}>
                 {division}
             </text>
             <line
-                x1={3}
+                x1={9}
                 y1={props.viewBox.y / 2}
-                x2={11}
+                x2={21}
                 y2={props.viewBox.y / 2}
                 stroke={'black'}
                 strokeWidth={2}
@@ -164,7 +179,7 @@ export const TimeSignature = React.memo((props: IOtherSignProps): ReactElement =
 export const Ending = React.memo((props: IOtherSignProps): ReactElement =>
     <React.Fragment>
         <line
-            x1={15}
+            x1={2}
             y1={0}
             x2={props.viewBox.x / 1.5}
             y2={0}
@@ -173,7 +188,7 @@ export const Ending = React.memo((props: IOtherSignProps): ReactElement =>
         />
         <text
             textAnchor={'start'}
-            x={25}
+            x={9}
             y={15}
         >
             {`${props.value.slice(-1)}.`}
@@ -186,9 +201,9 @@ export const OpeningLine = React.memo((props: IOtherSignProps): ReactElement | n
         case '|':
             return (
                 <line
-                    x1={16}
+                    x1={2}
                     y1={0}
-                    x2={16}
+                    x2={2}
                     y2={props.viewBox.y}
                     stroke={'black'}
                     strokeWidth={2}
@@ -198,17 +213,17 @@ export const OpeningLine = React.memo((props: IOtherSignProps): ReactElement | n
             return (
                 <React.Fragment>
                     <line
-                        x1={16}
+                        x1={2}
                         y1={0}
-                        x2={16}
+                        x2={2}
                         y2={props.viewBox.y}
                         stroke={'black'}
                         strokeWidth={2}
                     />
                     <line
-                        x1={21}
+                        x1={6}
                         y1={0}
-                        x2={21}
+                        x2={6}
                         y2={props.viewBox.y}
                         stroke={'black'}
                         strokeWidth={2}
@@ -219,20 +234,20 @@ export const OpeningLine = React.memo((props: IOtherSignProps): ReactElement | n
             return (
                 <React.Fragment>
                     <polyline
-                        points={`30 0, 17 10, 17 ${props.viewBox.y - 10}, 30 ${props.viewBox.y}`}
+                        points={`14 0, 2 10, 2 ${props.viewBox.y - 10}, 14 ${props.viewBox.y}`}
                         stroke={'black'}
                         strokeWidth={6}
                         fill={'none'}
                     />
                     <circle
-                        cx={22}
+                        cx={6}
                         cy={props.viewBox.y / 2 - 5}
                         r={3}
                         stroke={'black'}
                         strokeWidth={2}
                     />
                     <circle
-                        cx={22}
+                        cx={6}
                         cy={props.viewBox.y / 2 + 5}
                         r={3}
                         stroke={'black'} strokeWidth={2}
@@ -264,17 +279,17 @@ export const ClosingLine = React.memo((props: IOtherSignProps): ReactElement | n
             return (
                 <React.Fragment>
                     <line
-                        x1={props.viewBox.x - 2}
+                        x1={props.viewBox.x - 1}
                         y1={0}
-                        x2={props.viewBox.x - 2}
+                        x2={props.viewBox.x - 1}
                         y2={props.viewBox.y}
                         stroke={'black'}
                         strokeWidth={2}
                     />
                     <line
-                        x1={props.viewBox.x - 6}
+                        x1={props.viewBox.x - 5}
                         y1={0}
-                        x2={props.viewBox.x - 6}
+                        x2={props.viewBox.x - 5}
                         y2={props.viewBox.y}
                         stroke={'black'}
                         strokeWidth={2}

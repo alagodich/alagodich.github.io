@@ -11,11 +11,11 @@ interface IChartSeriesItem {
 }
 
 export const RealBookAnalyzeCharts = React.memo((): ReactElement => {
-    const {songs} = useSelector((state: RootState) => state.library);
+    const {filteredSongs} = useSelector((state: RootState) => state.library);
 
     function getStyleToKeysSeries(): IChartSeriesItem[] {
         const stylesToKeys: IChartSeriesItem[] = [];
-        const byStyles = _groupBy(songs, 'style');
+        const byStyles = _groupBy(filteredSongs, 'style');
 
         Object.getOwnPropertyNames(byStyles).forEach((styleName: string) => {
             const style: IChartSeriesItem = {
