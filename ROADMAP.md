@@ -1,6 +1,5 @@
 #### Real Book
 * Pelo Telefone is a mess because of multiple endings, need to clean up url parser for it http://localhost:3000/realbook.html#/latin/216
-* Add Keyboard shortcuts available
 * Use media query to resize svg view box for different screen sizes 
 * Add filters by key and genre
 * Calculate chords positions inside bar

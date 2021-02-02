@@ -1,1508 +1,1528 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Chart Component should render 500 Miles High 1`] = `
-<div
-  className="ui sixteen column grid chart"
->
+Array [
   <div
-    className="one wide column chart__section-header"
-  >
-    
-  </div>
-  <div
-    className="fifteen wide column"
+    className="ui sixteen column grid chart"
   >
     <div
-      className="ui four column grid"
+      className="one wide column chart__section-header"
+    >
+      
+    </div>
+    <div
+      className="fifteen wide column"
     >
       <div
-        className="row"
+        className="ui four column grid"
       >
         <div
-          className="four wide column"
+          className="row"
         >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
-              }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
+          <div
+            className="four wide column"
           >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={6}
-              x2={6}
-              y1={0}
-              y2={90}
-            />
-            <text
-              fontSize={22.5}
-              x={8}
-              y={33.75}
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
+              }
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              4
-            </text>
-            <text
-              fontSize={22.5}
-              x={8}
-              y={72.5}
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={6}
+                x2={6}
+                y1={0}
+                y2={90}
+              />
+              <text
+                fontSize={22.5}
+                x={8}
+                y={33.75}
+              >
+                4
+              </text>
+              <text
+                fontSize={22.5}
+                x={8}
+                y={72.5}
+              >
+                4
+              </text>
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={9}
+                x2={21}
+                y1={45}
+                y2={45}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
+                y={80}
+              >
+                <tspan
+                  dx={0}
+                  y={80}
+                >
+                  E
+                </tspan>
+                <tspan
+                  dx={-5}
+                  fontSize="0.5em"
+                  letterSpacing={-4}
+                  y={80}
+                >
+                  -7
+                </tspan>
+              </text>
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
+          >
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
+              }
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              4
-            </text>
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={9}
-              x2={21}
-              y1={45}
-              y2={45}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <line
+                stroke="black"
+                strokeWidth={4}
+                x1={185}
+                x2={225}
+                y1={63}
+                y2={27}
+              />
+              <circle
+                cx={190}
+                cy={35}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <circle
+                cx={220}
+                cy={55}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
+                y={80}
+              />
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
+          >
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
+              }
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <tspan
-                dx={0}
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
                 y={80}
               >
-                E
-              </tspan>
-              <tspan
-                dx={-5}
-                fontSize="0.5em"
-                letterSpacing={-4}
-                y={80}
-              >
-                -7
-              </tspan>
-            </text>
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
-              }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
+                <tspan
+                  dx={0}
+                  y={80}
+                >
+                  G
+                </tspan>
+                <tspan
+                  dx={-5}
+                  fontSize="0.5em"
+                  letterSpacing={-4}
+                  y={80}
+                >
+                  -7
+                </tspan>
+              </text>
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
           >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <line
-              stroke="black"
-              strokeWidth={4}
-              x1={185}
-              x2={225}
-              y1={63}
-              y2={27}
-            />
-            <circle
-              cx={190}
-              cy={35}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <circle
-              cx={220}
-              cy={55}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
-            />
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
               }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <tspan
-                dx={0}
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={408}
+                x2={408}
+                y1={0}
+                y2={90}
+              />
+              <line
+                stroke="black"
+                strokeWidth={4}
+                x1={185}
+                x2={225}
+                y1={63}
+                y2={27}
+              />
+              <circle
+                cx={190}
+                cy={35}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <circle
+                cx={220}
+                cy={55}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
                 y={80}
-              >
-                G
-              </tspan>
-              <tspan
-                dx={-5}
-                fontSize="0.5em"
-                letterSpacing={-4}
-                y={80}
-              >
-                -7
-              </tspan>
-            </text>
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
+              />
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
         </div>
         <div
-          className="four wide column"
+          className="row"
         >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
-              }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
+          <div
+            className="four wide column"
           >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={408}
-              x2={408}
-              y1={0}
-              y2={90}
-            />
-            <line
-              stroke="black"
-              strokeWidth={4}
-              x1={185}
-              x2={225}
-              y1={63}
-              y2={27}
-            />
-            <circle
-              cx={190}
-              cy={35}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <circle
-              cx={220}
-              cy={55}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
-            />
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-      </div>
-      <div
-        className="row"
-      >
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
               }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <tspan
-                dx={0}
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
                 y={80}
               >
-                B
-              </tspan>
-              <tspan
-                dx={-5}
-                fontSize="0.5em"
-                y={50}
-              >
-                b
-              </tspan>
-              <tspan
-                dx={-20}
-                fontSize="0.5em"
-                letterSpacing={-4}
-                y={80}
-              >
-                ^7
-              </tspan>
-            </text>
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
-              }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
+                <tspan
+                  dx={0}
+                  y={80}
+                >
+                  B
+                </tspan>
+                <tspan
+                  dx={-5}
+                  fontSize="0.5em"
+                  y={50}
+                >
+                  b
+                </tspan>
+                <tspan
+                  dx={-20}
+                  fontSize="0.5em"
+                  letterSpacing={-4}
+                  y={80}
+                >
+                  ^7
+                </tspan>
+              </text>
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
           >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <line
-              stroke="black"
-              strokeWidth={4}
-              x1={185}
-              x2={225}
-              y1={63}
-              y2={27}
-            />
-            <circle
-              cx={190}
-              cy={35}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <circle
-              cx={220}
-              cy={55}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
-            />
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
               }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <tspan
-                dx={0}
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <line
+                stroke="black"
+                strokeWidth={4}
+                x1={185}
+                x2={225}
+                y1={63}
+                y2={27}
+              />
+              <circle
+                cx={190}
+                cy={35}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <circle
+                cx={220}
+                cy={55}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
                 y={80}
-              >
-                B
-              </tspan>
-              <tspan
-                dx={-5}
-                fontSize="0.5em"
-                letterSpacing={-4}
-                y={80}
-              >
-                h7
-              </tspan>
-            </text>
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
-              }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
+              />
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
           >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={408}
-              x2={408}
-              y1={0}
-              y2={90}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
+              }
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <tspan
-                dx={0}
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
                 y={80}
               >
-                E
-              </tspan>
-              <tspan
-                dx={-5}
-                fontSize="0.5em"
-                letterSpacing={-4}
-                y={80}
-              >
-                7#9
-              </tspan>
-            </text>
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-      </div>
-      <div
-        className="row"
-      >
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
-              }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
+                <tspan
+                  dx={0}
+                  y={80}
+                >
+                  B
+                </tspan>
+                <tspan
+                  dx={-5}
+                  fontSize="0.5em"
+                  letterSpacing={-4}
+                  y={80}
+                >
+                  h7
+                </tspan>
+              </text>
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
           >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
+              }
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <tspan
-                dx={0}
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={408}
+                x2={408}
+                y1={0}
+                y2={90}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
                 y={80}
               >
-                A
-              </tspan>
-              <tspan
-                dx={-5}
-                fontSize="0.5em"
-                letterSpacing={-4}
-                y={80}
-              >
-                -7
-              </tspan>
-            </text>
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
+                <tspan
+                  dx={0}
+                  y={80}
+                >
+                  E
+                </tspan>
+                <tspan
+                  dx={-5}
+                  fontSize="0.5em"
+                  letterSpacing={-4}
+                  y={80}
+                >
+                  7#9
+                </tspan>
+              </text>
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
         </div>
         <div
-          className="four wide column"
+          className="row"
         >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
-              }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
+          <div
+            className="four wide column"
           >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <line
-              stroke="black"
-              strokeWidth={4}
-              x1={185}
-              x2={225}
-              y1={63}
-              y2={27}
-            />
-            <circle
-              cx={190}
-              cy={35}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <circle
-              cx={220}
-              cy={55}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
-            />
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
               }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <tspan
-                dx={0}
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
                 y={80}
               >
-                F
-              </tspan>
-              <tspan
-                dx={-5}
-                fontSize="0.5em"
-                y={50}
-              >
-                #
-              </tspan>
-              <tspan
-                dx={-20}
-                fontSize="0.5em"
-                letterSpacing={-4}
-                y={80}
-              >
-                h7
-              </tspan>
-            </text>
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
-              }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
+                <tspan
+                  dx={0}
+                  y={80}
+                >
+                  A
+                </tspan>
+                <tspan
+                  dx={-5}
+                  fontSize="0.5em"
+                  letterSpacing={-4}
+                  y={80}
+                >
+                  -7
+                </tspan>
+              </text>
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
           >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={408}
-              x2={408}
-              y1={0}
-              y2={90}
-            />
-            <line
-              stroke="black"
-              strokeWidth={4}
-              x1={185}
-              x2={225}
-              y1={63}
-              y2={27}
-            />
-            <circle
-              cx={190}
-              cy={35}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <circle
-              cx={220}
-              cy={55}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
-            />
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-      </div>
-      <div
-        className="row"
-      >
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
               }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <tspan
-                dx={0}
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <line
+                stroke="black"
+                strokeWidth={4}
+                x1={185}
+                x2={225}
+                y1={63}
+                y2={27}
+              />
+              <circle
+                cx={190}
+                cy={35}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <circle
+                cx={220}
+                cy={55}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
                 y={80}
-              >
-                F
-              </tspan>
-              <tspan
-                dx={-5}
-                fontSize="0.5em"
-                letterSpacing={-4}
-                y={80}
-              >
-                -7
-              </tspan>
-            </text>
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
-              }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
+              />
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
           >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <ellipse
-              cx={390}
-              cy={18}
-              fill="none"
-              rx={8}
-              ry={11}
-              stroke="black"
-              strokeWidth={4}
-            />
-            <line
-              stroke="black"
-              strokeWidth={4}
-              x1={390}
-              x2={390}
-              y1={1}
-              y2={35}
-            />
-            <line
-              stroke="black"
-              strokeWidth={4}
-              x1={378}
-              x2={402}
-              y1={18}
-              y2={18}
-            />
-            <line
-              stroke="black"
-              strokeWidth={4}
-              x1={185}
-              x2={225}
-              y1={63}
-              y2={27}
-            />
-            <circle
-              cx={190}
-              cy={35}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <circle
-              cx={220}
-              cy={55}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
-            />
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
               }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <tspan
-                dx={0}
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
                 y={80}
               >
-                C
-              </tspan>
-              <tspan
-                dx={-5}
-                fontSize="0.5em"
-                letterSpacing={-4}
-                y={80}
-              >
-                -7
-              </tspan>
-            </text>
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
-              }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
+                <tspan
+                  dx={0}
+                  y={80}
+                >
+                  F
+                </tspan>
+                <tspan
+                  dx={-5}
+                  fontSize="0.5em"
+                  y={50}
+                >
+                  #
+                </tspan>
+                <tspan
+                  dx={-20}
+                  fontSize="0.5em"
+                  letterSpacing={-4}
+                  y={80}
+                >
+                  h7
+                </tspan>
+              </text>
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
           >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={408}
-              x2={408}
-              y1={0}
-              y2={90}
-            />
-            <line
-              stroke="black"
-              strokeWidth={4}
-              x1={185}
-              x2={225}
-              y1={63}
-              y2={27}
-            />
-            <circle
-              cx={190}
-              cy={35}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <circle
-              cx={220}
-              cy={55}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
-            />
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-      </div>
-      <div
-        className="row"
-      >
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
               }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <tspan
-                dx={0}
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={408}
+                x2={408}
+                y1={0}
+                y2={90}
+              />
+              <line
+                stroke="black"
+                strokeWidth={4}
+                x1={185}
+                x2={225}
+                y1={63}
+                y2={27}
+              />
+              <circle
+                cx={190}
+                cy={35}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <circle
+                cx={220}
+                cy={55}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
                 y={80}
-              >
-                B
-              </tspan>
-              <tspan
-                dx={-5}
-                fontSize="0.5em"
-                letterSpacing={-4}
-                y={80}
-              >
-                7#9
-              </tspan>
-            </text>
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
+              />
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
         </div>
         <div
-          className="four wide column"
+          className="row"
         >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
-              }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
+          <div
+            className="four wide column"
           >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <line
-              stroke="black"
-              strokeWidth={6}
-              x1={407}
-              x2={407}
-              y1={0}
-              y2={90}
-            />
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={401}
-              x2={401}
-              y1={0}
-              y2={90}
-            />
-            <line
-              stroke="black"
-              strokeWidth={4}
-              x1={185}
-              x2={225}
-              y1={63}
-              y2={27}
-            />
-            <circle
-              cx={190}
-              cy={35}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <circle
-              cx={220}
-              cy={55}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
-            />
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-      </div>
-      <div
-        className="row"
-      >
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
               }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <polyline
-              fill="none"
-              points="14 0, 2 10, 2 80, 14 90"
-              stroke="black"
-              strokeWidth={6}
-            />
-            <circle
-              cx={6}
-              cy={40}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <circle
-              cx={6}
-              cy={50}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <ellipse
-              cx={390}
-              cy={18}
-              fill="none"
-              rx={8}
-              ry={11}
-              stroke="black"
-              strokeWidth={4}
-            />
-            <line
-              stroke="black"
-              strokeWidth={4}
-              x1={390}
-              x2={390}
-              y1={1}
-              y2={35}
-            />
-            <line
-              stroke="black"
-              strokeWidth={4}
-              x1={378}
-              x2={402}
-              y1={18}
-              y2={18}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <tspan
-                dx={0}
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
                 y={80}
               >
-                C
-              </tspan>
-              <tspan
-                dx={-5}
-                fontSize="0.5em"
-                letterSpacing={-4}
-                y={80}
-              >
-                -7
-              </tspan>
-            </text>
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
-              }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
+                <tspan
+                  dx={0}
+                  y={80}
+                >
+                  F
+                </tspan>
+                <tspan
+                  dx={-5}
+                  fontSize="0.5em"
+                  letterSpacing={-4}
+                  y={80}
+                >
+                  -7
+                </tspan>
+              </text>
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
           >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <line
-              stroke="black"
-              strokeWidth={4}
-              x1={185}
-              x2={225}
-              y1={63}
-              y2={27}
-            />
-            <circle
-              cx={190}
-              cy={35}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <circle
-              cx={220}
-              cy={55}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
-            />
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
-        </div>
-        <div
-          className="four wide column"
-        >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
               }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <tspan
-                dx={0}
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <ellipse
+                cx={390}
+                cy={18}
+                fill="none"
+                rx={8}
+                ry={11}
+                stroke="black"
+                strokeWidth={4}
+              />
+              <line
+                stroke="black"
+                strokeWidth={4}
+                x1={390}
+                x2={390}
+                y1={1}
+                y2={35}
+              />
+              <line
+                stroke="black"
+                strokeWidth={4}
+                x1={378}
+                x2={402}
+                y1={18}
+                y2={18}
+              />
+              <line
+                stroke="black"
+                strokeWidth={4}
+                x1={185}
+                x2={225}
+                y1={63}
+                y2={27}
+              />
+              <circle
+                cx={190}
+                cy={35}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <circle
+                cx={220}
+                cy={55}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
+                y={80}
+              />
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
+          >
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
+              }
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
                 y={80}
               >
-                A
-              </tspan>
-              <tspan
-                dx={-5}
-                fontSize="0.5em"
-                y={50}
-              >
-                b
-              </tspan>
-              <tspan
-                dx={-20}
-                fontSize="0.5em"
-                letterSpacing={-4}
+                <tspan
+                  dx={0}
+                  y={80}
+                >
+                  C
+                </tspan>
+                <tspan
+                  dx={-5}
+                  fontSize="0.5em"
+                  letterSpacing={-4}
+                  y={80}
+                >
+                  -7
+                </tspan>
+              </text>
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
+          >
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
+              }
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={408}
+                x2={408}
+                y1={0}
+                y2={90}
+              />
+              <line
+                stroke="black"
+                strokeWidth={4}
+                x1={185}
+                x2={225}
+                y1={63}
+                y2={27}
+              />
+              <circle
+                cx={190}
+                cy={35}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <circle
+                cx={220}
+                cy={55}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
                 y={80}
-              >
-                ^7
-              </tspan>
-            </text>
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
+              />
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
         </div>
         <div
-          className="four wide column"
+          className="row"
         >
-          <svg
-            height="100% "
-            preserveAspectRatio="xMidYMid meet"
-            style={
-              Object {
-                "margin": 0,
-                "maxHeight": "100%",
-                "minHeight": "100%",
-                "padding": 0,
-              }
-            }
-            viewBox="0 0 410 90"
-            width="100%"
-            xmlns="http://www.w3.org/2000/svg"
+          <div
+            className="four wide column"
           >
-            <line
-              stroke="black"
-              strokeWidth={2}
-              x1={2}
-              x2={2}
-              y1={0}
-              y2={90}
-            />
-            <polyline
-              fill="none"
-              points="395 0, 408 10, 408 80, 395 90"
-              stroke="black"
-              strokeWidth={6}
-            />
-            <circle
-              cx={403}
-              cy={40}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <circle
-              cx={403}
-              cy={50}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <line
-              stroke="black"
-              strokeWidth={4}
-              x1={185}
-              x2={225}
-              y1={63}
-              y2={27}
-            />
-            <circle
-              cx={190}
-              cy={35}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <circle
-              cx={220}
-              cy={55}
-              r={3}
-              stroke="black"
-              strokeWidth={2}
-            />
-            <text
-              fill="black"
-              fontSize={70}
-              x={20}
-              y={80}
-            />
-            <text
-              fill="black"
-              fontSize={30}
-              x={30}
-              y={25}
-            />
-          </svg>
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
+              }
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
+                y={80}
+              >
+                <tspan
+                  dx={0}
+                  y={80}
+                >
+                  B
+                </tspan>
+                <tspan
+                  dx={-5}
+                  fontSize="0.5em"
+                  letterSpacing={-4}
+                  y={80}
+                >
+                  7#9
+                </tspan>
+              </text>
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
+          >
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
+              }
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <line
+                stroke="black"
+                strokeWidth={6}
+                x1={407}
+                x2={407}
+                y1={0}
+                y2={90}
+              />
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={401}
+                x2={401}
+                y1={0}
+                y2={90}
+              />
+              <line
+                stroke="black"
+                strokeWidth={4}
+                x1={185}
+                x2={225}
+                y1={63}
+                y2={27}
+              />
+              <circle
+                cx={190}
+                cy={35}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <circle
+                cx={220}
+                cy={55}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
+                y={80}
+              />
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="four wide column"
+          >
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
+              }
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polyline
+                fill="none"
+                points="14 0, 2 10, 2 80, 14 90"
+                stroke="black"
+                strokeWidth={6}
+              />
+              <circle
+                cx={6}
+                cy={40}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <circle
+                cx={6}
+                cy={50}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <ellipse
+                cx={390}
+                cy={18}
+                fill="none"
+                rx={8}
+                ry={11}
+                stroke="black"
+                strokeWidth={4}
+              />
+              <line
+                stroke="black"
+                strokeWidth={4}
+                x1={390}
+                x2={390}
+                y1={1}
+                y2={35}
+              />
+              <line
+                stroke="black"
+                strokeWidth={4}
+                x1={378}
+                x2={402}
+                y1={18}
+                y2={18}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
+                y={80}
+              >
+                <tspan
+                  dx={0}
+                  y={80}
+                >
+                  C
+                </tspan>
+                <tspan
+                  dx={-5}
+                  fontSize="0.5em"
+                  letterSpacing={-4}
+                  y={80}
+                >
+                  -7
+                </tspan>
+              </text>
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
+          >
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
+              }
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <line
+                stroke="black"
+                strokeWidth={4}
+                x1={185}
+                x2={225}
+                y1={63}
+                y2={27}
+              />
+              <circle
+                cx={190}
+                cy={35}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <circle
+                cx={220}
+                cy={55}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
+                y={80}
+              />
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
+          >
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
+              }
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
+                y={80}
+              >
+                <tspan
+                  dx={0}
+                  y={80}
+                >
+                  A
+                </tspan>
+                <tspan
+                  dx={-5}
+                  fontSize="0.5em"
+                  y={50}
+                >
+                  b
+                </tspan>
+                <tspan
+                  dx={-20}
+                  fontSize="0.5em"
+                  letterSpacing={-4}
+                  y={80}
+                >
+                  ^7
+                </tspan>
+              </text>
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
+          <div
+            className="four wide column"
+          >
+            <svg
+              height="100% "
+              preserveAspectRatio="xMidYMid meet"
+              style={
+                Object {
+                  "margin": 0,
+                  "maxHeight": "100%",
+                  "minHeight": "100%",
+                  "padding": 0,
+                }
+              }
+              viewBox="0 0 410 90"
+              width="100%"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line
+                stroke="black"
+                strokeWidth={2}
+                x1={2}
+                x2={2}
+                y1={0}
+                y2={90}
+              />
+              <polyline
+                fill="none"
+                points="395 0, 408 10, 408 80, 395 90"
+                stroke="black"
+                strokeWidth={6}
+              />
+              <circle
+                cx={403}
+                cy={40}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <circle
+                cx={403}
+                cy={50}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <line
+                stroke="black"
+                strokeWidth={4}
+                x1={185}
+                x2={225}
+                y1={63}
+                y2={27}
+              />
+              <circle
+                cx={190}
+                cy={35}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <circle
+                cx={220}
+                cy={55}
+                r={3}
+                stroke="black"
+                strokeWidth={2}
+              />
+              <text
+                fill="black"
+                fontSize={70}
+                x={20}
+                y={80}
+              />
+              <text
+                fill="black"
+                fontSize={30}
+                x={30}
+                y={25}
+              />
+            </svg>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+  <div
+    className="ui basic right aligned segment"
+    style={
+      Object {
+        "marginRight": -20,
+        "paddingRight": 0,
+      }
+    }
+  >
+    <i
+      aria-hidden="true"
+      className="info icon"
+      floated="right"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+    />
+  </div>,
+]
 `;
 
 exports[`Chart Component should render Afternoon in Paris 1`] = `
@@ -3503,6 +3523,24 @@ Array [
         </div>
       </div>
     </div>
+  </div>,
+  <div
+    className="ui basic right aligned segment"
+    style={
+      Object {
+        "marginRight": -20,
+        "paddingRight": 0,
+      }
+    }
+  >
+    <i
+      aria-hidden="true"
+      className="info icon"
+      floated="right"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+    />
   </div>,
 ]
 `;
@@ -6151,6 +6189,24 @@ Array [
         </div>
       </div>
     </div>
+  </div>,
+  <div
+    className="ui basic right aligned segment"
+    style={
+      Object {
+        "marginRight": -20,
+        "paddingRight": 0,
+      }
+    }
+  >
+    <i
+      aria-hidden="true"
+      className="info icon"
+      floated="right"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+    />
   </div>,
 ]
 `;
@@ -10213,6 +10269,24 @@ Array [
       </div>
     </div>
   </div>,
+  <div
+    className="ui basic right aligned segment"
+    style={
+      Object {
+        "marginRight": -20,
+        "paddingRight": 0,
+      }
+    }
+  >
+    <i
+      aria-hidden="true"
+      className="info icon"
+      floated="right"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+    />
+  </div>,
 ]
 `;
 
@@ -12365,6 +12439,24 @@ Array [
         </div>
       </div>
     </div>
+  </div>,
+  <div
+    className="ui basic right aligned segment"
+    style={
+      Object {
+        "marginRight": -20,
+        "paddingRight": 0,
+      }
+    }
+  >
+    <i
+      aria-hidden="true"
+      className="info icon"
+      floated="right"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+    />
   </div>,
 ]
 `;
@@ -14739,6 +14831,24 @@ Array [
         </div>
       </div>
     </div>
+  </div>,
+  <div
+    className="ui basic right aligned segment"
+    style={
+      Object {
+        "marginRight": -20,
+        "paddingRight": 0,
+      }
+    }
+  >
+    <i
+      aria-hidden="true"
+      className="info icon"
+      floated="right"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+    />
   </div>,
 ]
 `;
@@ -18413,6 +18523,24 @@ Array [
       </div>
     </div>
   </div>,
+  <div
+    className="ui basic right aligned segment"
+    style={
+      Object {
+        "marginRight": -20,
+        "paddingRight": 0,
+      }
+    }
+  >
+    <i
+      aria-hidden="true"
+      className="info icon"
+      floated="right"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+    />
+  </div>,
 ]
 `;
 
@@ -20915,6 +21043,24 @@ Array [
       </div>
     </div>
   </div>,
+  <div
+    className="ui basic right aligned segment"
+    style={
+      Object {
+        "marginRight": -20,
+        "paddingRight": 0,
+      }
+    }
+  >
+    <i
+      aria-hidden="true"
+      className="info icon"
+      floated="right"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+    />
+  </div>,
 ]
 `;
 
@@ -22945,6 +23091,24 @@ Array [
       </div>
     </div>
   </div>,
+  <div
+    className="ui basic right aligned segment"
+    style={
+      Object {
+        "marginRight": -20,
+        "paddingRight": 0,
+      }
+    }
+  >
+    <i
+      aria-hidden="true"
+      className="info icon"
+      floated="right"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+    />
+  </div>,
 ]
 `;
 
@@ -24698,6 +24862,24 @@ Array [
         </div>
       </div>
     </div>
+  </div>,
+  <div
+    className="ui basic right aligned segment"
+    style={
+      Object {
+        "marginRight": -20,
+        "paddingRight": 0,
+      }
+    }
+  >
+    <i
+      aria-hidden="true"
+      className="info icon"
+      floated="right"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+    />
   </div>,
 ]
 `;

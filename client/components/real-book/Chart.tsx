@@ -1,5 +1,5 @@
-import React, {ReactElement, useEffect} from 'react';
-import {Segment, Grid} from 'semantic-ui-react';
+import React, {ReactElement, useEffect, useState} from 'react';
+import {Segment, Grid, Icon} from 'semantic-ui-react';
 // import {ChartBar} from './ChartBar';
 import {SvgChartBar} from './SvgChartBar';
 import {RouteComponentProps, Link, useHistory} from 'react-router-dom';
@@ -87,6 +87,7 @@ export function processLines(segment: IIRealProChartSegment): IIRealProChartBar[
 export const Chart = React.memo((props: RouteComponentProps<IChartProps>): ReactElement | null => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const [displayTip, setDisplayTip] = useState(false);
 
     const {playlist, songId} = props.match.params;
     const {
@@ -127,6 +128,14 @@ export const Chart = React.memo((props: RouteComponentProps<IChartProps>): React
             document.removeEventListener('keyup', handleKeyPress as any, false);
         };
     });
+
+    function handleMouseEnterTip() {
+        setDisplayTip(true);
+    }
+
+    function handleMouseLeaveTip() {
+        setDisplayTip(false);
+    }
 
     function renderChart(): ReactElement | null {
         const segments: ReactElement[] = [];
@@ -180,6 +189,22 @@ export const Chart = React.memo((props: RouteComponentProps<IChartProps>): React
                     : null
                 }
                 {segments}
+                <Segment
+                    basic
+                    inverted={displayTip}
+                    textAlign={'right'}
+                    style={{paddingRight: 0, marginRight: -20}}
+                >
+                    {displayTip
+                        ? 'Keyboard shortcuts: Q - Exit to chart selection /// <- -> - Change chart'
+                        : null}
+                    <Icon
+                        name={'info'}
+                        floated={'right'}
+                        onMouseEnter={handleMouseEnterTip}
+                        onMouseLeave={handleMouseLeaveTip}
+                    />
+                </Segment>
             </>
         );
     }
