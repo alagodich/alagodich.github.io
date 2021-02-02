@@ -77,7 +77,7 @@ export const RealBookHeader = React.memo((props: IRealBookHeader): ReactElement 
                     <Icon
                         name="chart line"
                         style={{cursor: 'pointer'}}
-                        title="Analyze data"
+                        title="Playlist Summary"
                         onClick={handleToggleAnalyzeCharts}
                         color={showAnalyzeSegment ? 'blue' : 'grey'}
                     />

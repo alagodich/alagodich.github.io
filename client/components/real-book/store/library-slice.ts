@@ -34,6 +34,8 @@ const initialState: ILibraryState = {
     showAnalyzeSegment: false
 };
 
+const searchCategories = ['key', 'style', 'author'];
+
 const librarySlice = createSlice({
     name: 'library',
     initialState,
@@ -65,10 +67,35 @@ const librarySlice = createSlice({
             state.error = null;
         },
         setSearchFilter(state, action: PayloadAction<string>) {
-            const regExp = new RegExp(_escapeRegExp(action.payload), 'i');
-            const isMatch = (item: IIRealProChartModelProps) => regExp.test(item.title + item.author);
+            const [category, term] = action.payload.split(':');
+            let regExp: RegExp, isMatch: (item: IIRealProChartModelProps) => void;
 
-            state.filteredSongs = _filter(state.songs, isMatch);
+            if (category && term && searchCategories.includes(category)) {
+                regExp = new RegExp(_escapeRegExp(term), 'i');
+                switch (category) {
+                    case 'key': {
+                        isMatch = (item: IIRealProChartModelProps) => regExp.test(item.key);
+                        break;
+                    }
+                    case 'style': {
+                        isMatch = (item: IIRealProChartModelProps) => regExp.test(item.style);
+                        break;
+                    }
+                    case 'author': {
+                        isMatch = (item: IIRealProChartModelProps) => regExp.test(item.author);
+                        break;
+                    }
+                    default: {
+                        regExp = new RegExp(_escapeRegExp(action.payload), 'i');
+                        isMatch = (item: IIRealProChartModelProps) => regExp.test(item.title + item.author);
+                    }
+                }
+            } else {
+                regExp = new RegExp(_escapeRegExp(action.payload), 'i');
+                isMatch = (item: IIRealProChartModelProps) => regExp.test(item.title + item.author);
+            }
+
+            state.filteredSongs = _filter(state.songs, isMatch) as any;
             state.searchFilter = action.payload;
         },
         toggleAnalyzeSegment(state) {

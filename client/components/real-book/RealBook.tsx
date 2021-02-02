@@ -1,7 +1,7 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {HashRouter, Switch, Route, NavLink, Redirect} from 'react-router-dom';
-import {List, Grid} from 'semantic-ui-react';
+import {List, Grid, Segment} from 'semantic-ui-react';
 import {RootState} from './store/reducer';
 import {RealBookHeader} from './RealBookHeader';
 import {RealBookPlaylist} from './RealBookPlaylist';
@@ -17,6 +17,15 @@ const RealBook: React.FunctionComponent = React.memo(() => {
     } = useSelector((state: RootState) => state.library);
     const playlistLinks: ReactElement[] = [];
     const playlistRoutes: ReactElement[] = [];
+    const [displayTip, setDisplayTip] = useState(false);
+
+    function handleMouseEnterTip() {
+        setDisplayTip(true);
+    }
+
+    function handleMouseLeaveTip() {
+        setDisplayTip(false);
+    }
 
     playlists.forEach((playlist, key) => {
         playlistLinks.push(
@@ -37,6 +46,27 @@ const RealBook: React.FunctionComponent = React.memo(() => {
                         <RealBookPlaylist name={playlist} />
                     </Grid.Column>
                     <Grid.Column>
+                        {
+                            showAnalyzeSegment
+                                ? null
+                                : (
+                                    <Segment
+                                        basic
+                                        inverted={displayTip}
+                                        textAlign={'right'}
+                                        onMouseEnter={handleMouseEnterTip}
+                                        onMouseLeave={handleMouseLeaveTip}
+                                    >
+                                        {'Type anything to filter songs by title or author'}<br />
+                                        <i style={{textDecoration: 'underline'}}>{'key:Bb-'}</i>
+                                        {' to filter by key'}<br />
+                                        <i style={{textDecoration: 'underline'}}>{'style:swing'}</i>
+                                        {' to filter by style'}<br />
+                                        <i style={{textDecoration: 'underline'}}>{'author:Chick'}</i>
+                                        {' to filter by author'}
+                                    </Segment>
+                                )
+                        }
                         {showAnalyzeSegment ? <RealBookAnalyzeCharts /> : null}
                     </Grid.Column>
                 </Grid>
